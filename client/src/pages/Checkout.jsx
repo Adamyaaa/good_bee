@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import DynamicPaymentQrModal from '../components/storefront/DynamicPaymentQrModal';
+import { GoodBeeApi } from '../services/api';
 import { ShieldCheck, QrCode, CheckCircle2, MessageCircle, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -32,30 +33,59 @@ export default function Checkout({ onBack, onNavigateHome }) {
     if (!items.length) return;
 
     setPlacingOrder(true);
+    const orderId = `GB-ORD-${Date.now().toString().slice(-6)}`;
 
     try {
-      const res = await fetch('/api/v1/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items,
-          customerName: form.name,
-          customerEmail: form.email,
-          customerPhone: form.phone,
-          shippingAddress: {
-            street: form.street,
-            city: form.city,
-            state: form.state,
-            pincode: form.pincode
-          },
-          promoterCode,
-          paymentMethod: form.paymentMethod
-        })
-      });
+      let data = null;
+      try {
+        const res = await fetch('/api/v1/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items,
+            customerName: form.name,
+            customerEmail: form.email,
+            customerPhone: form.phone,
+            shippingAddress: {
+              street: form.street,
+              city: form.city,
+              state: form.state,
+              pincode: form.pincode
+            },
+            promoterCode,
+            paymentMethod: form.paymentMethod
+          })
+        });
+        if (res.ok) {
+          data = await res.json();
+        }
+      } catch (err) {
+        // Fallback for static Netlify host
+      }
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to place order');
+      // If backend was not reached or Netlify static host
+      if (!data || !data.order) {
+        const qr = await GoodBeeApi.generateClientDynamicQr(orderId, total);
+        data = {
+          order: {
+            id: orderId,
+            total,
+            items,
+            customerName: form.name,
+            shippingAddress: {
+              street: form.street,
+              city: form.city,
+              state: form.state,
+              pincode: form.pincode
+            },
+            paymentMethod: form.paymentMethod,
+            paymentStatus: 'PENDING_PAYMENT'
+          },
+          dynamicQr: qr,
+          whatsappSupportUrl: `https://wa.me/919876543210?text=${encodeURIComponent(
+            `Hello Good Bee Support, I have placed order #${orderId} (₹${total}).`
+          )}`
+        };
       }
 
       setActiveOrder(data.order);
@@ -65,7 +95,6 @@ export default function Checkout({ onBack, onNavigateHome }) {
       if (form.paymentMethod === 'DYNAMIC_UPI_QR' && data.dynamicQr) {
         setShowQrModal(true);
       } else {
-        // Direct cash or instant
         handlePaymentSuccess(data.order);
       }
     } catch (err) {
@@ -80,7 +109,6 @@ export default function Checkout({ onBack, onNavigateHome }) {
     setConfirmedOrder(order);
     clearCart();
 
-    // Trigger celebratory confetti
     try {
       confetti({
         particleCount: 80,

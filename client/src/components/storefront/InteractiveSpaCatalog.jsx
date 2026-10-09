@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { Search, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { GoodBeeApi } from '../../services/api';
 
 const CATEGORIES = ['All', 'Face Care', 'Concentrated Serums', 'Cleansers', 'Restorative Elixirs'];
 const CONCERNS = [
@@ -32,14 +33,13 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      if (selectedCategory !== 'All') params.append('category', selectedCategory);
-      if (selectedConcern !== 'All') params.append('concern', selectedConcern);
-      if (searchQuery.trim()) params.append('search', searchQuery.trim());
+      const params = {};
+      if (selectedCategory !== 'All') params.category = selectedCategory;
+      if (selectedConcern !== 'All') params.concern = selectedConcern;
+      if (searchQuery.trim()) params.search = searchQuery.trim();
 
-      const res = await fetch(`/api/v1/products?${params.toString()}`);
-      const data = await res.json();
-      setProducts(data.products || []);
+      const list = await GoodBeeApi.fetchProducts(params);
+      setProducts(list || []);
     } catch (err) {
       console.error(err);
     } finally {
