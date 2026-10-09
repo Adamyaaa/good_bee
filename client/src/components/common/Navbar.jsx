@@ -53,18 +53,20 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
           <div className="flex items-center">
             <button
               onClick={() => onScrollTo('hero')}
-              className="flex items-center gap-3 group text-left focus:outline-none"
+              className="flex items-center gap-2.5 sm:gap-3 group text-left focus:outline-none"
             >
-              <img
-                src="/assets/good-bee-logo.png"
-                alt="Good Bee Emblem"
-                className="w-12 h-12 object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform duration-300"
-              />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white p-1 border border-brand-gold/30 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform duration-300 flex-shrink-0">
+                <img
+                  src="/assets/goodbee-white-logo.png"
+                  alt="Good Bee Emblem"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div>
-                <span className="font-serif text-2xl tracking-[0.25em] font-normal text-brand-charcoal block leading-none">
+                <span className="font-serif text-lg sm:text-2xl tracking-[0.18em] sm:tracking-[0.25em] font-normal text-brand-charcoal block leading-none">
                   GOOD BEE
                 </span>
-                <span className="text-[9px] tracking-[0.3em] text-brand-gold-dark font-sans uppercase font-medium mt-1.5 block">
+                <span className="hidden sm:block text-[9px] tracking-[0.3em] text-brand-gold-dark font-sans uppercase font-medium mt-1.5">
                   Natural Skincare • Research
                 </span>
               </div>

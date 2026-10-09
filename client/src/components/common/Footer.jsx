@@ -10,11 +10,13 @@ export default function Footer({ onNavigate }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-brand-charcoal-muted/30 items-center">
           <div className="lg:col-span-6 space-y-3">
             <div className="flex items-center gap-3">
-              <img
-                src="/assets/good-bee-logo.png"
-                alt="Good Bee Emblem"
-                className="w-12 h-12 rounded-full border border-brand-gold/40"
-              />
+              <div className="w-12 h-12 rounded-full bg-white p-1 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <img
+                  src="/assets/goodbee-white-logo.png"
+                  alt="Good Bee Emblem"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div>
                 <h3 className="font-serif text-2xl tracking-[0.2em] font-medium text-brand-ivory">
                   GOOD BEE

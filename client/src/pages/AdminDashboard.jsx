@@ -156,11 +156,13 @@ export default function AdminDashboard({ onNavigateHome }) {
       {/* Top Professional Header */}
       <header className="bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-3">
-          <img
-            src="/assets/good-bee-logo.png"
-            alt="Good Bee Emblem"
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-amber-500/40 flex-shrink-0"
-          />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white p-1 border border-amber-500/40 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <img
+              src="/assets/goodbee-white-logo.png"
+              alt="Good Bee Emblem"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-amber-400 font-bold">

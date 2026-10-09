@@ -32,11 +32,13 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
           {/* Top Bar */}
           <div className="p-4 sm:p-6 bg-brand-charcoal text-brand-ivory flex items-center justify-between border-b border-brand-gold/30">
             <div className="flex items-center gap-3">
-              <img
-                src="/assets/good-bee-logo.png"
-                alt="Good Bee Emblem"
-                className="w-10 h-10 rounded-full border border-brand-gold/40"
-              />
+              <div className="w-10 h-10 rounded-full bg-white p-1 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <img
+                  src="/assets/goodbee-white-logo.png"
+                  alt="Good Bee Emblem"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div>
                 <span className="text-[10px] font-mono tracking-widest uppercase text-brand-gold-light block">
                   {user?.role === 'ADMIN' ? 'Administrative Suite' : 'Good Bee Patron Account'}

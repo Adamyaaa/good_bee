@@ -182,11 +182,13 @@ export default function Hero({ onExplore, onRoutine }) {
               {/* Verified Purity Seal with Bee Emblem */}
               <div className="flex items-center justify-between pt-1 text-[11px] text-brand-charcoal font-medium">
                 <div className="flex items-center gap-2">
-                  <img
-                    src="/assets/good-bee-logo.png"
-                    alt="Good Bee Seal"
-                    className="w-6 h-6 rounded-full"
-                  />
+                  <div className="w-6 h-6 rounded-full bg-white p-0.5 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <img
+                      src="/assets/goodbee-white-logo.png"
+                      alt="Good Bee Seal"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   <span>100% Pure Botanical Origin</span>
                 </div>
                 <span className="text-emerald-800 text-[10px] font-bold uppercase tracking-wider bg-emerald-100/80 px-2 py-0.5 rounded-full">
@@ -201,11 +203,13 @@ export default function Hero({ onExplore, onRoutine }) {
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               className="mt-6 inline-flex items-center gap-2.5 px-4 py-2 bg-brand-ivory/95 backdrop-blur-md rounded-full border border-brand-gold/50 shadow-luxury"
             >
-              <img
-                src="/assets/good-bee-logo.png"
-                alt="Good Bee Emblem"
-                className="w-7 h-7 rounded-full shadow-sm"
-              />
+              <div className="w-7 h-7 rounded-full bg-white p-0.5 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <img
+                  src="/assets/goodbee-white-logo.png"
+                  alt="Good Bee Emblem"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div className="text-left pr-1">
                 <span className="text-[10px] font-bold text-brand-charcoal uppercase tracking-wider block">
                   Artisanal Research Standard

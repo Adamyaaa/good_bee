@@ -91,11 +91,11 @@ export default function CartDrawer({ onCheckout }) {
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {items.length === 0 ? (
               <div className="text-center py-16 space-y-4">
-                <div className="w-16 h-16 mx-auto rounded-full bg-brand-cream border border-brand-gold/30 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto rounded-full bg-white border border-brand-gold/30 flex items-center justify-center p-2 shadow-sm">
                   <img
-                    src="/assets/good-bee-logo.png"
+                    src="/assets/goodbee-white-logo.png"
                     alt="Good Bee Emblem"
-                    className="w-10 h-10 rounded-full opacity-60"
+                    className="w-full h-full object-contain opacity-80"
                   />
                 </div>
                 <h3 className="font-serif text-xl text-brand-charcoal font-medium">Your bag is currently empty</h3>

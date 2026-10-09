@@ -29,11 +29,13 @@ export default function WhatsAppConcierge() {
         <div className="mb-3 w-80 bg-brand-ivory rounded-2xl border border-brand-gold/40 shadow-2xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="flex items-start justify-between pb-2 border-b border-brand-gold/15">
             <div className="flex items-center gap-2">
-              <img
-                src="/assets/good-bee-logo.png"
-                alt="Good Bee Emblem"
-                className="w-8 h-8 rounded-full"
-              />
+              <div className="w-8 h-8 rounded-full bg-white p-0.5 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <img
+                  src="/assets/goodbee-white-logo.png"
+                  alt="Good Bee Emblem"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div>
                 <h4 className="font-serif text-sm font-semibold text-brand-charcoal">
                   Good Bee Concierge

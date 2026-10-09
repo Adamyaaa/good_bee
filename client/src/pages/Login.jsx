@@ -49,11 +49,13 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
         
         {/* Logo & Heading */}
         <div className="text-center space-y-2">
-          <img
-            src="/assets/good-bee-logo.png"
-            alt="Good Bee Emblem"
-            className="w-16 h-16 mx-auto rounded-full border border-brand-gold/40 shadow-sm"
-          />
+          <div className="w-16 h-16 mx-auto rounded-full bg-white p-1.5 border border-brand-gold/40 shadow-sm flex items-center justify-center">
+            <img
+              src="/assets/goodbee-white-logo.png"
+              alt="Good Bee Emblem"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <h2 className="font-serif text-3xl font-medium text-brand-charcoal">
             {mode === 'login' ? 'Good Bee Patron Account' : 'Join Good Bee'}
           </h2>
