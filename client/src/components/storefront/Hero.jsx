@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Sparkles, Droplets, FlaskConical, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Sparkles, Droplets, FlaskConical, ShieldCheck, Heart } from 'lucide-react';
 
 export default function Hero({ onExplore, onRoutine }) {
   const containerRef = useRef(null);
@@ -9,81 +9,80 @@ export default function Hero({ onExplore, onRoutine }) {
     offset: ['start start', 'end start']
   });
 
-  // Parallax layers
-  const textY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const bgGlowY = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const beeFlightX = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const beeFlightY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const badgeParallax = useTransform(scrollYProgress, [0, 1], [0, -35]);
+  // Smooth parallax layer transformations
+  const textY = useTransform(scrollYProgress, [0, 1], [0, 70]);
+  const modelY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const bgGlowY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const floatingCardY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <section
       ref={containerRef}
       id="hero"
-      className="relative overflow-hidden bg-brand-ivory pt-8 pb-24 lg:pt-16 lg:pb-32"
+      className="relative min-h-[92vh] flex items-center overflow-hidden bg-brand-ivory pt-4 pb-20 lg:pt-8 lg:pb-28"
     >
-      {/* Background Parallax Soft Glows */}
+      {/* 1. Large High-Fashion Radiant Skincare Model — Seamless Blending Layer */}
       <motion.div
-        style={{ y: bgGlowY }}
-        className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-brand-gold/15 rounded-full blur-3xl pointer-events-none"
-      />
-      <div className="absolute bottom-10 left-10 w-80 h-80 bg-brand-cream/90 rounded-full blur-2xl pointer-events-none" />
-
-      {/* Floating Animated Bee Motif with Scroll-linked Flight Path */}
-      <motion.div
-        style={{ x: beeFlightX, y: beeFlightY }}
-        className="absolute top-10 right-20 hidden lg:block opacity-60 pointer-events-none z-20"
+        style={{ y: modelY }}
+        className="absolute inset-y-0 right-0 w-full lg:w-3/5 pointer-events-none select-none z-0 overflow-hidden"
       >
-        <div className="relative">
-          <svg width="240" height="130" viewBox="0 0 240 130" fill="none">
-            <path
-              d="M10,95 C70,25 140,120 200,45"
-              stroke="#C5A880"
-              strokeWidth="1.5"
-              strokeDasharray="4 4"
-            />
-          </svg>
-          <motion.img
-            src="/assets/good-bee-logo.png"
-            alt="Bee Motif"
-            className="w-10 h-10 rounded-full absolute -top-1 right-8 shadow-sm"
-            animate={{ y: [0, -4, 0], rotate: [0, 2, -2, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </div>
+        {/* Model Portrait Image */}
+        <img
+          src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1800&q=88"
+          alt="Good Bee Radiant Natural Skincare Model"
+          className="w-full h-full object-cover object-[center_20%] lg:object-[center_15%] filter brightness-[1.02] contrast-[1.01]"
+        />
+
+        {/* Seamless Blending Masks & Gradient Overlays */}
+        {/* Top Blend: Fades into the top navbar */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-brand-ivory via-brand-ivory/70 to-transparent" />
+
+        {/* Left Blend: Dissolves the image into the warm ivory editorial text area */}
+        <div className="absolute inset-y-0 left-0 w-full lg:w-3/4 bg-gradient-to-r from-brand-ivory via-brand-ivory/85 via-brand-ivory/40 to-transparent" />
+
+        {/* Bottom Blend: Melts seamlessly into the next section */}
+        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-brand-ivory via-brand-ivory/90 to-transparent" />
+
+        {/* Ambient Warm Champagne Glow behind the model */}
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-brand-gold/20 rounded-full blur-3xl mix-blend-multiply" />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      {/* 2. Ambient Atmosphere & Floating Flight Trail */}
+      <motion.div
+        style={{ y: bgGlowY }}
+        className="absolute -top-24 left-1/4 w-[600px] h-[600px] bg-brand-gold/10 rounded-full blur-3xl pointer-events-none"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* Left Column: Editorial Headline & Copy with Parallax */}
+          {/* Left Column: Editorial Headline, Positioning & Actions (Col 7) */}
           <motion.div
             style={{ y: textY }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 space-y-8 text-center lg:text-left"
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 space-y-8 text-center lg:text-left pt-6 lg:pt-0"
           >
             {/* Positioning Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-cream border border-brand-gold/30 text-xs uppercase tracking-widest text-brand-gold-dark font-semibold">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-cream/90 backdrop-blur-md border border-brand-gold/40 text-[11px] uppercase tracking-widest text-brand-gold-dark font-semibold shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
               100% Natural Skincare • Research-Driven Formulation
             </div>
 
             {/* Major Editorial Headline */}
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-brand-charcoal font-medium leading-[1.12] tracking-tight">
-              Nature, Refined <br className="hidden sm:inline" />
+            <h1 className="font-serif text-4xl sm:text-6xl lg:text-[4.2rem] text-brand-charcoal font-medium leading-[1.08] tracking-tight">
+              Nature, Refined <br />
               Through <span className="italic font-normal text-brand-gold-dark">Research.</span>
             </h1>
 
-            {/* Positioning Paragraph */}
-            <p className="text-base sm:text-lg text-brand-charcoal/80 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0 font-sans">
-              Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier.
+            {/* Brand Positioning Copy */}
+            <p className="text-base sm:text-lg text-brand-charcoal/85 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans">
+              Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-1">
               <button
                 onClick={onExplore}
                 className="w-full sm:w-auto px-8 py-4 bg-brand-charcoal text-brand-ivory text-xs font-semibold tracking-widest uppercase rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-3 group"
@@ -94,14 +93,14 @@ export default function Hero({ onExplore, onRoutine }) {
 
               <button
                 onClick={onRoutine}
-                className="w-full sm:w-auto px-8 py-4 bg-transparent text-brand-charcoal text-xs font-semibold tracking-widest uppercase rounded-full border border-brand-gold/50 hover:bg-brand-cream transition-all duration-300 flex items-center justify-center"
+                className="w-full sm:w-auto px-8 py-4 bg-brand-ivory/80 backdrop-blur-md text-brand-charcoal text-xs font-semibold tracking-widest uppercase rounded-full border border-brand-gold/60 hover:bg-brand-cream transition-all duration-300 flex items-center justify-center"
               >
                 Diagnostic Concerns
               </button>
             </div>
 
-            {/* Trust Standard Icons */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-brand-gold/20 text-left">
+            {/* Trust Standard Strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-brand-gold/25 text-left">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 text-brand-gold-dark">
                   <Droplets className="w-4 h-4 text-brand-gold" />
@@ -137,64 +136,86 @@ export default function Hero({ onExplore, onRoutine }) {
 
           </motion.div>
 
-          {/* Right Column: Hero Visual Product Display with Parallax Float */}
-          <div className="lg:col-span-5 relative">
+          {/* Right Column: Floating Luxury Formulation Badge & Bee Motif (Col 5) */}
+          <div className="lg:col-span-5 relative mt-6 lg:mt-0 flex flex-col items-center lg:items-end justify-center">
+            
+            {/* Floating Glassmorphic Product Card Layer */}
             <motion.div
-              style={{ y: imageY }}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mx-auto max-w-md lg:max-w-none"
+              style={{ y: floatingCardY }}
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="relative max-w-xs sm:max-w-sm w-full bg-brand-ivory/90 backdrop-blur-xl p-5 rounded-3xl border border-brand-gold/40 shadow-2xl space-y-4"
             >
-              {/* Outer Elegant Frame */}
-              <div className="relative rounded-3xl overflow-hidden border border-brand-gold/30 shadow-luxury bg-brand-cream p-3">
-                <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-brand-sand/30">
+              {/* Product Preview Thumbnail & Tag */}
+              <div className="flex items-center gap-4">
+                <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-brand-sand/40 border border-brand-gold/30 flex-shrink-0 shadow-sm">
                   <img
-                    src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=1000&q=85"
-                    alt="Good Bee Golden Royal Propolis Serum"
-                    className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
+                    src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80"
+                    alt="Golden Royal Propolis Restorative Nectar"
+                    className="w-full h-full object-cover"
                   />
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/60 via-transparent to-transparent" />
-
-                  {/* Floating Product Highlight Card */}
-                  <div className="absolute bottom-4 left-4 right-4 bg-brand-ivory/95 backdrop-blur-md p-4 rounded-xl border border-brand-gold/30 shadow-lg flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-brand-gold-dark block">
-                        Flagship Formulation
-                      </span>
-                      <h4 className="font-serif text-base text-brand-charcoal font-semibold">
-                        Golden Royal Propolis Nectar
-                      </h4>
-                      <p className="text-xs text-brand-muted">Bio-Fermented Honey & Plant Squalane</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-sm font-semibold text-brand-charcoal block">₹1,890</span>
-                      <span className="text-[10px] text-emerald-800 font-medium">In Stock</span>
-                    </div>
-                  </div>
-
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-gold-dark block">
+                    Flagship Formulation
+                  </span>
+                  <h4 className="font-serif text-base font-semibold text-brand-charcoal leading-tight">
+                    Golden Royal Propolis Nectar
+                  </h4>
+                  <p className="text-[11px] text-brand-muted mt-0.5">Bio-Fermented Honey & Plant Squalane</p>
                 </div>
               </div>
 
-              {/* Parallax Floating Gold Medal Badge */}
-              <motion.div
-                style={{ y: badgeParallax }}
-                className="absolute -top-4 -left-4 bg-brand-ivory rounded-full p-2 border border-brand-gold/40 shadow-luxury hidden sm:flex items-center gap-2 z-20"
-              >
-                <img
-                  src="/assets/good-bee-logo.png"
-                  alt="Good Bee Emblem"
-                  className="w-8 h-8 rounded-full"
-                />
-                <div className="pr-3 text-left">
-                  <p className="text-[10px] font-bold text-brand-charcoal uppercase tracking-wider">Good Bee Standard</p>
-                  <p className="text-[9px] text-brand-muted">100% Pure Origin</p>
+              {/* Research Metric Pill */}
+              <div className="p-3 bg-brand-cream/80 rounded-2xl border border-brand-gold/25 flex items-center justify-between text-xs">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-brand-muted block">Cellular Hydration Index</span>
+                  <span className="font-serif text-sm font-bold text-brand-charcoal">+94% Lipid Restoration</span>
                 </div>
-              </motion.div>
+                <div className="text-right">
+                  <span className="text-[10px] text-brand-muted block">Direct Price</span>
+                  <span className="font-bold text-brand-charcoal">₹1,890</span>
+                </div>
+              </div>
 
+              {/* Verified Purity Seal with Bee Emblem */}
+              <div className="flex items-center justify-between pt-1 text-[11px] text-brand-charcoal font-medium">
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/assets/good-bee-logo.png"
+                    alt="Good Bee Seal"
+                    className="w-6 h-6 rounded-full"
+                  />
+                  <span>100% Pure Botanical Origin</span>
+                </div>
+                <span className="text-emerald-800 text-[10px] font-bold uppercase tracking-wider bg-emerald-100/80 px-2 py-0.5 rounded-full">
+                  Batch Verified
+                </span>
+              </div>
             </motion.div>
+
+            {/* Floating Gold Emblem Badge */}
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              className="mt-6 inline-flex items-center gap-2.5 px-4 py-2 bg-brand-ivory/95 backdrop-blur-md rounded-full border border-brand-gold/50 shadow-luxury"
+            >
+              <img
+                src="/assets/good-bee-logo.png"
+                alt="Good Bee Emblem"
+                className="w-7 h-7 rounded-full shadow-sm"
+              />
+              <div className="text-left pr-1">
+                <span className="text-[10px] font-bold text-brand-charcoal uppercase tracking-wider block">
+                  Artisanal Research Standard
+                </span>
+                <span className="text-[9px] text-brand-gold-dark font-medium block">
+                  Cold-Stabilized Bio-Actives
+                </span>
+              </div>
+            </motion.div>
+
           </div>
 
         </div>

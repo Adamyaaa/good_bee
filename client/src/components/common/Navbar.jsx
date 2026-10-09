@@ -10,7 +10,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
   const [portalDropdownOpen, setPortalDropdownOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-brand-ivory/95 backdrop-blur-md border-b border-brand-gold/20 transition-all">
+    <header className="sticky top-0 z-40 w-full bg-brand-ivory/80 backdrop-blur-md border-b border-brand-gold/20 transition-all shadow-sm">
       {/* Top Announcement Bar */}
       <div className="bg-brand-charcoal text-brand-sand px-4 py-1.5 text-xs font-medium tracking-wider flex items-center justify-between text-center overflow-hidden">
         <div className="hidden md:flex items-center gap-2 text-brand-gold-light">
