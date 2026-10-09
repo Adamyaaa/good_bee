@@ -734,34 +734,54 @@ export function installGlobalMockFetch() {
   if (typeof window === 'undefined') return;
 
   const originalFetch = window.fetch;
+  const configuredApiBase =
+    (import.meta.env && import.meta.env.VITE_API_URL) ? import.meta.env.VITE_API_URL.replace(/\/+$/, '') : '';
 
   window.fetch = async function (input, init = {}) {
-    const url = typeof input === 'string' ? input : (input && input.url ? input.url : '');
+    const rawUrl = typeof input === 'string' ? input : (input && input.url ? input.url : '');
 
     // Check if this is an API request to /api/v1/
-    if (url && (url.startsWith('/api/v1') || url.includes('/api/v1'))) {
-      const isNetlifyOrStatic =
-        window.location.hostname.includes('netlify.app') ||
-        window.location.hostname.includes('github.io') ||
-        window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (rawUrl && (rawUrl.startsWith('/api/v1') || rawUrl.includes('/api/v1'))) {
+      // 1. If remote API endpoint is configured (e.g. Render backend URL)
+      if (configuredApiBase) {
+        const fullRemoteUrl = rawUrl.startsWith('http')
+          ? rawUrl
+          : `${configuredApiBase}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
 
-      if (isNetlifyOrStatic) {
-        // Handle directly in browser on Netlify
-        return handleMockApiRequest(url, init);
+        try {
+          const response = await originalFetch(fullRemoteUrl, init);
+          const contentType = response.headers.get('content-type') || '';
+          if (!contentType.includes('text/html') && response.status !== 404 && response.status !== 503) {
+            return response;
+          }
+        } catch (networkError) {
+          console.warn('[Good Bee Sync] Remote backend unreachable or cold starting. Falling back to in-browser engine.', networkError);
+        }
+        // Fallback to local mock store if remote backend failed or cold starting
+        return handleMockApiRequest(rawUrl, init);
       }
 
-      // If local development, try real backend first, fallback if unavailable or HTML
+      // 2. If running on static host (Netlify / Vercel) without remote API configured
+      const isStaticHost =
+        window.location.hostname.includes('netlify.app') ||
+        window.location.hostname.includes('vercel.app') ||
+        window.location.hostname.includes('github.io') ||
+        (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
+
+      if (isStaticHost) {
+        return handleMockApiRequest(rawUrl, init);
+      }
+
+      // 3. If local development, try local Express first
       try {
         const response = await originalFetch(input, init);
         const contentType = response.headers.get('content-type') || '';
         if (contentType.includes('text/html') || response.status === 404) {
-          // Express server is not responding to this route, fallback to mock
-          return handleMockApiRequest(url, init);
+          return handleMockApiRequest(rawUrl, init);
         }
         return response;
       } catch (networkError) {
-        // Express backend is offline locally, fallback to mock
-        return handleMockApiRequest(url, init);
+        return handleMockApiRequest(rawUrl, init);
       }
     }
 
