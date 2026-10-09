@@ -371,7 +371,72 @@ export async function handleMockApiRequest(url, init = {}) {
     });
   }
 
-  // 7. Admin: Inventory
+  // 7. Admin: Inventory / Products List
+  if (path === '/api/v1/admin/products' && method === 'GET') {
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    return jsonResponse({ count: products.length, products });
+  }
+
+  // 8. Admin: Create Product
+  if (path === '/api/v1/admin/products' && method === 'POST') {
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    const newProduct = {
+      id: `gb_prod_${Date.now()}`,
+      title: body.title || 'Untitled Formulation',
+      subtitle: body.subtitle || '100% Natural Formulation',
+      slug: (body.title || 'formulation').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      sku: body.sku || `GB-${Date.now().toString().slice(-5)}`,
+      category: body.category || 'Cold Processed Soaps',
+      concerns: Array.isArray(body.concerns) ? body.concerns : (typeof body.concerns === 'string' ? body.concerns.split(',').map((s) => s.trim()) : ['Barrier Repair']),
+      price: Number(body.price) || 290,
+      mrp: Number(body.mrp) || Math.round((Number(body.price) || 290) * 1.25),
+      volume: body.volume || '100 g',
+      rating: 5.0,
+      reviewsCount: 1,
+      stock: Number(body.stock) || 30,
+      lowStockThreshold: Number(body.lowStockThreshold) || 10,
+      badge: body.badge || 'New Formulation',
+      shortDescription: body.shortDescription || body.description || '100% Natural botanical formulation.',
+      description: body.description || body.shortDescription || '100% Natural botanical formulation.',
+      ingredients: Array.isArray(body.ingredients) ? body.ingredients : (typeof body.ingredients === 'string' ? body.ingredients.split(',').map((s) => s.trim()) : ['Pure Botanical Extracts']),
+      image: body.image || '/images_ref/Clear-skin-300x300.webp',
+      gallery: [body.image || '/images_ref/Clear-skin-300x300.webp']
+    };
+    products.unshift(newProduct);
+    setStored('goodbee_products', products);
+    return jsonResponse({ message: 'Product added successfully to live catalog.', product: newProduct }, 201);
+  }
+
+  // 9. Admin: Update Full Product
+  if (path.startsWith('/api/v1/admin/products/') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    const pIndex = products.findIndex((p) => p.id === id);
+    if (pIndex === -1) return jsonResponse({ error: 'Product not found' }, 404);
+
+    products[pIndex] = {
+      ...products[pIndex],
+      ...body,
+      price: body.price !== undefined ? Number(body.price) : products[pIndex].price,
+      mrp: body.mrp !== undefined ? Number(body.mrp) : products[pIndex].mrp,
+      stock: body.stock !== undefined ? Number(body.stock) : products[pIndex].stock,
+      ingredients: body.ingredients ? (Array.isArray(body.ingredients) ? body.ingredients : (typeof body.ingredients === 'string' ? body.ingredients.split(',').map((s) => s.trim()) : products[pIndex].ingredients)) : products[pIndex].ingredients,
+      concerns: body.concerns ? (Array.isArray(body.concerns) ? body.concerns : (typeof body.concerns === 'string' ? body.concerns.split(',').map((s) => s.trim()) : products[pIndex].concerns)) : products[pIndex].concerns
+    };
+    setStored('goodbee_products', products);
+    return jsonResponse({ message: 'Product updated successfully.', product: products[pIndex] });
+  }
+
+  // 10. Admin: Delete Product
+  if (path.startsWith('/api/v1/admin/products/') && method === 'DELETE') {
+    const id = path.split('/')[5];
+    let products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    products = products.filter((p) => p.id !== id);
+    setStored('goodbee_products', products);
+    return jsonResponse({ message: 'Product removed from catalog.' });
+  }
+
+  // 11. Admin: Inventory Overview
   if (path === '/api/v1/admin/inventory' && method === 'GET') {
     const products = getStored('goodbee_products', INITIAL_PRODUCTS);
     const inventory = products.map((p) => ({
@@ -389,7 +454,7 @@ export async function handleMockApiRequest(url, init = {}) {
     return jsonResponse({ count: inventory.length, inventory });
   }
 
-  // 8. Admin: Update Inventory (Stock & Price)
+  // 12. Admin: Update Inventory (Stock & Price)
   if (path.startsWith('/api/v1/admin/inventory/') && method === 'PUT') {
     const id = path.split('/')[5];
     const products = getStored('goodbee_products', INITIAL_PRODUCTS);
@@ -403,19 +468,31 @@ export async function handleMockApiRequest(url, init = {}) {
     return jsonResponse({ message: 'Catalog details updated successfully.' });
   }
 
-  // 9. Admin: Rules
-  if (path === '/api/v1/admin/rules') {
+  // 13. Admin: Site Content CMS
+  if (path === '/api/v1/admin/site-content') {
+    const DEFAULT_SITE_CONTENT = {
+      announcement: 'Complimentary Delivery Across India on Orders Above ₹999',
+      announcementSub: '100% Natural Active Ingredients',
+      heroBadge: '100% Natural Skincare • Research-Driven Formulation',
+      heroHeadline: 'Nature, Refined Through Research.',
+      heroDescription: 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.',
+      whatsappNumber: '+919963075000',
+      supportEmail: 'care@goodbee.in',
+      upiVpa: 'goodbee.official@okaxis',
+      payeeName: 'GOOD BEE Skincare Laboratory'
+    };
+
     if (method === 'GET') {
-      const rules = getStored('goodbee_rules', DEFAULT_RULES);
-      return jsonResponse({ rules });
+      const content = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
+      return jsonResponse({ content });
     }
     if (method === 'PUT') {
-      setStored('goodbee_rules', body);
-      return jsonResponse({ message: 'Commission and tier rules updated successfully.', rules: body });
+      setStored('goodbee_site_content', body);
+      return jsonResponse({ message: 'Site content and live copy updated successfully.', content: body });
     }
   }
 
-  // 10. Admin: Config
+  // 14. Admin: Config
   if (path === '/api/v1/config/admin') {
     if (method === 'GET') {
       const config = getStored('goodbee_config', DEFAULT_CONFIG);

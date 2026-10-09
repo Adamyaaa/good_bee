@@ -9,6 +9,17 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [portalDropdownOpen, setPortalDropdownOpen] = useState(false);
 
+  // Read dynamic site content from CMS if modified by Admin
+  const siteContent = (() => {
+    try {
+      return JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
+    } catch (e) {
+      return {};
+    }
+  })();
+
+  const cleanWhatsappPhone = (siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '');
+
   return (
     <header className="sticky top-0 z-40 w-full bg-brand-ivory/80 backdrop-blur-md border-b border-brand-gold/20 transition-all shadow-sm">
       {/* Top Announcement Bar */}
@@ -18,18 +29,18 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
           <span>Formulated through High-End Active Stabilization Research</span>
         </div>
         <div className="mx-auto flex items-center gap-3">
-          <span>Complimentary Delivery Across India on Orders Above ₹999</span>
+          <span>{siteContent.announcement || 'Complimentary Delivery Across India on Orders Above ₹999'}</span>
           <span className="hidden sm:inline text-brand-gold">•</span>
-          <span className="hidden sm:inline text-brand-gold-light">100% Natural Active Ingredients</span>
+          <span className="hidden sm:inline text-brand-gold-light">{siteContent.announcementSub || '100% Natural Active Ingredients'}</span>
         </div>
         <div className="hidden md:flex items-center gap-3 text-xs">
           <a
-            href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Concierge%2C%20I%20need%20assistance%20with%20natural%20skincare%20formulations."
+            href={`https://wa.me/${cleanWhatsappPhone}?text=Hello%20Good%20Bee%20Concierge%2C%20I%20need%20assistance%20with%20natural%20skincare%20formulations.`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-brand-sand hover:text-brand-gold transition-colors font-medium"
           >
-            WhatsApp Concierge: +91 99630 75000
+            Direct Concierge: {siteContent.whatsappNumber || '+91 99630 75000'}
           </a>
         </div>
       </div>
