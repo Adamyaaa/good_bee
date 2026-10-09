@@ -37,13 +37,15 @@ export default function Footer({ onNavigate }) {
                 <span className="text-[11px] text-brand-sand/70">Ethical testing without synthetic fillers</span>
               </div>
             </div>
-            <button
-              onClick={() => onNavigate('login')}
+            <a
+              href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Concierge%2C%20I%20would%20like%20guidance%20on%20natural%20skincare%20formulations."
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-5 py-3 rounded-full bg-brand-gold text-brand-charcoal text-xs font-bold uppercase tracking-wider hover:bg-brand-gold-light transition-colors flex items-center gap-2"
             >
-              <span>Partner Ecosystem</span>
+              <span>Direct Concierge</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
+            </a>
           </div>
         </div>
 
@@ -108,27 +110,37 @@ export default function Footer({ onNavigate }) {
 
           <div className="space-y-3">
             <h4 className="font-serif text-sm font-semibold tracking-wider text-brand-gold-light uppercase">
-              Partner Ecosystem
+              Patron Services
             </h4>
             <ul className="space-y-2 text-brand-sand/70">
               <li>
-                <button onClick={() => onNavigate('login', { defaultRole: 'PRODUCER' })} className="hover:text-brand-gold transition-colors">
-                  Producer & Lab Ingestion
+                <button onClick={() => onNavigate('login')} className="hover:text-brand-gold transition-colors">
+                  My Patron Account
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('login', { defaultRole: 'DEALER' })} className="hover:text-brand-gold transition-colors">
-                  Dealer Wholesale Desk
-                </button>
+                <a
+                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-gold transition-colors block"
+                >
+                  Order Tracking & Delivery
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('login', { defaultRole: 'PROMOTER' })} className="hover:text-brand-gold transition-colors">
-                  Promoter Affiliate Studio
-                </button>
+                <a
+                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Team%2C%20I%20am%20interested%20in%20Wholesale%20and%20Stockist%20opportunities."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-gold transition-colors block"
+                >
+                  Wholesale & Stockist Inquiries
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('login', { defaultRole: 'ADMIN' })} className="hover:text-brand-gold transition-colors font-semibold text-brand-gold-light">
-                  Admin Command Tower
+                <button onClick={() => onNavigate('login', { defaultRole: 'ADMIN' })} className="hover:text-brand-gold transition-colors text-brand-sand/50 text-[11px]">
+                  Store Admin Access
                 </button>
               </li>
             </ul>

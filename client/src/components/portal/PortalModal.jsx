@@ -39,67 +39,24 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
               />
               <div>
                 <span className="text-[10px] font-mono tracking-widest uppercase text-brand-gold-light block">
-                  Good Bee Ecosystem Console
+                  {user?.role === 'ADMIN' ? 'Administrative Suite' : 'Good Bee Patron Account'}
                 </span>
                 <h3 className="font-serif text-lg font-semibold text-brand-ivory">
-                  {user ? `${user.role} Environment` : 'Ecosystem Authentication'}
+                  {user ? (user.role === 'ADMIN' ? 'Store Control Tower' : `Welcome, ${user.name}`) : 'Sign In / Register'}
                 </h3>
               </div>
             </div>
 
-            {/* Quick Role Switcher Strip */}
+            {/* Controls */}
             <div className="flex items-center gap-2">
-              <div className="hidden md:flex items-center gap-1.5 bg-brand-charcoal-soft px-2 py-1 rounded-xl border border-brand-gold/20 text-xs">
-                <span className="text-[10px] text-brand-sand/60 uppercase font-mono mr-1">Switch:</span>
-                <button
-                  onClick={() => quickSwitchRole('admin@goodbee.com', 'admin')}
-                  className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                    user?.role === 'ADMIN' ? 'bg-amber-500 text-slate-950' : 'text-brand-sand hover:text-brand-gold'
-                  }`}
-                >
-                  Admin
-                </button>
-                <button
-                  onClick={() => quickSwitchRole('producer@goodbee.com', 'producer')}
-                  className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                    user?.role === 'PRODUCER' ? 'bg-amber-500 text-slate-950' : 'text-brand-sand hover:text-brand-gold'
-                  }`}
-                >
-                  Producer
-                </button>
-                <button
-                  onClick={() => quickSwitchRole('dealer@goodbee.com', 'dealer')}
-                  className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                    user?.role === 'DEALER' ? 'bg-amber-500 text-slate-950' : 'text-brand-sand hover:text-brand-gold'
-                  }`}
-                >
-                  Dealer
-                </button>
-                <button
-                  onClick={() => quickSwitchRole('promoter@goodbee.com', 'promoter')}
-                  className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                    user?.role === 'PROMOTER' ? 'bg-amber-500 text-slate-950' : 'text-brand-sand hover:text-brand-gold'
-                  }`}
-                >
-                  Promoter
-                </button>
-                <button
-                  onClick={() => quickSwitchRole('customer@goodbee.com', 'customer')}
-                  className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                    user?.role === 'CUSTOMER' ? 'bg-amber-500 text-slate-950' : 'text-brand-sand hover:text-brand-gold'
-                  }`}
-                >
-                  Patron
-                </button>
-              </div>
-
               {user && (
                 <button
                   onClick={() => logout()}
-                  className="p-2 text-brand-sand hover:text-red-400 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-xs text-brand-sand hover:text-red-400 rounded-lg transition-colors flex items-center gap-1.5 border border-brand-gold/20 hover:border-red-400/40"
                   title="Sign Out"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Sign Out</span>
                 </button>
               )}
 

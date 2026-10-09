@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Sparkles, User, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import { Shield, Sparkles, User, ArrowRight, AlertCircle, Lock } from 'lucide-react';
 
 export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) {
   const { login, register, quickSwitchRole } = useAuth();
@@ -8,8 +8,6 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState(defaultRole);
-  const [companyName, setCompanyName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +21,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
         const u = await login(email, password);
         onLoggedIn(u);
       } else {
-        const u = await register({ name, email, password, role, companyName });
+        const u = await register({ name, email, password, role: 'CUSTOMER' });
         onLoggedIn(u);
       }
     } catch (err) {
@@ -33,22 +31,21 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
     }
   };
 
-  const handleQuickDemo = async (demoEmail, demoPass) => {
-    setLoading(true);
-    setErrorMsg('');
-    try {
-      const u = await quickSwitchRole(demoEmail, demoPass);
-      onLoggedIn(u);
-    } catch (err) {
-      setErrorMsg(err.message || 'Demo login failed');
-    } finally {
-      setLoading(false);
-    }
+  const handleAdminFill = () => {
+    setMode('login');
+    setEmail('admin@goodbee.com');
+    setPassword('admin');
+  };
+
+  const handlePatronFill = () => {
+    setMode('login');
+    setEmail('customer@goodbee.com');
+    setPassword('customer');
   };
 
   return (
-    <div className="py-16 bg-brand-ivory min-h-screen flex items-center justify-center px-4">
-      <div className="max-w-md w-full space-y-8">
+    <div className="py-12 bg-brand-ivory min-h-screen flex items-center justify-center px-4">
+      <div className="max-w-md w-full space-y-6">
         
         {/* Logo & Heading */}
         <div className="text-center space-y-2">
@@ -58,66 +55,23 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
             className="w-16 h-16 mx-auto rounded-full border border-brand-gold/40 shadow-sm"
           />
           <h2 className="font-serif text-3xl font-medium text-brand-charcoal">
-            {mode === 'login' ? 'Good Bee Portal Access' : 'Join the Good Bee Ecosystem'}
+            {mode === 'login' ? 'Good Bee Patron Account' : 'Join Good Bee'}
           </h2>
-          <p className="text-xs text-brand-muted">
-            Authenticate to access Customer, Producer, Dealer, Promoter, or Admin features.
+          <p className="text-xs text-brand-muted max-w-sm mx-auto leading-relaxed">
+            {mode === 'login'
+              ? 'Sign in to access your orders, customized skincare rituals, and patron privileges.'
+              : 'Create your account for express checkout, order tracking, and complimentary consultations.'}
           </p>
         </div>
 
-        {/* Quick Role Tester Strip */}
-        <div className="bg-brand-cream/80 p-4 rounded-2xl border border-brand-gold/30 space-y-2.5">
-          <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-brand-gold-dark">
-            <span>Instant Role Demo Switcher</span>
-            <span className="text-[10px] text-brand-muted font-normal">Click any role to test</span>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('admin@goodbee.com', 'admin')}
-              className="p-2 bg-brand-ivory hover:bg-brand-gold hover:text-white rounded-lg border border-brand-gold/30 text-left font-medium transition-colors"
-            >
-              👑 <span className="font-bold">Admin</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('producer@goodbee.com', 'producer')}
-              className="p-2 bg-brand-ivory hover:bg-brand-gold hover:text-white rounded-lg border border-brand-gold/30 text-left font-medium transition-colors"
-            >
-              🔬 <span className="font-bold">Producer</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('dealer@goodbee.com', 'dealer')}
-              className="p-2 bg-brand-ivory hover:bg-brand-gold hover:text-white rounded-lg border border-brand-gold/30 text-left font-medium transition-colors"
-            >
-              📦 <span className="font-bold">Dealer</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('promoter@goodbee.com', 'promoter')}
-              className="p-2 bg-brand-ivory hover:bg-brand-gold hover:text-white rounded-lg border border-brand-gold/30 text-left font-medium transition-colors"
-            >
-              📣 <span className="font-bold">Promoter</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('customer@goodbee.com', 'customer')}
-              className="p-2 bg-brand-ivory hover:bg-brand-gold hover:text-white rounded-lg border border-brand-gold/30 text-left font-medium transition-colors col-span-2 sm:col-span-1"
-            >
-              🌸 <span className="font-bold">Customer</span>
-            </button>
-          </div>
-        </div>
-
         {/* Card */}
-        <div className="bg-brand-cream/40 p-8 rounded-3xl border border-brand-gold/30 shadow-luxury space-y-6">
+        <div className="bg-brand-cream/50 p-7 sm:p-8 rounded-3xl border border-brand-gold/30 shadow-luxury space-y-6">
           
           {/* Mode Tabs */}
           <div className="flex border-b border-brand-gold/20 pb-3 gap-6 text-sm">
             <button
               type="button"
-              onClick={() => setMode('login')}
+              onClick={() => { setMode('login'); setErrorMsg(''); }}
               className={`font-semibold pb-1 transition-colors relative ${
                 mode === 'login' ? 'text-brand-charcoal' : 'text-brand-muted hover:text-brand-charcoal'
               }`}
@@ -127,12 +81,12 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
             </button>
             <button
               type="button"
-              onClick={() => setMode('register')}
+              onClick={() => { setMode('register'); setErrorMsg(''); }}
               className={`font-semibold pb-1 transition-colors relative ${
                 mode === 'register' ? 'text-brand-charcoal' : 'text-brand-muted hover:text-brand-charcoal'
               }`}
             >
-              Register Account
+              Create Account
               {mode === 'register' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-gold" />}
             </button>
           </div>
@@ -146,68 +100,50 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             {mode === 'register' && (
-              <>
-                <div>
-                  <label className="block mb-1 font-medium text-brand-charcoal">Full Name / Entity Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
-                    placeholder="Enter your name"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-1 font-medium text-brand-charcoal">Ecosystem Role</label>
-                  <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium"
-                  >
-                    <option value="CUSTOMER">Customer / Patron</option>
-                    <option value="PRODUCER">Producer / Lab Partner</option>
-                    <option value="DEALER">Dealer / Regional Distributor</option>
-                    <option value="PROMOTER">Promoter / Brand Affiliate</option>
-                  </select>
-                </div>
-
-                {['PRODUCER', 'DEALER'].includes(role) && (
-                  <div>
-                    <label className="block mb-1 font-medium text-brand-charcoal">Company or Lab Name</label>
-                    <input
-                      type="text"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
-                      placeholder="e.g. Pure Botanica Laboratories"
-                    />
-                  </div>
-                )}
-              </>
+              <div>
+                <label className="block mb-1.5 font-medium text-brand-charcoal">Your Full Name</label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full p-3 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal placeholder-brand-muted/60"
+                  placeholder="Enter your name"
+                />
+              </div>
             )}
 
             <div>
-              <label className="block mb-1 font-medium text-brand-charcoal">Email Address</label>
+              <label className="block mb-1.5 font-medium text-brand-charcoal">Email Address</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                className="w-full p-3 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal placeholder-brand-muted/60"
                 placeholder="name@example.com"
               />
             </div>
 
             <div>
-              <label className="block mb-1 font-medium text-brand-charcoal">Password</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="font-medium text-brand-charcoal">Password</label>
+                {mode === 'login' && (
+                  <button
+                    type="button"
+                    onClick={handlePatronFill}
+                    className="text-[10px] text-brand-gold-dark hover:underline font-medium"
+                  >
+                    Fill Patron Demo
+                  </button>
+                )}
+              </div>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                className="w-full p-3 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal placeholder-brand-muted/60"
                 placeholder="••••••••"
               />
             </div>
@@ -215,18 +151,33 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-brand-gold-dark transition-colors shadow-luxury flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-brand-gold-dark transition-colors shadow-luxury flex items-center justify-center gap-2 mt-2"
             >
               {loading ? (
                 <span>Authenticating...</span>
               ) : (
                 <>
-                  <span>{mode === 'login' ? 'Sign In to Portal' : 'Create Ecosystem Account'}</span>
+                  <span>{mode === 'login' ? 'Sign In to Account' : 'Register Account'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
+
+          {/* Discreet Admin Login Helper for Store Owners */}
+          <div className="pt-4 border-t border-brand-gold/15 flex items-center justify-between text-[11px] text-brand-muted">
+            <span className="flex items-center gap-1.5">
+              <Shield className="w-3.5 h-3.5 text-brand-gold" />
+              <span>Store Administrator?</span>
+            </span>
+            <button
+              type="button"
+              onClick={handleAdminFill}
+              className="text-brand-gold-dark hover:text-brand-charcoal hover:underline font-semibold"
+            >
+              Fill Admin Credentials
+            </button>
+          </div>
 
         </div>
 

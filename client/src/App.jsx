@@ -167,25 +167,34 @@ function SpaLandingContent() {
           </section>
 
           {/* 7. Artisanal Producer & Laboratory Partner Spotlight */}
+          {/* 7. Artisanal Extraction Labs & Ethical Apiaries */}
           <section id="producer-spotlight" className="py-20 bg-brand-cream/60 border-t border-brand-gold/20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
               <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
-                Collaborative Partner Network
+                Traceable Origin & Sourcing
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl text-brand-charcoal font-medium">
-                Formulated in Concert With Artisanal Labs & Botanists
+                Ethical Apiaries & Artisanal Extraction Laboratories
               </h2>
-              <p className="text-sm text-brand-charcoal/70 max-w-2xl mx-auto">
-                Good Bee coordinates with qualified producer partners and biotechnology laboratories. Every formulation submission is audited by our Quality & Research team before release.
+              <p className="text-sm text-brand-charcoal/70 max-w-2xl mx-auto leading-relaxed">
+                Good Bee coordinates with certified natural beekeepers and cold-processing botanists across South India. Every harvest undergoes stringent batch purity verification before stabilization in our laboratory.
               </p>
-              <div className="pt-6">
+              <div className="pt-6 flex flex-wrap justify-center gap-4">
                 <button
-                  onClick={() => handleOpenPortal('PRODUCER')}
+                  onClick={() => handleScrollTo('formulations')}
                   className="px-8 py-3.5 bg-brand-charcoal text-brand-ivory text-xs font-bold tracking-wider uppercase rounded-full hover:bg-brand-gold-dark transition-colors shadow-luxury inline-flex items-center gap-2"
                 >
-                  <span>Launch Producer & Partner Console</span>
+                  <span>Explore Pure Formulations</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+                <a
+                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Team%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20botanical%20sourcing%20and%20harvests."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-7 py-3.5 bg-brand-ivory border border-brand-gold/40 text-brand-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-cream transition-colors shadow-sm inline-flex items-center gap-2"
+                >
+                  <span>Inquire with Concierge</span>
+                </a>
               </div>
             </div>
           </section>
