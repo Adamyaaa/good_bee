@@ -58,6 +58,96 @@ const DEFAULT_USERS = [
   }
 ];
 
+const DEFAULT_ORDERS = [
+  {
+    id: 'GB-ORD-90214',
+    items: [
+      {
+        product: {
+          id: 'prod_frankincense',
+          title: 'Frankincense & Myrrh Cold Processed Soap',
+          price: 290,
+          image: '/images_ref/Frankin-300x300.webp'
+        },
+        quantity: 2
+      },
+      {
+        product: {
+          id: 'prod_rose_mist',
+          title: 'Steam-Distilled Pure Rose Hydrosol Mist',
+          price: 490,
+          image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.54-300x300.webp'
+        },
+        quantity: 1
+      }
+    ],
+    total: 1070,
+    customerName: 'Ananya Sharma',
+    customerEmail: 'ananya.s@gmail.com',
+    customerPhone: '+91 98201 44521',
+    shippingAddress: '402, Sea Green Apts, Bandra West, Mumbai, MH - 400050',
+    paymentMethod: 'DYNAMIC_UPI_QR',
+    paymentStatus: 'PAID',
+    status: 'PROCESSING',
+    createdAt: new Date(Date.now() - 3600000 * 4).toISOString()
+  },
+  {
+    id: 'GB-ORD-90210',
+    items: [
+      {
+        product: {
+          id: 'prod_donkey_milk',
+          title: 'Donkey Milk & Saffron Nourishing Bath Soap',
+          price: 350,
+          image: '/images_ref/Donkey-Milk-300x300.webp'
+        },
+        quantity: 1
+      },
+      {
+        product: {
+          id: 'prod_pink_lotus_lip',
+          title: 'Pink Lotus & Wild Honey Lip Butter',
+          price: 260,
+          image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.12-300x300.webp'
+        },
+        quantity: 2
+      }
+    ],
+    total: 870,
+    customerName: 'Karthik Subramanian',
+    customerEmail: 'karthik.subra@yahoo.com',
+    customerPhone: '+91 94440 18723',
+    shippingAddress: 'Flat 3B, Palm Grove Residencies, Indiranagar, Bengaluru, KA - 560038',
+    paymentMethod: 'CASH_ON_DELIVERY',
+    paymentStatus: 'PENDING_ON_DELIVERY',
+    status: 'DISPATCHED',
+    createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
+  },
+  {
+    id: 'GB-ORD-90198',
+    items: [
+      {
+        product: {
+          id: 'prod_rosemary_oil',
+          title: 'Rosemary & Cold-Pressed Herb Infused Hair Oil',
+          price: 520,
+          image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.56-300x300.webp'
+        },
+        quantity: 1
+      }
+    ],
+    total: 520,
+    customerName: 'Pooja Reddy',
+    customerEmail: 'pooja.reddy@gmail.com',
+    customerPhone: '+91 99630 11299',
+    shippingAddress: 'House 14, Road 12, Jubilee Hills, Hyderabad, TS - 500033',
+    paymentMethod: 'DYNAMIC_UPI_QR',
+    paymentStatus: 'PAID',
+    status: 'DELIVERED',
+    createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
+  }
+];
+
 const DEFAULT_SUBMISSIONS = [
   {
     id: 'sub_001',
@@ -235,92 +325,49 @@ export async function handleMockApiRequest(url, init = {}) {
   // 4. Admin: Analytics
   if (path === '/api/v1/admin/analytics' && method === 'GET') {
     const products = getStored('goodbee_products', INITIAL_PRODUCTS);
-    const submissions = getStored('goodbee_submissions', DEFAULT_SUBMISSIONS);
-    const orders = getStored('goodbee_orders', []);
+    const orders = getStored('goodbee_orders', DEFAULT_ORDERS);
 
-    const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 248950);
-    const pendingSubs = submissions.filter((s) => s.status === 'PENDING_REVIEW').length;
-    const lowStock = products.filter((p) => p.stock <= (p.lowStockThreshold || 12)).length;
+    const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 125400);
+    const pendingOrders = orders.filter((o) => o.status === 'PROCESSING').length;
+    const lowStock = products.filter((p) => (p.stock ?? 25) <= (p.lowStockThreshold || 10)).length;
 
     return jsonResponse({
       metrics: {
         totalRevenue,
-        totalOrders: 142 + orders.length,
-        activePatrons: 96,
-        approvedProducts: products.length,
-        pendingSubmissions: pendingSubs,
-        lowStockAlerts: lowStock
+        totalOrders: orders.length,
+        pendingOrders,
+        activeProducts: products.length,
+        lowStockAlerts: lowStock,
+        averageOrderValue: Math.round(totalRevenue / Math.max(orders.length, 1))
       },
-      recentOrders: [
-        { id: 'GB-ORD-9021', customer: 'Meera Iyer', total: 2700, status: 'DELIVERED', date: '2026-10-09' },
-        { id: 'GB-ORD-9020', customer: 'Kabir Verma', total: 1450, status: 'PROCESSING', date: '2026-10-09' },
-        { id: 'GB-ORD-9019', customer: 'Pooja Reddy', total: 3800, status: 'SHIPPED', date: '2026-10-08' },
-        ...orders.slice(0, 3)
-      ],
-      ecosystemCounts: {
-        producers: 4,
-        dealers: 3,
-        promoters: 7
-      }
+      recentOrders: orders.slice(0, 5)
     });
   }
 
-  // 5. Admin: Submissions
-  if (path === '/api/v1/admin/submissions' && method === 'GET') {
-    const submissions = getStored('goodbee_submissions', DEFAULT_SUBMISSIONS);
-    return jsonResponse({ count: submissions.length, submissions });
+  // 5. Admin: Orders
+  if (path === '/api/v1/admin/orders' && method === 'GET') {
+    const orders = getStored('goodbee_orders', DEFAULT_ORDERS);
+    return jsonResponse({ count: orders.length, orders });
   }
 
-  // 6. Admin: Decide Submission
-  if (path.startsWith('/api/v1/admin/submissions/') && path.endsWith('/decide') && method === 'POST') {
+  // 6. Admin: Update Order Status
+  if (path.startsWith('/api/v1/admin/orders/') && path.endsWith('/status') && method === 'PUT') {
     const parts = path.split('/');
     const id = parts[5];
-    const submissions = getStored('goodbee_submissions', DEFAULT_SUBMISSIONS);
-    const subIndex = submissions.findIndex((s) => s.id === id);
+    const orders = getStored('goodbee_orders', DEFAULT_ORDERS);
+    const orderIndex = orders.findIndex((o) => o.id === id);
 
-    if (subIndex === -1) {
-      return jsonResponse({ error: 'Submission not found' }, 404);
+    if (orderIndex === -1) {
+      return jsonResponse({ error: 'Order not found' }, 404);
     }
 
-    const { decision, reason } = body;
-    const isApprove = decision === 'APPROVE';
-    submissions[subIndex].status = isApprove ? 'APPROVED' : 'REJECTED';
-    submissions[subIndex].adminNotes = reason || '';
-    submissions[subIndex].decidedAt = new Date().toISOString();
-    setStored('goodbee_submissions', submissions);
-
-    // If approved, add to live products
-    if (isApprove) {
-      const products = getStored('goodbee_products', INITIAL_PRODUCTS);
-      const sub = submissions[subIndex];
-      const newProduct = {
-        id: `gb_prod_${Date.now()}`,
-        title: sub.title,
-        subtitle: sub.subtitle || '100% Natural Formulation',
-        slug: sub.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-        sku: `GB-SUB-${Date.now().toString().slice(-4)}`,
-        category: sub.category || 'Cold Processed Soaps',
-        concerns: sub.concerns || ['Barrier Repair'],
-        price: Number(sub.price) || 290,
-        mrp: Number(sub.mrp) || 350,
-        volume: sub.volume || '100 g',
-        rating: 5.0,
-        reviewsCount: 1,
-        stock: Number(sub.stock) || 50,
-        lowStockThreshold: 10,
-        badge: 'Newly Approved',
-        shortDescription: sub.description || 'Verified pure natural formulation.',
-        description: sub.description || 'Verified pure natural formulation.',
-        ingredients: typeof sub.ingredients === 'string' ? sub.ingredients.split(',').map((s) => s.trim()) : sub.ingredients,
-        image: sub.image || '/images_ref/Clear-skin-300x300.webp',
-        gallery: [sub.image || '/images_ref/Clear-skin-300x300.webp']
-      };
-      products.push(newProduct);
-      setStored('goodbee_products', products);
-    }
+    if (body.status) orders[orderIndex].status = body.status;
+    if (body.paymentStatus) orders[orderIndex].paymentStatus = body.paymentStatus;
+    setStored('goodbee_orders', orders);
 
     return jsonResponse({
-      message: `Formulation submission has been ${isApprove ? 'approved and published to live catalog' : 'rejected'}.`
+      message: `Order #${id} status updated to ${body.status}.`,
+      order: orders[orderIndex]
     });
   }
 
@@ -330,25 +377,30 @@ export async function handleMockApiRequest(url, init = {}) {
     const inventory = products.map((p) => ({
       id: p.id,
       title: p.title,
-      sku: p.sku || 'GB-SKU-001',
-      stock: p.stock || 25,
-      lowStockThreshold: p.lowStockThreshold || 12,
+      category: p.category,
+      image: p.image,
+      sku: p.sku || `GB-${p.id.slice(0, 8).toUpperCase()}`,
+      stock: p.stock ?? 25,
+      lowStockThreshold: p.lowStockThreshold || 10,
       price: p.price,
-      status: p.stock > 0 ? (p.stock <= (p.lowStockThreshold || 12) ? 'LOW_STOCK' : 'IN_STOCK') : 'OUT_OF_STOCK'
+      mrp: p.mrp || Math.round(p.price * 1.2),
+      status: (p.stock ?? 25) > 0 ? ((p.stock ?? 25) <= (p.lowStockThreshold || 10) ? 'LOW_STOCK' : 'IN_STOCK') : 'OUT_OF_STOCK'
     }));
     return jsonResponse({ count: inventory.length, inventory });
   }
 
-  // 8. Admin: Update Inventory
+  // 8. Admin: Update Inventory (Stock & Price)
   if (path.startsWith('/api/v1/admin/inventory/') && method === 'PUT') {
     const id = path.split('/')[5];
     const products = getStored('goodbee_products', INITIAL_PRODUCTS);
     const pIndex = products.findIndex((p) => p.id === id);
     if (pIndex !== -1) {
-      products[pIndex].stock = Number(body.stock) || 0;
+      if (body.stock !== undefined) products[pIndex].stock = Number(body.stock);
+      if (body.price !== undefined) products[pIndex].price = Number(body.price);
+      if (body.mrp !== undefined) products[pIndex].mrp = Number(body.mrp);
       setStored('goodbee_products', products);
     }
-    return jsonResponse({ message: 'Stock levels updated successfully.' });
+    return jsonResponse({ message: 'Catalog details updated successfully.' });
   }
 
   // 9. Admin: Rules
@@ -437,7 +489,7 @@ export async function handleMockApiRequest(url, init = {}) {
 
   // 14. Orders: Create Order
   if (path === '/api/v1/orders' && method === 'POST') {
-    const orders = getStored('goodbee_orders', []);
+    const orders = getStored('goodbee_orders', DEFAULT_ORDERS);
     const items = body.items || [];
     const total = items.reduce((sum, it) => sum + (it.product.price * it.quantity), 0);
     const orderId = `GB-ORD-${Date.now().toString().slice(-6)}`;
