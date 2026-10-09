@@ -27,8 +27,14 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Playfair Display', 'Georgia', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif']
+        serif: ['"Marcellus"', '"Bodoni Moda"', 'Georgia', 'serif'],
+        editorial: ['"Bodoni Moda"', '"Marcellus"', 'serif'],
+        sans: ['"Tenor Sans"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+      },
+      letterSpacing: {
+        'luxury': '0.22em',
+        'subtle': '0.08em',
+        'headline': '-0.02em'
       },
       boxShadow: {
         'luxury': '0 20px 40px -15px rgba(26, 25, 24, 0.07)',

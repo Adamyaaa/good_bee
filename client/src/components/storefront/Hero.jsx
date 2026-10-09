@@ -65,19 +65,19 @@ export default function Hero({ onExplore, onRoutine }) {
             className="lg:col-span-7 space-y-8 text-center lg:text-left pt-6 lg:pt-0"
           >
             {/* Positioning Pill */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-cream/90 backdrop-blur-md border border-brand-gold/40 text-[11px] uppercase tracking-widest text-brand-gold-dark font-semibold shadow-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-cream/90 backdrop-blur-md border border-brand-gold/40 text-[10px] uppercase tracking-[0.25em] text-brand-gold-dark font-medium shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
               100% Natural Skincare • Research-Driven Formulation
             </div>
 
             {/* Major Editorial Headline */}
-            <h1 className="font-serif text-4xl sm:text-6xl lg:text-[4.2rem] text-brand-charcoal font-medium leading-[1.08] tracking-tight">
+            <h1 className="font-serif text-4xl sm:text-6xl lg:text-[4.2rem] text-brand-charcoal font-normal leading-[1.08] tracking-tight">
               Nature, Refined <br />
-              Through <span className="italic font-normal text-brand-gold-dark">Research.</span>
+              Through <span className="font-editorial italic font-normal text-brand-gold-dark">Research.</span>
             </h1>
 
             {/* Brand Positioning Copy */}
-            <p className="text-base sm:text-lg text-brand-charcoal/85 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans">
+            <p className="text-base sm:text-lg text-brand-charcoal/80 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans tracking-wide">
               Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.
             </p>
 
@@ -85,7 +85,7 @@ export default function Hero({ onExplore, onRoutine }) {
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-1">
               <button
                 onClick={onExplore}
-                className="w-full sm:w-auto px-8 py-4 bg-brand-charcoal text-brand-ivory text-xs font-semibold tracking-widest uppercase rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-3 group"
+                className="w-full sm:w-auto px-8 py-4 bg-brand-charcoal text-brand-ivory text-[11px] font-medium tracking-[0.22em] uppercase rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-3 group"
               >
                 <span>Explore Formulations</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -93,7 +93,7 @@ export default function Hero({ onExplore, onRoutine }) {
 
               <button
                 onClick={onRoutine}
-                className="w-full sm:w-auto px-8 py-4 bg-brand-ivory/80 backdrop-blur-md text-brand-charcoal text-xs font-semibold tracking-widest uppercase rounded-full border border-brand-gold/60 hover:bg-brand-cream transition-all duration-300 flex items-center justify-center"
+                className="w-full sm:w-auto px-8 py-4 bg-brand-ivory/80 backdrop-blur-md text-brand-charcoal text-[11px] font-medium tracking-[0.22em] uppercase rounded-full border border-brand-gold/60 hover:bg-brand-cream transition-all duration-300 flex items-center justify-center"
               >
                 Diagnostic Concerns
               </button>

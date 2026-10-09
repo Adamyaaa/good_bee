@@ -59,10 +59,10 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
                 className="w-12 h-12 object-contain rounded-full shadow-sm group-hover:scale-105 transition-transform duration-300"
               />
               <div>
-                <span className="font-serif text-2xl tracking-[0.2em] font-semibold text-brand-charcoal block leading-none">
+                <span className="font-serif text-2xl tracking-[0.25em] font-normal text-brand-charcoal block leading-none">
                   GOOD BEE
                 </span>
-                <span className="text-[9px] tracking-[0.25em] text-brand-gold-dark font-sans uppercase font-medium mt-1 block">
+                <span className="text-[9px] tracking-[0.3em] text-brand-gold-dark font-sans uppercase font-medium mt-1.5 block">
                   Natural Skincare • Research
                 </span>
               </div>
