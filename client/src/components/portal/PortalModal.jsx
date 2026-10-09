@@ -26,7 +26,7 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
         onClick={onClose}
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-6 sm:pl-16">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-16">
         <div className="w-screen max-w-5xl bg-brand-ivory border-l border-brand-gold/40 shadow-2xl flex flex-col justify-between overflow-y-auto">
           
           {/* Top Bar */}

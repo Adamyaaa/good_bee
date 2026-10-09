@@ -154,29 +154,29 @@ export default function AdminDashboard({ onNavigateHome }) {
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans">
       
       {/* Top Professional Header */}
-      <header className="bg-slate-950 border-b border-slate-800 px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <header className="bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-3">
           <img
             src="/assets/good-bee-logo.png"
             alt="Good Bee Emblem"
-            className="w-10 h-10 rounded-full border border-amber-500/40"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-amber-500/40 flex-shrink-0"
           />
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">
+              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-amber-400 font-bold">
                 Store Control Tower
               </span>
-              <span className="px-2 py-0.2 text-[10px] bg-slate-800 border border-slate-700 text-slate-300 rounded font-mono">
+              <span className="px-1.5 py-0.2 text-[9px] sm:text-[10px] bg-slate-800 border border-slate-700 text-slate-300 rounded font-mono">
                 Storefront v1.0
               </span>
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-white">
+            <h1 className="text-base sm:text-xl font-bold tracking-tight text-white">
               Good Bee Store Administration
             </h1>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 self-end sm:self-auto">
           <button
             onClick={loadAllAdminData}
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors"
@@ -186,7 +186,7 @@ export default function AdminDashboard({ onNavigateHome }) {
           </button>
           <button
             onClick={onNavigateHome}
-            className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-lg transition-colors"
+            className="px-3.5 py-2 sm:px-4 sm:py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] sm:text-xs uppercase tracking-wider rounded-lg transition-colors"
           >
             Public Storefront
           </button>
@@ -194,10 +194,10 @@ export default function AdminDashboard({ onNavigateHome }) {
       </header>
 
       {/* Main Workspace */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6 flex-1 w-full">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-5 sm:py-8 space-y-6 flex-1 w-full">
         
         {/* Navigation Tabs */}
-        <div className="flex border-b border-slate-800 gap-2 overflow-x-auto text-xs font-semibold">
+        <div className="flex border-b border-slate-800 gap-1 sm:gap-2 overflow-x-auto pb-1 text-xs font-semibold no-scrollbar">
           {[
             { id: 'ANALYTICS', label: 'Overview Telemetry', icon: LayoutDashboard },
             { id: 'ORDERS', label: `Patron Orders (${pendingOrdersCount} Pending)`, icon: ShoppingBag, badge: pendingOrdersCount > 0 },
@@ -210,16 +210,16 @@ export default function AdminDashboard({ onNavigateHome }) {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 py-2.5 sm:px-4 sm:py-3 text-[11px] sm:text-xs border-b-2 transition-all whitespace-nowrap ${
                   isActive
                     ? 'border-amber-400 text-amber-400 bg-slate-800/40'
                     : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/20'
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                 <span>{tab.label}</span>
                 {tab.badge && (
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400 animate-ping" />
                 )}
               </button>
             );
@@ -227,7 +227,7 @@ export default function AdminDashboard({ onNavigateHome }) {
         </div>
 
         {actionSuccess && (
-          <div className="p-4 bg-emerald-950 border border-emerald-500/50 text-emerald-200 rounded-xl text-xs flex items-center gap-2">
+          <div className="p-3 sm:p-4 bg-emerald-950 border border-emerald-500/50 text-emerald-200 rounded-xl text-xs flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             <span>{actionSuccess}</span>
           </div>
@@ -236,56 +236,56 @@ export default function AdminDashboard({ onNavigateHome }) {
         {/* 1. OVERVIEW TELEMETRY TAB */}
         {activeTab === 'ANALYTICS' && (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
-                  <span>Gross Store Sales</span>
-                  <TrendingUp className="w-4 h-4 text-emerald-400" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="bg-slate-950 p-3.5 sm:p-5 rounded-2xl border border-slate-800">
+                <div className="flex items-center justify-between text-slate-400 text-[11px] sm:text-xs mb-1.5 sm:mb-2">
+                  <span>Gross Sales</span>
+                  <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
                 </div>
-                <div className="font-serif text-3xl font-bold text-white">
+                <div className="font-serif text-xl sm:text-3xl font-bold text-white truncate">
                   ₹{analytics?.metrics?.totalRevenue?.toLocaleString('en-IN') || '1,25,400'}
                 </div>
-                <div className="text-[11px] text-emerald-400 mt-2 font-mono">
-                  +18.4% this month
+                <div className="text-[10px] sm:text-[11px] text-emerald-400 mt-1.5 sm:mt-2 font-mono">
+                  +18.4% month
                 </div>
               </div>
 
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
+              <div className="bg-slate-950 p-3.5 sm:p-5 rounded-2xl border border-slate-800">
+                <div className="flex items-center justify-between text-slate-400 text-[11px] sm:text-xs mb-1.5 sm:mb-2">
                   <span>Patron Orders</span>
-                  <ShoppingBag className="w-4 h-4 text-amber-400" />
+                  <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
                 </div>
-                <div className="font-serif text-3xl font-bold text-white">
+                <div className="font-serif text-xl sm:text-3xl font-bold text-white">
                   {analytics?.metrics?.totalOrders ?? orders.length}
                 </div>
-                <div className="text-[11px] text-amber-400 mt-2 font-mono">
-                  {pendingOrdersCount} requiring dispatch
+                <div className="text-[10px] sm:text-[11px] text-amber-400 mt-1.5 sm:mt-2 font-mono">
+                  {pendingOrdersCount} pending
                 </div>
               </div>
 
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
-                  <span>Active Catalog Formulations</span>
-                  <Package className="w-4 h-4 text-indigo-400" />
+              <div className="bg-slate-950 p-3.5 sm:p-5 rounded-2xl border border-slate-800">
+                <div className="flex items-center justify-between text-slate-400 text-[11px] sm:text-xs mb-1.5 sm:mb-2">
+                  <span>Formulations</span>
+                  <Package className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />
                 </div>
-                <div className="font-serif text-3xl font-bold text-white">
+                <div className="font-serif text-xl sm:text-3xl font-bold text-white">
                   {inventory.length || 19}
                 </div>
-                <div className="text-[11px] text-slate-400 mt-2 font-mono">
-                  All 100% natural active ingredients
+                <div className="text-[10px] sm:text-[11px] text-slate-400 mt-1.5 sm:mt-2 font-mono truncate">
+                  100% natural actives
                 </div>
               </div>
 
-              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
-                  <span>Low Stock Warnings</span>
-                  <AlertCircle className="w-4 h-4 text-rose-400" />
+              <div className="bg-slate-950 p-3.5 sm:p-5 rounded-2xl border border-slate-800">
+                <div className="flex items-center justify-between text-slate-400 text-[11px] sm:text-xs mb-1.5 sm:mb-2">
+                  <span>Low Stock</span>
+                  <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-400" />
                 </div>
-                <div className="font-serif text-3xl font-bold text-white">
+                <div className="font-serif text-xl sm:text-3xl font-bold text-white">
                   {analytics?.metrics?.lowStockAlerts ?? 0}
                 </div>
-                <div className="text-[11px] text-slate-400 mt-2 font-mono">
-                  Threshold: &le; 10 units
+                <div className="text-[10px] sm:text-[11px] text-slate-400 mt-1.5 sm:mt-2 font-mono">
+                  &le; 10 units alert
                 </div>
               </div>
             </div>
@@ -557,7 +557,8 @@ export default function AdminDashboard({ onNavigateHome }) {
               </div>
             </div>
 
-            <div className="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-900 text-slate-400 font-mono uppercase text-[10px]">
@@ -665,6 +666,107 @@ export default function AdminDashboard({ onNavigateHome }) {
                   </tbody>
                 </table>
               </div>
+            </div>
+
+            {/* Mobile Card List View */}
+            <div className="md:hidden space-y-3">
+              {inventory.map((item) => {
+                const isEditing = editingInventoryId === item.id;
+
+                return (
+                  <div
+                    key={item.id}
+                    className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3"
+                  >
+                    <div className="flex items-start gap-3">
+                      {item.image && (
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-14 h-14 object-cover rounded-xl border border-slate-700 flex-shrink-0"
+                        />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[10px] font-mono text-slate-400">{item.sku}</span>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            item.status === 'IN_STOCK'
+                              ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+                              : item.status === 'LOW_STOCK'
+                              ? 'bg-amber-950 text-amber-300 border border-amber-800'
+                              : 'bg-rose-950 text-rose-300 border border-rose-800'
+                          }`}>
+                            {item.status}
+                          </span>
+                        </div>
+                        <p className="font-semibold text-white text-xs mt-1 truncate">{item.title}</p>
+                        <p className="text-[11px] text-slate-400">{item.category}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/80 text-xs">
+                      <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                        <span className="text-[10px] text-slate-400 uppercase font-mono block">Price</span>
+                        {isEditing ? (
+                          <input
+                            type="number"
+                            value={editPriceVal}
+                            onChange={(e) => setEditPriceVal(e.target.value)}
+                            className="w-full mt-1 p-1 bg-slate-950 border border-amber-500 rounded text-amber-300 font-mono text-xs focus:outline-none"
+                          />
+                        ) : (
+                          <span className="font-bold text-white text-sm mt-0.5 block">₹{item.price}</span>
+                        )}
+                      </div>
+
+                      <div className="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                        <span className="text-[10px] text-slate-400 uppercase font-mono block">Remaining Stock</span>
+                        {isEditing ? (
+                          <input
+                            type="number"
+                            value={editStockVal}
+                            onChange={(e) => setEditStockVal(e.target.value)}
+                            className="w-full mt-1 p-1 bg-slate-950 border border-amber-500 rounded text-amber-300 font-mono text-xs focus:outline-none"
+                          />
+                        ) : (
+                          <span className="font-mono text-slate-200 text-sm mt-0.5 block">{item.stock} units</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="pt-1">
+                      {isEditing ? (
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            onClick={() => handleSaveInventoryItem(item.id)}
+                            className="w-full py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={() => setEditingInventoryId(null)}
+                            className="w-full py-2 bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setEditingInventoryId(item.id);
+                            setEditStockVal(item.stock);
+                            setEditPriceVal(item.price);
+                          }}
+                          className="w-full py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-amber-400 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                          <span>Edit Stock & Price</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
