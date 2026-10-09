@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { DEFAULT_SITE_CONTENT } from '../services/mockBackend';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -22,7 +23,14 @@ import {
   Clock,
   Sparkles,
   Sliders,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Copy,
+  Star,
+  Tag,
+  Percent,
+  FlaskConical,
+  Compass,
+  FileText
 } from 'lucide-react';
 
 const PRESET_IMAGES = [
@@ -49,12 +57,14 @@ const CATEGORIES = [
   'Lip & Facial Care',
   'Botanical Mists',
   'Hair & Scalp Rituals',
-  'Therapeutic Body Care'
+  'Therapeutic Body Care',
+  'Custom Category...'
 ];
 
 export default function AdminDashboard({ onNavigateHome }) {
   const { user, token } = useAuth();
   const [activeTab, setActiveTab] = useState('ANALYTICS'); // 'ANALYTICS', 'ORDERS', 'PRODUCTS', 'SITE_CONTENT'
+  const [siteCmsSubTab, setSiteCmsSubTab] = useState('ANNOUNCE_HERO'); // 'ANNOUNCE_HERO', 'PHILOSOPHY', 'SOURCING', 'TESTIMONIALS', 'COUPONS', 'GATEWAYS'
   const [analytics, setAnalytics] = useState(null);
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
@@ -74,29 +84,45 @@ export default function AdminDashboard({ onNavigateHome }) {
     title: '',
     subtitle: '',
     category: 'Cold Processed Soaps',
+    customCategory: '',
     concerns: 'Barrier Repair',
     price: 290,
     mrp: 350,
     stock: 50,
+    lowStockThreshold: 10,
     volume: '100 g / 3.5 oz.',
     image: '/images_ref/Frankin-300x300.webp',
     ingredients: '',
     description: '',
+    ritual: '',
+    researchNotes: '',
     badge: '100% Natural'
   });
 
-  // Site content CMS state
-  const [siteContent, setSiteContent] = useState({
-    announcement: 'Complimentary Delivery Across India on Orders Above ₹999',
-    announcementSub: '100% Natural Active Ingredients',
-    heroBadge: '100% Natural Skincare • Research-Driven Formulation',
-    heroHeadline: 'Nature, Refined Through Research.',
-    heroDescription: 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.',
-    whatsappNumber: '+919963075000',
-    supportEmail: 'care@goodbee.in',
-    upiVpa: 'goodbee.official@okaxis',
-    payeeName: 'GOOD BEE Skincare Laboratory'
+  // Testimonials mini-modal state
+  const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false);
+  const [testimonialModalMode, setTestimonialModalMode] = useState('CREATE'); // 'CREATE' or 'EDIT'
+  const [activeTestimonialForm, setActiveTestimonialForm] = useState({
+    id: null,
+    name: '',
+    city: '',
+    product: '',
+    quote: '',
+    rating: 5
   });
+
+  // Coupons mini-modal state
+  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
+  const [activeCouponForm, setActiveCouponForm] = useState({
+    code: '',
+    discountPct: 10,
+    minOrder: 500,
+    active: true,
+    description: ''
+  });
+
+  // Site content CMS state
+  const [siteContent, setSiteContent] = useState(DEFAULT_SITE_CONTENT);
 
   const [loading, setLoading] = useState(true);
   const [actionSuccess, setActionSuccess] = useState('');
@@ -190,15 +216,19 @@ export default function AdminDashboard({ onNavigateHome }) {
       title: '',
       subtitle: 'Pure Botanical Active Formulation',
       category: 'Cold Processed Soaps',
-      concerns: 'Barrier Repair',
+      customCategory: '',
+      concerns: 'Barrier Repair, Hydration',
       price: 290,
       mrp: 350,
       stock: 50,
+      lowStockThreshold: 10,
       volume: '100 g / 3.5 oz.',
       image: PRESET_IMAGES[0].url,
       ingredients: 'Organic Cold-Pressed Oils, Botanical Extracts, Pure Essential Oils',
       description: 'Slow-cured 100% natural botanical formulation crafted through active stabilization research.',
-      badge: 'New Formulation'
+      ritual: 'Glide gently over damp skin and massage into a creamy lather before rinsing.',
+      researchNotes: 'Gas chromatography verified single-origin batch purity.',
+      badge: '100% Natural'
     });
     setIsProductModalOpen(true);
   };
@@ -209,18 +239,49 @@ export default function AdminDashboard({ onNavigateHome }) {
       id: prod.id,
       title: prod.title || '',
       subtitle: prod.subtitle || '',
-      category: prod.category || 'Cold Processed Soaps',
+      category: CATEGORIES.includes(prod.category) ? prod.category : 'Custom Category...',
+      customCategory: CATEGORIES.includes(prod.category) ? '' : (prod.category || ''),
       concerns: Array.isArray(prod.concerns) ? prod.concerns.join(', ') : (prod.concerns || ''),
       price: prod.price || 290,
-      mrp: prod.mrp || 350,
+      mrp: prod.mrp || Math.round((prod.price || 290) * 1.25),
       stock: prod.stock ?? 30,
+      lowStockThreshold: prod.lowStockThreshold || 10,
       volume: prod.volume || '100 g',
       image: prod.image || PRESET_IMAGES[0].url,
       ingredients: Array.isArray(prod.ingredients) ? prod.ingredients.join(', ') : (prod.ingredients || ''),
       description: prod.description || prod.shortDescription || '',
+      ritual: prod.ritual || '',
+      researchNotes: prod.researchNotes || '',
       badge: prod.badge || '100% Natural'
     });
     setIsProductModalOpen(true);
+  };
+
+  const handleDuplicateProduct = async (prod) => {
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      };
+      const duplicated = {
+        ...prod,
+        id: undefined,
+        title: `${prod.title} (Clone)`,
+        sku: `GB-${Date.now().toString().slice(-5)}`
+      };
+      const res = await fetch('/api/v1/admin/products', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(duplicated)
+      });
+      if (res.ok) {
+        setActionSuccess(`Duplicated formulation "${prod.title}" successfully!`);
+        setTimeout(() => setActionSuccess(''), 3000);
+        loadAllAdminData();
+      }
+    } catch (err) {
+      alert('Failed to duplicate product');
+    }
   };
 
   const handleSaveProductModal = async (e) => {
@@ -231,11 +292,17 @@ export default function AdminDashboard({ onNavigateHome }) {
         Authorization: `Bearer ${token}`
       };
 
+      const chosenCategory = activeProductForm.category === 'Custom Category...'
+        ? (activeProductForm.customCategory || 'Artisanal Formulations')
+        : activeProductForm.category;
+
       const payload = {
         ...activeProductForm,
+        category: chosenCategory,
         price: Number(activeProductForm.price),
         mrp: Number(activeProductForm.mrp),
         stock: Number(activeProductForm.stock),
+        lowStockThreshold: Number(activeProductForm.lowStockThreshold || 10),
         concerns: activeProductForm.concerns.split(',').map((s) => s.trim()).filter(Boolean),
         ingredients: activeProductForm.ingredients.split(',').map((s) => s.trim()).filter(Boolean)
       };
@@ -287,7 +354,7 @@ export default function AdminDashboard({ onNavigateHome }) {
   };
 
   const handleSaveSiteContent = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     try {
       const res = await fetch('/api/v1/admin/site-content', {
         method: 'PUT',
@@ -298,11 +365,129 @@ export default function AdminDashboard({ onNavigateHome }) {
         body: JSON.stringify(siteContent)
       });
       const data = await res.json();
-      setActionSuccess(data.message || 'Site content updated and published live!');
+      setActionSuccess(data.message || 'Site content updated and published live across storefront!');
       setTimeout(() => setActionSuccess(''), 4000);
     } catch (err) {
       alert('Error saving site content');
     }
+  };
+
+  // Testimonial management handlers
+  const handleOpenAddTestimonial = () => {
+    setTestimonialModalMode('CREATE');
+    setActiveTestimonialForm({
+      id: null,
+      name: '',
+      city: '',
+      product: products[0]?.title || 'Good Bee Pure Formulation',
+      quote: '',
+      rating: 5
+    });
+    setIsTestimonialModalOpen(true);
+  };
+
+  const handleOpenEditTestimonial = (t) => {
+    setTestimonialModalMode('EDIT');
+    setActiveTestimonialForm(t);
+    setIsTestimonialModalOpen(true);
+  };
+
+  const handleSaveTestimonial = (e) => {
+    e.preventDefault();
+    const currentList = siteContent.testimonials || [];
+    let updatedList;
+    if (testimonialModalMode === 'CREATE') {
+      const newT = {
+        ...activeTestimonialForm,
+        id: `test_${Date.now()}`
+      };
+      updatedList = [newT, ...currentList];
+    } else {
+      updatedList = currentList.map((item) =>
+        item.id === activeTestimonialForm.id ? activeTestimonialForm : item
+      );
+    }
+    const updated = { ...siteContent, testimonials: updatedList };
+    setSiteContent(updated);
+    setIsTestimonialModalOpen(false);
+    fetch('/api/v1/admin/site-content', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(updated)
+    }).catch(() => {});
+    setActionSuccess('Patron story updated!');
+    setTimeout(() => setActionSuccess(''), 3000);
+  };
+
+  const handleDeleteTestimonial = (id) => {
+    if (!window.confirm('Delete this patron review?')) return;
+    const updatedList = (siteContent.testimonials || []).filter((t) => t.id !== id);
+    const updated = { ...siteContent, testimonials: updatedList };
+    setSiteContent(updated);
+    fetch('/api/v1/admin/site-content', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(updated)
+    }).catch(() => {});
+    setActionSuccess('Review deleted.');
+    setTimeout(() => setActionSuccess(''), 3000);
+  };
+
+  // Coupon handlers
+  const handleOpenAddCoupon = () => {
+    setActiveCouponForm({
+      code: '',
+      discountPct: 15,
+      minOrder: 999,
+      active: true,
+      description: 'Exclusive natural beauty discount'
+    });
+    setIsCouponModalOpen(true);
+  };
+
+  const handleSaveCoupon = (e) => {
+    e.preventDefault();
+    const currentList = siteContent.coupons || [];
+    const codeUpper = activeCouponForm.code.trim().toUpperCase();
+    if (!codeUpper) return;
+    const filtered = currentList.filter((c) => c.code.toUpperCase() !== codeUpper);
+    const updatedList = [...filtered, { ...activeCouponForm, code: codeUpper }];
+    const updated = { ...siteContent, coupons: updatedList };
+    setSiteContent(updated);
+    setIsCouponModalOpen(false);
+    fetch('/api/v1/admin/site-content', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(updated)
+    }).catch(() => {});
+    setActionSuccess(`Coupon ${codeUpper} saved!`);
+    setTimeout(() => setActionSuccess(''), 3000);
+  };
+
+  const handleDeleteCoupon = (code) => {
+    const updatedList = (siteContent.coupons || []).filter((c) => c.code !== code);
+    const updated = { ...siteContent, coupons: updatedList };
+    setSiteContent(updated);
+    fetch('/api/v1/admin/site-content', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(updated)
+    }).catch(() => {});
+    setActionSuccess(`Coupon ${code} removed.`);
+    setTimeout(() => setActionSuccess(''), 3000);
+  };
+
+  const handleToggleCoupon = (code) => {
+    const updatedList = (siteContent.coupons || []).map((c) =>
+      c.code === code ? { ...c, active: !c.active } : c
+    );
+    const updated = { ...siteContent, coupons: updatedList };
+    setSiteContent(updated);
+    fetch('/api/v1/admin/site-content', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(updated)
+    }).catch(() => {});
   };
 
   const pendingOrdersCount = orders.filter((o) => o.status === 'PROCESSING').length;
@@ -885,6 +1070,13 @@ export default function AdminDashboard({ onNavigateHome }) {
                               ) : (
                                 <>
                                   <button
+                                    onClick={() => handleDuplicateProduct(p)}
+                                    className="p-1.5 text-slate-400 hover:text-emerald-400 rounded-lg hover:bg-slate-800 transition-colors"
+                                    title="Duplicate / Clone Formulation"
+                                  >
+                                    <Copy className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
                                     onClick={() => {
                                       setInlineEditId(p.id);
                                       setInlineStock(p.stock ?? 30);
@@ -1011,6 +1203,13 @@ export default function AdminDashboard({ onNavigateHome }) {
                             <span>Edit Full Details</span>
                           </button>
                           <button
+                            onClick={() => handleDuplicateProduct(p)}
+                            className="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded-xl text-xs font-semibold"
+                            title="Duplicate Product"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                          </button>
+                          <button
                             onClick={() => {
                               setInlineEditId(p.id);
                               setInlineStock(p.stock ?? 30);
@@ -1041,131 +1240,527 @@ export default function AdminDashboard({ onNavigateHome }) {
 
         {/* 4. SITE CONTENT & GATEWAYS CMS */}
         {activeTab === 'SITE_CONTENT' && (
-          <div className="max-w-3xl bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-6">
-            <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Sliders className="w-4 h-4 text-amber-400" />
-                <span>Global Site Content & Gateway CMS</span>
-              </h3>
-              <p className="text-xs text-slate-400 mt-1">
-                Edit storefront announcement bar, hero section headlines, active copy, and customer care lines in real-time.
-              </p>
-            </div>
-
-            <form onSubmit={handleSaveSiteContent} className="space-y-6 text-xs">
-              
-              {/* Announcement Bar CMS */}
-              <div className="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
-                <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
-                  Top Announcement Bar
-                </span>
-                <div>
-                  <label className="block mb-1 text-slate-300 font-medium">Primary Banner Notice</label>
-                  <input
-                    type="text"
-                    value={siteContent.announcement || ''}
-                    onChange={(e) => setSiteContent({ ...siteContent, announcement: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
-                    placeholder="Complimentary Delivery Across India on Orders Above ₹999"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 text-slate-300 font-medium">Secondary Value Badge</label>
-                  <input
-                    type="text"
-                    value={siteContent.announcementSub || ''}
-                    onChange={(e) => setSiteContent({ ...siteContent, announcementSub: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
-                    placeholder="100% Natural Active Ingredients"
-                  />
-                </div>
-              </div>
-
-              {/* Hero Section Editorial CMS */}
-              <div className="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
-                <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
-                  Hero Editorial Stage
-                </span>
-                <div>
-                  <label className="block mb-1 text-slate-300 font-medium">Positioning Pill Badge</label>
-                  <input
-                    type="text"
-                    value={siteContent.heroBadge || ''}
-                    onChange={(e) => setSiteContent({ ...siteContent, heroBadge: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 text-slate-300 font-medium">Major Hero Headline</label>
-                  <input
-                    type="text"
-                    value={siteContent.heroHeadline || ''}
-                    onChange={(e) => setSiteContent({ ...siteContent, heroHeadline: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-serif text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 text-slate-300 font-medium">Brand Positioning Paragraph</label>
-                  <textarea
-                    rows={3}
-                    value={siteContent.heroDescription || ''}
-                    onChange={(e) => setSiteContent({ ...siteContent, heroDescription: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white leading-relaxed"
-                  />
-                </div>
-              </div>
-
-              {/* Payment & WhatsApp Concierge Routing */}
-              <div className="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
-                <span className="font-mono uppercase text-[10px] text-emerald-400 font-bold block">
-                  Payment & WhatsApp Concierge Routing
-                </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block mb-1 text-slate-300 font-medium">UPI VPA Address</label>
-                    <input
-                      type="text"
-                      value={siteContent.upiVpa || ''}
-                      onChange={(e) => setSiteContent({ ...siteContent, upiVpa: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-slate-300 font-medium">Merchant Display Name</label>
-                    <input
-                      type="text"
-                      value={siteContent.payeeName || ''}
-                      onChange={(e) => setSiteContent({ ...siteContent, payeeName: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-slate-300 font-medium">WhatsApp Phone (+CountryCode)</label>
-                    <input
-                      type="text"
-                      value={siteContent.whatsappNumber || ''}
-                      onChange={(e) => setSiteContent({ ...siteContent, whatsappNumber: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-1 text-slate-300 font-medium">Customer Care Email</label>
-                    <input
-                      type="email"
-                      value={siteContent.supportEmail || ''}
-                      onChange={(e) => setSiteContent({ ...siteContent, supportEmail: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
-                    />
-                  </div>
-                </div>
+          <div className="max-w-4xl bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+            
+            {/* Header & Quick Save */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Sliders className="w-5 h-5 text-amber-400" />
+                  <span>Global Site Content & Visual CMS</span>
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Full control over headlines, brand stories, patron reviews, discount coupons, and concierge channels.
+                </p>
               </div>
 
               <button
-                type="submit"
-                className="w-full sm:w-auto px-8 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl uppercase tracking-wider text-xs transition-colors shadow-sm"
+                type="button"
+                onClick={handleSaveSiteContent}
+                className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl uppercase tracking-wider text-xs transition-colors shadow-sm self-start sm:self-auto"
               >
-                Publish Site Content Live
+                Publish Site Live
               </button>
+            </div>
+
+            {/* Sub-Tab Navigation */}
+            <div className="flex flex-wrap gap-2 pb-2">
+              {[
+                { id: 'ANNOUNCE_HERO', label: 'Announcement & Hero', icon: Sparkles },
+                { id: 'PHILOSOPHY', label: 'Research Philosophy', icon: FlaskConical },
+                { id: 'SOURCING', label: 'Apiary Sourcing', icon: Compass },
+                { id: 'TESTIMONIALS', label: `Patron Reviews (${siteContent.testimonials?.length || 0})`, icon: Star },
+                { id: 'COUPONS', label: `Coupons & Offers (${siteContent.coupons?.length || 0})`, icon: Percent },
+                { id: 'GATEWAYS', label: 'Concierge & UPI', icon: MessageCircle }
+              ].map((sub) => {
+                const Icon = sub.icon;
+                const isActive = siteCmsSubTab === sub.id;
+                return (
+                  <button
+                    key={sub.id}
+                    onClick={() => setSiteCmsSubTab(sub.id)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors ${
+                      isActive
+                        ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
+                        : 'bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800'
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-slate-950' : 'text-amber-400'}`} />
+                    <span>{sub.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <form onSubmit={handleSaveSiteContent} className="space-y-6 text-xs">
+
+              {/* Sub-Tab 1: Announcement Bar & Hero Stage */}
+              {siteCmsSubTab === 'ANNOUNCE_HERO' && (
+                <div className="space-y-6">
+                  {/* Announcement Bar */}
+                  <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 space-y-4">
+                    <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
+                      Top Announcement Bar
+                    </span>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Primary Banner Notice</label>
+                      <input
+                        type="text"
+                        value={siteContent.announcement || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, announcement: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                        placeholder="Complimentary Delivery Across India on Orders Above ₹999"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-1 text-slate-300 font-medium">Secondary Value Badge</label>
+                        <input
+                          type="text"
+                          value={siteContent.announcementSub || ''}
+                          onChange={(e) => setSiteContent({ ...siteContent, announcementSub: e.target.value })}
+                          className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                          placeholder="100% Natural Active Ingredients"
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-1 text-slate-300 font-medium">Free Delivery Minimum Cart (₹)</label>
+                        <input
+                          type="number"
+                          value={siteContent.freeDeliveryThreshold || 999}
+                          onChange={(e) => setSiteContent({ ...siteContent, freeDeliveryThreshold: Number(e.target.value) })}
+                          className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono focus:outline-none focus:border-amber-400"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Hero Stage Editorial */}
+                  <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 space-y-4">
+                    <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
+                      Hero Editorial Stage
+                    </span>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Positioning Pill Badge</label>
+                      <input
+                        type="text"
+                        value={siteContent.heroBadge || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, heroBadge: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Major Hero Headline</label>
+                      <input
+                        type="text"
+                        value={siteContent.heroHeadline || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, heroHeadline: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-serif text-sm focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Brand Positioning Paragraph</label>
+                      <textarea
+                        rows={3}
+                        value={siteContent.heroDescription || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, heroDescription: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white leading-relaxed focus:outline-none focus:border-amber-400"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-1 text-slate-300 font-medium">Primary CTA Button Label</label>
+                        <input
+                          type="text"
+                          value={siteContent.heroCtaPrimary || 'Explore Pure Formulations'}
+                          onChange={(e) => setSiteContent({ ...siteContent, heroCtaPrimary: e.target.value })}
+                          className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block mb-1 text-slate-300 font-medium">Secondary CTA Button Label</label>
+                        <input
+                          type="text"
+                          value={siteContent.heroCtaSecondary || 'Diagnostic Concerns'}
+                          onChange={(e) => setSiteContent({ ...siteContent, heroCtaSecondary: e.target.value })}
+                          className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Sub-Tab 2: Formulation Philosophy & Research Story */}
+              {siteCmsSubTab === 'PHILOSOPHY' && (
+                <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 space-y-4">
+                  <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
+                    Formulation Philosophy Section (#research-story)
+                  </span>
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">Section Subtitle / Badge</label>
+                    <input
+                      type="text"
+                      value={siteContent.philosophyBadge || 'Formulation Philosophy'}
+                      onChange={(e) => setSiteContent({ ...siteContent, philosophyBadge: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">Philosophy Major Headline</label>
+                    <input
+                      type="text"
+                      value={siteContent.philosophyTitle || ''}
+                      onChange={(e) => setSiteContent({ ...siteContent, philosophyTitle: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-serif text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">Philosophy Core Explanation</label>
+                    <textarea
+                      rows={3}
+                      value={siteContent.philosophyDescription || ''}
+                      onChange={(e) => setSiteContent({ ...siteContent, philosophyDescription: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white leading-relaxed"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+                      <label className="block text-amber-400 font-bold">Research Pillar 1</label>
+                      <input
+                        type="text"
+                        value={siteContent.philosophyCard1Title || 'Active Stabilization Research'}
+                        onChange={(e) => setSiteContent({ ...siteContent, philosophyCard1Title: e.target.value })}
+                        className="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
+                        placeholder="Card 1 Title"
+                      />
+                      <textarea
+                        rows={2}
+                        value={siteContent.philosophyCard1Text || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, philosophyCard1Text: e.target.value })}
+                        className="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg text-slate-300 text-xs"
+                        placeholder="Card 1 Text"
+                      />
+                    </div>
+
+                    <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2">
+                      <label className="block text-amber-400 font-bold">Research Pillar 2</label>
+                      <input
+                        type="text"
+                        value={siteContent.philosophyCard2Title || 'Zero Synthetic Compromises'}
+                        onChange={(e) => setSiteContent({ ...siteContent, philosophyCard2Title: e.target.value })}
+                        className="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
+                        placeholder="Card 2 Title"
+                      />
+                      <textarea
+                        rows={2}
+                        value={siteContent.philosophyCard2Text || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, philosophyCard2Text: e.target.value })}
+                        className="w-full p-2 bg-slate-900 border border-slate-700 rounded-lg text-slate-300 text-xs"
+                        placeholder="Card 2 Text"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Sub-Tab 3: Apiary Sourcing & Traceability */}
+              {siteCmsSubTab === 'SOURCING' && (
+                <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 space-y-4">
+                  <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
+                    Traceable Origin & Apiaries (#producer-spotlight)
+                  </span>
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">Sourcing Subtitle / Badge</label>
+                    <input
+                      type="text"
+                      value={siteContent.sourcingBadge || 'Traceable Origin & Sourcing'}
+                      onChange={(e) => setSiteContent({ ...siteContent, sourcingBadge: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">Sourcing Section Headline</label>
+                    <input
+                      type="text"
+                      value={siteContent.sourcingTitle || 'Ethical Apiaries & Artisanal Extraction Laboratories'}
+                      onChange={(e) => setSiteContent({ ...siteContent, sourcingTitle: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-serif text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">Sourcing Narrative Description</label>
+                    <textarea
+                      rows={3}
+                      value={siteContent.sourcingDescription || ''}
+                      onChange={(e) => setSiteContent({ ...siteContent, sourcingDescription: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white leading-relaxed"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">Call to Action Button Text</label>
+                    <input
+                      type="text"
+                      value={siteContent.sourcingCtaText || 'Explore Pure Formulations'}
+                      onChange={(e) => setSiteContent({ ...siteContent, sourcingCtaText: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Sub-Tab 4: Patron Reviews & Stories */}
+              {siteCmsSubTab === 'TESTIMONIALS' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
+                        Patron Stories & Real Skin Transformations (#stories)
+                      </span>
+                      <p className="text-xs text-slate-400 mt-0.5">Manage customer review cards displayed on the storefront</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleOpenAddTestimonial}
+                      className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add Patron Story</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Stories Section Header</label>
+                      <input
+                        type="text"
+                        value={siteContent.storiesTitle || 'Real Skin Transformations'}
+                        onChange={(e) => setSiteContent({ ...siteContent, storiesTitle: e.target.value })}
+                        className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Stories Section Subtitle</label>
+                      <input
+                        type="text"
+                        value={siteContent.storiesSubtitle || 'Patrons sharing visible results from pure botanical research routines.'}
+                        onChange={(e) => setSiteContent({ ...siteContent, storiesSubtitle: e.target.value })}
+                        className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 pt-2">
+                    {(siteContent.testimonials || []).map((t, idx) => (
+                      <div
+                        key={t.id || idx}
+                        className="p-4 bg-slate-900 rounded-2xl border border-slate-800 flex items-start justify-between gap-4"
+                      >
+                        <div className="space-y-1.5 flex-1 min-w-0">
+                          <div className="flex items-center gap-1 text-amber-400">
+                            {[...Array(t.rating || 5)].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            ))}
+                            <span className="text-xs text-slate-400 ml-2 font-mono">({t.rating || 5}/5)</span>
+                          </div>
+                          <p className="font-serif italic text-white text-sm">"{t.quote}"</p>
+                          <div className="flex flex-wrap items-center gap-2 text-slate-400 text-[11px] pt-1">
+                            <span className="font-semibold text-slate-200">{t.name}</span>
+                            <span>•</span>
+                            <span>{t.city}</span>
+                            {t.product && (
+                              <>
+                                <span>•</span>
+                                <span className="text-amber-400/90 font-medium truncate">Used: {t.product}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditTestimonial(t)}
+                            className="p-2 text-slate-400 hover:text-white bg-slate-950 rounded-xl border border-slate-800 transition-colors"
+                            title="Edit Review"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteTestimonial(t.id)}
+                            className="p-2 text-slate-400 hover:text-rose-400 bg-slate-950 rounded-xl border border-slate-800 transition-colors"
+                            title="Delete Review"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Sub-Tab 5: Coupons & Promo Codes */}
+              {siteCmsSubTab === 'COUPONS' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-mono uppercase text-[10px] text-amber-400 font-bold block">
+                        Promotional Coupons & Store Offers
+                      </span>
+                      <p className="text-xs text-slate-400 mt-0.5">Create discount codes for customer checkouts</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleOpenAddCoupon}
+                      className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Create Promo Code</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    {(siteContent.coupons || []).map((cpn) => (
+                      <div
+                        key={cpn.code}
+                        className="p-4 bg-slate-900 rounded-2xl border border-slate-800 flex items-start justify-between gap-3"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-sm font-bold text-amber-400 bg-slate-950 px-2 py-0.5 rounded-lg border border-amber-500/30">
+                              {cpn.code}
+                            </span>
+                            <span className="text-xs font-bold text-white">{cpn.discountPct}% OFF</span>
+                          </div>
+                          <p className="text-xs text-slate-300">{cpn.description || 'Special formulation offer'}</p>
+                          <p className="text-[11px] text-slate-500 font-mono">Min Order: ₹{cpn.minOrder || 0}</p>
+                        </div>
+
+                        <div className="flex flex-col items-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleCoupon(cpn.code)}
+                            className={`px-2 py-1 rounded-lg text-[10px] font-bold ${
+                              cpn.active
+                                ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+                                : 'bg-slate-800 text-slate-400 border border-slate-700'
+                            }`}
+                          >
+                            {cpn.active ? 'ACTIVE' : 'PAUSED'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteCoupon(cpn.code)}
+                            className="p-1.5 text-slate-400 hover:text-rose-400 transition-colors"
+                            title="Delete Coupon"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Sub-Tab 6: Concierge & UPI Gateways */}
+              {siteCmsSubTab === 'GATEWAYS' && (
+                <div className="p-5 bg-slate-900 rounded-2xl border border-slate-800 space-y-4">
+                  <span className="font-mono uppercase text-[10px] text-emerald-400 font-bold block">
+                    Concierge Routing, Contacts & UPI Gateway
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">WhatsApp Phone (+CountryCode)</label>
+                      <input
+                        type="text"
+                        value={siteContent.whatsappNumber || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, whatsappNumber: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono"
+                        placeholder="+919963075000"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Customer Care Email</label>
+                      <input
+                        type="email"
+                        value={siteContent.supportEmail || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, supportEmail: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                        placeholder="care@goodbee.in"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">UPI VPA Address</label>
+                      <input
+                        type="text"
+                        value={siteContent.upiVpa || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, upiVpa: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono"
+                        placeholder="goodbee.official@okaxis"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Merchant Display Name</label>
+                      <input
+                        type="text"
+                        value={siteContent.payeeName || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, payeeName: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                        placeholder="GOOD BEE Skincare Laboratory"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-slate-300 font-medium">WhatsApp Default Greeting Message</label>
+                    <input
+                      type="text"
+                      value={siteContent.whatsappGreeting || ''}
+                      onChange={(e) => setSiteContent({ ...siteContent, whatsappGreeting: e.target.value })}
+                      className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                      placeholder="Hello Good Bee Concierge, I would like guidance on pure skincare formulations."
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Studio / Apiary Physical Address</label>
+                      <input
+                        type="text"
+                        value={siteContent.storeAddress || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, storeAddress: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                        placeholder="Survey No. 42, Western Ghats Botanical Reserve, Wayanad / Bengaluru Studio"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 text-slate-300 font-medium">Customer Support Hours</label>
+                      <input
+                        type="text"
+                        value={siteContent.operatingHours || ''}
+                        onChange={(e) => setSiteContent({ ...siteContent, operatingHours: e.target.value })}
+                        className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                        placeholder="Mon – Sat: 9:30 AM – 7:00 PM IST"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Main Submit Button */}
+              <div className="pt-2 flex items-center justify-between">
+                <button
+                  type="submit"
+                  className="px-8 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl uppercase tracking-wider text-xs transition-colors shadow-sm"
+                >
+                  Publish All Site Content Live
+                </button>
+                <span className="text-[11px] text-slate-500">Updates sync instantly to all storefront visitors</span>
+              </div>
             </form>
           </div>
         )}
@@ -1196,18 +1791,32 @@ export default function AdminDashboard({ onNavigateHome }) {
 
             <form onSubmit={handleSaveProductModal} className="space-y-4">
               
-              <div>
-                <label className="block mb-1 text-slate-300 font-medium">Product Title</label>
-                <input
-                  type="text"
-                  required
-                  value={activeProductForm.title}
-                  onChange={(e) => setActiveProductForm({ ...activeProductForm, title: e.target.value })}
-                  placeholder="e.g. Pure Steam-Distilled Rose & Saffron Hydrosol"
-                  className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400 text-sm font-medium"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="sm:col-span-2">
+                  <label className="block mb-1 text-slate-300 font-medium">Product Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={activeProductForm.title}
+                    onChange={(e) => setActiveProductForm({ ...activeProductForm, title: e.target.value })}
+                    placeholder="e.g. Pure Steam-Distilled Rose & Saffron Hydrosol"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400 text-sm font-medium"
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label className="block mb-1 text-slate-300 font-medium">Subtitle / Botanical Extraction Claim</label>
+                  <input
+                    type="text"
+                    value={activeProductForm.subtitle || ''}
+                    onChange={(e) => setActiveProductForm({ ...activeProductForm, subtitle: e.target.value })}
+                    placeholder="e.g. 100% Natural Steam-Distilled Resin Extract"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
               </div>
 
+              {/* Category with Custom Option */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block mb-1 text-slate-300 font-medium">Category</label>
@@ -1228,13 +1837,56 @@ export default function AdminDashboard({ onNavigateHome }) {
                     type="text"
                     value={activeProductForm.volume}
                     onChange={(e) => setActiveProductForm({ ...activeProductForm, volume: e.target.value })}
-                    placeholder="e.g. 100 g / 3.5 oz."
+                    placeholder="e.g. 100 g / 3.5 oz. or 100 ml"
                     className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              {activeProductForm.category === 'Custom Category...' && (
+                <div>
+                  <label className="block mb-1 text-amber-400 font-medium">Custom Category Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={activeProductForm.customCategory || ''}
+                    onChange={(e) => setActiveProductForm({ ...activeProductForm, customCategory: e.target.value })}
+                    placeholder="e.g. Artisanal Body Elixirs"
+                    className="w-full p-2.5 bg-slate-950 border border-amber-500 rounded-xl text-white focus:outline-none"
+                  />
+                </div>
+              )}
+
+              {/* Promotional Badge */}
+              <div>
+                <label className="block mb-1.5 text-slate-300 font-medium">Promotional Badge</label>
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {['100% Natural', 'Bestseller', 'New Formulation', 'Limited Batch', 'Traditional Heritage', 'Award Winner'].map((badge) => (
+                    <button
+                      key={badge}
+                      type="button"
+                      onClick={() => setActiveProductForm({ ...activeProductForm, badge })}
+                      className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-colors ${
+                        activeProductForm.badge === badge
+                          ? 'bg-amber-500 text-slate-950 font-bold'
+                          : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {badge}
+                    </button>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  value={activeProductForm.badge || ''}
+                  onChange={(e) => setActiveProductForm({ ...activeProductForm, badge: e.target.value })}
+                  placeholder="Or enter custom badge text"
+                  className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs"
+                />
+              </div>
+
+              {/* Price, MRP, Stock, Low Stock */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div>
                   <label className="block mb-1 text-slate-300 font-medium">Retail Price (₹)</label>
                   <input
@@ -1262,6 +1914,15 @@ export default function AdminDashboard({ onNavigateHome }) {
                     value={activeProductForm.stock}
                     onChange={(e) => setActiveProductForm({ ...activeProductForm, stock: e.target.value })}
                     className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-sm focus:outline-none focus:border-amber-400 font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-slate-300 font-medium">Alert Level &le;</label>
+                  <input
+                    type="number"
+                    value={activeProductForm.lowStockThreshold || 10}
+                    onChange={(e) => setActiveProductForm({ ...activeProductForm, lowStockThreshold: e.target.value })}
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-slate-400 font-mono text-sm focus:outline-none focus:border-amber-400"
                   />
                 </div>
               </div>
@@ -1332,12 +1993,35 @@ export default function AdminDashboard({ onNavigateHome }) {
               <div>
                 <label className="block mb-1 text-slate-300 font-medium">Formulation Description & Clinical Benefits</label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={activeProductForm.description}
                   onChange={(e) => setActiveProductForm({ ...activeProductForm, description: e.target.value })}
                   placeholder="Detail the active stabilization and benefits..."
                   className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white leading-relaxed focus:outline-none focus:border-amber-400"
                 />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block mb-1 text-slate-300 font-medium">Daily Application Ritual (How to Use)</label>
+                  <textarea
+                    rows={2}
+                    value={activeProductForm.ritual || ''}
+                    onChange={(e) => setActiveProductForm({ ...activeProductForm, ritual: e.target.value })}
+                    placeholder="e.g. Warm 2 drops in palms and press into skin."
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-slate-300 font-medium">Research Verification Note</label>
+                  <textarea
+                    rows={2}
+                    value={activeProductForm.researchNotes || ''}
+                    onChange={(e) => setActiveProductForm({ ...activeProductForm, researchNotes: e.target.value })}
+                    placeholder="e.g. Gas chromatography batch purity verified."
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
@@ -1358,6 +2042,186 @@ export default function AdminDashboard({ onNavigateHome }) {
 
             </form>
 
+          </div>
+        </div>
+      )}
+
+      {/* TESTIMONIAL CREATE / EDIT MODAL */}
+      {isTestimonialModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative text-xs">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="font-serif text-lg font-bold text-white">
+                {testimonialModalMode === 'CREATE' ? 'Add New Patron Story' : 'Edit Patron Review'}
+              </h3>
+              <button
+                onClick={() => setIsTestimonialModalOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-white rounded-full bg-slate-800"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveTestimonial} className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block mb-1 text-slate-300 font-medium">Patron Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={activeTestimonialForm.name}
+                    onChange={(e) => setActiveTestimonialForm({ ...activeTestimonialForm, name: e.target.value })}
+                    className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                    placeholder="e.g. Kavita Menon"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-slate-300 font-medium">City / Location</label>
+                  <input
+                    type="text"
+                    required
+                    value={activeTestimonialForm.city}
+                    onChange={(e) => setActiveTestimonialForm({ ...activeTestimonialForm, city: e.target.value })}
+                    className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                    placeholder="e.g. Bengaluru"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-slate-300 font-medium">Formulation Used</label>
+                <input
+                  type="text"
+                  value={activeTestimonialForm.product}
+                  onChange={(e) => setActiveTestimonialForm({ ...activeTestimonialForm, product: e.target.value })}
+                  className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                  placeholder="e.g. Good Bee Frankincense Pure Essential Oil"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 text-slate-300 font-medium">Star Rating (1 - 5)</label>
+                <select
+                  value={activeTestimonialForm.rating}
+                  onChange={(e) => setActiveTestimonialForm({ ...activeTestimonialForm, rating: Number(e.target.value) })}
+                  className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                >
+                  <option value={5}>5 Stars ★★★★★</option>
+                  <option value={4}>4 Stars ★★★★☆</option>
+                  <option value={3}>3 Stars ★★★☆☆</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-slate-300 font-medium">Review Quote</label>
+                <textarea
+                  rows={3}
+                  required
+                  value={activeTestimonialForm.quote}
+                  onChange={(e) => setActiveTestimonialForm({ ...activeTestimonialForm, quote: e.target.value })}
+                  className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white leading-relaxed"
+                  placeholder="Share the visible skin result..."
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsTestimonialModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-slate-400 hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl"
+                >
+                  Save Review
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* COUPON CREATE MODAL */}
+      {isCouponModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl relative text-xs">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="font-serif text-lg font-bold text-white">Create Promo Discount Code</h3>
+              <button
+                onClick={() => setIsCouponModalOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-white rounded-full bg-slate-800"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveCoupon} className="space-y-3">
+              <div>
+                <label className="block mb-1 text-slate-300 font-medium">Coupon Code (e.g. WELCOME15)</label>
+                <input
+                  type="text"
+                  required
+                  value={activeCouponForm.code}
+                  onChange={(e) => setActiveCouponForm({ ...activeCouponForm, code: e.target.value.toUpperCase() })}
+                  className="w-full p-2.5 bg-slate-950 border border-amber-500 rounded-xl text-amber-300 font-mono font-bold text-sm"
+                  placeholder="WELCOME15"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block mb-1 text-slate-300 font-medium">Discount (%)</label>
+                  <input
+                    type="number"
+                    required
+                    min={1}
+                    max={100}
+                    value={activeCouponForm.discountPct}
+                    onChange={(e) => setActiveCouponForm({ ...activeCouponForm, discountPct: Number(e.target.value) })}
+                    className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-slate-300 font-medium">Min Order (₹)</label>
+                  <input
+                    type="number"
+                    value={activeCouponForm.minOrder}
+                    onChange={(e) => setActiveCouponForm({ ...activeCouponForm, minOrder: Number(e.target.value) })}
+                    className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-slate-300 font-medium">Offer Description</label>
+                <input
+                  type="text"
+                  value={activeCouponForm.description}
+                  onChange={(e) => setActiveCouponForm({ ...activeCouponForm, description: e.target.value })}
+                  className="w-full p-2 bg-slate-950 border border-slate-700 rounded-xl text-white"
+                  placeholder="15% off on your first order"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsCouponModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-slate-400 hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl"
+                >
+                  Create Code
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

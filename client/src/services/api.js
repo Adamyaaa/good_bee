@@ -670,7 +670,13 @@ export class GoodBeeApi {
     }
 
     // Client-side filtering fallback for Netlify static preview
-    let list = [...INITIAL_PRODUCTS];
+    let list;
+    try {
+      const stored = typeof window !== 'undefined' ? localStorage.getItem('goodbee_products') : null;
+      list = stored ? JSON.parse(stored) : [...INITIAL_PRODUCTS];
+    } catch (e) {
+      list = [...INITIAL_PRODUCTS];
+    }
     if (params.category && params.category !== 'All') {
       list = list.filter((p) => p.category.toLowerCase() === params.category.toLowerCase());
     }

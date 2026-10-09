@@ -1,7 +1,28 @@
-import React from 'react';
-import { Sparkles, MessageCircle, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, MessageCircle, ArrowUpRight, ShieldCheck, MapPin } from 'lucide-react';
 
 export default function Footer({ onNavigate }) {
+  const [siteContent, setSiteContent] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
+    } catch (e) {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        setSiteContent(JSON.parse(localStorage.getItem('goodbee_site_content') || '{}'));
+      } catch (e) {}
+    };
+    window.addEventListener('goodbee_site_content_updated', handleUpdate);
+    return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
+  }, []);
+
+  const cleanPhone = (siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '');
+  const greeting = siteContent.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.';
+
   return (
     <footer className="bg-brand-charcoal text-brand-ivory pt-16 pb-12 border-t border-brand-gold/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,7 +61,7 @@ export default function Footer({ onNavigate }) {
               </div>
             </div>
             <a
-              href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Concierge%2C%20I%20would%20like%20guidance%20on%20natural%20skincare%20formulations."
+              href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(greeting)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-3 rounded-full bg-brand-gold text-brand-charcoal text-xs font-bold uppercase tracking-wider hover:bg-brand-gold-light transition-colors flex items-center gap-2"
@@ -155,18 +176,30 @@ export default function Footer({ onNavigate }) {
             <ul className="space-y-2 text-brand-sand/70">
               <li>
                 <a
-                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Concierge%2C%20I%20would%20like%20guidance%20on%20natural%20skincare%20formulations."
+                  href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(greeting)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand-gold transition-colors flex items-center gap-1.5"
                 >
                   <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>WhatsApp: +91 99630 75000</span>
+                  <span>WhatsApp: {siteContent.whatsappNumber || '+91 99630 75000'}</span>
                 </a>
               </li>
-              <li>care@goodbee.in</li>
+              <li>
+                <a
+                  href={`mailto:${siteContent.supportEmail || 'care@goodbee.in'}`}
+                  className="hover:text-brand-gold transition-colors"
+                >
+                  {siteContent.supportEmail || 'care@goodbee.in'}
+                </a>
+              </li>
               <li>Web: www.goodbee.in</li>
-              <li>Mon – Sat: 9:30 AM – 7:00 PM IST</li>
+              <li>{siteContent.operatingHours || 'Mon – Sat: 9:30 AM – 7:00 PM IST'}</li>
+              {siteContent.storeAddress && (
+                <li className="text-[11px] text-brand-sand/50 pt-1 leading-relaxed">
+                  {siteContent.storeAddress}
+                </li>
+              )}
             </ul>
           </div>
 

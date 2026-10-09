@@ -3,13 +3,27 @@ import { MessageCircle, X } from 'lucide-react';
 
 export default function WhatsAppConcierge() {
   const [isOpen, setIsOpen] = useState(false);
-  const [config, setConfig] = useState({
-    conciergeUrl: 'https://wa.me/919876543210?text=Hello%20Good%20Bee%20Concierge,%20I%20would%20like%20guidance%20on%20pure%20skincare%20formulations.',
-    phoneNumber: '+91 98765 43210',
-    enabled: true
+  const [config, setConfig] = useState(() => {
+    try {
+      const sc = JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
+      const phone = sc.whatsappNumber || '+919963075000';
+      const cleanPhone = phone.replace(/[^0-9]/g, '');
+      const greeting = sc.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on pure skincare formulations.';
+      return {
+        conciergeUrl: `https://wa.me/${cleanPhone}?text=${encodeURIComponent(greeting)}`,
+        phoneNumber: phone,
+        enabled: true
+      };
+    } catch (e) {
+      return {
+        conciergeUrl: 'https://wa.me/919963075000?text=Hello%20Good%20Bee%20Concierge,%20I%20would%20like%20guidance%20on%20pure%20skincare%20formulations.',
+        phoneNumber: '+91 99630 75000',
+        enabled: true
+      };
+    }
   });
 
-  useEffect(() => {
+  const loadConfig = () => {
     fetch('/api/v1/config/public')
       .then((res) => res.json())
       .then((data) => {
@@ -18,6 +32,12 @@ export default function WhatsAppConcierge() {
         }
       })
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    loadConfig();
+    window.addEventListener('goodbee_site_content_updated', loadConfig);
+    return () => window.removeEventListener('goodbee_site_content_updated', loadConfig);
   }, []);
 
   if (!config.enabled) return null;

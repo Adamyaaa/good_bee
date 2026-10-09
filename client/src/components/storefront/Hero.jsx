@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Sparkles, Droplets, FlaskConical, ShieldCheck } from 'lucide-react';
 
@@ -8,6 +8,24 @@ export default function Hero({ onExplore, onRoutine }) {
     target: containerRef,
     offset: ['start start', 'end start']
   });
+
+  const [siteContent, setSiteContent] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
+    } catch (e) {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        setSiteContent(JSON.parse(localStorage.getItem('goodbee_site_content') || '{}'));
+      } catch (e) {}
+    };
+    window.addEventListener('goodbee_site_content_updated', handleUpdate);
+    return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
+  }, []);
 
   // Smooth parallax layer transformations
   const textY = useTransform(scrollYProgress, [0, 1], [0, 60]);
@@ -67,42 +85,24 @@ export default function Hero({ onExplore, onRoutine }) {
             {/* Positioning Pill */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-cream/90 backdrop-blur-md border border-brand-gold/40 text-[10px] uppercase tracking-[0.25em] text-brand-gold-dark font-medium shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
-              {(() => {
-                try {
-                  const sc = JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
-                  return sc.heroBadge || '100% Natural Skincare • Research-Driven Formulation';
-                } catch (e) {
-                  return '100% Natural Skincare • Research-Driven Formulation';
-                }
-              })()}
+              <span>{siteContent.heroBadge || '100% Natural Skincare • Research-Driven Formulation'}</span>
             </div>
 
             {/* Major Editorial Headline */}
             <h1 className="font-serif text-4xl sm:text-6xl lg:text-[4.2rem] text-brand-charcoal font-normal leading-[1.08] tracking-tight">
-              {(() => {
-                try {
-                  const sc = JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
-                  if (sc.heroHeadline) return sc.heroHeadline;
-                } catch (e) {}
-                return (
-                  <>
-                    Nature, Refined <br />
-                    Through <span className="font-editorial italic font-normal text-brand-gold-dark">Research.</span>
-                  </>
-                );
-              })()}
+              {siteContent.heroHeadline ? (
+                siteContent.heroHeadline
+              ) : (
+                <>
+                  Nature, Refined <br />
+                  Through <span className="font-editorial italic font-normal text-brand-gold-dark">Research.</span>
+                </>
+              )}
             </h1>
 
             {/* Brand Positioning Copy */}
             <p className="text-base sm:text-lg text-brand-charcoal/80 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans tracking-wide">
-              {(() => {
-                try {
-                  const sc = JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
-                  return sc.heroDescription || 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.';
-                } catch (e) {
-                  return 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.';
-                }
-              })()}
+              {siteContent.heroDescription || 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.'}
             </p>
 
             {/* CTAs */}
@@ -111,7 +111,7 @@ export default function Hero({ onExplore, onRoutine }) {
                 onClick={onExplore}
                 className="w-full sm:w-auto px-8 py-4 bg-brand-charcoal text-brand-ivory text-[11px] font-medium tracking-[0.22em] uppercase rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-3 group"
               >
-                <span>Explore Formulations</span>
+                <span>{siteContent.heroCtaPrimary || 'Explore Formulations'}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -119,7 +119,7 @@ export default function Hero({ onExplore, onRoutine }) {
                 onClick={onRoutine}
                 className="w-full sm:w-auto px-8 py-4 bg-brand-ivory/80 backdrop-blur-md text-brand-charcoal text-[11px] font-medium tracking-[0.22em] uppercase rounded-full border border-brand-gold/60 hover:bg-brand-cream transition-all duration-300 flex items-center justify-center"
               >
-                Diagnostic Concerns
+                {siteContent.heroCtaSecondary || 'Diagnostic Concerns'}
               </button>
             </div>
 

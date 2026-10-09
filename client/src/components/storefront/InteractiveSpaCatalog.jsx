@@ -28,6 +28,9 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
 
   useEffect(() => {
     fetchProducts();
+    const handleCatalogUpdate = () => fetchProducts();
+    window.addEventListener('goodbee_catalog_updated', handleCatalogUpdate);
+    return () => window.removeEventListener('goodbee_catalog_updated', handleCatalogUpdate);
   }, [selectedCategory, selectedConcern, searchQuery]);
 
   const fetchProducts = async () => {

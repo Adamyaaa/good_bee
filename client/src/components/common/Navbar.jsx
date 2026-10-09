@@ -10,13 +10,23 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
   const [portalDropdownOpen, setPortalDropdownOpen] = useState(false);
 
   // Read dynamic site content from CMS if modified by Admin
-  const siteContent = (() => {
+  const [siteContent, setSiteContent] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
     } catch (e) {
       return {};
     }
-  })();
+  });
+
+  React.useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        setSiteContent(JSON.parse(localStorage.getItem('goodbee_site_content') || '{}'));
+      } catch (e) {}
+    };
+    window.addEventListener('goodbee_site_content_updated', handleUpdate);
+    return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
+  }, []);
 
   const cleanWhatsappPhone = (siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '');
 

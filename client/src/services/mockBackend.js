@@ -209,6 +209,78 @@ const DEFAULT_CONFIG = {
   }
 };
 
+export const DEFAULT_SITE_CONTENT = {
+  // 1. Top Announcement Bar
+  announcement: 'Complimentary Delivery Across India on Orders Above ₹999',
+  announcementSub: '100% Natural Active Ingredients',
+  freeDeliveryThreshold: 999,
+
+  // 2. Hero Presentation
+  heroBadge: '100% Natural Skincare • Research-Driven Formulation',
+  heroHeadline: 'Nature, Refined Through Research.',
+  heroDescription: 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.',
+  heroCtaPrimary: 'Explore Pure Formulations',
+  heroCtaSecondary: 'Diagnostic Routine',
+
+  // 3. Research & Formulation Philosophy Section
+  philosophyBadge: 'Formulation Philosophy',
+  philosophyTitle: 'Where 100% Natural Meets High-End Research.',
+  philosophyDescription: 'Many natural brands rely solely on raw botanical blending without verifying active compound preservation. At Good Bee, every natural ingredient undergoes rigorous active-stabilization research.',
+  philosophyCard1Title: 'Active Stabilization Research',
+  philosophyCard1Text: 'Ensures raw botanical enzymes, flavonoids, and phytosterols do not degrade under atmospheric exposure.',
+  philosophyCard2Title: 'Zero Synthetic Compromises',
+  philosophyCard2Text: 'No synthetic parabens, artificial fragrances, silicones, sulfates, or petroleum by-products.',
+
+  // 4. Traceable Origin & Ethical Apiaries Section
+  sourcingBadge: 'Traceable Origin & Sourcing',
+  sourcingTitle: 'Ethical Apiaries & Artisanal Extraction Laboratories',
+  sourcingDescription: 'Good Bee coordinates with certified natural beekeepers and cold-processing botanists across South India. Every harvest undergoes stringent batch purity verification before stabilization in our laboratory.',
+  sourcingCtaText: 'Explore Pure Formulations',
+
+  // 5. Customer Testimonials & Reviews
+  testimonials: [
+    {
+      id: 'test_1',
+      name: 'Kavita Menon',
+      city: 'Bengaluru',
+      product: 'Good Bee Frankincense Pure Essential Oil',
+      quote: 'My sensitized, flaking skin barrier calmed down in less than a week. It absorbs like silk without any oily heaviness.',
+      rating: 5
+    },
+    {
+      id: 'test_2',
+      name: 'Dr. Radhika Iyer',
+      city: 'Mumbai',
+      product: 'Good Bee Donkey Milk & Saffron Soap',
+      quote: 'As someone meticulous about ingredient safety, Good Bee’s botanical purity and active stabilization is genuinely impressive. Highly recommended.',
+      rating: 5
+    },
+    {
+      id: 'test_3',
+      name: 'Siddharth Rao',
+      city: 'New Delhi',
+      product: 'Good Bee Sunnipindi Cold Processed Soap',
+      quote: 'Gentlest cleanser bar I have used. Cleans congested pores thoroughly without leaving the tight, parched feeling of regular commercial washes.',
+      rating: 5
+    }
+  ],
+
+  // 6. Promotional Discount Coupons
+  coupons: [
+    { code: 'BOTANICAL10', discountPct: 10, minOrder: 500, active: true, description: '10% off on all natural formulations' },
+    { code: 'PUREBEE15', discountPct: 15, minOrder: 1500, active: true, description: '15% off on orders above ₹1500' }
+  ],
+
+  // 7. Store Contact, Hours & UPI Payment Gateway
+  whatsappNumber: '+919963075000',
+  whatsappGreeting: 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.',
+  supportEmail: 'care@goodbee.in',
+  upiVpa: 'goodbee.official@okaxis',
+  payeeName: 'GOOD BEE Skincare Laboratory',
+  storeAddress: 'Survey No. 42, Western Ghats Botanical Reserve, Wayanad / Bengaluru Studio',
+  operatingHours: 'Mon – Sat: 9:30 AM – 7:00 PM IST'
+};
+
 // LocalStorage helpers
 function getStored(key, defaultVal) {
   try {
@@ -222,6 +294,10 @@ function getStored(key, defaultVal) {
 function setStored(key, val) {
   try {
     localStorage.setItem(key, JSON.stringify(val));
+    if (typeof window !== 'undefined') {
+      if (key === 'goodbee_products') window.dispatchEvent(new CustomEvent('goodbee_catalog_updated'));
+      if (key === 'goodbee_site_content') window.dispatchEvent(new CustomEvent('goodbee_site_content_updated'));
+    }
   } catch (e) {
     // ignore
   }
@@ -289,6 +365,25 @@ export async function handleMockApiRequest(url, init = {}) {
     const { password, ...safeUser } = newUser;
     const token = `gb_demo_token_${safeUser.id}_${Date.now()}`;
     return jsonResponse({ token, user: safeUser }, 201);
+  }
+
+  // 2.5 Public Config for Storefront & Concierge
+  if (path === '/api/v1/config/public' && method === 'GET') {
+    const siteContent = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
+    const cleanPhone = (siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '');
+    const welcomeMsg = siteContent.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.';
+    return jsonResponse({
+      whatsapp: {
+        phoneNumber: siteContent.whatsappNumber || '+91 99630 75000',
+        conciergeUrl: `https://wa.me/${cleanPhone}?text=${encodeURIComponent(welcomeMsg)}`,
+        enabled: true
+      },
+      payment: {
+        upiVpa: siteContent.upiVpa || 'goodbee.official@okaxis',
+        payeeName: siteContent.payeeName || 'GOOD BEE Skincare Laboratory'
+      },
+      site: siteContent
+    });
   }
 
   // 3. Products: Catalog
@@ -387,7 +482,7 @@ export async function handleMockApiRequest(url, init = {}) {
       slug: (body.title || 'formulation').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
       sku: body.sku || `GB-${Date.now().toString().slice(-5)}`,
       category: body.category || 'Cold Processed Soaps',
-      concerns: Array.isArray(body.concerns) ? body.concerns : (typeof body.concerns === 'string' ? body.concerns.split(',').map((s) => s.trim()) : ['Barrier Repair']),
+      concerns: Array.isArray(body.concerns) ? body.concerns : (typeof body.concerns === 'string' ? body.concerns.split(',').map((s) => s.trim()).filter(Boolean) : ['Barrier Repair']),
       price: Number(body.price) || 290,
       mrp: Number(body.mrp) || Math.round((Number(body.price) || 290) * 1.25),
       volume: body.volume || '100 g',
@@ -395,10 +490,12 @@ export async function handleMockApiRequest(url, init = {}) {
       reviewsCount: 1,
       stock: Number(body.stock) || 30,
       lowStockThreshold: Number(body.lowStockThreshold) || 10,
-      badge: body.badge || 'New Formulation',
+      badge: body.badge || '100% Natural',
       shortDescription: body.shortDescription || body.description || '100% Natural botanical formulation.',
       description: body.description || body.shortDescription || '100% Natural botanical formulation.',
-      ingredients: Array.isArray(body.ingredients) ? body.ingredients : (typeof body.ingredients === 'string' ? body.ingredients.split(',').map((s) => s.trim()) : ['Pure Botanical Extracts']),
+      ingredients: Array.isArray(body.ingredients) ? body.ingredients : (typeof body.ingredients === 'string' ? body.ingredients.split(',').map((s) => s.trim()).filter(Boolean) : ['Pure Botanical Extracts']),
+      ritual: body.ritual || 'Massage gently into skin during your morning or evening routine.',
+      researchNotes: body.researchNotes || 'Active-stabilization verified pure botanical extract.',
       image: body.image || '/images_ref/Clear-skin-300x300.webp',
       gallery: [body.image || '/images_ref/Clear-skin-300x300.webp']
     };
@@ -420,8 +517,10 @@ export async function handleMockApiRequest(url, init = {}) {
       price: body.price !== undefined ? Number(body.price) : products[pIndex].price,
       mrp: body.mrp !== undefined ? Number(body.mrp) : products[pIndex].mrp,
       stock: body.stock !== undefined ? Number(body.stock) : products[pIndex].stock,
-      ingredients: body.ingredients ? (Array.isArray(body.ingredients) ? body.ingredients : (typeof body.ingredients === 'string' ? body.ingredients.split(',').map((s) => s.trim()) : products[pIndex].ingredients)) : products[pIndex].ingredients,
-      concerns: body.concerns ? (Array.isArray(body.concerns) ? body.concerns : (typeof body.concerns === 'string' ? body.concerns.split(',').map((s) => s.trim()) : products[pIndex].concerns)) : products[pIndex].concerns
+      ingredients: body.ingredients ? (Array.isArray(body.ingredients) ? body.ingredients : (typeof body.ingredients === 'string' ? body.ingredients.split(',').map((s) => s.trim()).filter(Boolean) : products[pIndex].ingredients)) : products[pIndex].ingredients,
+      concerns: body.concerns ? (Array.isArray(body.concerns) ? body.concerns : (typeof body.concerns === 'string' ? body.concerns.split(',').map((s) => s.trim()).filter(Boolean) : products[pIndex].concerns)) : products[pIndex].concerns,
+      ritual: body.ritual !== undefined ? body.ritual : (products[pIndex].ritual || 'Massage gently into skin.'),
+      researchNotes: body.researchNotes !== undefined ? body.researchNotes : (products[pIndex].researchNotes || 'Active-stabilization verified purity.')
     };
     setStored('goodbee_products', products);
     return jsonResponse({ message: 'Product updated successfully.', product: products[pIndex] });
@@ -470,25 +569,15 @@ export async function handleMockApiRequest(url, init = {}) {
 
   // 13. Admin: Site Content CMS
   if (path === '/api/v1/admin/site-content') {
-    const DEFAULT_SITE_CONTENT = {
-      announcement: 'Complimentary Delivery Across India on Orders Above ₹999',
-      announcementSub: '100% Natural Active Ingredients',
-      heroBadge: '100% Natural Skincare • Research-Driven Formulation',
-      heroHeadline: 'Nature, Refined Through Research.',
-      heroDescription: 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.',
-      whatsappNumber: '+919963075000',
-      supportEmail: 'care@goodbee.in',
-      upiVpa: 'goodbee.official@okaxis',
-      payeeName: 'GOOD BEE Skincare Laboratory'
-    };
-
     if (method === 'GET') {
       const content = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
       return jsonResponse({ content });
     }
     if (method === 'PUT') {
-      setStored('goodbee_site_content', body);
-      return jsonResponse({ message: 'Site content and live copy updated successfully.', content: body });
+      const current = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
+      const updated = { ...current, ...body };
+      setStored('goodbee_site_content', updated);
+      return jsonResponse({ message: 'Site content and live copy updated successfully.', content: updated });
     }
   }
 

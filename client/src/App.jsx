@@ -32,6 +32,27 @@ function SpaLandingContent() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [portalModalConfig, setPortalModalConfig] = useState({ isOpen: false, role: 'CUSTOMER' });
 
+  // Dynamic site content loaded from CMS
+  const [siteContent, setSiteContent] = useState(() => {
+    try {
+      const stored = localStorage.getItem('goodbee_site_content');
+      return stored ? JSON.parse(stored) : {};
+    } catch (e) {
+      return {};
+    }
+  });
+
+  React.useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        const stored = localStorage.getItem('goodbee_site_content');
+        if (stored) setSiteContent(JSON.parse(stored));
+      } catch (e) {}
+    };
+    window.addEventListener('goodbee_site_content_updated', handleUpdate);
+    return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
+  }, []);
+
   // Smooth scroll handler
   const handleScrollTo = (id) => {
     setIsCheckoutOpen(false);
@@ -102,19 +123,20 @@ function SpaLandingContent() {
           <ParallaxIngredientStory />
 
           {/* 6. High-End Research & Active Stabilization Philosophy */}
+          {/* 6. High-End Research & Active Stabilization Philosophy */}
           <section id="research-story" className="py-24 bg-brand-ivory relative border-t border-brand-gold/20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
                 <div className="lg:col-span-6 space-y-6">
                   <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
-                    Formulation Philosophy
+                    {siteContent.philosophyBadge || 'Formulation Philosophy'}
                   </span>
                   <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-charcoal font-medium leading-tight">
-                    Where 100% Natural Meets High-End Research.
+                    {siteContent.philosophyTitle || 'Where 100% Natural Meets High-End Research.'}
                   </h2>
                   <p className="text-brand-charcoal/80 text-sm sm:text-base leading-relaxed font-sans">
-                    Many natural brands rely solely on raw botanical blending without verifying active compound preservation. At Good Bee, every natural ingredient undergoes rigorous active-stabilization research.
+                    {siteContent.philosophyDescription || 'Many natural brands rely solely on raw botanical blending without verifying active compound preservation. At Good Bee, every natural ingredient undergoes rigorous active-stabilization research.'}
                   </p>
                   <div className="space-y-4 pt-2">
                     <div className="flex gap-4 items-start">
@@ -123,10 +145,10 @@ function SpaLandingContent() {
                       </div>
                       <div>
                         <h4 className="font-serif text-lg font-semibold text-brand-charcoal">
-                          Active Stabilization Research
+                          {siteContent.philosophyCard1Title || 'Active Stabilization Research'}
                         </h4>
                         <p className="text-xs text-brand-muted leading-relaxed">
-                          Ensures raw botanical enzymes, flavonoids, and phytosterols do not degrade under atmospheric exposure.
+                          {siteContent.philosophyCard1Text || 'Ensures raw botanical enzymes, flavonoids, and phytosterols do not degrade under atmospheric exposure.'}
                         </p>
                       </div>
                     </div>
@@ -137,10 +159,10 @@ function SpaLandingContent() {
                       </div>
                       <div>
                         <h4 className="font-serif text-lg font-semibold text-brand-charcoal">
-                          Zero Synthetic Compromises
+                          {siteContent.philosophyCard2Title || 'Zero Synthetic Compromises'}
                         </h4>
                         <p className="text-xs text-brand-muted leading-relaxed">
-                          No synthetic parabens, artificial fragrances, silicones, sulfates, or petroleum by-products.
+                          {siteContent.philosophyCard2Text || 'No synthetic parabens, artificial fragrances, silicones, sulfates, or petroleum by-products.'}
                         </p>
                       </div>
                     </div>
@@ -166,29 +188,28 @@ function SpaLandingContent() {
             </div>
           </section>
 
-          {/* 7. Artisanal Producer & Laboratory Partner Spotlight */}
           {/* 7. Artisanal Extraction Labs & Ethical Apiaries */}
           <section id="producer-spotlight" className="py-20 bg-brand-cream/60 border-t border-brand-gold/20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
               <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
-                Traceable Origin & Sourcing
+                {siteContent.sourcingBadge || 'Traceable Origin & Sourcing'}
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl text-brand-charcoal font-medium">
-                Ethical Apiaries & Artisanal Extraction Laboratories
+                {siteContent.sourcingTitle || 'Ethical Apiaries & Artisanal Extraction Laboratories'}
               </h2>
               <p className="text-sm text-brand-charcoal/70 max-w-2xl mx-auto leading-relaxed">
-                Good Bee coordinates with certified natural beekeepers and cold-processing botanists across South India. Every harvest undergoes stringent batch purity verification before stabilization in our laboratory.
+                {siteContent.sourcingDescription || 'Good Bee coordinates with certified natural beekeepers and cold-processing botanists across South India. Every harvest undergoes stringent batch purity verification before stabilization in our laboratory.'}
               </p>
               <div className="pt-6 flex flex-wrap justify-center gap-4">
                 <button
                   onClick={() => handleScrollTo('formulations')}
                   className="px-8 py-3.5 bg-brand-charcoal text-brand-ivory text-xs font-bold tracking-wider uppercase rounded-full hover:bg-brand-gold-dark transition-colors shadow-luxury inline-flex items-center gap-2"
                 >
-                  <span>Explore Pure Formulations</span>
+                  <span>{siteContent.sourcingCtaText || 'Explore Pure Formulations'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <a
-                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Team%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20botanical%20sourcing%20and%20harvests."
+                  href={`https://wa.me/${(siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(siteContent.whatsappGreeting || 'Hello Good Bee Team, I would like to learn more about your botanical sourcing and harvests.')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-7 py-3.5 bg-brand-ivory border border-brand-gold/40 text-brand-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-cream transition-colors shadow-sm inline-flex items-center gap-2"
@@ -204,47 +225,47 @@ function SpaLandingContent() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
                 <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
-                  Good Bee Stories
+                  {siteContent.storiesBadge || 'Good Bee Stories'}
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl text-brand-charcoal font-medium">
-                  Real Skin Transformations
+                  {siteContent.storiesTitle || 'Real Skin Transformations'}
                 </h2>
                 <p className="text-xs text-brand-charcoal/70">
-                  Patrons sharing visible results from pure botanical research routines.
+                  {siteContent.storiesSubtitle || 'Patrons sharing visible results from pure botanical research routines.'}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {[
+                {((siteContent.testimonials && siteContent.testimonials.length > 0) ? siteContent.testimonials : [
                   {
                     name: 'Kavita Menon',
                     city: 'Bengaluru',
-                    product: 'Golden Royal Propolis Restorative Nectar',
+                    product: 'Good Bee Frankincense Pure Essential Oil',
                     quote: 'My sensitized, flaking skin barrier calmed down in less than a week. It absorbs like silk without any oily heaviness.',
                     rating: 5
                   },
                   {
                     name: 'Dr. Radhika Iyer',
                     city: 'Mumbai',
-                    product: 'Botanical Ceramide Barrier Cream',
-                    quote: 'As someone meticulous about ingredient safety, Good Bee’s lamellar lipid research is genuinely impressive. Highly recommended.',
+                    product: 'Good Bee Donkey Milk & Saffron Soap',
+                    quote: 'As someone meticulous about ingredient safety, Good Bee’s botanical purity and active stabilization is genuinely impressive. Highly recommended.',
                     rating: 5
                   },
                   {
                     name: 'Siddharth Rao',
                     city: 'New Delhi',
-                    product: 'Honey Blossom Enzyme Cleanser',
-                    quote: 'Gentlest cleanser I have used. Cleans congested pores thoroughly without leaving the tight, parched feeling of regular foaming washes.',
+                    product: 'Good Bee Sunnipindi Cold Processed Soap',
+                    quote: 'Gentlest cleanser bar I have used. Cleans congested pores thoroughly without leaving the tight, parched feeling of regular commercial washes.',
                     rating: 5
                   }
-                ].map((story, i) => (
+                ]).map((story, i) => (
                   <div
-                    key={i}
+                    key={story.id || i}
                     className="p-6 rounded-2xl bg-brand-cream/30 border border-brand-gold/25 shadow-sm space-y-4 flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       <div className="flex text-amber-600 gap-1">
-                        {[...Array(story.rating)].map((_, idx) => (
+                        {[...Array(story.rating || 5)].map((_, idx) => (
                           <Star key={idx} className="w-4 h-4 fill-amber-500 text-amber-500" />
                         ))}
                       </div>
@@ -255,9 +276,11 @@ function SpaLandingContent() {
                     <div className="pt-3 border-t border-brand-gold/15">
                       <p className="font-serif text-sm font-semibold text-brand-charcoal">{story.name}</p>
                       <p className="text-[11px] text-brand-muted">{story.city} • Verified Patron</p>
-                      <p className="text-[10px] text-brand-gold-dark font-medium mt-1 truncate">
-                        Used: {story.product}
-                      </p>
+                      {story.product && (
+                        <p className="text-[10px] text-brand-gold-dark font-medium mt-1 truncate">
+                          Used: {story.product}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
