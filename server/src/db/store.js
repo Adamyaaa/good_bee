@@ -84,8 +84,91 @@ class DataStore {
       }
     ];
 
-    // Seed Verified Research-Driven 100% Natural Skincare Products
     this.products = [
+      {
+        id: 'gb_prod_frankincense',
+        title: 'Good Bee Frankincense Pure Essential Oil',
+        subtitle: '100% Natural Steam-Distilled Resin Extract',
+        slug: 'good-bee-frankincense-pure-essential-oil',
+        sku: 'GB-OIL-FRK-15',
+        category: 'Pure Essential Oils',
+        concerns: ['Youth & Radiance', 'Barrier Repair', 'Dryness & Moisture Deficit'],
+        price: 1450,
+        mrp: 1750,
+        volume: '15 ml / 0.5 fl. oz.',
+        rating: 4.9,
+        reviewsCount: 86,
+        stock: 40,
+        lowStockThreshold: 10,
+        badge: '100% Natural',
+        shortDescription: 'Pure hydro-distilled frankincense resin oil known for profound cellular renewal, soothing inflammation, and toning mature skin.',
+        description: 'Extracted from pure wild-harvested Boswellia carterii resin through low-temperature steam distillation to preserve active aromatic boswellic terpenes. A grounding natural elixir that restores cellular radiance and calms stressed skin barriers.',
+        ingredients: [
+          '100% Pure Boswellia Carterii (Frankincense) Steam-Distilled Resin Oil'
+        ],
+        ritual: 'Blend 2 drops into your night cream or carrier oil (such as jojoba or rosehip) and gently press over clean face and neck.',
+        researchNotes: 'Gas chromatography verified 100% pure single-origin harvest with zero synthetic adulterants or carrier dilutions.',
+        image: '/assets/goodbee-frankincense-oil.jpg',
+        gallery: [
+          '/assets/goodbee-frankincense-oil.jpg'
+        ]
+      },
+      {
+        id: 'gb_prod_geranium',
+        title: 'Good Bee Geranium Pure Essential Oil',
+        subtitle: '100% Natural Steam-Distilled Floral Extract',
+        slug: 'good-bee-geranium-pure-essential-oil',
+        sku: 'GB-OIL-GER-15',
+        category: 'Pure Essential Oils',
+        concerns: ['Pigmentation & Tone', 'Acne & Blemishes', 'Dryness & Moisture Deficit'],
+        price: 1250,
+        mrp: 1500,
+        volume: '15 ml / 0.5 fl. oz.',
+        rating: 4.8,
+        reviewsCount: 64,
+        stock: 35,
+        lowStockThreshold: 8,
+        badge: 'Bestseller',
+        shortDescription: 'Balancing floral essential oil renowned for sebum harmonization, complexion clarity, and botanical antioxidant defense.',
+        description: 'Distilled from lush Pelargonium graveolens leaves and blossoms. Delivers natural geraniol and citronellol compounds to gently balance sebum production and encourage an even, luminous complexion.',
+        ingredients: [
+          '100% Pure Pelargonium Graveolens (Geranium) Steam-Distilled Flower & Leaf Oil'
+        ],
+        ritual: 'Add 1-2 drops to daily moisturizer or facial massage oil to restore equilibrium to combination or dry skin.',
+        researchNotes: 'Bio-fractionally tested to confirm therapeutic geraniol ester retention and full batch transparency.',
+        image: '/assets/goodbee-geranium-oil.jpg',
+        gallery: [
+          '/assets/goodbee-geranium-oil.jpg'
+        ]
+      },
+      {
+        id: 'gb_prod_lemongrass',
+        title: 'Good Bee Lemongrass Pure Essential Oil',
+        subtitle: '100% Natural Steam-Distilled Herbal Extract',
+        slug: 'good-bee-lemongrass-pure-essential-oil',
+        sku: 'GB-OIL-LMG-15',
+        category: 'Pure Essential Oils',
+        concerns: ['Acne & Blemishes', 'Pigmentation & Tone'],
+        price: 850,
+        mrp: 1050,
+        volume: '15 ml / 0.5 fl. oz.',
+        rating: 4.9,
+        reviewsCount: 72,
+        stock: 50,
+        lowStockThreshold: 12,
+        badge: 'Purifying Ritual',
+        shortDescription: 'Zesty purifying botanical essence targeting pore congestion, microbial balance, and radiant skin invigoration.',
+        description: 'Steam distilled from fresh organic Cymbopogon flexuosus grasses. Packed with natural citral isomers that deeply clarify clogged pores, balance oily T-zones, and refresh dull cutaneous texture.',
+        ingredients: [
+          '100% Pure Cymbopogon Flexuosus (Lemongrass) Steam-Distilled Herbal Oil'
+        ],
+        ritual: 'Dilute 1 drop into 15ml facial oil or clay mask. Also ideal for evening steam facial purification.',
+        researchNotes: 'High citral fraction verified for natural antimicrobial and tone-clarifying action.',
+        image: '/assets/goodbee-lemongrass-oil.jpg',
+        gallery: [
+          '/assets/goodbee-lemongrass-oil.jpg'
+        ]
+      },
       {
         id: 'gb_prod_01',
         title: 'Golden Royal Propolis Restorative Nectar',

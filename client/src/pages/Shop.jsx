@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/storefront/ProductCard';
+import { GoodBeeApi } from '../services/api';
 import { Filter, Search, X, SlidersHorizontal } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Face Care', 'Concentrated Serums', 'Cleansers', 'Restorative Elixirs'];
+const CATEGORIES = ['All', 'Pure Essential Oils', 'Face Care', 'Concentrated Serums', 'Cleansers', 'Restorative Elixirs'];
 const CONCERNS = [
   'All',
   'Barrier Repair',
@@ -33,15 +33,21 @@ export default function Shop({ initialConcern, initialCategory, onSelectProduct 
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      if (selectedCategory !== 'All') params.append('category', selectedCategory);
-      if (selectedConcern !== 'All') params.append('concern', selectedConcern);
-      if (searchQuery.trim()) params.append('search', searchQuery.trim());
-      if (sortBy !== 'featured') params.append('sort', sortBy);
+      const params = {};
+      if (selectedCategory !== 'All') params.category = selectedCategory;
+      if (selectedConcern !== 'All') params.concern = selectedConcern;
+      if (searchQuery.trim()) params.search = searchQuery.trim();
 
-      const res = await fetch(`/api/v1/products?${params.toString()}`);
-      const data = await res.json();
-      setProducts(data.products || []);
+      const list = await GoodBeeApi.fetchProducts(params);
+      let sorted = [...list];
+      if (sortBy === 'price-asc') {
+        sorted.sort((a, b) => a.price - b.price);
+      } else if (sortBy === 'price-desc') {
+        sorted.sort((a, b) => b.price - a.price);
+      } else if (sortBy === 'rating') {
+        sorted.sort((a, b) => b.rating - a.rating);
+      }
+      setProducts(sorted);
     } catch (err) {
       console.error('Error fetching catalog', err);
     } finally {

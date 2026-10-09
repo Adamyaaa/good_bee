@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Sparkles, Droplets, FlaskConical, ShieldCheck, Heart } from 'lucide-react';
+import { ArrowRight, Sparkles, Droplets, FlaskConical, ShieldCheck } from 'lucide-react';
 
 export default function Hero({ onExplore, onRoutine }) {
   const containerRef = useRef(null);
@@ -10,44 +10,44 @@ export default function Hero({ onExplore, onRoutine }) {
   });
 
   // Smooth parallax layer transformations
-  const textY = useTransform(scrollYProgress, [0, 1], [0, 70]);
-  const modelY = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const bgGlowY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const floatingCardY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const modelY = useTransform(scrollYProgress, [0, 1], [0, -45]);
+  const bgGlowY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const floatingCardY = useTransform(scrollYProgress, [0, 1], [0, -55]);
 
   return (
     <section
       ref={containerRef}
       id="hero"
-      className="relative min-h-[92vh] flex items-center overflow-hidden bg-brand-ivory pt-4 pb-20 lg:pt-8 lg:pb-28"
+      className="relative min-h-[95vh] flex items-center overflow-hidden bg-brand-ivory pt-2 pb-20 lg:pt-6 lg:pb-28"
     >
-      {/* 1. Large High-Fashion Radiant Skincare Model — Seamless Blending Layer */}
+      {/* 1. Large High-Aesthetic Skincare Model — Seamless Blending Layer */}
       <motion.div
         style={{ y: modelY }}
-        className="absolute inset-y-0 right-0 w-full lg:w-3/5 pointer-events-none select-none z-0 overflow-hidden"
+        className="absolute inset-y-0 right-0 w-full lg:w-[62%] pointer-events-none select-none z-0 overflow-hidden"
       >
-        {/* Model Portrait Image */}
+        {/* Model Portrait Image with natural daylight and botanical milk bath */}
         <img
-          src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1800&q=88"
-          alt="Good Bee Radiant Natural Skincare Model"
-          className="w-full h-full object-cover object-[center_20%] lg:object-[center_15%] filter brightness-[1.02] contrast-[1.01]"
+          src="/assets/goodbee-hero-model.jpg"
+          alt="Good Bee Pure Natural Skincare Model"
+          className="w-full h-full object-cover object-[center_25%] lg:object-[center_20%] filter brightness-[1.02] contrast-[1.02]"
         />
 
-        {/* Seamless Blending Masks & Gradient Overlays */}
-        {/* Top Blend: Fades into the top navbar */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-brand-ivory via-brand-ivory/70 to-transparent" />
+        {/* Seamless Blending Overlays & Gradients */}
+        {/* Top Blend: Feathered into the frosted navigation bar */}
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-brand-ivory via-brand-ivory/80 via-brand-ivory/40 to-transparent" />
 
-        {/* Left Blend: Dissolves the image into the warm ivory editorial text area */}
-        <div className="absolute inset-y-0 left-0 w-full lg:w-3/4 bg-gradient-to-r from-brand-ivory via-brand-ivory/85 via-brand-ivory/40 to-transparent" />
+        {/* Left Blend: Dissolves into the warm ivory editorial headline area */}
+        <div className="absolute inset-y-0 left-0 w-full lg:w-[70%] bg-gradient-to-r from-brand-ivory via-brand-ivory/90 via-brand-ivory/50 to-transparent" />
 
         {/* Bottom Blend: Melts seamlessly into the next section */}
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-brand-ivory via-brand-ivory/90 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-brand-ivory via-brand-ivory/95 to-transparent" />
 
-        {/* Ambient Warm Champagne Glow behind the model */}
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-brand-gold/20 rounded-full blur-3xl mix-blend-multiply" />
+        {/* Subtle Warm Amber/Gold Vignette */}
+        <div className="absolute top-1/3 right-1/4 w-[420px] h-[420px] bg-brand-gold/15 rounded-full blur-3xl mix-blend-multiply" />
       </motion.div>
 
-      {/* 2. Ambient Atmosphere & Floating Flight Trail */}
+      {/* 2. Soft Ambient Glow */}
       <motion.div
         style={{ y: bgGlowY }}
         className="absolute -top-24 left-1/4 w-[600px] h-[600px] bg-brand-gold/10 rounded-full blur-3xl pointer-events-none"
@@ -139,43 +139,43 @@ export default function Hero({ onExplore, onRoutine }) {
           {/* Right Column: Floating Luxury Formulation Badge & Bee Motif (Col 5) */}
           <div className="lg:col-span-5 relative mt-6 lg:mt-0 flex flex-col items-center lg:items-end justify-center">
             
-            {/* Floating Glassmorphic Product Card Layer */}
+            {/* Floating Glassmorphic Product Card Layer featuring actual Frankincense Essential Oil */}
             <motion.div
               style={{ y: floatingCardY }}
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="relative max-w-xs sm:max-w-sm w-full bg-brand-ivory/90 backdrop-blur-xl p-5 rounded-3xl border border-brand-gold/40 shadow-2xl space-y-4"
+              className="relative max-w-xs sm:max-w-sm w-full bg-brand-ivory/92 backdrop-blur-xl p-5 rounded-3xl border border-brand-gold/40 shadow-2xl space-y-4"
             >
               {/* Product Preview Thumbnail & Tag */}
               <div className="flex items-center gap-4">
-                <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-brand-sand/40 border border-brand-gold/30 flex-shrink-0 shadow-sm">
+                <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-brand-sand/40 border border-brand-gold/30 flex-shrink-0 shadow-sm p-1">
                   <img
-                    src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80"
-                    alt="Golden Royal Propolis Restorative Nectar"
-                    className="w-full h-full object-cover"
+                    src="/assets/goodbee-frankincense-oil.jpg"
+                    alt="Frankincense 100% Natural Essential Oil"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 <div>
                   <span className="text-[10px] uppercase font-bold tracking-widest text-brand-gold-dark block">
-                    Flagship Formulation
+                    100% Natural Pure Extract
                   </span>
                   <h4 className="font-serif text-base font-semibold text-brand-charcoal leading-tight">
-                    Golden Royal Propolis Nectar
+                    Frankincense Essential Oil
                   </h4>
-                  <p className="text-[11px] text-brand-muted mt-0.5">Bio-Fermented Honey & Plant Squalane</p>
+                  <p className="text-[11px] text-brand-muted mt-0.5">Cellular Renewal & Barrier Balance</p>
                 </div>
               </div>
 
               {/* Research Metric Pill */}
               <div className="p-3 bg-brand-cream/80 rounded-2xl border border-brand-gold/25 flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-brand-muted block">Cellular Hydration Index</span>
-                  <span className="font-serif text-sm font-bold text-brand-charcoal">+94% Lipid Restoration</span>
+                  <span className="text-[10px] uppercase font-bold text-brand-muted block">Active Compound Density</span>
+                  <span className="font-serif text-sm font-bold text-brand-charcoal">Boswellic Acid Potency</span>
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] text-brand-muted block">Direct Price</span>
-                  <span className="font-bold text-brand-charcoal">₹1,890</span>
+                  <span className="font-bold text-brand-charcoal">₹1,450</span>
                 </div>
               </div>
 

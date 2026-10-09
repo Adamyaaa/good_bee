@@ -3,6 +3,7 @@ import Hero from '../components/storefront/Hero';
 import ShopByConcern from '../components/storefront/ShopByConcern';
 import ScrollyBrandStory from '../components/storefront/ScrollyBrandStory';
 import ProductCard from '../components/storefront/ProductCard';
+import { GoodBeeApi } from '../services/api';
 import { ArrowRight, Sparkles, FlaskConical, Award, Star, CheckCircle, ShieldCheck } from 'lucide-react';
 
 export default function Home({ onNavigate, onSelectProduct }) {
@@ -10,10 +11,9 @@ export default function Home({ onNavigate, onSelectProduct }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/v1/products')
-      .then((res) => res.json())
-      .then((data) => {
-        setFeaturedProducts(data.products || []);
+    GoodBeeApi.fetchProducts()
+      .then((products) => {
+        setFeaturedProducts(products || []);
         setLoading(false);
       })
       .catch((err) => {
