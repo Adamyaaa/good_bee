@@ -4,8 +4,12 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('goodbee_user');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('goodbee_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
   });
   const [token, setToken] = useState(() => localStorage.getItem('goodbee_token') || '');
 
@@ -16,7 +20,13 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      data = await res.json();
+    } catch (e) {
+      throw new Error('Connection error. Please try again.');
+    }
+
     if (!res.ok) {
       throw new Error(data.error || 'Login failed');
     }
@@ -35,7 +45,13 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify(formData)
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      data = await res.json();
+    } catch (e) {
+      throw new Error('Connection error. Please try again.');
+    }
+
     if (!res.ok) {
       throw new Error(data.error || 'Registration failed');
     }
