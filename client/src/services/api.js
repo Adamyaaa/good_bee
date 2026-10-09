@@ -2,6 +2,7 @@ import QRCode from 'qrcode';
 
 // Rich seed data for resilient offline/Netlify preview
 export const INITIAL_PRODUCTS = [
+  // 1. Frankincense Essential Oil
   {
     id: 'gb_prod_frankincense',
     title: 'Good Bee Frankincense Pure Essential Oil',
@@ -25,11 +26,13 @@ export const INITIAL_PRODUCTS = [
     ],
     ritual: 'Blend 2 drops into your night cream or carrier oil (such as jojoba or rosehip) and gently press over clean face and neck.',
     researchNotes: 'Gas chromatography verified 100% pure single-origin harvest with zero synthetic adulterants or carrier dilutions.',
-    image: '/assets/goodbee-frankincense-oil.jpg',
+    image: '/images_ref/Frankin-300x300.webp',
     gallery: [
+      '/images_ref/Frankin-300x300.webp',
       '/assets/goodbee-frankincense-oil.jpg'
     ]
   },
+  // 2. Geranium Essential Oil
   {
     id: 'gb_prod_geranium',
     title: 'Good Bee Geranium Pure Essential Oil',
@@ -53,11 +56,13 @@ export const INITIAL_PRODUCTS = [
     ],
     ritual: 'Add 1-2 drops to daily moisturizer or facial massage oil to restore equilibrium to combination or dry skin.',
     researchNotes: 'Bio-fractionally tested to confirm therapeutic geraniol ester retention and full batch transparency.',
-    image: '/assets/goodbee-geranium-oil.jpg',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.17-300x300.webp',
     gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.17-300x300.webp',
       '/assets/goodbee-geranium-oil.jpg'
     ]
   },
+  // 3. Lemongrass Essential Oil
   {
     id: 'gb_prod_lemongrass',
     title: 'Good Bee Lemongrass Pure Essential Oil',
@@ -81,202 +86,572 @@ export const INITIAL_PRODUCTS = [
     ],
     ritual: 'Dilute 1 drop into 15ml facial oil or clay mask. Also ideal for evening steam facial purification.',
     researchNotes: 'High citral fraction verified for natural antimicrobial and tone-clarifying action.',
-    image: '/assets/goodbee-lemongrass-oil.jpg',
+    image: '/images_ref/Lemongrass-300x300.webp',
     gallery: [
+      '/images_ref/Lemongrass-300x300.webp',
       '/assets/goodbee-lemongrass-oil.jpg'
     ]
   },
+  // 4. Rosemary Essential Oil
   {
-    id: 'gb_prod_01',
-    title: 'Golden Royal Propolis Restorative Nectar',
-    subtitle: 'Bio-Fermented Honey & Plant Squalane Active Elixir',
-    slug: 'golden-royal-propolis-restorative-nectar',
-    sku: 'GB-PRO-NEC-30',
-    category: 'Concentrated Serums',
-    concerns: ['Barrier Repair', 'Youth & Radiance', 'Dryness & Moisture Deficit'],
-    price: 1890,
-    mrp: 2200,
-    volume: '30 ml / 1.0 fl. oz.',
+    id: 'gb_prod_rosemary_oil',
+    title: 'Good Bee Rosemary Pure Essential Oil',
+    subtitle: '100% Natural Steam-Distilled Botanical Oil',
+    slug: 'good-bee-rosemary-pure-essential-oil',
+    sku: 'GB-OIL-RSM-15',
+    category: 'Pure Essential Oils',
+    concerns: ['Acne & Blemishes', 'Youth & Radiance'],
+    price: 950,
+    mrp: 1150,
+    volume: '15 ml / 0.5 fl. oz.',
     rating: 4.9,
-    reviewsCount: 128,
+    reviewsCount: 92,
     stock: 45,
+    lowStockThreshold: 10,
+    badge: 'Hair & Scalp Ritual',
+    shortDescription: 'Potent steam-distilled rosemary leaf oil activating hair follicles, scalp micro-circulation, and skin vitality.',
+    description: 'Extracted from pure Rosmarinus officinalis leaves. Known for natural 1,8-cineole and camphor compounds that invigorate dormant hair follicles and balance cutaneous sebum.',
+    ingredients: [
+      '100% Pure Rosmarinus Officinalis (Rosemary) Steam-Distilled Leaf Oil'
+    ],
+    ritual: 'Dilute 3–4 drops into cold-pressed Brahmi or coconut carrier oil and gently massage into scalp and hairline.',
+    researchNotes: 'Steam extracted at low atmospheric pressure to protect volatile monoterpenes.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.17-1-300x300.webp',
+    gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.17-1-300x300.webp'
+    ]
+  },
+  // 5. Clear Skin Soap
+  {
+    id: 'gb_prod_clear_skin_soap',
+    title: 'Good Bee Clear Skin Cold Processed Soap',
+    subtitle: 'Neem + Eucalyptus & Pure Himalayan Deodar Blend',
+    slug: 'good-bee-clear-skin-cold-processed-soap',
+    sku: 'GB-SOP-CLR-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Acne & Blemishes', 'Barrier Repair'],
+    price: 275,
+    mrp: 325,
+    volume: '100 g / 3.5 oz.',
+    rating: 4.9,
+    reviewsCount: 215,
+    stock: 65,
     lowStockThreshold: 15,
     badge: 'Bestseller',
-    shortDescription: 'A multi-active lipid restoring nectar infused with ethically collected bio-propolis and pure olive squalane for intense barrier rejuvenation.',
-    description: 'Formulated after meticulous active-stabilization research, this nectar blends bio-active propolis flavonoids with deep-penetrating plant squalane. It strengthens the skin lipid mantle, replenishes lost hydration, and shields against micro-environmental stress without clogging pores.',
+    shortDescription: 'Source Identified Cold Processed Soap saying NO to chemical soap bathing. Cold-pressed neem and eucalyptus with pure beeswax.',
+    description: 'Handcrafted through traditional cold process method without harsh surfactants or synthetic detergents. Cold-pressed Neem, Safflower, Sesame, Sunflower, Coconut, and Castor oils are cured for 6 weeks with pure Beeswax, Himalayan Deodar, and Eucalyptus essential oils for clear, tranquil skin.',
     ingredients: [
-      'Raw Artisanal Propolis Extract (15%)',
-      'Olive-Derived Squalane',
+      'Cold-Pressed Neem Oil',
+      'Safflower Oil',
+      'Sesame Oil',
+      'Sunflower Oil',
+      'Pure Coconut Oil',
+      'Castor Oil',
+      'Natural Bee Wax',
+      'Pure Himalayan Deodar Essential Oil',
+      'Eucalyptus Essential Oil Blend'
+    ],
+    ritual: 'Lather between wet palms or with a natural sisal loofah. Gently massage rich botanical foam over body and face, then rinse thoroughly.',
+    researchNotes: 'Source Identified cold-cure saponification maintains 100% natural glycerin and botanical unsaponifiables.',
+    image: '/images_ref/Clear-skin-300x300.webp',
+    gallery: [
+      '/images_ref/Clear-skin-300x300.webp'
+    ]
+  },
+  // 6. Donkey Milk Soap
+  {
+    id: 'gb_prod_donkey_milk_soap',
+    title: 'Good Bee Donkey Milk Cold Processed Soap',
+    subtitle: 'Almond Oil, Donkey Milk & Pure Bee Wax Bar',
+    slug: 'good-bee-donkey-milk-cold-processed-soap',
+    sku: 'GB-SOP-DNK-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Barrier Repair', 'Dryness & Moisture Deficit', 'Youth & Radiance'],
+    price: 380,
+    mrp: 450,
+    volume: '100 g / 3.5 oz.',
+    rating: 5.0,
+    reviewsCount: 178,
+    stock: 45,
+    lowStockThreshold: 10,
+    badge: 'Ultra-Luxury Milk',
+    shortDescription: 'Source Identified Cold Processed Soap combining nutrient-dense Donkey Milk, sweet almond oil, and pure beeswax.',
+    description: 'Renowned for biological similarity to human skin lipids. Rich in natural vitamins A, B1, B2, C, D, and E, plus retinol-analogous ceramides. Gently scented with Himalayan Deodar, French Lavender, and Palma Rosa essential oils.',
+    ingredients: [
+      'Pure Natural Donkey Milk',
+      'Sweet Almond Oil',
+      'Sesame Oil',
+      'Safflower Oil',
+      'Sunflower Oil',
+      'Coconut Oil',
+      'Castor Oil',
+      'Canola & Palm Fruit Lipids',
+      'Natural Bee Wax',
+      'Himalayan Deodar Oil',
+      'Lavender Oil',
+      'Palma Rosa Oil'
+    ],
+    ritual: 'Work into a silky, cushioning lather. Ideal for daily bathing of dry, sensitive, or delicate skin barriers.',
+    researchNotes: 'Natural lysozyme and immunoglobulins in fresh donkey milk gently shield against cutaneous bacteria.',
+    image: '/images_ref/Donkey-Milk-Soap-300x300.webp',
+    gallery: [
+      '/images_ref/Donkey-Milk-Soap-300x300.webp'
+    ]
+  },
+  // 7. Coffee Soap
+  {
+    id: 'gb_prod_coffee_soap',
+    title: 'Good Bee Coffee Cold Processed Soap',
+    subtitle: 'Finely Ground Coffee Dust, Deodar & Citronella',
+    slug: 'good-bee-coffee-cold-processed-soap',
+    sku: 'GB-SOP-COF-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Acne & Blemishes', 'Pigmentation & Tone'],
+    price: 260,
+    mrp: 310,
+    volume: '100 g / 3.5 oz.',
+    rating: 4.8,
+    reviewsCount: 164,
+    stock: 50,
+    lowStockThreshold: 12,
+    badge: 'Exfoliating Bar',
+    shortDescription: 'Source Identified Cold Processed Soap with micro-milled robusta coffee dust for gentle micro-circulation and skin polishing.',
+    description: 'Combines roasted botanical coffee dust with nourishing cold-pressed oils and pure beeswax. Exfoliates dead skin cells, stimulates cutaneous lymphatic drainage, and refreshes with Himalayan Deodar and Citronella essential oils.',
+    ingredients: [
+      'Robusta Roasted Coffee Dust',
+      'Safflower Oil',
+      'Sesame Oil',
+      'Sunflower Oil',
+      'Coconut Oil',
+      'Castor & Canola Oils',
+      'Natural Bee Wax',
+      'Himalayan Deodar Oil',
+      'Citronella Essential Oil'
+    ],
+    ritual: 'Gently glide the textured bar in circular motions over damp arms, shoulders, and legs. Rinse with warm water.',
+    researchNotes: 'Polyphenol caffeic acid provides antioxidant defense while physical granules gently remove keratolytic build-up.',
+    image: '/images_ref/Coffee-300x300.webp',
+    gallery: [
+      '/images_ref/Coffee-300x300.webp'
+    ]
+  },
+  // 8. Soft Baby Soap
+  {
+    id: 'gb_prod_baby_soap',
+    title: 'Good Bee Soft Baby Cold Processed Soap',
+    subtitle: 'A2 Cow Milk + Pure Shea Butter & Lavender Aroma',
+    slug: 'good-bee-soft-baby-cold-processed-soap',
+    sku: 'GB-SOP-BBY-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Barrier Repair', 'Dryness & Moisture Deficit'],
+    price: 340,
+    mrp: 395,
+    volume: '100 g / 3.5 oz.',
+    rating: 5.0,
+    reviewsCount: 188,
+    stock: 40,
+    lowStockThreshold: 10,
+    badge: 'Gentle Baby Care',
+    shortDescription: 'Source Identified Cold Processed Soap crafted specifically for ultra-delicate newborn and infant skin.',
+    description: 'Formulated with organic A2 Cow Milk and unrefined African Shea Butter. Free from artificial foaming agents, artificial perfumes, and harsh chemicals. Naturally soothing lavender aroma eases bedtime rituals.',
+    ingredients: [
+      'Pure Indigenous A2 Cow Milk',
+      'Raw Shea Butter',
+      'Safflower Oil',
+      'Sesame Oil',
+      'Sunflower Oil',
+      'Coconut Oil',
+      'Castor Oil',
+      'Natural Bee Wax',
+      'Pure Natural Lavender Aroma'
+    ],
+    ritual: 'Create a mild, creamy foam in lukewarm water. Gently wash baby head-to-toe and rinse gently.',
+    researchNotes: 'pH cushioned with natural A2 milk proteins to protect infant acid mantle.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.25-1-300x300.webp',
+    gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.25-1-300x300.webp'
+    ]
+  },
+  // 9. Turmeric Oil Soap
+  {
+    id: 'gb_prod_turmeric_soap',
+    title: 'Good Bee Turmeric Oil Cold Processed Soap',
+    subtitle: 'Turmeric Oil Infused Bee Wax & Himalayan Deodar',
+    slug: 'good-bee-turmeric-oil-cold-processed-soap',
+    sku: 'GB-SOP-TRM-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Pigmentation & Tone', 'Acne & Blemishes'],
+    price: 295,
+    mrp: 345,
+    volume: '100 g / 3.5 oz.',
+    rating: 4.9,
+    reviewsCount: 167,
+    stock: 55,
+    lowStockThreshold: 15,
+    badge: 'Radiance Bar',
+    shortDescription: 'Source Identified Cold Processed Soap infused with pure turmeric rhizome and leaf oils for radiant, blemish-free skin.',
+    description: 'Blends wild turmeric extract directly infused into pure beeswax. Synergized with Himalayan Deodar and Palma Rosa essential oils to clarify hyperpigmentation, fade sun tan, and protect against environmental bacteria.',
+    ingredients: [
+      'Turmeric Oil Infused Bee Wax',
+      'Turmeric Leaf Essential Oil',
+      'Pure Coconut Oil',
+      'Sesame Oil',
+      'Safflower Oil',
+      'Castor Oil',
+      'Sunflower Oil',
+      'Himalayan Deodar Oil',
+      'Palma Rosa Oil'
+    ],
+    ritual: 'Massage lather into face and body. Leave on for 60 seconds before rinsing to let turmeric curcuminoids nourish.',
+    researchNotes: 'Curcumin-rich natural oil infusion maintains natural lipid barrier while evening out tone.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.26-1-300x300.webp',
+    gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.26-1-300x300.webp'
+    ]
+  },
+  // 10. Activated Charcoal Soap
+  {
+    id: 'gb_prod_charcoal_soap',
+    title: 'Good Bee Activated Charcoal Cold Processed Soap',
+    subtitle: 'Microporous Charcoal, Shea Butter & Citronella',
+    slug: 'good-bee-activated-charcoal-cold-processed-soap',
+    sku: 'GB-SOP-CHR-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Acne & Blemishes', 'Pigmentation & Tone'],
+    price: 285,
+    mrp: 340,
+    volume: '100 g / 3.5 oz.',
+    rating: 4.8,
+    reviewsCount: 139,
+    stock: 48,
+    lowStockThreshold: 12,
+    badge: 'Deep Detox',
+    shortDescription: 'Source Identified Cold Processed Soap with activated bamboo charcoal to draw out city pollution and pore impurities.',
+    description: 'Combines steam-activated porous charcoal with moisturizing Shea Butter and Beeswax. Deodorizes naturally with pure Himalayan Deodar, Citronella, and Lavender essential oils without over-drying the epidermis.',
+    ingredients: [
+      'Activated Bamboo Charcoal',
+      'Shea Butter',
+      'Safflower Oil',
+      'Castor Oil',
+      'Sunflower Oil',
+      'Coconut Oil',
+      'Natural Bee Wax',
+      'Himalayan Deodar Oil',
+      'Citronella Oil',
+      'Lavender Oil'
+    ],
+    ritual: 'Lather over congested areas (T-zone, chest, back). Rinse with cool water.',
+    researchNotes: 'High surface-area charcoal acts like a microscopic sponge to lift heavy metals and micro-particulates.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.13-300x300.webp',
+    gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.13-300x300.webp'
+    ]
+  },
+  // 11. Earthy Mineral Soap
+  {
+    id: 'gb_prod_earthy_soap',
+    title: 'Good Bee Earthy Cold Processed Soap',
+    subtitle: 'Natural Mineral Clay, Bee Wax & Palma Rosa',
+    slug: 'good-bee-earthy-cold-processed-soap',
+    sku: 'GB-SOP-ERTH-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Acne & Blemishes', 'Barrier Repair'],
+    price: 270,
+    mrp: 320,
+    volume: '100 g / 3.5 oz.',
+    rating: 4.7,
+    reviewsCount: 95,
+    stock: 42,
+    lowStockThreshold: 10,
+    badge: 'Mineral Clay',
+    shortDescription: 'Source Identified Cold Processed Soap infused with sun-cured mineral clay for calming oily and irritated skin.',
+    description: 'Enriched with natural mineral clay and pure Beeswax. Absorbs excess sebum, remineralizes the skin, and leaves an earthy calming scent of Himalayan Deodar, Citronella, and Palma Rosa.',
+    ingredients: [
+      'Sun-Cured Mineral Clay',
+      'Safflower Oil',
+      'Sesame Oil',
+      'Sunflower Oil',
+      'Coconut Oil',
+      'Castor Oil',
+      'Natural Bee Wax',
+      'Himalayan Deodar Oil',
+      'Citronella Oil',
+      'Palma Rosa Oil'
+    ],
+    ritual: 'Work into a velvety lather and massage over damp skin. Rinse thoroughly.',
+    researchNotes: 'Rich in silica, magnesium, and calcium to replenish vital cutaneous electrolytes.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-300x300.webp',
+    gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-300x300.webp'
+    ]
+  },
+  // 12. Sunnipindi Soap
+  {
+    id: 'gb_prod_sunnipindi_soap',
+    title: 'Good Bee Sunnipindi Cold Processed Soap',
+    subtitle: 'Pumpkin + Multi-Dal Heritage Bath Formula',
+    slug: 'good-bee-sunnipindi-cold-processed-soap',
+    sku: 'GB-SOP-SUN-100',
+    category: 'Cold Processed Soaps',
+    concerns: ['Pigmentation & Tone', 'Dryness & Moisture Deficit'],
+    price: 290,
+    mrp: 350,
+    volume: '100 g / 3.5 oz.',
+    rating: 4.9,
+    reviewsCount: 153,
+    stock: 52,
+    lowStockThreshold: 12,
+    badge: 'Traditional Heritage',
+    shortDescription: 'Source Identified Cold Processed Soap recreating ancient Ayurvedic herbal bath powder into a gentle cleansing bar.',
+    description: 'Combines pumpkin seed oil with stone-ground multi-dal pulses (green gram, chickpea) and pure Beeswax. Provides natural gentle micro-buffing without scratching delicate dermal layers.',
+    ingredients: [
+      'Pumpkin Seed Extract',
+      'Multi-Dal Herbal Infusion',
+      'Safflower Oil',
+      'Sesame Oil',
+      'Sunflower Oil',
+      'Coconut Oil',
+      'Castor Oil',
+      'Natural Bee Wax',
+      'Himalayan Deodar Oil',
+      'Lavender Oil',
+      'Palma Rosa Oil'
+    ],
+    ritual: 'Glide over wet skin to experience the gentle pulse texture. Rinse thoroughly.',
+    researchNotes: 'Natural saponins in multi-pulses cleanse gently while retaining moisture.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.23-300x300.webp',
+    gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.23-300x300.webp'
+    ]
+  },
+  // 13. Tinted Pink Moisturizing Lip Balm
+  {
+    id: 'gb_prod_pink_lip_balm',
+    title: 'Good Bee Tinted Pink Moisturizing Lip Balm',
+    subtitle: 'Enriched with Vitamin E, Pink Lotus & Pure Beeswax',
+    slug: 'good-bee-tinted-pink-moisturizing-lip-balm',
+    sku: 'GB-LIP-TNK-5',
+    category: 'Lip & Facial Care',
+    concerns: ['Dryness & Moisture Deficit', 'Youth & Radiance'],
+    price: 349,
+    mrp: 425,
+    volume: '5 g / 0.18 oz.',
+    rating: 4.9,
+    reviewsCount: 142,
+    stock: 75,
+    lowStockThreshold: 20,
+    badge: 'Bestseller',
+    shortDescription: '100% Natural moisturizing lip balm providing an effortless rosy flush, enriched with sweet almond oil and pure beeswax.',
+    description: 'Infused with cold-pressed sweet almond oil, rosehip seed oil, pink lotus petal extract, and natural beeswax. Deeply seals in moisture, prevents cracked or peeling lips, and gives a healthy dewy pink tint without synthetic dyes.',
+    ingredients: [
+      'Ethically Sourced Natural Beeswax',
+      'Sweet Almond Oil',
       'Cold-Pressed Rosehip Fruit Oil',
-      'Centella Asiatica (Gotu Kola) Meristem Cell Extract',
+      'Pink Lotus (Nelumbo Nucifera) Petal Extract',
+      'Tocopherol (Natural Vitamin E)',
+      'Raw Shea Butter'
+    ],
+    ritual: 'Glide evenly across lips throughout the day or layer before sleep for intensive overnight conditioning.',
+    researchNotes: 'Natural beeswax creates a flexible, breathable moisture seal without petroleum petrolatum occlusives.',
+    image: '/images_ref/Pink-Lotus-300x300.webp',
+    gallery: [
+      '/images_ref/Pink-Lotus-300x300.webp'
+    ]
+  },
+  // 14. No-Tint Moisturizing Lip Balm
+  {
+    id: 'gb_prod_clear_lip_balm',
+    title: 'Good Bee No-Tint Moisturizing Lip Balm',
+    subtitle: 'Enriched with Vitamin E, French Lavender & Pure Beeswax',
+    slug: 'good-bee-no-tint-moisturizing-lip-balm',
+    sku: 'GB-LIP-CLR-5',
+    category: 'Lip & Facial Care',
+    concerns: ['Dryness & Moisture Deficit', 'Barrier Repair'],
+    price: 299,
+    mrp: 375,
+    volume: '5 g / 0.18 oz.',
+    rating: 4.8,
+    reviewsCount: 98,
+    stock: 60,
+    lowStockThreshold: 15,
+    badge: 'Essential Care',
+    shortDescription: 'Uncolored natural barrier conditioning balm for chapped, sensitive lips. Enriched with apricot oil, beeswax, and lavender.',
+    description: 'A pure, restorative balm with zero tint or glitter. Cures dry flaking lips using cold-pressed apricot kernel oil, shea butter, unrefined beeswax, and pure calming lavender essential oil.',
+    ingredients: [
+      'Natural Bee Wax',
+      'Cold-Pressed Apricot Kernel Oil',
+      'Raw Shea Butter',
+      'Sweet Almond Oil',
+      'French Lavender Floral Oil',
       'Tocopherol (Pure Vitamin E)'
     ],
-    ritual: 'Dispense 3–4 drops onto freshly misted skin. Gently press using warm palms into face and decolletage until fully absorbed. Suitable for AM and PM.',
-    researchNotes: 'Cold-extracted under nitrogen shield to preserve delicate bio-flavonoids and enzymes.',
-    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80',
+    ritual: 'Apply liberally whenever lips feel dry or exposed to wind and sun.',
+    researchNotes: 'Hypoallergenic barrier formulation suitable for adults and children.',
+    image: '/images_ref/Levendor-300x300.webp',
     gallery: [
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1608248597359-009d1b643a60?auto=format&fit=crop&w=800&q=80'
+      '/images_ref/Levendor-300x300.webp'
     ]
   },
+  // 15. Botanical Natural Lipstick
   {
-    id: 'gb_prod_02',
-    title: 'Botanical Ceramide Lipid Barrier Cream',
-    subtitle: 'Oat Kernel Phytosterols & Meadowfoam Seed Infusion',
-    slug: 'botanical-ceramide-lipid-barrier-cream',
-    sku: 'GB-CRM-BAR-50',
-    category: 'Face Care',
-    concerns: ['Barrier Repair', 'Dryness & Moisture Deficit', 'Acne & Blemishes'],
-    price: 1650,
-    mrp: 1950,
-    volume: '50 g / 1.7 oz.',
-    rating: 4.8,
-    reviewsCount: 94,
-    stock: 38,
-    lowStockThreshold: 12,
-    badge: 'Editor Choice',
-    shortDescription: 'A cushion-soft emulsion mimicking natural skin lipids to lock in cellular moisture and soothe sensitized skin.',
-    description: 'Engineered with natural plant ceramides from colloidal oat lipids and meadowfoam oil. Provides 72-hour moisture retention while reinforcing weakened skin barriers resulting from pollution or over-cleansing.',
-    ingredients: [
-      'Colloidal Oat Lipid Ceramides (NP, AP, EOP analogues)',
-      'Limnanthes Alba (Meadowfoam) Seed Oil',
-      'Niacinamide-rich Fermented Rice Water',
-      'Shea Butter Glycerides',
-      'Chamomile Flower Extract'
-    ],
-    ritual: 'Smooth a pea-sized amount over face and neck as the final sealing step in your skincare routine.',
-    researchNotes: 'Biomimetic lamellar emulsion matches skin stratum corneum structure for rapid absorption.',
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80'
-    ]
-  },
-  {
-    id: 'gb_prod_03',
-    title: 'Saffron & Licorice Radiance Concentrate',
-    subtitle: 'Crocus Sativus Floral Extract & Bio-Glucosides',
-    slug: 'saffron-licorice-radiance-concentrate',
-    sku: 'GB-SER-SAF-30',
-    category: 'Concentrated Serums',
-    concerns: ['Pigmentation & Tone', 'Youth & Radiance'],
-    price: 2450,
-    mrp: 2900,
-    volume: '30 ml / 1.0 fl. oz.',
-    rating: 5.0,
-    reviewsCount: 76,
-    stock: 22,
+    id: 'gb_prod_lipstick',
+    title: 'Good Bee Natural Botanical Lipstick',
+    subtitle: 'Rich Carmine Coral & Pure Beeswax Formula',
+    slug: 'good-bee-natural-botanical-lipstick',
+    sku: 'GB-LIP-STK-4',
+    category: 'Lip & Facial Care',
+    concerns: ['Youth & Radiance', 'Dryness & Moisture Deficit'],
+    price: 699,
+    mrp: 850,
+    volume: '4 g / 0.14 oz.',
+    rating: 4.9,
+    reviewsCount: 54,
+    stock: 35,
     lowStockThreshold: 10,
-    badge: 'New Release',
-    shortDescription: 'Concentrated natural brighteners that visibly fade hyperpigmentation and impart an incandescent, lit-from-within glow.',
-    description: 'Pure hand-harvested Kashmiri saffron filaments synergized with high-purity glabridin from organic licorice roots. Gently disrupts melanin clustering without photosensitivity.',
+    badge: 'Pure Pigments',
+    shortDescription: 'Creamy satin lipstick crafted from mineral and plant pigments, pure beeswax, and cold-pressed plant ceramides.',
+    description: 'Delivers saturated, weightless color with a nourishing buttery feel. Crafted without lead, parabens, phthalates, or petroleum waxes. Keeps lips supple and hydrated all day long.',
     ingredients: [
-      'Kashmiri Saffron Stigma Infusion (Crocus Sativus)',
-      'Standardized Licorice Root Extract (Glycyrrhiza Glabra)',
-      'Kumkumadi Botanicals',
-      'Kakadu Plum Bio-Vitamin C',
-      'Pure Vegetable Glycerin'
+      'Pure Beeswax',
+      'Castor Seed Oil',
+      'Candelilla Wax',
+      'Natural Iron Oxides & Mineral Pigments',
+      'Jojoba Seed Oil',
+      'Vitamin E'
     ],
-    ritual: 'Press 3 drops into cleansed skin each evening. Follow with Botanical Ceramide Barrier Cream.',
-    researchNotes: 'Chromatographic purity testing ensures ultra-concentrated crocin retention without artificial coloring.',
-    image: 'https://images.unsplash.com/photo-1608248597359-009d1b643a60?auto=format&fit=crop&w=800&q=80',
+    ritual: 'Swipe directly onto lips from tube for full coverage or dab with fingertip for a soft blotted stain.',
+    researchNotes: 'Clean cosmetic formulation using FDA-approved cosmetic minerals and unbleached beeswax.',
+    image: '/images_ref/Lipstick-600x600.webp',
     gallery: [
-      'https://images.unsplash.com/photo-1608248597359-009d1b643a60?auto=format&fit=crop&w=800&q=80'
+      '/images_ref/Lipstick-600x600.webp'
     ]
   },
+  // 16. Brahmi & Neem Hair Oil with Rosemary
   {
-    id: 'gb_prod_04',
-    title: 'Honey Blossom Enzyme Clarifying Cleanser',
-    subtitle: 'Raw Honey Enzymes & Willow Bark BHA Cleanser',
-    slug: 'honey-blossom-enzyme-clarifying-cleanser',
-    sku: 'GB-CLN-BLS-120',
-    category: 'Cleansers',
+    id: 'gb_prod_hair_oil',
+    title: 'Good Bee Brahmi & Neem Hair Oil',
+    subtitle: '100% Natural with Rosemary Essential Oil (100ml)',
+    slug: 'good-bee-brahmi-neem-hair-oil',
+    sku: 'GB-HAR-BRH-100',
+    category: 'Hair & Wellness',
+    concerns: ['Youth & Radiance', 'Acne & Blemishes'],
+    price: 750,
+    mrp: 890,
+    volume: '100 ml / 3.4 fl. oz.',
+    rating: 4.9,
+    reviewsCount: 118,
+    stock: 50,
+    lowStockThreshold: 12,
+    badge: 'Scalp Vitality',
+    shortDescription: '100% Natural intensive hair oil combining slow-cooked Brahmi, Neem leaves, Amla, Kalonji, and Rosemary essential oil.',
+    description: 'Traditional slow-infusion oil formulated after herbal research. Nourishes scalp micro-circulation, stops flaking and itchiness, strengthens roots, and prevents premature graying without mineral oils or silicones.',
+    ingredients: [
+      'Pure Cold-Pressed Sesame & Coconut Oil',
+      'Brahmi (Bacopa Monnieri) Whole Herb',
+      'Neem (Azadirachta Indica) Fresh Leaves',
+      'Amla (Indian Gooseberry) Fruit',
+      'Kalonji (Black Seed) Oil',
+      'Methi (Fenugreek) Seeds',
+      'Rosemary (Rosmarinus Officinalis) Pure Essential Oil'
+    ],
+    ritual: 'Warm 1–2 tablespoons between palms. Part hair and massage deeply into roots for 10 minutes. Leave on for 1 hour or overnight before shampooing.',
+    researchNotes: 'Chromatographic extraction retains heat-sensitive saponins and rosmarinic acid.',
+    image: '/images_ref/Rosmary-2-300x300.webp',
+    gallery: [
+      '/images_ref/Rosmary-2-300x300.webp'
+    ]
+  },
+  // 17. Rosemary Hydrosol Mist
+  {
+    id: 'gb_prod_rosemary_mist',
+    title: 'Good Bee Rosemary Hydrosol Mist',
+    subtitle: '100% Natural Steam-Distilled Face & Scalp Tonic (100ml)',
+    slug: 'good-bee-rosemary-hydrosol-mist',
+    sku: 'GB-MST-RSM-100',
+    category: 'Botanical Mists',
     concerns: ['Acne & Blemishes', 'Pigmentation & Tone'],
-    price: 1190,
-    mrp: 1390,
-    volume: '120 ml / 4.0 fl. oz.',
-    rating: 4.7,
-    reviewsCount: 110,
-    stock: 54,
-    lowStockThreshold: 15,
-    badge: 'Pure Ritual',
-    shortDescription: 'Gentle low-pH gel cleanser dissolving congestion, excess sebum and makeup while maintaining lipid moisture balance.',
-    description: 'Combines naturally active fruit enzymes and raw honey humectants with Salix Alba (Willow Bark) natural salicylic acid for clear, balanced pores without stripping.',
-    ingredients: [
-      'Raw Forest Wildflower Honey',
-      'White Willow Bark Extract (Natural Salicin)',
-      'Papaya Ferment Glucoside',
-      'Decyl Glucoside (Gentle Coconut Surfactant)',
-      'Neroli Hydrosol'
-    ],
-    ritual: 'Lather gently onto damp skin with circular motions for 60 seconds. Rinse thoroughly with cool water.',
-    researchNotes: 'pH optimized at 5.2 to preserve the skin acid mantle and beneficial cutaneous microbiome.',
-    image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80'
-    ]
-  },
-  {
-    id: 'gb_prod_05',
-    title: 'Centella & Green Tea Calming Essence',
-    subtitle: 'Subcritical Green Tea & Madecassoside Mist',
-    slug: 'centella-green-tea-calming-essence',
-    sku: 'GB-ESS-CEN-100',
-    category: 'Face Care',
-    concerns: ['Acne & Blemishes', 'Barrier Repair'],
-    price: 1350,
-    mrp: 1550,
+    price: 499,
+    mrp: 599,
     volume: '100 ml / 3.4 fl. oz.',
     rating: 4.8,
-    reviewsCount: 68,
-    stock: 30,
+    reviewsCount: 83,
+    stock: 45,
     lowStockThreshold: 12,
-    badge: 'Calming Essential',
-    shortDescription: 'A lightweight antioxidant veil that halts irritation, redness, and oxidative stressors within seconds of application.',
-    description: 'Infused with high-purity madecassoside and shade-grown green tea catechins. Restores equilibrium following sun exposure or seasonal weather changes.',
+    badge: 'Pore Clarifying',
+    shortDescription: 'Pure steam-distilled rosemary hydrosol with zero added chemicals. Clarifies dilated pores, balances sebum, and refreshes skin.',
+    description: '100% pure plant water captured during the hydro-distillation of fresh rosemary leaves. Naturally astringent, antimicrobial, and soothing for combination, acne-prone skin and dull scalp roots.',
     ingredients: [
-      'Centella Asiatica Hydro-Extract (82%)',
-      'Camellia Sinensis (Green Tea) Leaf Water',
-      'Aloe Barbadensis Leaf Juice',
-      'Hyaluronic Acid (Triple Molecular Weight)',
-      'Allantoin'
+      '100% Pure Steam-Distilled Rosmarinus Officinalis (Rosemary) Floral Water',
+      'Zero Added Chemicals or Fragrances'
     ],
-    ritual: 'Mist directly over face or pat with fingertips as the first preparatory step post-cleansing.',
-    researchNotes: 'Triple-weight botanical hyaluronic acid penetrates both superficial and deeper dermal planes.',
-    image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80',
+    ritual: 'Spritz directly onto clean face post-wash or use as an energizing midday desk mist.',
+    researchNotes: 'Contains water-soluble plant flavonoids and rosmarinic compounds that penetrate immediately.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.54-300x300.webp',
     gallery: [
-      'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80'
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.54-300x300.webp'
     ]
   },
+  // 18. Damask Rose Hydrosol Mist
   {
-    id: 'gb_prod_06',
-    title: 'Rosehip & Bakuchiol Cell Rejuvenation Elixir',
-    subtitle: '100% Natural Plant Retinol-Alternative Night Oil',
-    slug: 'rosehip-bakuchiol-cell-rejuvenation-elixir',
-    sku: 'GB-ELX-BAK-30',
-    category: 'Restorative Elixirs',
-    concerns: ['Youth & Radiance', 'Pigmentation & Tone'],
-    price: 2190,
-    mrp: 2600,
-    volume: '30 ml / 1.0 fl. oz.',
+    id: 'gb_prod_rose_mist',
+    title: 'Good Bee Damask Rose Hydrosol Mist',
+    subtitle: '100% Natural Steam-Distilled Floral Water (100ml)',
+    slug: 'good-bee-damask-rose-hydrosol-mist',
+    sku: 'GB-MST-ROS-100',
+    category: 'Botanical Mists',
+    concerns: ['Dryness & Moisture Deficit', 'Barrier Repair', 'Youth & Radiance'],
+    price: 549,
+    mrp: 650,
+    volume: '100 ml / 3.4 fl. oz.',
     rating: 4.9,
-    reviewsCount: 88,
-    stock: 19,
-    lowStockThreshold: 8,
-    badge: 'Night Ritual',
-    shortDescription: 'The gentle, natural alternative to retinol. Stimulates collagen turnover without dryness, flaking, or irritation.',
-    description: 'Contains 2% pure standardized Bakuchiol isolated from the seeds of Psoralea Corylifolia, blended into cold-milled Chilean rosehip seed oil.',
+    reviewsCount: 127,
+    stock: 55,
+    lowStockThreshold: 15,
+    badge: 'Signature Dew',
+    shortDescription: '100% Natural hydro-distilled indigenous Damask rose water. Instantly cools, hydrates, and tightens pores without tightness.',
+    description: 'Made from fresh desi Damask rose petals collected at dawn. Captures the delicate water-soluble volatile rose essence to balance cutaneous pH, soothe sun sensitivity, and leave an incandescent petal-soft glow.',
     ingredients: [
-      'Standardized Bakuchiol (2.0%)',
-      'Wild Chilean Rosehip Seed Oil (Rosa Canina)',
-      'Jojoba Seed Oil',
-      'Sea Buckthorn Fruit CO2 Extract',
-      'Helichrysum (Immortelle) Floral Oil'
+      '100% Pure Steam-Distilled Rosa Damascena (Damask Rose) Petal Hydrosol',
+      'Zero Preservatives or Artificial Fragrance'
     ],
-    ritual: 'Warm 2–3 drops between palms at bedtime and press firmly into cleansed skin.',
-    researchNotes: 'Non-photosensitizing profile allows safe use across all four seasons.',
-    image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=800&q=80',
+    ritual: 'Close eyes and mist liberally across face and neck. Gently press with warm palms.',
+    researchNotes: 'Single-distillate batch preserving natural geraniol molecules and cellular hydration index.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.01-300x300.webp',
     gallery: [
-      'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=800&q=80'
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.01-300x300.webp'
+    ]
+  },
+  // 19. Pain Relief Roll-On Oil
+  {
+    id: 'gb_prod_pain_relief_rollon',
+    title: 'Good Bee Pain Relief Active Roll-On Oil',
+    subtitle: '100% Natural Herbal Roll-On for Neck & Joint Tension (10ml)',
+    slug: 'good-bee-pain-relief-active-roll-on-oil',
+    sku: 'GB-ROL-PAN-10',
+    category: 'Hair & Wellness',
+    concerns: ['Barrier Repair'],
+    price: 220,
+    mrp: 260,
+    volume: '10 ml / 0.34 fl. oz.',
+    rating: 4.8,
+    reviewsCount: 112,
+    stock: 60,
+    lowStockThreshold: 15,
+    badge: 'Targeted Relief',
+    shortDescription: 'Fast-acting botanical roll-on oil for headaches, neck stiffness, and muscle fatigue. Portable and non-sticky.',
+    description: 'Crafted with wintergreen, eucalyptus, camphor, and mint herbal extracts. The steel roll-on ball delivers targeted cooling-warming relief to temples, neck, and sore joints without greasiness.',
+    ingredients: [
+      'Gandhapura (Wintergreen) Oil',
+      'Nilgiri (Eucalyptus) Oil',
+      'Pudina (Mint) Terpenes',
+      'Kapoor (Camphor)',
+      'Pure Sesame Carrier Base'
+    ],
+    ritual: 'Gently roll over temples, back of neck, or stiff muscles. Massage lightly with fingertips.',
+    researchNotes: 'Natural methyl salicylate penetrates dermal layers quickly to soothe tension.',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-1-300x300.webp',
+    gallery: [
+      '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-1-300x300.webp'
     ]
   }
 ];

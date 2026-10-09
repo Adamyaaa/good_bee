@@ -65,7 +65,7 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
     setTimeout(() => setAddedNotice(false), 2500);
   };
 
-  const whatsappInquiryUrl = `https://wa.me/919876543210?text=${encodeURIComponent(
+  const whatsappInquiryUrl = `https://wa.me/919963075000?text=${encodeURIComponent(
     `Hello Good Bee Concierge, I am inquiring regarding the ${p.title} (SKU: ${p.sku || 'N/A'}, ₹${p.price}). Could you provide guidance on its formulation?`
   )}`;
 

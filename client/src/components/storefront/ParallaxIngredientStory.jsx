@@ -4,36 +4,36 @@ import { Sparkles, Droplets, Shield, Award } from 'lucide-react';
 
 const ACTIVES = [
   {
-    name: 'Artisanal Bio-Propolis',
-    origin: 'Ethically Sourced Wild Forest Beehives',
-    role: 'Antimicrobial Barrier Shield & Repair',
-    bioactive: 'Bio-Flavonoids & Caffeic Acid Phenethyl Ester',
+    name: 'Natural Bee Wax & Himalayan Deodar',
+    origin: 'Source-Identified Forest Apiaries & High Himalayas',
+    role: 'Antimicrobial Barrier Shield & Moisture Lock',
+    bioactive: 'Natural Wax Esters & Cedrene Terpenes',
     offset: [-20, 40],
-    image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=700&q=80'
+    image: '/images_ref/Clear-skin-300x300.webp'
   },
   {
-    name: 'Standardized Bakuchiol 2.0%',
-    origin: 'Psoralea Corylifolia Cold Seeds',
-    role: 'Natural Cell-Turnover & Retinol Alternative',
-    bioactive: 'High-Purity Terpenophenol Monoterpene',
+    name: 'Indigenous A2 Cow Milk & Shea Butter',
+    origin: 'Ethical Dairy & Cold-Milled Karité Fruit',
+    role: 'Biomimetic Lipid Replenishment & Baby-Soft Skin',
+    bioactive: 'Natural Ceramides & Beta-Casein Proteins',
     offset: [40, -30],
-    image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=700&q=80'
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.25-1-300x300.webp'
   },
   {
-    name: 'Kashmiri Crocus Saffron',
-    origin: 'Hand-Harvested High-Altitude Filaments',
-    role: 'Tyrosinase Regulation & Radiance Infusion',
-    bioactive: 'Concentrated Natural Crocin & Safranal',
+    name: 'Steam-Distilled Frankincense Resin',
+    origin: 'Wild-Harvested Boswellia Carterii Gum',
+    role: 'Cellular Renewal & Deep Tissue Toning',
+    bioactive: 'Active Alpha-Thujene & Boswellic Terpenes',
     offset: [-30, 30],
-    image: 'https://images.unsplash.com/photo-1608248597359-009d1b643a60?auto=format&fit=crop&w=700&q=80'
+    image: '/images_ref/Frankin-300x300.webp'
   },
   {
-    name: 'Colloidal Oat Phytosterols',
-    origin: 'Non-GMO Milled Oat Kernel Lipids',
-    role: 'Lamellar Bilayer Ceramides & Soothing',
-    bioactive: 'Bio-Identical Ceramide NP, AP Analogues',
+    name: 'Pink Lotus Petals & Sweet Almond',
+    origin: 'Hand-Gathered Nelumbo Blossoms & Cold-Pressed Prunus',
+    role: 'Dewy Conditioning & Lip Moisture Barrier',
+    bioactive: 'Flavonoid Glycosides & Natural Vitamin E',
     offset: [30, -40],
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=700&q=80'
+    image: '/images_ref/Pink-Lotus-300x300.webp'
   }
 ];
 

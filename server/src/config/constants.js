@@ -33,7 +33,7 @@ export const DEFAULT_CONFIG = {
     currency: 'INR'
   },
   whatsapp: {
-    phoneNumber: '+919876543210',
+    phoneNumber: '+919963075000',
     welcomeMessage: 'Hello Good Bee Concierge, I would like guidance on pure skincare formulations.',
     enableConcierge: true
   },

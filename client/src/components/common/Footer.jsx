@@ -56,23 +56,23 @@ export default function Footer({ onNavigate }) {
             </h4>
             <ul className="space-y-2 text-brand-sand/70">
               <li>
-                <button onClick={() => onNavigate('shop', { filterCategory: 'Face Care' })} className="hover:text-brand-gold transition-colors">
-                  Face Care
+                <button onClick={() => onNavigate('shop', { filterCategory: 'Cold Processed Soaps' })} className="hover:text-brand-gold transition-colors">
+                  Cold Processed Soaps
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('shop', { filterCategory: 'Concentrated Serums' })} className="hover:text-brand-gold transition-colors">
-                  Concentrated Serums
+                <button onClick={() => onNavigate('shop', { filterCategory: 'Pure Essential Oils' })} className="hover:text-brand-gold transition-colors">
+                  Pure Essential Oils
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('shop', { filterCategory: 'Cleansers' })} className="hover:text-brand-gold transition-colors">
-                  Purifying Cleansers
+                <button onClick={() => onNavigate('shop', { filterCategory: 'Lip & Facial Care' })} className="hover:text-brand-gold transition-colors">
+                  Lip & Facial Care
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('shop', { filterCategory: 'Restorative Elixirs' })} className="hover:text-brand-gold transition-colors">
-                  Restorative Elixirs
+                <button onClick={() => onNavigate('shop', { filterCategory: 'Botanical Mists' })} className="hover:text-brand-gold transition-colors">
+                  Botanical Hydrosol Mists
                 </button>
               </li>
             </ul>
@@ -139,15 +139,20 @@ export default function Footer({ onNavigate }) {
               Direct Concierge
             </h4>
             <ul className="space-y-2 text-brand-sand/70">
-              <li>WhatsApp: +91 98765 43210</li>
-              <li>concierge@goodbee.com</li>
-              <li>Mon – Sat: 9:30 AM – 7:00 PM IST</li>
-              <li className="pt-2">
-                <span className="inline-flex items-center gap-1.5 text-brand-gold-light font-medium">
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  Live Skin Assistance
-                </span>
+              <li>
+                <a
+                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Concierge%2C%20I%20would%20like%20guidance%20on%20natural%20skincare%20formulations."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-gold transition-colors flex items-center gap-1.5"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>WhatsApp: +91 99630 75000</span>
+                </a>
               </li>
+              <li>care@goodbee.in</li>
+              <li>Web: www.goodbee.in</li>
+              <li>Mon – Sat: 9:30 AM – 7:00 PM IST</li>
             </ul>
           </div>
 

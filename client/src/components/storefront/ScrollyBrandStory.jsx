@@ -8,13 +8,13 @@ const STORY_STEPS = [
     title: 'Mindful Botanical Sourcing',
     subtitle: 'Wild & Cultivated Harvest',
     icon: Leaf,
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
+    image: '/images_ref/Rosmary-2-300x300.webp',
     description:
-      'Every active botanical begins with uncompromised biological purity. We source wild-collected forest bee propolis, floral extracts, and botanical oils from sustainable regional growers who harvest at peak nutrient maturity.',
+      'Every active botanical begins with uncompromised biological purity. We source wild-collected forest beeswax, cold-pressed raw seed oils, and botanical herbs from sustainable regional growers who harvest at peak nutrient maturity.',
     highlights: [
       '100% natural, unadulterated botanical raw matter',
-      'Non-destructive cold-milling and artisanal extraction',
-      'Pesticide-free and pesticide-tested origin'
+      'Non-destructive cold-pressing and traditional slow infusions',
+      'Pesticide-free and source-identified origin'
     ]
   },
   {
@@ -22,27 +22,27 @@ const STORY_STEPS = [
     title: 'Laboratory Active Isolation',
     subtitle: 'Cold Stabilization Without Thermal Loss',
     icon: Search,
-    image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1000&q=80',
+    image: '/images_ref/Frankin-300x300.webp',
     description:
-      'Natural ingredients lose potency if heated arbitrarily. Our laboratory partners utilize subcritical and nitrogen-shielded extraction to isolate bio-flavonoids, sterols, and antioxidants without thermal denaturation.',
+      'Natural ingredients lose potency if heated arbitrarily. Good Bee utilizes low-temperature steam hydro-distillation and nitrogen-shielded extraction to isolate pure volatile terpenes without thermal denaturation.',
     highlights: [
-      'High-purity flavonoid and lipid retention',
-      'Zero synthetic solvents or petrochemical remnants',
-      'Standardized compound concentration per batch'
+      'High-purity terpene and active ester retention',
+      'Zero synthetic solvents, mineral oils, or petrochemicals',
+      'Gas-chromatography verified batch purity'
     ]
   },
   {
     step: '03',
-    title: 'Biomimetic Formulation Science',
-    subtitle: 'Harmonized With the Human Skin Barrier',
+    title: 'Source-Identified Cold Process Curing',
+    subtitle: '6-Week Cold Saponification & Pure Beeswax',
     icon: FlaskConical,
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1000&q=80',
+    image: '/images_ref/Clear-skin-300x300.webp',
     description:
-      'We research how botanical actives integrate with the human stratum corneum. Formulations are engineered using lamellar lipid structures so actives penetrate deeply rather than sitting occlusively on the surface.',
+      'Say NO to chemical soap bathing. Our cold-processed soaps preserve 100% natural glycerin and skin-soothing unsaponifiables, cured gently over six weeks with pure forest beeswax and Himalayan Deodar essential oils.',
     highlights: [
-      'Lamellar emulsification matching skin lipid bilayer',
-      'Natural preservative systems derived from fermented lactobacillus',
-      'pH balanced (4.8 - 5.5) to protect beneficial cutaneous microbiome'
+      'Traditional cold-cure saponification preserving natural glycerin',
+      'Free from chemical foaming agents, sulfates, and parabens',
+      'Source-identified single origin ingredients'
     ]
   },
   {
@@ -50,7 +50,7 @@ const STORY_STEPS = [
     title: 'The Skin Transformation Ritual',
     subtitle: 'Cellular Restoration & Lasting Radiance',
     icon: Sparkles,
-    image: 'https://images.unsplash.com/photo-1512290900672-1f55b935b460?auto=format&fit=crop&w=1000&q=80',
+    image: '/assets/goodbee-hero-model.jpg',
     description:
       'The result is skincare that feels sensorial, calm, and transformative. Your skin barrier is replenished with genuine cellular nutrition, resulting in enduring clarity, moisture resilience, and healthy luminosity.',
     highlights: [

@@ -119,7 +119,7 @@ export default function CustomerPortal({ onNavigateHome }) {
                   </div>
 
                   <a
-                    href={`https://wa.me/919876543210?text=${encodeURIComponent(
+                    href={`https://wa.me/919963075000?text=${encodeURIComponent(
                       `Hello Good Bee Support, I would like a dispatch update on order #${ord.id}.`
                     )}`}
                     target="_blank"

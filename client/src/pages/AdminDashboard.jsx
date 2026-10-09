@@ -38,7 +38,7 @@ export default function AdminDashboard({ onNavigateHome }) {
       allowDynamicQr: true
     },
     whatsapp: {
-      phoneNumber: '+919876543210',
+      phoneNumber: '+919963075000',
       welcomeMessage: 'Hello Good Bee Concierge, I would like guidance on pure skincare formulations.',
       enableConcierge: true
     }

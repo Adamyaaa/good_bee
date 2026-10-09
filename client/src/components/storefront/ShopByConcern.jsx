@@ -6,45 +6,45 @@ const CONCERNS = [
     id: 'Barrier Repair',
     name: 'Barrier Repair',
     subtitle: 'Sensitized & Weakened Skin',
-    keyActives: 'Oat Ceramides & Propolis',
+    keyActives: 'Donkey Milk & Pure Bee Wax',
     icon: Shield,
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=700&q=80',
+    image: '/images_ref/Donkey-Milk-Soap-300x300.webp',
     color: 'from-amber-900/60 to-brand-charcoal/80'
   },
   {
     id: 'Acne & Blemishes',
     name: 'Acne & Blemishes',
     subtitle: 'Congested Pores & Breakouts',
-    keyActives: 'Willow Bark BHA & Honey Enzymes',
+    keyActives: 'Neem, Eucalyptus & Deodar',
     icon: Activity,
-    image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=700&q=80',
+    image: '/images_ref/Clear-skin-300x300.webp',
     color: 'from-emerald-950/60 to-brand-charcoal/80'
   },
   {
     id: 'Pigmentation & Tone',
     name: 'Pigmentation & Tone',
-    subtitle: 'Dark Spots & Uneven Texture',
-    keyActives: 'Saffron Crocin & Licorice',
+    subtitle: 'Dark Spots & Uneven Complexion',
+    keyActives: 'Turmeric Oil Infused Bee Wax',
     icon: Sun,
-    image: 'https://images.unsplash.com/photo-1608248597359-009d1b643a60?auto=format&fit=crop&w=700&q=80',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.26-1-300x300.webp',
     color: 'from-amber-950/60 to-brand-charcoal/80'
   },
   {
     id: 'Dryness & Moisture Deficit',
     name: 'Moisture Deficit',
     subtitle: 'Flaking, Tight & Dehydrated Skin',
-    keyActives: 'Plant Squalane & Hyaluronic Acid',
+    keyActives: 'Pink Lotus & Almond Oil',
     icon: Droplets,
-    image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=700&q=80',
-    color: 'from-sky-950/60 to-brand-charcoal/80'
+    image: '/images_ref/Pink-Lotus-300x300.webp',
+    color: 'from-rose-950/60 to-brand-charcoal/80'
   },
   {
     id: 'Youth & Radiance',
     name: 'Youth & Radiance',
     subtitle: 'Fine Lines & Dull Complexion',
-    keyActives: 'Standardized Bakuchiol & Rosehip',
+    keyActives: 'Pure Frankincense Terpenes',
     icon: Sparkles,
-    image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=700&q=80',
+    image: '/images_ref/Frankin-300x300.webp',
     color: 'from-stone-900/60 to-brand-charcoal/80'
   }
 ];

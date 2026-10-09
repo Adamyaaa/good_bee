@@ -82,7 +82,7 @@ export default function Checkout({ onBack, onNavigateHome }) {
             paymentStatus: 'PENDING_PAYMENT'
           },
           dynamicQr: qr,
-          whatsappSupportUrl: `https://wa.me/919876543210?text=${encodeURIComponent(
+          whatsappSupportUrl: `https://wa.me/919963075000?text=${encodeURIComponent(
             `Hello Good Bee Support, I have placed order #${orderId} (₹${total}).`
           )}`
         };
@@ -157,7 +157,7 @@ export default function Checkout({ onBack, onNavigateHome }) {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <a
-              href={`https://wa.me/919876543210?text=${encodeURIComponent(
+              href={`https://wa.me/919963075000?text=${encodeURIComponent(
                 `Hello Good Bee Concierge, I just completed order #${confirmedOrder.id} (₹${confirmedOrder.total}). Could you verify my dispatch details?`
               )}`}
               target="_blank"

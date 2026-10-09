@@ -2,7 +2,14 @@ import ProductCard from '../components/storefront/ProductCard';
 import { GoodBeeApi } from '../services/api';
 import { Filter, Search, X, SlidersHorizontal } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Pure Essential Oils', 'Face Care', 'Concentrated Serums', 'Cleansers', 'Restorative Elixirs'];
+const CATEGORIES = [
+  'All',
+  'Cold Processed Soaps',
+  'Pure Essential Oils',
+  'Lip & Facial Care',
+  'Botanical Mists',
+  'Hair & Wellness'
+];
 const CONCERNS = [
   'All',
   'Barrier Repair',
