@@ -209,7 +209,7 @@ function SpaLandingContent() {
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <a
-                  href={`https://wa.me/${(siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(siteContent.whatsappGreeting || 'Hello Good Bee Team, I would like to learn more about your botanical sourcing and harvests.')}`}
+                  href={`https://wa.me/${(siteContent.whatsappNumber || '987654321').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(siteContent.whatsappGreeting || 'Hello Good Bee Team, I would like to learn more about your botanical sourcing and harvests.')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-7 py-3.5 bg-brand-ivory border border-brand-gold/40 text-brand-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-cream transition-colors shadow-sm inline-flex items-center gap-2"

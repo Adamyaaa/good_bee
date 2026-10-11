@@ -9,7 +9,7 @@ const DEFAULT_USERS = [
     email: 'admin@goodbee.com',
     password: 'admin',
     role: 'ADMIN',
-    phone: '+919963075000',
+    phone: '987654321',
     createdAt: new Date().toISOString()
   },
   {
@@ -203,7 +203,7 @@ const DEFAULT_CONFIG = {
     allowDynamicQr: true
   },
   whatsapp: {
-    phoneNumber: '+919963075000',
+    phoneNumber: '987654321',
     welcomeMessage: 'Hello Good Bee Concierge, I would like guidance on pure skincare formulations.',
     enableConcierge: true
   }
@@ -272,7 +272,7 @@ export const DEFAULT_SITE_CONTENT = {
   ],
 
   // 7. Store Contact, Hours & UPI Payment Gateway
-  whatsappNumber: '+919963075000',
+  whatsappNumber: '987654321',
   whatsappGreeting: 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.',
   supportEmail: 'care@goodbee.in',
   upiVpa: 'goodbee.official@okaxis',
@@ -285,7 +285,13 @@ export const DEFAULT_SITE_CONTENT = {
 function getStored(key, defaultVal) {
   try {
     const val = localStorage.getItem(key);
-    return val ? JSON.parse(val) : defaultVal;
+    if (!val) return defaultVal;
+    const parsed = JSON.parse(val);
+    if (key === 'goodbee_site_content' && parsed && (parsed.whatsappNumber === '+919963075000' || parsed.whatsappNumber === '+91 99630 75000')) {
+      parsed.whatsappNumber = '987654321';
+      localStorage.setItem(key, JSON.stringify(parsed));
+    }
+    return parsed;
   } catch (e) {
     return defaultVal;
   }

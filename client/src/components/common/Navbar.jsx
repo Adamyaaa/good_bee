@@ -28,7 +28,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
     return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
   }, []);
 
-  const cleanWhatsappPhone = (siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '');
+  const cleanWhatsappPhone = (siteContent.whatsappNumber || '987654321').replace(/[^0-9]/g, '');
 
   return (
     <header className="sticky top-0 z-40 w-full bg-brand-ivory/80 backdrop-blur-md border-b border-brand-gold/20 transition-all shadow-sm">
@@ -50,7 +50,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
             rel="noopener noreferrer"
             className="text-brand-sand hover:text-brand-gold transition-colors font-medium"
           >
-            Direct Concierge: {siteContent.whatsappNumber || '+91 99630 75000'}
+            Direct Concierge: {siteContent.whatsappNumber || '987654321'}
           </a>
         </div>
       </div>
@@ -214,7 +214,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
                       </button>
                       <div className="border-t border-brand-gold/15 my-1" />
                       <a
-                        href="https://wa.me/919963075000?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
+                        href="https://wa.me/987654321?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block px-4 py-1.5 text-xs text-brand-muted hover:text-brand-charcoal transition-colors"

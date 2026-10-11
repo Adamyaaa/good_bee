@@ -20,7 +20,7 @@ export default function Footer({ onNavigate }) {
     return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
   }, []);
 
-  const cleanPhone = (siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '');
+  const cleanPhone = (siteContent.whatsappNumber || '987654321').replace(/[^0-9]/g, '');
   const greeting = siteContent.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.';
 
   return (
@@ -143,7 +143,7 @@ export default function Footer({ onNavigate }) {
               </li>
               <li>
                 <a
-                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
+                  href="https://wa.me/987654321?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand-gold transition-colors block"
@@ -153,7 +153,7 @@ export default function Footer({ onNavigate }) {
               </li>
               <li>
                 <a
-                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Team%2C%20I%20am%20interested%20in%20Wholesale%20and%20Stockist%20opportunities."
+                  href="https://wa.me/987654321?text=Hello%20Good%20Bee%20Team%2C%20I%20am%20interested%20in%20Wholesale%20and%20Stockist%20opportunities."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand-gold transition-colors block"
@@ -182,7 +182,7 @@ export default function Footer({ onNavigate }) {
                   className="hover:text-brand-gold transition-colors flex items-center gap-1.5"
                 >
                   <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>WhatsApp: {siteContent.whatsappNumber || '+91 99630 75000'}</span>
+                  <span>WhatsApp: {siteContent.whatsappNumber || '987654321'}</span>
                 </a>
               </li>
               <li>

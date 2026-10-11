@@ -2,7 +2,7 @@ import { store } from '../db/store.js';
 
 export class WhatsAppService {
   static getBaseNumber() {
-    const rawNumber = store.config.whatsapp.phoneNumber || '+919876543210';
+    const rawNumber = store.config.whatsapp.phoneNumber || '987654321';
     return rawNumber.replace(/[^0-9]/g, '');
   }
 
