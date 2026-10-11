@@ -6,7 +6,8 @@ export default function WhatsAppConcierge() {
   const [config, setConfig] = useState(() => {
     try {
       const sc = JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
-      const phone = sc.whatsappNumber || '987654321';
+      let phone = sc.whatsappNumber || '987654321';
+      if (phone.includes('99630')) phone = '987654321';
       const cleanPhone = phone.replace(/[^0-9]/g, '');
       const greeting = sc.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on pure skincare formulations.';
       return {

@@ -28,7 +28,9 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
     return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
   }, []);
 
-  const cleanWhatsappPhone = (siteContent.whatsappNumber || '987654321').replace(/[^0-9]/g, '');
+  const rawNumber = siteContent.whatsappNumber;
+  const phoneNumber = (!rawNumber || rawNumber.includes('99630')) ? '987654321' : rawNumber;
+  const cleanWhatsappPhone = phoneNumber.replace(/[^0-9]/g, '');
 
   return (
     <header className="sticky top-0 z-40 w-full bg-brand-ivory/80 backdrop-blur-md border-b border-brand-gold/20 transition-all shadow-sm">
@@ -50,7 +52,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
             rel="noopener noreferrer"
             className="text-brand-sand hover:text-brand-gold transition-colors font-medium"
           >
-            Direct Concierge: {siteContent.whatsappNumber || '987654321'}
+            Direct Concierge: {phoneNumber}
           </a>
         </div>
       </div>

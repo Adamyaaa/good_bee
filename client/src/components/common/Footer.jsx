@@ -20,7 +20,9 @@ export default function Footer({ onNavigate }) {
     return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
   }, []);
 
-  const cleanPhone = (siteContent.whatsappNumber || '987654321').replace(/[^0-9]/g, '');
+  const rawNumber = siteContent.whatsappNumber;
+  const phoneNumber = (!rawNumber || rawNumber.includes('99630')) ? '987654321' : rawNumber;
+  const cleanPhone = phoneNumber.replace(/[^0-9]/g, '');
   const greeting = siteContent.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.';
 
   return (
@@ -182,7 +184,7 @@ export default function Footer({ onNavigate }) {
                   className="hover:text-brand-gold transition-colors flex items-center gap-1.5"
                 >
                   <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>WhatsApp: {siteContent.whatsappNumber || '987654321'}</span>
+                  <span>WhatsApp: {phoneNumber}</span>
                 </a>
               </li>
               <li>
