@@ -361,7 +361,7 @@ export async function handleMockApiRequest(url, init = {}) {
       password: body.password,
       role: body.role || 'CUSTOMER',
       companyName: body.companyName || '',
-      phone: body.phone || '+919963075000',
+      phone: body.phone || '987654321',
       createdAt: new Date().toISOString()
     };
 
@@ -376,11 +376,11 @@ export async function handleMockApiRequest(url, init = {}) {
   // 2.5 Public Config for Storefront & Concierge
   if (path === '/api/v1/config/public' && method === 'GET') {
     const siteContent = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
-    const cleanPhone = (siteContent.whatsappNumber || '+919963075000').replace(/[^0-9]/g, '');
+    const cleanPhone = (siteContent.whatsappNumber || '987654321').replace(/[^0-9]/g, '');
     const welcomeMsg = siteContent.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.';
     return jsonResponse({
       whatsapp: {
-        phoneNumber: siteContent.whatsappNumber || '+91 99630 75000',
+        phoneNumber: siteContent.whatsappNumber || '987654321',
         conciergeUrl: `https://wa.me/${cleanPhone}?text=${encodeURIComponent(welcomeMsg)}`,
         enabled: true
       },
@@ -714,7 +714,7 @@ export async function handleMockApiRequest(url, init = {}) {
         upiIntentString,
         qrDataUrl
       },
-      whatsappSupportUrl: `https://wa.me/919963075000?text=${encodeURIComponent(
+      whatsappSupportUrl: `https://wa.me/987654321?text=${encodeURIComponent(
         `Hello Good Bee Support, I have placed order #${orderId} (₹${total}).`
       )}`
     }, 201);
