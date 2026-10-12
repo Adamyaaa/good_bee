@@ -9,7 +9,7 @@ const DEFAULT_USERS = [
     email: 'admin@goodbee.com',
     password: 'admin',
     role: 'ADMIN',
-    phone: '987654321',
+    phone: '+91-9963075000',
     createdAt: new Date().toISOString()
   },
   {
@@ -203,7 +203,7 @@ const DEFAULT_CONFIG = {
     allowDynamicQr: true
   },
   whatsapp: {
-    phoneNumber: '987654321',
+    phoneNumber: '+91-9963075000',
     welcomeMessage: 'Hello Good Bee Concierge, I would like guidance on pure skincare formulations.',
     enableConcierge: true
   }
@@ -272,7 +272,7 @@ export const DEFAULT_SITE_CONTENT = {
   ],
 
   // 7. Store Contact, Hours & UPI Payment Gateway
-  whatsappNumber: '987654321',
+  whatsappNumber: '+91-9963075000',
   whatsappGreeting: 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.',
   supportEmail: 'care@goodbee.in',
   upiVpa: 'goodbee.official@okaxis',
@@ -287,8 +287,8 @@ function getStored(key, defaultVal) {
     const val = localStorage.getItem(key);
     if (!val) return defaultVal;
     const parsed = JSON.parse(val);
-    if (key === 'goodbee_site_content' && parsed && (parsed.whatsappNumber === '+919963075000' || parsed.whatsappNumber === '+91 99630 75000')) {
-      parsed.whatsappNumber = '987654321';
+    if (key === 'goodbee_site_content' && parsed && (parsed.whatsappNumber?.includes('987654') || !parsed.whatsappNumber)) {
+      parsed.whatsappNumber = '+91-9963075000';
       localStorage.setItem(key, JSON.stringify(parsed));
     }
     return parsed;
@@ -361,7 +361,7 @@ export async function handleMockApiRequest(url, init = {}) {
       password: body.password,
       role: body.role || 'CUSTOMER',
       companyName: body.companyName || '',
-      phone: body.phone || '987654321',
+      phone: body.phone || '+91-9963075000',
       createdAt: new Date().toISOString()
     };
 
@@ -376,11 +376,11 @@ export async function handleMockApiRequest(url, init = {}) {
   // 2.5 Public Config for Storefront & Concierge
   if (path === '/api/v1/config/public' && method === 'GET') {
     const siteContent = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
-    const cleanPhone = (siteContent.whatsappNumber || '987654321').replace(/[^0-9]/g, '');
+    const cleanPhone = (siteContent.whatsappNumber || '+91-9963075000').replace(/[^0-9]/g, '');
     const welcomeMsg = siteContent.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.';
     return jsonResponse({
       whatsapp: {
-        phoneNumber: siteContent.whatsappNumber || '987654321',
+        phoneNumber: siteContent.whatsappNumber || '+91-9963075000',
         conciergeUrl: `https://wa.me/${cleanPhone}?text=${encodeURIComponent(welcomeMsg)}`,
         enabled: true
       },
@@ -714,7 +714,7 @@ export async function handleMockApiRequest(url, init = {}) {
         upiIntentString,
         qrDataUrl
       },
-      whatsappSupportUrl: `https://wa.me/987654321?text=${encodeURIComponent(
+      whatsappSupportUrl: `https://wa.me/919963075000?text=${encodeURIComponent(
         `Hello Good Bee Support, I have placed order #${orderId} (₹${total}).`
       )}`
     }, 201);

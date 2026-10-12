@@ -21,7 +21,7 @@ export default function Footer({ onNavigate }) {
   }, []);
 
   const rawNumber = siteContent.whatsappNumber;
-  const phoneNumber = (!rawNumber || rawNumber.includes('99630')) ? '987654321' : rawNumber;
+  const phoneNumber = (!rawNumber || rawNumber.includes('987654')) ? '+91-9963075000' : rawNumber;
   const cleanPhone = phoneNumber.replace(/[^0-9]/g, '');
   const greeting = siteContent.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.';
 
@@ -145,7 +145,7 @@ export default function Footer({ onNavigate }) {
               </li>
               <li>
                 <a
-                  href="https://wa.me/987654321?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
+                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand-gold transition-colors block"
@@ -155,7 +155,7 @@ export default function Footer({ onNavigate }) {
               </li>
               <li>
                 <a
-                  href="https://wa.me/987654321?text=Hello%20Good%20Bee%20Team%2C%20I%20am%20interested%20in%20Wholesale%20and%20Stockist%20opportunities."
+                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Team%2C%20I%20am%20interested%20in%20Wholesale%20and%20Stockist%20opportunities."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand-gold transition-colors block"

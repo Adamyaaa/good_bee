@@ -24,7 +24,7 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
     }, 1500);
   };
 
-  const whatsappInquiryUrl = `https://wa.me/919876543210?text=${encodeURIComponent(
+  const whatsappInquiryUrl = `https://wa.me/919963075000?text=${encodeURIComponent(
     `Hello Good Bee Concierge, I am inquiring regarding the ${product.title} (SKU: ${product.sku || 'N/A'}, ₹${product.price}). Could you provide guidance on its formulation?`
   )}`;
 

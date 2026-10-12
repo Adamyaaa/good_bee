@@ -766,7 +766,7 @@ export default function AdminDashboard({ onNavigateHome }) {
             ) : (
               <div className="space-y-4">
                 {orders.map((ord) => {
-                  const cleanPhone = ord.customerPhone?.replace(/[^0-9]/g, '') || '987654321';
+                  const cleanPhone = ord.customerPhone?.replace(/[^0-9]/g, '') || '919963075000';
                   const whatsappMsg = encodeURIComponent(
                     `Hello ${ord.customerName}, regarding your Good Bee Order #${ord.id}: Your 100% pure botanical formulations are currently being prepared for dispatch.`
                   );
@@ -1680,7 +1680,7 @@ export default function AdminDashboard({ onNavigateHome }) {
                         value={siteContent.whatsappNumber || ''}
                         onChange={(e) => setSiteContent({ ...siteContent, whatsappNumber: e.target.value })}
                         className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono"
-                        placeholder="987654321"
+                        placeholder="+91-9963075000"
                       />
                     </div>
                     <div>

@@ -29,7 +29,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
   }, []);
 
   const rawNumber = siteContent.whatsappNumber;
-  const phoneNumber = (!rawNumber || rawNumber.includes('99630')) ? '987654321' : rawNumber;
+  const phoneNumber = (!rawNumber || rawNumber.includes('987654')) ? '+91-9963075000' : rawNumber;
   const cleanWhatsappPhone = phoneNumber.replace(/[^0-9]/g, '');
 
   return (
@@ -216,7 +216,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
                       </button>
                       <div className="border-t border-brand-gold/15 my-1" />
                       <a
-                        href="https://wa.me/987654321?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
+                        href="https://wa.me/919963075000?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block px-4 py-1.5 text-xs text-brand-muted hover:text-brand-charcoal transition-colors"

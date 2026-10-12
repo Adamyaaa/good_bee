@@ -6,8 +6,8 @@ export default function WhatsAppConcierge() {
   const [config, setConfig] = useState(() => {
     try {
       const sc = JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
-      let phone = sc.whatsappNumber || '987654321';
-      if (phone.includes('99630')) phone = '987654321';
+      let phone = sc.whatsappNumber || '+91-9963075000';
+      if (phone.includes('987654')) phone = '+91-9963075000';
       const cleanPhone = phone.replace(/[^0-9]/g, '');
       const greeting = sc.whatsappGreeting || 'Hello Good Bee Concierge, I would like guidance on pure skincare formulations.';
       return {
@@ -17,8 +17,8 @@ export default function WhatsAppConcierge() {
       };
     } catch (e) {
       return {
-        conciergeUrl: 'https://wa.me/987654321?text=Hello%20Good%20Bee%20Concierge,%20I%20would%20like%20guidance%20on%20pure%20skincare%20formulations.',
-        phoneNumber: '987654321',
+        conciergeUrl: 'https://wa.me/919963075000?text=Hello%20Good%20Bee%20Concierge,%20I%20would%20like%20guidance%20on%20pure%20skincare%20formulations.',
+        phoneNumber: '+91-9963075000',
         enabled: true
       };
     }

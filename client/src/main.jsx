@@ -9,8 +9,8 @@ try {
   const raw = localStorage.getItem('goodbee_site_content');
   if (raw) {
     const sc = JSON.parse(raw);
-    if (!sc.whatsappNumber || sc.whatsappNumber.includes('99630')) {
-      sc.whatsappNumber = '987654321';
+    if (!sc.whatsappNumber || sc.whatsappNumber.includes('987654')) {
+      sc.whatsappNumber = '+91-9963075000';
       localStorage.setItem('goodbee_site_content', JSON.stringify(sc));
     }
   }
