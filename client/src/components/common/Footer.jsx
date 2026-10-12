@@ -33,19 +33,19 @@ export default function Footer({ onNavigate }) {
         {/* Top Brand Statement Row */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-brand-charcoal-muted/30 items-center">
           <div className="lg:col-span-6 space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white p-2 border-2 border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-md">
+            <div className="flex items-center gap-3.5">
+              <div className="h-12 w-auto sm:h-14 flex items-center justify-center flex-shrink-0">
                 <img
-                  src="/assets/goodbee-white-logo.png"
+                  src="/assets/goodbee-bee-mark.png"
                   alt="Good Bee Emblem"
-                  className="w-full h-full object-contain filter drop-shadow-sm"
+                  className="h-full w-auto object-contain filter invert brightness-200"
                 />
               </div>
-              <div>
-                <h3 className="font-serif text-3xl sm:text-4xl tracking-[0.22em] font-medium text-brand-ivory">
+              <div className="flex flex-col justify-center">
+                <h3 className="font-serif text-3xl sm:text-4xl tracking-[0.22em] font-medium text-brand-ivory leading-none">
                   GOOD BEE
                 </h3>
-                <p className="text-[11px] sm:text-xs tracking-[0.28em] uppercase text-brand-gold-light font-sans font-medium mt-1">
+                <p className="text-[10px] sm:text-xs tracking-[0.28em] uppercase text-brand-gold-light font-sans font-medium mt-1.5 leading-none">
                   100% Natural Skincare • Research-Driven
                 </p>
               </div>

@@ -89,7 +89,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24 sm:h-28">
+        <div className="flex items-center justify-between h-20 sm:h-22">
           
           {/* Mobile menu button */}
           <div className="flex items-center lg:hidden">
@@ -102,24 +102,24 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
             </button>
           </div>
 
-          {/* Brand Logo - Prominent & Big */}
+          {/* Brand Logo - Seamless Luxury Presentation */}
           <div className="flex items-center">
             <button
               onClick={() => onScrollTo('hero')}
-              className="flex items-center gap-3 sm:gap-4 group text-left focus:outline-none"
+              className="flex items-center gap-3 group text-left focus:outline-none"
             >
-              <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full bg-white p-1.5 sm:p-2 border-2 border-brand-gold/40 shadow-md flex items-center justify-center group-hover:scale-105 group-hover:border-brand-gold transition-all duration-300 flex-shrink-0">
+              <div className="h-11 w-auto sm:h-13 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                 <img
-                  src="/assets/goodbee-white-logo.png"
+                  src="/assets/goodbee-bee-mark.png"
                   alt="Good Bee Emblem"
-                  className="w-full h-full object-contain filter drop-shadow-sm"
+                  className="h-full w-auto object-contain"
                 />
               </div>
-              <div>
-                <span className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-[0.2em] sm:tracking-[0.25em] font-medium text-brand-charcoal block leading-none">
+              <div className="flex flex-col justify-center">
+                <span className="font-serif text-2xl sm:text-3xl tracking-[0.22em] font-medium text-brand-charcoal block leading-none">
                   GOOD BEE
                 </span>
-                <span className="hidden sm:block text-[10px] sm:text-xs tracking-[0.32em] text-brand-gold-dark font-sans uppercase font-semibold mt-2">
+                <span className="text-[9px] sm:text-[10px] tracking-[0.3em] text-brand-gold-dark font-sans uppercase font-semibold mt-1.5 leading-none">
                   100% Natural Skincare • Research
                 </span>
               </div>
