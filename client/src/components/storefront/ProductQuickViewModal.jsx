@@ -10,10 +10,12 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
 
   if (!product) return null;
 
-  const discountPercent =
+  const effectiveMrp =
     product.mrp && product.mrp > product.price
-      ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
-      : null;
+      ? product.mrp
+      : Math.round(product.price * 1.25);
+
+  const discountPercent = Math.round(((effectiveMrp - product.price) / effectiveMrp) * 100);
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -105,16 +107,12 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
                 <span className="font-sans text-xl font-bold text-brand-charcoal">
                   ₹{product.price.toLocaleString('en-IN')}
                 </span>
-                {product.mrp && product.mrp > product.price && (
-                  <span className="text-xs text-brand-muted line-through">
-                    ₹{product.mrp.toLocaleString('en-IN')}
-                  </span>
-                )}
-                {discountPercent && (
-                  <span className="text-xs font-bold text-brand-gold-dark uppercase">
-                    Save {discountPercent}%
-                  </span>
-                )}
+                <span className="text-xs text-brand-muted line-through">
+                  ₹{effectiveMrp.toLocaleString('en-IN')}
+                </span>
+                <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded uppercase border border-emerald-300/50">
+                  Save {discountPercent}%
+                </span>
               </div>
 
               <p className="text-xs text-brand-charcoal/80 leading-relaxed">

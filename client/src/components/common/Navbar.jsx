@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShoppingBag, User, Search, Menu, X, Shield, Sparkles, ChevronDown } from 'lucide-react';
+import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 
@@ -45,7 +46,7 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
           <span className="hidden sm:inline text-brand-gold">•</span>
           <span className="hidden sm:inline text-brand-gold-light">{siteContent.announcementSub || '100% Natural Active Ingredients'}</span>
         </div>
-        <div className="hidden md:flex items-center gap-3 text-xs">
+        <div className="hidden md:flex items-center gap-4 text-xs">
           <a
             href={`https://wa.me/${cleanWhatsappPhone}?text=Hello%20Good%20Bee%20Concierge%2C%20I%20need%20assistance%20with%20natural%20skincare%20formulations.`}
             target="_blank"
@@ -54,12 +55,41 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
           >
             Direct Concierge: {phoneNumber}
           </a>
+          <div className="flex items-center gap-2.5 pl-3 border-l border-brand-sand/20">
+            <a
+              href="https://instagram.com/goodbee.skincare"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-sand/80 hover:text-brand-gold transition-colors"
+              title="Good Bee Instagram"
+            >
+              <InstagramIcon className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href="https://facebook.com/goodbee.skincare"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-sand/80 hover:text-brand-gold transition-colors"
+              title="Good Bee Facebook"
+            >
+              <FacebookIcon className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href="https://youtube.com/@goodbee-skincare"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-sand/80 hover:text-brand-gold transition-colors"
+              title="Good Bee YouTube"
+            >
+              <YoutubeIcon className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
       </div>
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24 sm:h-28">
           
           {/* Mobile menu button */}
           <div className="flex items-center lg:hidden">
@@ -72,25 +102,25 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
             </button>
           </div>
 
-          {/* Brand Logo */}
+          {/* Brand Logo - Prominent & Big */}
           <div className="flex items-center">
             <button
               onClick={() => onScrollTo('hero')}
-              className="flex items-center gap-2.5 sm:gap-3 group text-left focus:outline-none"
+              className="flex items-center gap-3 sm:gap-4 group text-left focus:outline-none"
             >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white p-1 border border-brand-gold/30 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform duration-300 flex-shrink-0">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full bg-white p-1.5 sm:p-2 border-2 border-brand-gold/40 shadow-md flex items-center justify-center group-hover:scale-105 group-hover:border-brand-gold transition-all duration-300 flex-shrink-0">
                 <img
                   src="/assets/goodbee-white-logo.png"
                   alt="Good Bee Emblem"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain filter drop-shadow-sm"
                 />
               </div>
               <div>
-                <span className="font-serif text-lg sm:text-2xl tracking-[0.18em] sm:tracking-[0.25em] font-normal text-brand-charcoal block leading-none">
+                <span className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-[0.2em] sm:tracking-[0.25em] font-medium text-brand-charcoal block leading-none">
                   GOOD BEE
                 </span>
-                <span className="hidden sm:block text-[9px] tracking-[0.3em] text-brand-gold-dark font-sans uppercase font-medium mt-1.5">
-                  Natural Skincare • Research
+                <span className="hidden sm:block text-[10px] sm:text-xs tracking-[0.32em] text-brand-gold-dark font-sans uppercase font-semibold mt-2">
+                  100% Natural Skincare • Research
                 </span>
               </div>
             </button>
@@ -300,10 +330,26 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
               setMobileMenuOpen(false);
               onOpenPortal('CUSTOMER');
             }}
-            className="block w-full text-left text-sm font-bold text-brand-gold-dark py-2"
+            className="block w-full text-left text-sm font-bold text-brand-gold-dark py-2 border-b border-brand-gold/15"
           >
             My Patron Account
           </button>
+
+          {/* Mobile Socials */}
+          <div className="pt-3 flex items-center justify-between text-xs text-brand-charcoal/70">
+            <span className="font-semibold text-brand-gold-dark uppercase tracking-wider text-[11px]">Follow Good Bee:</span>
+            <div className="flex items-center gap-3">
+              <a href="https://instagram.com/goodbee.skincare" target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full bg-brand-cream text-brand-charcoal hover:text-brand-gold transition-colors">
+                <InstagramIcon className="w-4 h-4" />
+              </a>
+              <a href="https://facebook.com/goodbee.skincare" target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full bg-brand-cream text-brand-charcoal hover:text-brand-gold transition-colors">
+                <FacebookIcon className="w-4 h-4" />
+              </a>
+              <a href="https://youtube.com/@goodbee-skincare" target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full bg-brand-cream text-brand-charcoal hover:text-brand-gold transition-colors">
+                <YoutubeIcon className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
         </div>
       )}
     </header>

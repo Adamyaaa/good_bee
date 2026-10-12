@@ -111,7 +111,7 @@ export default function Hero({ onExplore, onRoutine }) {
                 onClick={onExplore}
                 className="w-full sm:w-auto px-8 py-4 bg-brand-charcoal text-brand-ivory text-[11px] font-medium tracking-[0.22em] uppercase rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-3 group"
               >
-                <span>{siteContent.heroCtaPrimary || 'Explore Formulations'}</span>
+                <span>{siteContent.heroCtaPrimary || 'Shop Now • Formulations'}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 

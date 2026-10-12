@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, MessageCircle, ArrowUpRight, ShieldCheck, MapPin } from 'lucide-react';
+import SocialLinksRow from './SocialIcons';
 
 export default function Footer({ onNavigate }) {
   const [siteContent, setSiteContent] = useState(() => {
@@ -31,27 +32,31 @@ export default function Footer({ onNavigate }) {
         
         {/* Top Brand Statement Row */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-12 border-b border-brand-charcoal-muted/30 items-center">
-          <div className="lg:col-span-6 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-white p-1 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
+          <div className="lg:col-span-6 space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white p-2 border-2 border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-md">
                 <img
                   src="/assets/goodbee-white-logo.png"
                   alt="Good Bee Emblem"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain filter drop-shadow-sm"
                 />
               </div>
               <div>
-                <h3 className="font-serif text-2xl tracking-[0.2em] font-medium text-brand-ivory">
+                <h3 className="font-serif text-3xl sm:text-4xl tracking-[0.22em] font-medium text-brand-ivory">
                   GOOD BEE
                 </h3>
-                <p className="text-[10px] tracking-widest uppercase text-brand-gold-light">
-                  100% Natural Skincare • High-End Research
+                <p className="text-[11px] sm:text-xs tracking-[0.28em] uppercase text-brand-gold-light font-sans font-medium mt-1">
+                  100% Natural Skincare • Research-Driven
                 </p>
               </div>
             </div>
             <p className="text-xs text-brand-sand/80 max-w-md leading-relaxed font-sans">
               Good Bee develops 100% natural skincare formulations crafted after high-end botanical and active-stabilization research. Harmonizing pure raw ingredients with modern laboratory precision.
             </p>
+            <div className="pt-1">
+              <span className="text-[10px] uppercase tracking-widest text-brand-gold-light/90 block mb-2 font-semibold">Connect with Good Bee:</span>
+              <SocialLinksRow iconClassName="w-4 h-4" />
+            </div>
           </div>
 
           <div className="lg:col-span-6 flex flex-col sm:flex-row gap-4 items-start lg:items-center justify-end">

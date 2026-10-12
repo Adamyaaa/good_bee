@@ -5,10 +5,12 @@ import { useCart } from '../../context/CartContext';
 export default function ProductCard({ product, onViewDetails }) {
   const { addToCart } = useCart();
 
-  const discountPercent =
+  const effectiveMrp =
     product.mrp && product.mrp > product.price
-      ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
-      : null;
+      ? product.mrp
+      : Math.round(product.price * 1.25);
+
+  const discountPercent = Math.round(((effectiveMrp - product.price) / effectiveMrp) * 100);
 
   return (
     <div className="group relative bg-brand-ivory rounded-2xl border border-brand-gold/25 overflow-hidden transition-all duration-400 hover:shadow-luxury hover:border-brand-gold flex flex-col justify-between">
@@ -28,11 +30,9 @@ export default function ProductCard({ product, onViewDetails }) {
               {product.badge}
             </span>
           )}
-          {discountPercent && (
-            <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-brand-gold text-brand-charcoal rounded-md shadow-sm">
-              {discountPercent}% OFF
-            </span>
-          )}
+          <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-brand-gold text-brand-charcoal rounded-md shadow-sm">
+            {discountPercent}% OFF
+          </span>
         </div>
 
         {/* Floating Quick Action Overlay */}
@@ -58,15 +58,6 @@ export default function ProductCard({ product, onViewDetails }) {
       <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
         
         <div className="space-y-1.5">
-          {/* Rating */}
-          <div className="flex items-center gap-1.5 text-xs text-brand-charcoal/70">
-            <div className="flex items-center text-amber-600">
-              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-            </div>
-            <span className="font-semibold text-brand-charcoal">{product.rating || '4.9'}</span>
-            <span className="text-[11px] text-brand-muted">({product.reviewsCount || '100+'})</span>
-          </div>
-
           {/* Title */}
           <h3
             onClick={() => onViewDetails(product)}
@@ -74,6 +65,20 @@ export default function ProductCard({ product, onViewDetails }) {
           >
             {product.title}
           </h3>
+
+          {/* 5-Star Rating Below Product */}
+          <div className="flex items-center gap-1.5 pt-0.5 text-xs text-brand-charcoal/80">
+            <div className="flex items-center text-amber-500 gap-0.5">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                />
+              ))}
+            </div>
+            <span className="font-bold text-xs text-brand-charcoal">{product.rating || '4.6'}</span>
+            <span className="text-[11px] text-brand-muted font-medium">({product.reviewsCount || '97'})</span>
+          </div>
 
           {/* Subtitle / Key Actives */}
           <p className="text-xs text-brand-muted line-clamp-1 font-sans">
@@ -94,14 +99,15 @@ export default function ProductCard({ product, onViewDetails }) {
         <div className="pt-3 border-t border-brand-gold/15 flex items-center justify-between">
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="font-sans text-base font-bold text-brand-charcoal">
+              <span className="font-sans text-lg font-bold text-brand-charcoal">
                 ₹{product.price.toLocaleString('en-IN')}
               </span>
-              {product.mrp && product.mrp > product.price && (
-                <span className="font-sans text-xs text-brand-muted line-through">
-                  ₹{product.mrp.toLocaleString('en-IN')}
-                </span>
-              )}
+              <span className="font-sans text-xs text-brand-muted line-through">
+                ₹{effectiveMrp.toLocaleString('en-IN')}
+              </span>
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/50">
+                {discountPercent}% OFF
+              </span>
             </div>
             <span className="text-[10px] text-brand-muted block">Inclusive of all taxes</span>
           </div>

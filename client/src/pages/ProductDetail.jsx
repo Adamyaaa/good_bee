@@ -57,7 +57,8 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
   }
 
   const p = productData;
-  const discountPercent = p.mrp && p.mrp > p.price ? Math.round(((p.mrp - p.price) / p.mrp) * 100) : null;
+  const effectiveMrp = p.mrp && p.mrp > p.price ? p.mrp : Math.round(p.price * 1.25);
+  const discountPercent = Math.round(((effectiveMrp - p.price) / effectiveMrp) * 100);
 
   const handleAddToCart = () => {
     addToCart(p, quantity);
@@ -160,16 +161,12 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
                 <span className="font-sans text-2xl font-bold text-brand-charcoal">
                   ₹{p.price.toLocaleString('en-IN')}
                 </span>
-                {p.mrp && p.mrp > p.price && (
-                  <span className="text-sm text-brand-muted line-through">
-                    ₹{p.mrp.toLocaleString('en-IN')}
-                  </span>
-                )}
-                {discountPercent && (
-                  <span className="text-xs font-bold text-brand-gold-dark uppercase tracking-wider">
-                    Save {discountPercent}%
-                  </span>
-                )}
+                <span className="text-sm text-brand-muted line-through">
+                  ₹{effectiveMrp.toLocaleString('en-IN')}
+                </span>
+                <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded border border-emerald-300/50 uppercase tracking-wider">
+                  Save {discountPercent}%
+                </span>
               </div>
               <p className="text-[11px] text-brand-muted">
                 Price inclusive of all taxes. Free courier delivery across India above ₹999.
