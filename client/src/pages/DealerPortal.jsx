@@ -2,25 +2,83 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Package, TrendingUp, ShoppingBag, ShieldCheck, FileSpreadsheet, ArrowRight, Check } from 'lucide-react';
 
+const FALLBACK_DEALER_CATALOG = [
+  {
+    id: 'gb_prod_frankincense',
+    title: 'Good Bee Frankincense Pure Essential Oil',
+    category: 'Pure Essential Oils',
+    sku: 'GB-OIL-FRK-15',
+    retailPrice: 1450,
+    wholesalePrice: 1189,
+    image: '/images_ref/Frankin-300x300.webp',
+    shortDescription: '100% steam-distilled Boswellia carterii resin extract. High terpene batch.'
+  },
+  {
+    id: 'gb_prod_donkey_milk',
+    title: 'Good Bee Donkey Milk & Saffron Soap',
+    category: 'Cold Processed Soaps',
+    sku: 'GB-SOAP-DNK-125',
+    retailPrice: 499,
+    wholesalePrice: 409,
+    image: '/images_ref/Donkey-Milk-Soap-300x300.webp',
+    shortDescription: 'Cold-cured bar with pure pasture-fed donkey milk and Kashmir saffron.'
+  },
+  {
+    id: 'gb_prod_clear_skin',
+    title: 'Good Bee Clear Skin Cold Processed Soap',
+    category: 'Cold Processed Soaps',
+    sku: 'GB-SOAP-CLR-125',
+    retailPrice: 449,
+    wholesalePrice: 368,
+    image: '/images_ref/Clear-skin-300x300.webp',
+    shortDescription: 'Targeted neem extract and tea tree oil for active acne breakouts.'
+  },
+  {
+    id: 'gb_prod_pink_lotus',
+    title: 'Good Bee Pink Lotus Hydrosol Facial Mist',
+    category: 'Botanical Mists',
+    sku: 'GB-MIST-LOT-100',
+    retailPrice: 899,
+    wholesalePrice: 737,
+    image: '/images_ref/Pink-Lotus-300x300.webp',
+    shortDescription: 'Cellular water distilled from freshly harvested Nelumbo nucifera blooms.'
+  },
+  {
+    id: 'gb_prod_sunnipindi',
+    title: 'Good Bee Sunnipindi Cold Processed Bar',
+    category: 'Cold Processed Soaps',
+    sku: 'GB-SOAP-SUN-125',
+    retailPrice: 399,
+    wholesalePrice: 327,
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-300x300.webp',
+    shortDescription: 'Traditional South Indian herbal bath powder slow-cured with forest beeswax.'
+  }
+];
+
 export default function DealerPortal({ onNavigateHome }) {
   const { user, token } = useAuth();
-  const [catalog, setCatalog] = useState([]);
+  const [catalog, setCatalog] = useState(FALLBACK_DEALER_CATALOG);
   const [discountPct, setDiscountPct] = useState(18);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [orderNotice, setOrderNotice] = useState('');
 
   useEffect(() => {
     fetch('/api/v1/dealer/catalog', {
       headers: { Authorization: `Bearer ${token}` }
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error('API unavailable');
+        return res.json();
+      })
       .then((data) => {
-        setCatalog(data.catalog || []);
+        if (data.catalog && data.catalog.length > 0) {
+          setCatalog(data.catalog);
+        }
         if (data.discountPct) setDiscountPct(data.discountPct);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
+        setCatalog(FALLBACK_DEALER_CATALOG);
         setLoading(false);
       });
   }, [token]);

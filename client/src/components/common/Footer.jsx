@@ -140,12 +140,30 @@ export default function Footer({ onNavigate, onOpenTrackOrder }) {
 
           <div className="space-y-3">
             <h4 className="font-serif text-sm font-semibold tracking-wider text-brand-gold-light uppercase">
-              Patron Services
+              Partner Ecosystem
             </h4>
             <ul className="space-y-2 text-brand-sand/70">
               <li>
-                <button onClick={() => onNavigate('login')} className="hover:text-brand-gold transition-colors">
-                  My Patron Account
+                <button onClick={() => onNavigate('login', { defaultRole: 'CUSTOMER' })} className="hover:text-brand-gold transition-colors text-left">
+                  Good Being Club (Patrons)
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('login', { defaultRole: 'DEALER' })} className="hover:text-brand-gold transition-colors text-left flex items-center gap-1.5">
+                  <span>Wholesale & Stockist Desk</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-blue-900/60 text-blue-300 font-mono">B2B</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('login', { defaultRole: 'PRODUCER' })} className="hover:text-brand-gold transition-colors text-left flex items-center gap-1.5">
+                  <span>Vendor & Botanical Suppliers</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-900/60 text-emerald-300">LAB</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('login', { defaultRole: 'PROMOTER' })} className="hover:text-brand-gold transition-colors text-left flex items-center gap-1.5">
+                  <span>Reseller & Promo Hub</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-900/60 text-purple-300">PROMO</span>
                 </button>
               </li>
               <li>
@@ -157,18 +175,8 @@ export default function Footer({ onNavigate, onOpenTrackOrder }) {
                 </button>
               </li>
               <li>
-                <a
-                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%20Team%2C%20I%20am%20interested%20in%20Wholesale%20and%20Stockist%20opportunities."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-brand-gold transition-colors block"
-                >
-                  Wholesale & Stockist Inquiries
-                </a>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('login', { defaultRole: 'ADMIN' })} className="hover:text-brand-gold transition-colors text-brand-sand/50 text-[11px]">
-                  Store Admin Access
+                <button onClick={() => onNavigate('login', { defaultRole: 'ADMIN' })} className="hover:text-brand-gold transition-colors text-brand-sand/50 text-[11px] block text-left">
+                  Store Admin Suite
                 </button>
               </li>
             </ul>

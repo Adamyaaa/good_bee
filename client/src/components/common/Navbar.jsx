@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, User, Search, Menu, X, Shield, Sparkles, ChevronDown } from 'lucide-react';
+import { ShoppingBag, User, Search, Menu, X, Shield, Sparkles, ChevronDown, Package, FlaskConical, Megaphone } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -237,9 +237,11 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                   ) : (
                     <>
                       <div className="px-4 py-2 border-b border-brand-gold/15">
-                        <p className="text-xs text-brand-muted">Welcome to Good Bee</p>
-                        <p className="text-xs font-semibold text-brand-charcoal">Patron Account</p>
+                        <p className="text-[10px] text-brand-gold-dark font-bold uppercase tracking-wider">Good Bee Ecosystem</p>
+                        <p className="text-xs font-semibold text-brand-charcoal">Select Portal Access</p>
                       </div>
+
+                      {/* Good Being Club */}
                       <button
                         onClick={() => {
                           setPortalDropdownOpen(false);
@@ -247,10 +249,60 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                         }}
                         className="w-full text-left px-4 py-2 text-xs text-brand-charcoal hover:bg-brand-cream font-medium flex items-center justify-between"
                       >
-                        <span>Sign In / Create Account</span>
-                        <span className="text-[10px] text-brand-gold-dark font-sans tracking-wide">Enter →</span>
+                        <span className="flex items-center gap-2">
+                          <User className="w-3.5 h-3.5 text-brand-gold" />
+                          <span>Good Being Club</span>
+                        </span>
+                        <span className="text-[10px] text-brand-gold-dark font-sans">Patron →</span>
                       </button>
+
+                      {/* Wholesaler / Stockist */}
+                      <button
+                        onClick={() => {
+                          setPortalDropdownOpen(false);
+                          onOpenPortal('DEALER');
+                        }}
+                        className="w-full text-left px-4 py-2 text-xs text-brand-charcoal hover:bg-brand-cream font-medium flex items-center justify-between"
+                      >
+                        <span className="flex items-center gap-2">
+                          <Package className="w-3.5 h-3.5 text-blue-700" />
+                          <span>Wholesale & Stockist</span>
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-900 font-semibold font-mono">B2B</span>
+                      </button>
+
+                      {/* Vendor / Supplier */}
+                      <button
+                        onClick={() => {
+                          setPortalDropdownOpen(false);
+                          onOpenPortal('PRODUCER');
+                        }}
+                        className="w-full text-left px-4 py-2 text-xs text-brand-charcoal hover:bg-brand-cream font-medium flex items-center justify-between"
+                      >
+                        <span className="flex items-center gap-2">
+                          <FlaskConical className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>Vendors & Botanical Labs</span>
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 font-semibold">SUPPLIER</span>
+                      </button>
+
+                      {/* Reseller / Promo */}
+                      <button
+                        onClick={() => {
+                          setPortalDropdownOpen(false);
+                          onOpenPortal('PROMOTER');
+                        }}
+                        className="w-full text-left px-4 py-2 text-xs text-brand-charcoal hover:bg-brand-cream font-medium flex items-center justify-between"
+                      >
+                        <span className="flex items-center gap-2">
+                          <Megaphone className="w-3.5 h-3.5 text-purple-700" />
+                          <span>Reseller & Promo Hub</span>
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-100 text-purple-900 font-semibold">PROMO</span>
+                      </button>
+
                       <div className="border-t border-brand-gold/15 my-1" />
+
                       <button
                         onClick={() => {
                           setPortalDropdownOpen(false);
@@ -258,9 +310,10 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                         }}
                         className="w-full text-left px-4 py-1.5 text-xs text-brand-charcoal hover:bg-brand-cream transition-colors font-medium flex items-center justify-between"
                       >
-                        <span>Track An Order</span>
+                        <span>Track Live Order</span>
                         <span className="text-[10px] text-brand-gold-dark font-sans tracking-wide">Live Hub →</span>
                       </button>
+
                       <button
                         onClick={() => {
                           setPortalDropdownOpen(false);
@@ -269,7 +322,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                         className="w-full text-left px-4 py-1.5 text-[11px] text-brand-muted/70 hover:text-brand-gold-dark flex items-center gap-1.5"
                       >
                         <Shield className="w-3 h-3 text-brand-gold/60" />
-                        <span>Store Admin Access</span>
+                        <span>Store Admin Suite</span>
                       </button>
                     </>
                   )}
