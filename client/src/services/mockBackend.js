@@ -48,7 +48,7 @@ const DEFAULT_USERS = [
   },
   {
     id: 'usr_customer_1',
-    name: 'Ananya Sharma',
+    name: 'Customer',
     email: 'customer@goodbee.com',
     password: 'customer',
     role: 'CUSTOMER',
@@ -82,8 +82,8 @@ const DEFAULT_ORDERS = [
       }
     ],
     total: 1070,
-    customerName: 'Ananya Sharma',
-    customerEmail: 'ananya.s@gmail.com',
+    customerName: 'Customer',
+    customerEmail: 'customer@goodbee.com',
     customerPhone: '+91 98201 44521',
     shippingAddress: '402, Sea Green Apts, Bandra West, Mumbai, MH - 400050',
     paymentMethod: 'DYNAMIC_UPI_QR',

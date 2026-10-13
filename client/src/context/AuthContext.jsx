@@ -49,7 +49,7 @@ export const DEMO_ACCOUNTS = {
   },
   CUSTOMER: {
     id: 'usr_customer_1',
-    name: 'Ananya Sharma',
+    name: 'Customer',
     email: 'customer@goodbee.com',
     password: 'customer',
     role: 'CUSTOMER',
@@ -63,7 +63,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
       const saved = localStorage.getItem('goodbee_user');
-      return saved ? JSON.parse(saved) : null;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.name === 'Ananya Sharma') {
+          parsed.name = 'Customer';
+          localStorage.setItem('goodbee_user', JSON.stringify(parsed));
+        }
+        return parsed;
+      }
+      return null;
     } catch (e) {
       return null;
     }

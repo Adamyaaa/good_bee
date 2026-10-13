@@ -64,7 +64,7 @@ class DataStore {
       },
       {
         id: 'usr_customer_1',
-        name: 'Ananya Sharma',
+        name: 'Customer',
         email: 'customer@goodbee.com',
         password: 'customer',
         role: ROLES.CUSTOMER,
@@ -804,7 +804,7 @@ class DataStore {
       {
         id: 'GB-ORD-90821',
         customerId: 'usr_customer_1',
-        customerName: 'Ananya Sharma',
+        customerName: 'Customer',
         customerEmail: 'customer@goodbee.com',
         customerPhone: '+919876543204',
         items: [
