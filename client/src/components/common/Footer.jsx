@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, MessageCircle, ArrowUpRight, ShieldCheck, MapPin } from 'lucide-react';
 import SocialLinksRow from './SocialIcons';
 
-export default function Footer({ onNavigate }) {
+export default function Footer({ onNavigate, onOpenTrackOrder }) {
   const [siteContent, setSiteContent] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('goodbee_site_content') || '{}');
@@ -149,14 +149,12 @@ export default function Footer({ onNavigate }) {
                 </button>
               </li>
               <li>
-                <a
-                  href="https://wa.me/919963075000?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-brand-gold transition-colors block"
+                <button
+                  onClick={() => onOpenTrackOrder?.()}
+                  className="hover:text-brand-gold transition-colors text-left"
                 >
                   Order Tracking & Delivery
-                </a>
+                </button>
               </li>
               <li>
                 <a

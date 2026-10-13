@@ -4,7 +4,7 @@ import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 
-export default function Navbar({ onScrollTo, onOpenPortal }) {
+export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onOpenSurprise }) {
   const { itemCount, setIsDrawerOpen } = useCart();
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,6 +45,12 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
           <span>{siteContent.announcement || 'Complimentary Delivery Across India on Orders Above ₹999'}</span>
           <span className="hidden sm:inline text-brand-gold">•</span>
           <span className="hidden sm:inline text-brand-gold-light">{siteContent.announcementSub || '100% Natural Active Ingredients'}</span>
+          <button
+            onClick={onOpenSurprise}
+            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-brand-gold text-brand-charcoal text-[10px] font-bold tracking-wider hover:bg-brand-gold-light transition-colors uppercase ml-1 shadow-sm"
+          >
+            🎁 15% Off Gift
+          </button>
         </div>
         <div className="hidden md:flex items-center gap-4 text-xs">
           <a
@@ -245,14 +251,16 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
                         <span className="text-[10px] text-brand-gold-dark font-sans tracking-wide">Enter →</span>
                       </button>
                       <div className="border-t border-brand-gold/15 my-1" />
-                      <a
-                        href="https://wa.me/919963075000?text=Hello%20Good%20Bee%2C%20I%20would%20like%20to%20track%20my%20order."
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block px-4 py-1.5 text-xs text-brand-muted hover:text-brand-charcoal transition-colors"
+                      <button
+                        onClick={() => {
+                          setPortalDropdownOpen(false);
+                          onOpenTrackOrder?.();
+                        }}
+                        className="w-full text-left px-4 py-1.5 text-xs text-brand-charcoal hover:bg-brand-cream transition-colors font-medium flex items-center justify-between"
                       >
-                        Track An Order
-                      </a>
+                        <span>Track An Order</span>
+                        <span className="text-[10px] text-brand-gold-dark font-sans tracking-wide">Live Hub →</span>
+                      </button>
                       <button
                         onClick={() => {
                           setPortalDropdownOpen(false);
@@ -333,6 +341,25 @@ export default function Navbar({ onScrollTo, onOpenPortal }) {
             className="block w-full text-left text-sm font-bold text-brand-gold-dark py-2 border-b border-brand-gold/15"
           >
             My Patron Account
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onOpenTrackOrder?.();
+            }}
+            className="w-full text-left text-sm font-semibold text-brand-charcoal py-2 border-b border-brand-gold/15 flex items-center justify-between"
+          >
+            <span>Track Order & Delivery</span>
+            <span className="text-xs text-brand-gold-dark font-sans font-medium">Live Hub →</span>
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onOpenSurprise?.();
+            }}
+            className="block w-full text-left text-sm font-bold text-amber-700 py-2 border-b border-brand-gold/15"
+          >
+            🎁 Claim Surprise Gift (15% OFF)
           </button>
 
           {/* Mobile Socials */}

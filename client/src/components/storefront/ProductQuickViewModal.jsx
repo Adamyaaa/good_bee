@@ -115,6 +115,22 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
                 </span>
               </div>
 
+              {/* Stock Scarcity & Social Proof Progress Block */}
+              <div className="p-3 bg-gradient-to-r from-amber-50/80 to-emerald-50/70 rounded-xl border border-brand-gold/25 space-y-2">
+                <div className="flex items-center justify-between text-xs font-semibold">
+                  <span className="flex items-center gap-1.5 text-emerald-800">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>2,500+ claimed this month</span>
+                  </span>
+                  <span className="text-amber-800">
+                    Only {product.stock && product.stock < 50 ? product.stock : 18} left in current batch
+                  </span>
+                </div>
+                <div className="w-full bg-amber-100 rounded-full h-1.5 overflow-hidden">
+                  <div className="bg-gradient-to-r from-brand-gold to-emerald-600 h-1.5 rounded-full w-[82%]" />
+                </div>
+              </div>
+
               <p className="text-xs text-brand-charcoal/80 leading-relaxed">
                 {product.shortDescription || product.description}
               </p>

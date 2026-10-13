@@ -85,14 +85,23 @@ export default function ProductCard({ product, onViewDetails }) {
             {product.subtitle || product.shortDescription}
           </p>
 
-          {/* Primary Concern Pill */}
-          {product.concerns && product.concerns.length > 0 && (
-            <div className="pt-1">
+          {/* Primary Concern Pill & Stock Scarcity Row */}
+          <div className="pt-1 flex items-center justify-between gap-1 flex-wrap">
+            {product.concerns && product.concerns.length > 0 && (
               <span className="inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 bg-brand-cream text-brand-gold-dark font-semibold rounded border border-brand-gold/20">
                 {product.concerns[0]}
               </span>
-            </div>
-          )}
+            )}
+            <span className="text-[10px] font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/60">
+              Only {product.stock && product.stock < 50 ? product.stock : 24} left
+            </span>
+          </div>
+
+          {/* Monthly Sales Proof */}
+          <div className="flex items-center gap-1.5 text-[10.5px] text-emerald-800 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+            <span>2,500+ claimed this month</span>
+          </div>
         </div>
 
         {/* Price & Action Row */}

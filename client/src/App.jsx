@@ -17,10 +17,12 @@ import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
 import ParallaxIngredientStory from './components/storefront/ParallaxIngredientStory';
 import ProductQuickViewModal from './components/storefront/ProductQuickViewModal';
 import PortalModal from './components/portal/PortalModal';
+import TrackOrderModal from './components/storefront/TrackOrderModal';
+import SurpriseGiftModal from './components/storefront/SurpriseGiftModal';
 import Checkout from './pages/Checkout';
 
 // Icons for editorial sections
-import { FlaskConical, ShieldCheck, ArrowRight, Star } from 'lucide-react';
+import { FlaskConical, ShieldCheck, ArrowRight, Star, Gift } from 'lucide-react';
 
 function SpaLandingContent() {
   const { user } = useAuth();
@@ -31,6 +33,21 @@ function SpaLandingContent() {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [portalModalConfig, setPortalModalConfig] = useState({ isOpen: false, role: 'CUSTOMER' });
+  const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
+  const [isSurpriseOpen, setIsSurpriseOpen] = useState(false);
+
+  // Auto-open surprise gift lead capture after delay if not already claimed
+  React.useEffect(() => {
+    try {
+      const alreadyClaimed = sessionStorage.getItem('goodbee_surprise_claimed');
+      if (!alreadyClaimed) {
+        const timer = setTimeout(() => {
+          setIsSurpriseOpen(true);
+        }, 7000);
+        return () => clearTimeout(timer);
+      }
+    } catch (e) {}
+  }, []);
 
   // Dynamic site content loaded from CMS
   const [siteContent, setSiteContent] = useState(() => {
@@ -81,6 +98,8 @@ function SpaLandingContent() {
       <Navbar
         onScrollTo={handleScrollTo}
         onOpenPortal={handleOpenPortal}
+        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+        onOpenSurprise={() => setIsSurpriseOpen(true)}
       />
 
       {/* If Checkout is triggered, render on top or full modal */}
@@ -303,6 +322,7 @@ function SpaLandingContent() {
             handleScrollTo('hero');
           }
         }}
+        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
       />
 
       {/* Global Slide-Over Shopping Bag */}
@@ -310,6 +330,16 @@ function SpaLandingContent() {
 
       {/* Floating WhatsApp Concierge */}
       <WhatsAppConcierge />
+
+      {/* Floating Surprise Gift Pill Trigger */}
+      <button
+        onClick={() => setIsSurpriseOpen(true)}
+        className="fixed bottom-6 left-6 z-30 px-4 py-2.5 rounded-full bg-brand-gold text-brand-charcoal text-xs font-bold uppercase tracking-wider shadow-luxury border border-brand-charcoal/20 flex items-center gap-2 hover:bg-brand-gold-light hover:scale-105 transition-all duration-300"
+        title="Claim Mystery Skincare Surprise Gift"
+      >
+        <Gift className="w-4 h-4 text-brand-charcoal animate-bounce" />
+        <span className="hidden sm:inline">Surprise Gift</span>
+      </button>
 
       {/* Product Quick-View Inspection Modal */}
       {quickViewProduct && (
@@ -319,6 +349,18 @@ function SpaLandingContent() {
           onInstantBuy={handleInstantBuy}
         />
       )}
+
+      {/* Live Order Tracking Modal */}
+      <TrackOrderModal
+        isOpen={isTrackOrderOpen}
+        onClose={() => setIsTrackOrderOpen(false)}
+      />
+
+      {/* Surprise Gift Mobile Lead Capture Modal */}
+      <SurpriseGiftModal
+        isOpen={isSurpriseOpen}
+        onClose={() => setIsSurpriseOpen(false)}
+      />
 
       {/* Multi-Role Partner Console Slide-Over Modal */}
       <PortalModal
