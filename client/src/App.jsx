@@ -16,7 +16,7 @@ import InteractiveSpaCatalog from './components/storefront/InteractiveSpaCatalog
 import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
 import ParallaxIngredientStory from './components/storefront/ParallaxIngredientStory';
 import ProductQuickViewModal from './components/storefront/ProductQuickViewModal';
-import ShopByReels from './components/storefront/ShopByReels';
+// Kept for client review: import ShopByReels from './components/storefront/ShopByReels';
 import PortalModal from './components/portal/PortalModal';
 import TrackOrderModal from './components/storefront/TrackOrderModal';
 import SurpriseGiftModal from './components/storefront/SurpriseGiftModal';
@@ -136,10 +136,8 @@ function SpaLandingContent() {
             onQuickView={(prod) => setQuickViewProduct(prod)}
           />
 
-          {/* 4. Life Moments "Shop by Reels" Feed */}
-          <ShopByReels
-            onQuickViewProduct={(prod) => setQuickViewProduct(prod)}
-          />
+          {/* 4. Life Moments "Shop by Reels" Feed (Code preserved - deferred pending client decision on Instagram vs Embedded) */}
+          {/* <ShopByReels onQuickViewProduct={(prod) => setQuickViewProduct(prod)} /> */}
 
           {/* 5. Formulation Lifecycle Stage ("The Pure Cycle") */}
           <ScrollyBrandStory />

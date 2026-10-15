@@ -147,13 +147,6 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
               By Concern
             </button>
             <button
-              onClick={() => onScrollTo('shop-by-reels')}
-              className="hover:text-brand-gold-dark transition-colors py-1 flex items-center gap-1.5 text-amber-800 font-bold"
-            >
-              <span>Shop by Reels</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-900 text-[9px] font-bold">HOT</span>
-            </button>
-            <button
               onClick={() => onScrollTo('scrolly-story')}
               className="hover:text-brand-gold-dark transition-colors py-1 flex items-center gap-1 text-brand-gold-dark"
             >
@@ -359,16 +352,6 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
             className="block w-full text-left text-sm font-medium text-brand-charcoal py-2 border-b border-brand-gold/15"
           >
             Shop by Concern
-          </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onScrollTo('shop-by-reels');
-            }}
-            className="block w-full text-left text-sm font-bold text-amber-800 py-2 border-b border-brand-gold/15 flex items-center justify-between"
-          >
-            <span>Shop by Reels (Videos)</span>
-            <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 text-[9px] font-bold">HOT</span>
           </button>
           <button
             onClick={() => {
