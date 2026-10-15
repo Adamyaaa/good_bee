@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, User, Search, Menu, X, Shield, Sparkles, ChevronDown, Package, FlaskConical, Megaphone } from 'lucide-react';
+import { ShoppingBag, User, Search, Menu, X, Shield, Sparkles, ChevronDown, Package, FlaskConical } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -291,21 +291,6 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                           <span>Vendors & Botanical Labs</span>
                         </span>
                         <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 font-semibold">SUPPLIER</span>
-                      </button>
-
-                      {/* Reseller / Promo */}
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          onOpenPortal('PROMOTER');
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs text-brand-charcoal hover:bg-brand-cream font-medium flex items-center justify-between"
-                      >
-                        <span className="flex items-center gap-2">
-                          <Megaphone className="w-3.5 h-3.5 text-purple-700" />
-                          <span>Reseller & Promo Hub</span>
-                        </span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-100 text-purple-900 font-semibold">PROMO</span>
                       </button>
 
                       <div className="border-t border-brand-gold/15 my-1" />

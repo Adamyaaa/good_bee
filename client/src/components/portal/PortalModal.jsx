@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Shield, FlaskConical, Package, Megaphone, User, LogOut, GripVertical, Maximize2, Minimize2 } from 'lucide-react';
+import { X, Shield, FlaskConical, Package, User, LogOut, GripVertical, Maximize2, Minimize2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 // Portals
@@ -233,7 +233,6 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
                 { id: 'ADMIN', label: 'Admin', icon: Shield },
                 { id: 'PRODUCER', label: 'Vendor (Supplier)', icon: FlaskConical },
                 { id: 'DEALER', label: 'Wholesaler (B2B)', icon: Package },
-                { id: 'PROMOTER', label: 'Reseller (Promo)', icon: Megaphone },
                 { id: 'CUSTOMER', label: 'Good Being Club', icon: User }
               ].map((r) => {
                 const Icon = r.icon;

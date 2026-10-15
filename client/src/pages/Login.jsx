@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, DEMO_ACCOUNTS } from '../context/AuthContext';
-import { Shield, Sparkles, User, Package, FlaskConical, Megaphone, ArrowRight, AlertCircle, CheckCircle2, Building, Key } from 'lucide-react';
+import { Shield, Sparkles, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key } from 'lucide-react';
 
 const ROLE_TABS = [
   { id: 'CUSTOMER', label: 'Good Being Club', sublabel: 'Patron Loyalty', icon: User, demoKey: 'CUSTOMER', color: 'text-amber-800' },
   { id: 'DEALER', label: 'Wholesaler / Stockist', sublabel: 'B2B Bulk Rates', icon: Package, demoKey: 'DEALER', color: 'text-blue-800' },
   { id: 'PRODUCER', label: 'Vendor / Supplier', sublabel: 'Botanical Apiaries', icon: FlaskConical, demoKey: 'PRODUCER', color: 'text-emerald-800' },
-  { id: 'PROMOTER', label: 'Reseller / Promo', sublabel: 'Affiliate Rewards', icon: Megaphone, demoKey: 'PROMOTER', color: 'text-purple-800' },
   { id: 'ADMIN', label: 'Store Admin', sublabel: 'Control Tower', icon: Shield, demoKey: 'ADMIN', color: 'text-slate-800' }
 ];
 

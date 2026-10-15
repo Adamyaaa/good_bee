@@ -161,12 +161,6 @@ export default function Footer({ onNavigate, onOpenTrackOrder }) {
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('login', { defaultRole: 'PROMOTER' })} className="hover:text-brand-gold transition-colors text-left flex items-center gap-1.5">
-                  <span>Reseller & Promo Hub</span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-900/60 text-purple-300">PROMO</span>
-                </button>
-              </li>
-              <li>
                 <button
                   onClick={() => onOpenTrackOrder?.()}
                   className="hover:text-brand-gold transition-colors text-left"
