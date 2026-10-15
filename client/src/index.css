@@ -75,3 +75,24 @@
   transform: translateY(-4px);
   box-shadow: 0 20px 35px -10px rgba(197, 168, 128, 0.2);
 }
+
+/* Seamless Continuous Marquee Ticker (Moving towards the Right) */
+@keyframes marquee-to-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-to-right 34s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}

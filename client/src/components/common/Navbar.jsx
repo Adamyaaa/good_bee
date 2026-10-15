@@ -35,61 +35,55 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
 
   return (
     <header className="sticky top-0 z-40 w-full bg-brand-ivory/80 backdrop-blur-md border-b border-brand-gold/20 transition-all shadow-sm">
-      {/* Top Announcement Bar */}
-      <div className="bg-brand-charcoal text-brand-sand px-4 py-1.5 text-xs font-medium tracking-wider flex items-center justify-between text-center overflow-hidden">
-        <div className="hidden md:flex items-center gap-2 text-brand-gold-light">
-          <Sparkles className="w-3.5 h-3.5 text-brand-gold" />
-          <span>Formulated through High-End Active Stabilization Research</span>
-        </div>
-        <div className="mx-auto flex items-center gap-3">
-          <span>{siteContent.announcement || 'Complimentary Delivery Across India on Orders Above ₹999'}</span>
-          <span className="hidden sm:inline text-brand-gold">•</span>
-          <span className="hidden sm:inline text-brand-gold-light">{siteContent.announcementSub || '100% Natural Active Ingredients'}</span>
-          <button
-            onClick={onOpenSurprise}
-            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-brand-gold text-brand-charcoal text-[10px] font-bold tracking-wider hover:bg-brand-gold-light transition-colors uppercase ml-1 shadow-sm"
-          >
-            🎁 15% Off Gift
-          </button>
-        </div>
-        <div className="hidden md:flex items-center gap-4 text-xs">
-          <a
-            href={`https://wa.me/${cleanWhatsappPhone}?text=Hello%20Good%20Bee%20Concierge%2C%20I%20need%20assistance%20with%20natural%20skincare%20formulations.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-brand-sand hover:text-brand-gold transition-colors font-medium"
-          >
-            Direct Concierge: {phoneNumber}
-          </a>
-          <div className="flex items-center gap-2.5 pl-3 border-l border-brand-sand/20">
-            <a
-              href="https://instagram.com/goodbee.skincare"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brand-sand/80 hover:text-brand-gold transition-colors"
-              title="Good Bee Instagram"
-            >
-              <InstagramIcon className="w-3.5 h-3.5" />
-            </a>
-            <a
-              href="https://facebook.com/goodbee.skincare"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brand-sand/80 hover:text-brand-gold transition-colors"
-              title="Good Bee Facebook"
-            >
-              <FacebookIcon className="w-3.5 h-3.5" />
-            </a>
-            <a
-              href="https://youtube.com/@goodbee-skincare"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brand-sand/80 hover:text-brand-gold transition-colors"
-              title="Good Bee YouTube"
-            >
-              <YoutubeIcon className="w-3.5 h-3.5" />
-            </a>
-          </div>
+      {/* Top Announcement Bar - Continuous Smooth Marquee Moving Right */}
+      <div className="relative bg-brand-charcoal text-brand-sand py-2 text-[11px] sm:text-xs font-medium tracking-wider overflow-hidden border-b border-brand-gold/20 select-none">
+        {/* Subtle Edge Gradients for Smooth In/Out Fades */}
+        <div className="absolute left-0 inset-y-0 w-8 sm:w-16 bg-gradient-to-r from-brand-charcoal to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 inset-y-0 w-8 sm:w-16 bg-gradient-to-l from-brand-charcoal to-transparent z-10 pointer-events-none" />
+
+        {/* Marquee Track moving towards the right */}
+        <div className="animate-marquee-right flex items-center">
+          {[
+            { text: '✨ Formulated through High-End Active Stabilization Research', badge: 'LAB-STABILIZED' },
+            { text: siteContent.announcement || '🚚 Complimentary Delivery Across India on Orders Above ₹999', badge: 'FREE SHIPPING' },
+            { text: '🌿 100% Natural Active Ingredients • Zero Artificial Synthetics', badge: '100% PURE' },
+            { text: '🎁 Claim 15% Off Your First Order • Use Code HONEY15', isGift: true, badge: 'OFFER' },
+            { text: `💬 Direct Botanical Concierge: ${phoneNumber}`, isWhatsapp: true, badge: 'WHATSAPP' },
+            { text: '🔬 Derm-Tested Formulations for Barrier Repair & Breakout Reset', badge: 'CLINICAL' },
+            { text: '✨ Formulated through High-End Active Stabilization Research', badge: 'LAB-STABILIZED' },
+            { text: siteContent.announcement || '🚚 Complimentary Delivery Across India on Orders Above ₹999', badge: 'FREE SHIPPING' },
+            { text: '🌿 100% Natural Active Ingredients • Zero Artificial Synthetics', badge: '100% PURE' },
+            { text: '🎁 Claim 15% Off Your First Order • Use Code HONEY15', isGift: true, badge: 'OFFER' },
+            { text: `💬 Direct Botanical Concierge: ${phoneNumber}`, isWhatsapp: true, badge: 'WHATSAPP' },
+            { text: '🔬 Derm-Tested Formulations for Barrier Repair & Breakout Reset', badge: 'CLINICAL' }
+          ].map((item, idx) => (
+            <div key={idx} className="flex items-center whitespace-nowrap px-6 gap-3">
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-brand-gold/20 text-brand-gold-light border border-brand-gold/30 font-bold uppercase tracking-widest">
+                {item.badge}
+              </span>
+              <span className="text-brand-ivory font-sans">{item.text}</span>
+              {item.isGift && (
+                <button
+                  type="button"
+                  onClick={onOpenSurprise}
+                  className="px-2 py-0.5 rounded-full bg-brand-gold hover:bg-brand-gold-light text-brand-charcoal text-[9px] font-bold tracking-wider transition-colors uppercase shadow-sm cursor-pointer"
+                >
+                  Claim 15%
+                </button>
+              )}
+              {item.isWhatsapp && (
+                <a
+                  href={`https://wa.me/${cleanWhatsappPhone}?text=Hello%20Good%20Bee%20Concierge%2C%20I%20need%20assistance%20with%20natural%20skincare%20formulations.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-gold hover:underline text-[10px] font-bold uppercase"
+                >
+                  Chat →
+                </a>
+              )}
+              <span className="text-brand-gold/50 pl-3">•</span>
+            </div>
+          ))}
         </div>
       </div>
 
