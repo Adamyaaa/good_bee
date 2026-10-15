@@ -16,6 +16,7 @@ import InteractiveSpaCatalog from './components/storefront/InteractiveSpaCatalog
 import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
 import ParallaxIngredientStory from './components/storefront/ParallaxIngredientStory';
 import ProductQuickViewModal from './components/storefront/ProductQuickViewModal';
+import ShopByReels from './components/storefront/ShopByReels';
 import PortalModal from './components/portal/PortalModal';
 import TrackOrderModal from './components/storefront/TrackOrderModal';
 import SurpriseGiftModal from './components/storefront/SurpriseGiftModal';
@@ -135,7 +136,12 @@ function SpaLandingContent() {
             onQuickView={(prod) => setQuickViewProduct(prod)}
           />
 
-          {/* 4. Pinned Scrollytelling Stage ("The Pure Cycle") */}
+          {/* 4. Life Moments "Shop by Reels" Feed */}
+          <ShopByReels
+            onQuickViewProduct={(prod) => setQuickViewProduct(prod)}
+          />
+
+          {/* 5. Formulation Lifecycle Stage ("The Pure Cycle") */}
           <ScrollyBrandStory />
 
           {/* 5. Differential Parallax Botanical Actives Story */}

@@ -106,8 +106,33 @@ export default function Checkout({ onBack, onNavigateHome }) {
 
   const handlePaymentSuccess = (order) => {
     setShowQrModal(false);
-    setConfirmedOrder(order);
+    const completeOrder = {
+      ...order,
+      customerName: form.name,
+      customerPhone: form.phone || '+91 99630 75000',
+      customerEmail: form.email,
+      placedAt: new Date().toISOString(),
+      status: 'PROCESSING',
+      courier: 'Blue Dart Express Priority',
+      awbNumber: `BD-${Math.floor(100000000 + Math.random() * 900000000)}IN`,
+      items: items.map((it) => ({
+        title: it.product.title,
+        price: it.product.price,
+        quantity: it.quantity,
+        volume: it.product.volume || 'Standard Pack',
+        image: it.product.image
+      }))
+    };
+
+    setConfirmedOrder(completeOrder);
     clearCart();
+
+    // Persist to localStorage for TrackOrderModal & CustomerPortal
+    try {
+      const existing = JSON.parse(localStorage.getItem('goodbee_orders') || '[]');
+      existing.unshift(completeOrder);
+      localStorage.setItem('goodbee_orders', JSON.stringify(existing));
+    } catch (e) {}
 
     try {
       confetti({
@@ -119,9 +144,47 @@ export default function Checkout({ onBack, onNavigateHome }) {
   };
 
   if (confirmedOrder) {
+    const itemsSummary = (confirmedOrder.items || items)
+      .map((it, idx) => `${idx + 1}. ${it.title || it.product?.title} (Qty: ${it.quantity}) - ₹${((it.price || it.product?.price || 0) * it.quantity).toLocaleString('en-IN')}`)
+      .join('\n');
+
+    const customerReceiptMsg = `🌿 *GOOD BEE — OFFICIAL PAYMENT RECEIPT*
+━━━━━━━━━━━━━━━━━━━━
+📋 *Order ID:* #${confirmedOrder.id}
+📅 *Date:* ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+👤 *Patron:* ${confirmedOrder.customerName || form.name}
+📞 *Mobile:* ${confirmedOrder.customerPhone || form.phone}
+
+📦 *ITEMS ORDERED:*
+${itemsSummary}
+
+💰 *TOTAL PAID:* ₹${confirmedOrder.total.toLocaleString('en-IN')}
+💳 *Payment Mode:* Dynamic UPI QR [VERIFIED]
+📍 *Delivery Address:* ${confirmedOrder.shippingAddress.street}, ${confirmedOrder.shippingAddress.city} - ${confirmedOrder.shippingAddress.pincode}
+🚚 *Courier Partner:* Blue Dart Express Priority
+━━━━━━━━━━━━━━━━━━━━
+✨ *Status:* Batch Allocation & Laboratory Inspection in progress.
+Thank you for choosing 100% natural, research-driven skincare!`;
+
+    const operationsDispatchMsg = `🚨 *NEW ORDER PACKING & DISPATCH SLIP — GoodBEE*
+━━━━━━━━━━━━━━━━━━━━
+🆔 *Order Ref:* #${confirmedOrder.id}
+👤 *Customer:* ${confirmedOrder.customerName || form.name} (${confirmedOrder.customerPhone || form.phone})
+📍 *Ship Destination:* ${confirmedOrder.shippingAddress.street}, ${confirmedOrder.shippingAddress.city}, ${confirmedOrder.shippingAddress.state} - ${confirmedOrder.shippingAddress.pincode}
+
+📦 *ITEMS TO PACK:*
+${itemsSummary}
+
+💵 *Amount Collected:* ₹${confirmedOrder.total.toLocaleString('en-IN')} [PAID via UPI QR]
+🚚 *Priority:* Blue Dart Air Priority
+━━━━━━━━━━━━━━━━━━━━
+Action: Please print lot batch certificate and initiate packaging.`;
+
+    const cleanCustomerPhone = (confirmedOrder.customerPhone || form.phone || '').replace(/[^0-9]/g, '');
+
     return (
       <div className="py-20 bg-brand-ivory min-h-screen">
-        <div className="max-w-2xl mx-auto px-4 text-center space-y-6">
+        <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
           <div className="w-20 h-20 mx-auto rounded-full bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center text-emerald-700 shadow-luxury">
             <CheckCircle2 className="w-10 h-10" />
           </div>
@@ -138,39 +201,103 @@ export default function Checkout({ onBack, onNavigateHome }) {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-brand-cream/60 border border-brand-gold/30 text-left space-y-3">
-            <div className="flex justify-between text-xs pb-2 border-b border-brand-gold/20">
-              <span className="text-brand-muted">Amount Paid:</span>
-              <span className="font-bold text-brand-charcoal">₹{confirmedOrder.total.toLocaleString('en-IN')} via Dynamic UPI QR</span>
+          {/* Itemized Digital Receipt Card */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-brand-cream/80 border border-brand-gold/40 text-left space-y-4 shadow-luxury">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-brand-gold/25 gap-2">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-gold-dark">Official Invoice</span>
+                <p className="font-mono text-base font-bold text-brand-charcoal">#{confirmedOrder.id}</p>
+              </div>
+              <div className="text-right">
+                <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
+                  Payment Verified (Dynamic UPI QR)
+                </span>
+                <p className="text-xs text-brand-muted mt-1">Paid: ₹{confirmedOrder.total.toLocaleString('en-IN')}</p>
+              </div>
             </div>
-            <div className="flex justify-between text-xs pb-2 border-b border-brand-gold/20">
-              <span className="text-brand-muted">Delivery Address:</span>
-              <span className="font-medium text-brand-charcoal text-right">
-                {confirmedOrder.shippingAddress.street}, {confirmedOrder.shippingAddress.city} - {confirmedOrder.shippingAddress.pincode}
-              </span>
+
+            <div className="space-y-2 py-2 border-b border-brand-gold/20">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-brand-muted block">Purchased Formulations:</span>
+              {(confirmedOrder.items || items).map((item, idx) => (
+                <div key={idx} className="flex justify-between items-center text-xs">
+                  <span className="text-brand-charcoal font-medium">
+                    {item.quantity}x {item.title || item.product?.title}
+                  </span>
+                  <span className="font-semibold text-brand-charcoal">
+                    ₹{((item.price || item.product?.price || 0) * item.quantity).toLocaleString('en-IN')}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-brand-muted">UPI Ref / Status:</span>
-              <span className="font-mono text-emerald-800 font-semibold">{confirmedOrder.upiRef || 'PAID'}</span>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-1">
+              <div>
+                <span className="text-brand-muted text-[11px] block">Shipping Destination:</span>
+                <span className="font-medium text-brand-charcoal leading-relaxed block mt-0.5">
+                  {confirmedOrder.shippingAddress.street}, {confirmedOrder.shippingAddress.city} - {confirmedOrder.shippingAddress.pincode}
+                </span>
+              </div>
+              <div>
+                <span className="text-brand-muted text-[11px] block">Patron Contact:</span>
+                <span className="font-medium text-brand-charcoal block mt-0.5">
+                  {confirmedOrder.customerName || form.name} ({confirmedOrder.customerPhone || form.phone})
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <a
-              href={`https://wa.me/919963075000?text=${encodeURIComponent(
-                `Hello Good Bee Concierge, I just completed order #${confirmedOrder.id} (₹${confirmedOrder.total}). Could you verify my dispatch details?`
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-emerald-800 text-white rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-emerald-900 transition-colors flex items-center justify-center gap-2"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Track Dispatch on WhatsApp</span>
-            </a>
+          {/* Client MoM WhatsApp Dual Receipt Action Block */}
+          <div className="p-6 rounded-3xl bg-brand-charcoal text-brand-ivory border border-brand-gold/40 text-left space-y-4 shadow-2xl">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold-light">
+                Automated WhatsApp Receipts (Client MoM Feature)
+              </span>
+              <h3 className="font-serif text-lg font-medium text-white mt-0.5">
+                Dispatch & Order Confirmations on WhatsApp
+              </h3>
+            </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {/* Receipt to Customer WhatsApp */}
+              <a
+                href={`https://wa.me/${cleanCustomerPhone || '919963075000'}?text=${encodeURIComponent(customerReceiptMsg)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3.5 rounded-2xl bg-emerald-700 hover:bg-emerald-600 text-white transition-all flex items-center justify-between gap-3 shadow-md group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <MessageCircle className="w-5 h-5 text-emerald-200 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <span className="text-xs font-bold block">Send Receipt to My WhatsApp</span>
+                    <span className="text-[10px] text-emerald-200">Customer Digital Tax Invoice</span>
+                  </div>
+                </div>
+                <span className="text-xs font-mono">→</span>
+              </a>
+
+              {/* Receipt to GoodBEE Operations Team (+91-9963075000) */}
+              <a
+                href={`https://wa.me/919963075000?text=${encodeURIComponent(operationsDispatchMsg)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3.5 rounded-2xl bg-brand-gold hover:bg-brand-gold-light text-brand-charcoal transition-all flex items-center justify-between gap-3 shadow-md group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <MessageCircle className="w-5 h-5 text-brand-charcoal flex-shrink-0 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <span className="text-xs font-bold block">Notify GB Operations Team</span>
+                    <span className="text-[10px] text-brand-charcoal/80">+91-9963075000 Packing Slip</span>
+                  </div>
+                </div>
+                <span className="text-xs font-mono">→</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="flex justify-center pt-2">
             <button
               onClick={onNavigateHome}
-              className="px-6 py-3 bg-brand-charcoal text-brand-ivory rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-brand-gold-dark transition-colors"
+              className="px-8 py-3 bg-brand-charcoal text-brand-ivory rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-brand-gold-dark transition-colors shadow-luxury"
             >
               Return to Storefront
             </button>
