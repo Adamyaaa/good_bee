@@ -122,20 +122,20 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
           <div className="flex items-center">
             <button
               onClick={() => onScrollTo('hero')}
-              className="flex items-center gap-3 group text-left focus:outline-none"
+              className="flex items-center gap-3.5 group text-left focus:outline-none"
             >
-              <div className="h-11 w-auto sm:h-13 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 p-1 bg-white/10 rounded-full border border-white/20 backdrop-blur-sm">
+              <div className="h-10 sm:h-12 w-auto flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                 <img
-                  src="/assets/goodbee-bee-mark.png"
+                  src="/assets/goodbee-bee-mark-white.png"
                   alt="Good Bee Emblem"
-                  className="h-full w-auto object-contain"
+                  className="h-full w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
                 />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="font-serif text-2xl sm:text-3xl tracking-[0.22em] font-medium text-white block leading-none drop-shadow-md">
+                <span className="font-serif text-2xl sm:text-3xl tracking-[0.22em] font-medium text-white block leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
                   GOOD BEE
                 </span>
-                <span className="text-[9px] sm:text-[10px] tracking-[0.3em] text-amber-300 font-sans uppercase font-semibold mt-1.5 leading-none drop-shadow-sm">
+                <span className="text-[9px] sm:text-[10px] tracking-[0.3em] text-amber-300 font-sans uppercase font-semibold mt-1.5 leading-none drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
                   100% Natural Skincare • Research
                 </span>
               </div>
