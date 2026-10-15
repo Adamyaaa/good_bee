@@ -108,7 +108,7 @@ export default function Hero({ onExplore, onRoutine }) {
       
       {/* 1. Full-Bleed Bonkers-Style Cinematic Carousel Container */}
       <div
-        className="relative w-full h-[76vh] sm:h-[82vh] lg:h-[88vh] flex items-end justify-center pb-12 sm:pb-16 lg:pb-20 overflow-hidden"
+        className="relative w-full min-h-[88vh] sm:min-h-[92vh] lg:min-h-[98vh] flex items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-16 overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
