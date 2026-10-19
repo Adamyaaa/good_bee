@@ -14,7 +14,8 @@ const CONCERNS = [
     productImg: '/images_ref/Clear-skin-300x300.webp',
     keyActives: 'Neem Extract • Tea Tree • Eucalyptus Terpenes',
     highlights: ['Non-comedogenic pore flush', 'Reduces active inflammation', 'Prevents post-acne marks'],
-    accentGradient: 'from-emerald-950/80 via-emerald-900/60 to-brand-charcoal/90'
+    accentGradient: 'from-emerald-900/90 via-emerald-800/70 to-teal-950/40',
+    tagBg: 'bg-emerald-500 text-white'
   },
   {
     id: 'Barrier Repair',
@@ -28,7 +29,8 @@ const CONCERNS = [
     productImg: '/images_ref/Donkey-Milk-Soap-300x300.webp',
     keyActives: 'Donkey Milk Ceramides • Raw Organic Beeswax',
     highlights: ['Deep epidermal lipid seal', 'Relieves tightness in minutes'],
-    accentGradient: 'from-amber-950/80 via-amber-900/60 to-brand-charcoal/90'
+    accentGradient: 'from-amber-900/90 via-orange-800/70 to-amber-950/40',
+    tagBg: 'bg-amber-500 text-white'
   },
   {
     id: 'Pigmentation & Tone',
@@ -42,7 +44,8 @@ const CONCERNS = [
     productImg: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.26-1-300x300.webp',
     keyActives: 'Cold-Infused Turmeric • Raw Beeswax Infusion',
     highlights: ['Clarifies cellular debris', 'Even luminous skin tone'],
-    accentGradient: 'from-amber-900/80 via-yellow-950/60 to-brand-charcoal/90'
+    accentGradient: 'from-amber-950/90 via-yellow-900/70 to-orange-950/40',
+    tagBg: 'bg-orange-500 text-white'
   },
   {
     id: 'Dryness & Moisture Deficit',
@@ -56,7 +59,8 @@ const CONCERNS = [
     productImg: '/images_ref/Pink-Lotus-300x300.webp',
     keyActives: 'Pink Lotus Hydrosol • Cold-Pressed Almond Oil',
     highlights: ['Non-greasy all-day shield', 'Silky, supple finish'],
-    accentGradient: 'from-rose-950/80 via-pink-950/60 to-brand-charcoal/90'
+    accentGradient: 'from-rose-900/90 via-pink-800/70 to-rose-950/40',
+    tagBg: 'bg-rose-500 text-white'
   },
   {
     id: 'Youth & Radiance',
@@ -70,7 +74,8 @@ const CONCERNS = [
     productImg: '/images_ref/Frankin-300x300.webp',
     keyActives: 'Sacred Boswellia Frankincense Terpenes',
     highlights: ['Stimulates cellular firmness', 'Aromatherapeutic calm'],
-    accentGradient: 'from-stone-900/80 via-stone-950/60 to-brand-charcoal/90'
+    accentGradient: 'from-indigo-950/90 via-purple-900/70 to-indigo-900/40',
+    tagBg: 'bg-purple-600 text-white'
   }
 ];
 
@@ -79,13 +84,13 @@ export default function ShopByConcern({ onSelectConcern }) {
   const otherConcerns = CONCERNS.filter((c) => !c.isHero);
 
   return (
-    <section className="py-20 bg-brand-ivory border-t border-brand-gold/20">
+    <section className="py-20 bg-gradient-to-b from-white via-amber-50/20 to-white border-t border-brand-gold/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header: More Images, Less Words, Gen-Z / Bento Concept */}
+        {/* Section Header: Fresh Cosmetic Styling */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/70 border border-emerald-300/60 text-emerald-900 text-[11px] font-bold tracking-wider uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/80 border border-emerald-300 text-emerald-900 text-[11px] font-bold tracking-wider uppercase shadow-sm">
               <Zap className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />
               <span>Targeted Skin Concern Diagnostics</span>
             </div>
@@ -99,9 +104,9 @@ export default function ShopByConcern({ onSelectConcern }) {
 
           <button
             onClick={() => onSelectConcern('All')}
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-brand-gold-dark hover:text-brand-charcoal transition-colors group self-start md:self-end"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-amber-700 hover:text-brand-charcoal transition-colors group self-start md:self-end cursor-pointer"
           >
-            <span>Explore All Solutions</span>
+            <span>Explore All Formulations</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -113,67 +118,67 @@ export default function ShopByConcern({ onSelectConcern }) {
           {heroConcern && (
             <div
               onClick={() => onSelectConcern(heroConcern.category)}
-              className="lg:col-span-7 group relative cursor-pointer overflow-hidden rounded-3xl border-2 border-emerald-700/30 bg-brand-cream shadow-luxury hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between min-h-[460px]"
+              className="lg:col-span-7 group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-200 bg-white shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between min-h-[460px]"
             >
-              {/* Background Lifestyle Visual */}
+              {/* Background Lifestyle Visual with Luminous Balance */}
               <div className="absolute inset-0 z-0">
                 <img
                   src={heroConcern.lifestyleImg}
                   alt={heroConcern.name}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 filter brightness-90"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 filter brightness-95"
                 />
-                <div className={`absolute inset-0 bg-gradient-to-t ${heroConcern.accentGradient} opacity-90 group-hover:opacity-95 transition-opacity`} />
+                <div className={`absolute inset-0 bg-gradient-to-t ${heroConcern.accentGradient} opacity-85 group-hover:opacity-90 transition-opacity`} />
               </div>
 
               {/* Card Header Pills */}
               <div className="relative z-10 p-6 sm:p-8 flex items-start justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/90 text-brand-ivory text-[11px] font-bold tracking-wider uppercase shadow-md flex items-center gap-1.5">
+                  <span className="px-3 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-bold tracking-wider uppercase shadow-md flex items-center gap-1.5">
                     <Activity className="w-3.5 h-3.5" />
                     {heroConcern.badge}
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-brand-ivory/20 backdrop-blur-md text-brand-ivory text-[10px] font-semibold border border-brand-ivory/30">
+                  <span className="px-2.5 py-1 rounded-full bg-white/30 backdrop-blur-md text-white text-[10px] font-semibold border border-white/40">
                     {heroConcern.stat}
                   </span>
                 </div>
 
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-brand-charcoal/60 backdrop-blur-md border border-brand-gold/30 text-[11px] text-brand-sand">
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[11px] text-white">
                   <span>Life Moment:</span>
-                  <span className="text-brand-ivory font-medium italic">Breakouts & Flare-ups</span>
+                  <span className="text-emerald-200 font-medium italic">Breakouts & Flare-ups</span>
                 </div>
               </div>
 
               {/* Card Bottom Content & Floating Product Overlay */}
               <div className="relative z-10 p-6 sm:p-8 flex flex-col sm:flex-row items-end justify-between gap-6">
-                <div className="space-y-3 max-w-md text-brand-ivory">
+                <div className="space-y-3 max-w-md text-white">
                   <span className="text-[11px] uppercase tracking-widest text-emerald-300 font-bold block">
                     Concern Spotlight
                   </span>
-                  <h3 className="font-serif text-2xl sm:text-3xl font-medium leading-tight text-brand-ivory">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-medium leading-tight text-white">
                     {heroConcern.name}
                   </h3>
-                  <p className="text-xs text-brand-sand/90 font-light leading-relaxed">
+                  <p className="text-xs text-white/90 font-light leading-relaxed">
                     "{heroConcern.lifeMoment}"
                   </p>
                   
                   {/* Quick Feature Badges */}
                   <div className="flex flex-wrap gap-2 pt-1">
                     {heroConcern.highlights.map((h, idx) => (
-                      <span key={idx} className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-brand-ivory/15 backdrop-blur-sm border border-brand-ivory/20 text-brand-ivory">
-                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
+                      <span key={idx} className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white">
+                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-300" />
                         {h}
                       </span>
                     ))}
                   </div>
 
-                  <div className="pt-2 flex items-center gap-2 text-xs font-semibold text-emerald-300 group-hover:text-brand-gold-light transition-colors">
+                  <div className="pt-2 flex items-center gap-2 text-xs font-semibold text-emerald-300 group-hover:text-emerald-100 transition-colors">
                     <span>Explore Formulation Catalog</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
                   </div>
                 </div>
 
                 {/* Floating Clear Skin Product Pack */}
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-brand-ivory/90 backdrop-blur-md p-2 border border-brand-gold/40 shadow-2xl flex-shrink-0 group-hover:scale-105 transition-transform self-end">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white/95 backdrop-blur-md p-2 border border-emerald-200 shadow-2xl flex-shrink-0 group-hover:scale-105 transition-transform self-end">
                   <img
                     src={heroConcern.productImg}
                     alt="Good Bee Clear Skin Soap"
@@ -191,7 +196,7 @@ export default function ShopByConcern({ onSelectConcern }) {
               <div
                 key={c.id}
                 onClick={() => onSelectConcern(c.category)}
-                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-gold/30 bg-brand-cream/80 aspect-[4/5] shadow-sm hover:shadow-luxury transition-all duration-400 hover:-translate-y-1 flex flex-col justify-between p-4"
+                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-amber-200/60 bg-white aspect-[4/5] shadow-md hover:shadow-xl transition-all duration-400 hover:-translate-y-1 flex flex-col justify-between p-4"
               >
                 {/* Background Image */}
                 <img
@@ -200,31 +205,31 @@ export default function ShopByConcern({ onSelectConcern }) {
                   className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
 
-                {/* Vignette Overlay */}
+                {/* Vignette Overlay with Richer Contrast */}
                 <div className={`absolute inset-0 bg-gradient-to-t ${c.accentGradient} opacity-85 group-hover:opacity-90 transition-opacity`} />
 
                 {/* Top Badge */}
                 <div className="relative z-10 flex items-center justify-between">
-                  <span className="px-2 py-0.5 rounded-md bg-brand-charcoal/70 backdrop-blur-md text-brand-ivory text-[9px] font-bold uppercase tracking-wider border border-brand-gold/30">
+                  <span className="px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-wider border border-white/30">
                     {c.badge}
                   </span>
-                  <span className="text-[10px] text-brand-sand/90 font-medium">
+                  <span className="text-[10px] text-white/90 font-medium">
                     {c.stat}
                   </span>
                 </div>
 
                 {/* Bottom Details */}
-                <div className="relative z-10 space-y-1.5 text-brand-ivory">
-                  <div className="w-10 h-10 rounded-lg bg-brand-ivory/90 backdrop-blur-sm p-1 border border-brand-gold/30 mb-2 shadow">
+                <div className="relative z-10 space-y-1.5 text-white">
+                  <div className="w-10 h-10 rounded-lg bg-white/90 backdrop-blur-sm p-1 border border-white/40 mb-2 shadow">
                     <img src={c.productImg} alt={c.name} className="w-full h-full object-contain rounded" />
                   </div>
                   <h4 className="font-serif text-base font-semibold leading-snug">
                     {c.name}
                   </h4>
-                  <p className="text-[10px] text-brand-sand/80 line-clamp-1 italic">
+                  <p className="text-[10px] text-white/80 line-clamp-1 italic">
                     {c.lifeMoment}
                   </p>
-                  <div className="pt-1 border-t border-brand-ivory/15 flex items-center justify-between text-[10px] text-brand-gold-light font-medium">
+                  <div className="pt-1 border-t border-white/20 flex items-center justify-between text-[10px] text-amber-200 font-medium">
                     <span className="truncate max-w-[120px]">{c.keyActives}</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -238,21 +243,21 @@ export default function ShopByConcern({ onSelectConcern }) {
 
         {/* Life Moment Highlights Strip below */}
         <div className="mt-8 pt-6 border-t border-brand-gold/20 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="p-3 rounded-xl bg-brand-cream/50 border border-brand-gold/20">
-            <p className="text-xs font-bold text-brand-charcoal">Breakout Calming</p>
-            <p className="text-[10px] text-brand-muted">Overnight anti-bacterial active relief</p>
+          <div className="p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-200/60 shadow-sm">
+            <p className="text-xs font-bold text-emerald-950">Breakout Calming</p>
+            <p className="text-[10px] text-emerald-800/80">Overnight anti-bacterial active relief</p>
           </div>
-          <div className="p-3 rounded-xl bg-brand-cream/50 border border-brand-gold/20">
-            <p className="text-xs font-bold text-brand-charcoal">Ceramide Sealing</p>
-            <p className="text-[10px] text-brand-muted">Donkey milk lipids repair tight barrier</p>
+          <div className="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200/60 shadow-sm">
+            <p className="text-xs font-bold text-amber-950">Ceramide Sealing</p>
+            <p className="text-[10px] text-amber-800/80">Donkey milk lipids repair tight barrier</p>
           </div>
-          <div className="p-3 rounded-xl bg-brand-cream/50 border border-brand-gold/20">
-            <p className="text-xs font-bold text-brand-charcoal">Post-Acne Fade</p>
-            <p className="text-[10px] text-brand-muted">Cold-turmeric active clears marks</p>
+          <div className="p-3.5 rounded-2xl bg-orange-50/60 border border-orange-200/60 shadow-sm">
+            <p className="text-xs font-bold text-orange-950">Post-Acne Fade</p>
+            <p className="text-[10px] text-orange-800/80">Cold-turmeric active clears marks</p>
           </div>
-          <div className="p-3 rounded-xl bg-brand-cream/50 border border-brand-gold/20">
-            <p className="text-xs font-bold text-brand-charcoal">Deep Dermal Dew</p>
-            <p className="text-[10px] text-brand-muted">Pink lotus hydrosol hydration lock</p>
+          <div className="p-3.5 rounded-2xl bg-rose-50/60 border border-rose-200/60 shadow-sm">
+            <p className="text-xs font-bold text-rose-950">Deep Dermal Dew</p>
+            <p className="text-[10px] text-rose-800/80">Pink lotus hydrosol hydration lock</p>
           </div>
         </div>
 

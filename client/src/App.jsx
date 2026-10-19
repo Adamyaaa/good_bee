@@ -11,6 +11,8 @@ import CartDrawer from './components/storefront/CartDrawer';
 
 // SPA Sections
 import Hero from './components/storefront/Hero';
+import SkincareRoutineGuide from './components/storefront/SkincareRoutineGuide';
+import AiFormulationLab from './components/storefront/AiFormulationLab';
 import ShopByConcern from './components/storefront/ShopByConcern';
 import InteractiveSpaCatalog from './components/storefront/InteractiveSpaCatalog';
 import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
@@ -114,13 +116,21 @@ function SpaLandingContent() {
       ) : (
         <main className="flex-grow space-y-0">
           
-          {/* 1. Multi-Layer Parallax Hero Section */}
+          {/* 1. Bright & Luminous Cosmetic Hero Section */}
           <Hero
             onExplore={() => handleScrollTo('formulations')}
-            onRoutine={() => handleScrollTo('shop-by-concern')}
+            onRoutine={() => handleScrollTo('how-to-apply')}
           />
 
-          {/* 2. Interactive Diagnostic Skin Concerns */}
+          {/* 2. Clinically Proven Regimen: How to Apply (Like Plum & Dot & Key) */}
+          <SkincareRoutineGuide
+            onSelectProduct={(prod) => setQuickViewProduct(prod)}
+          />
+
+          {/* 3. AI Formulation Lab & Skin Diagnostic Matcher */}
+          <AiFormulationLab />
+
+          {/* 4. Interactive Diagnostic Skin Concerns */}
           <div id="shop-by-concern">
             <ShopByConcern
               onSelectConcern={(concern) => {
@@ -130,7 +140,7 @@ function SpaLandingContent() {
             />
           </div>
 
-          {/* 3. Real-Time Interactive Formulations Catalog */}
+          {/* 5. Real-Time Interactive Formulations Catalog */}
           <InteractiveSpaCatalog
             activeConcern={selectedConcern}
             onQuickView={(prod) => setQuickViewProduct(prod)}

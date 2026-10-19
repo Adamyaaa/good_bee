@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Hero from '../components/storefront/Hero';
+import SkincareRoutineGuide from '../components/storefront/SkincareRoutineGuide';
+import AiFormulationLab from '../components/storefront/AiFormulationLab';
 import ShopByConcern from '../components/storefront/ShopByConcern';
 import ScrollyBrandStory from '../components/storefront/ScrollyBrandStory';
 import ProductCard from '../components/storefront/ProductCard';
@@ -36,10 +38,16 @@ export default function Home({ onNavigate, onSelectProduct }) {
           }
         }}
         onRoutine={() => {
-          const el = document.getElementById('shop-by-concern');
+          const el = document.getElementById('how-to-apply');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
       />
+
+      {/* Daily Regimen Guide: How to Apply (Dot & Key / Plum Style) */}
+      <SkincareRoutineGuide onSelectProduct={onSelectProduct} />
+
+      {/* AI Formulation Lab & Skin Diagnostic Matcher */}
+      <AiFormulationLab />
 
       {/* Target Skin Concerns */}
       <div id="shop-by-concern">
