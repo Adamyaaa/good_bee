@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, MessageCircle, ArrowUpRight, ShieldCheck, MapPin } from 'lucide-react';
+import { MessageCircle, ArrowUpRight, ShieldCheck, MapPin } from 'lucide-react';
 import SocialLinksRow from './SocialIcons';
 
 export default function Footer({ onNavigate, onOpenTrackOrder }) {

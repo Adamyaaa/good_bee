@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, ShoppingBag, Eye, Sparkles } from 'lucide-react';
+import { Star, ShoppingBag, Eye } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export default function ProductCard({ product, onViewDetails }) {
@@ -13,10 +13,10 @@ export default function ProductCard({ product, onViewDetails }) {
   const discountPercent = Math.round(((effectiveMrp - product.price) / effectiveMrp) * 100);
 
   return (
-    <div className="group relative bg-brand-ivory rounded-2xl border border-brand-gold/25 overflow-hidden transition-all duration-400 hover:shadow-luxury hover:border-brand-gold flex flex-col justify-between">
+    <div className="group relative bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-purple-200 flex flex-col justify-between">
       
       {/* Top Image Stage */}
-      <div className="relative aspect-[4/4.5] overflow-hidden bg-brand-cream/60">
+      <div className="relative aspect-[4/4.5] overflow-hidden bg-[#FAF7F2]">
         <img
           src={product.image}
           alt={product.title}
@@ -26,20 +26,20 @@ export default function ProductCard({ product, onViewDetails }) {
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.badge && (
-            <span className="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase bg-brand-charcoal text-brand-ivory rounded-md shadow-sm">
+            <span className="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase bg-[#1e1e1e] text-white rounded-md shadow-sm">
               {product.badge}
             </span>
           )}
-          <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-brand-gold text-brand-charcoal rounded-md shadow-sm">
+          <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-purple-100 text-[#5B0868] border border-purple-200 rounded-md shadow-sm">
             {discountPercent}% OFF
           </span>
         </div>
 
         {/* Floating Quick Action Overlay */}
-        <div className="absolute inset-0 bg-brand-charcoal/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+        <div className="absolute inset-0 bg-black/15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
           <button
             onClick={() => onViewDetails(product)}
-            className="p-3 bg-brand-ivory rounded-full text-brand-charcoal hover:bg-brand-gold transition-colors shadow-md transform translate-y-2 group-hover:translate-y-0 duration-300"
+            className="p-3 bg-white rounded-xl text-brand-charcoal hover:bg-purple-50 hover:text-[#5B0868] transition-colors shadow-md transform translate-y-2 group-hover:translate-y-0 duration-300 cursor-pointer"
             title="Inspect Formulation"
           >
             <Eye className="w-4 h-4" />
@@ -123,7 +123,7 @@ export default function ProductCard({ product, onViewDetails }) {
 
           <button
             onClick={() => addToCart(product)}
-            className="p-2.5 rounded-full bg-brand-charcoal text-brand-ivory hover:bg-brand-gold-dark transition-colors shadow-sm"
+            className="p-2.5 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white transition-colors shadow-sm cursor-pointer"
             title="Add to Bag"
           >
             <ShoppingBag className="w-4 h-4" />

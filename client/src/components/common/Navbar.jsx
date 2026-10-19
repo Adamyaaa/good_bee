@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, User, Search, Menu, X, Shield, Sparkles, ChevronDown, Package, FlaskConical, Cpu } from 'lucide-react';
+import { ShoppingBag, User, Search, Menu, X, Shield, ChevronDown, Package, FlaskConical } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -123,10 +123,10 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
               </div>
             </button>
 
-            {/* Plum Signature Purple "Shop" Pill Button */}
+            {/* Plum Signature Purple "Shop" Button */}
             <button
               onClick={() => onScrollTo('formulations')}
-              className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
+              className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
             >
               Shop
             </button>
@@ -136,18 +136,16 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
           <nav className="hidden lg:flex items-center space-x-7 text-xs font-medium tracking-wide text-gray-700">
             <button
               onClick={() => onScrollTo('how-to-apply')}
-              className="hover:text-[#5B0868] transition-colors py-1 flex items-center gap-1 font-bold text-[#5B0868] cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-1 font-semibold text-[#5B0868] cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#5B0868]" />
-              <span>How To Apply</span>
+              How To Apply
             </button>
 
             <button
               onClick={() => onScrollTo('ai-formulation-lab')}
-              className="hover:text-[#5B0868] transition-colors py-1 flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer"
             >
-              <Cpu className="w-3.5 h-3.5 text-rose-500" />
-              <span>AI Diagnostic</span>
+              AI Diagnostic
             </button>
 
             <button
@@ -189,7 +187,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                 placeholder="Search for formulations, soaps, oils..."
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
-                className="w-56 2xl:w-64 pl-9 pr-4 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white transition-all"
+                className="w-56 2xl:w-64 pl-9 pr-4 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white transition-all"
               />
               <Search className="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none" />
             </form>
@@ -351,20 +349,18 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
               setMobileMenuOpen(false);
               onScrollTo('how-to-apply');
             }}
-            className="w-full text-left text-sm font-bold text-[#5B0868] py-2 border-b border-gray-100 flex items-center gap-2"
+            className="w-full text-left text-sm font-semibold text-[#5B0868] py-2 border-b border-gray-100"
           >
-            <Sparkles className="w-4 h-4 text-[#5B0868]" />
-            <span>How To Apply (Daily Regimen)</span>
+            How To Apply (Daily Regimen)
           </button>
           <button
             onClick={() => {
               setMobileMenuOpen(false);
               onScrollTo('ai-formulation-lab');
             }}
-            className="w-full text-left text-sm font-bold text-rose-700 py-2 border-b border-gray-100 flex items-center gap-2"
+            className="w-full text-left text-sm font-semibold text-gray-700 py-2 border-b border-gray-100"
           >
-            <Cpu className="w-4 h-4 text-rose-500" />
-            <span>AI Skin Diagnostic</span>
+            AI Skin Diagnostic
           </button>
           <button
             onClick={() => {

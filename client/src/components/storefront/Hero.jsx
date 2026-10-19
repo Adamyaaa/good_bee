@@ -4,7 +4,6 @@ import {
   ChevronLeft, 
   ChevronRight, 
   ArrowRight, 
-  Sparkles, 
   Pause, 
   Play,
   Heart,
@@ -218,28 +217,27 @@ export default function Hero({ onExplore, onRoutine }) {
 
                 {/* Benefit Pill */}
                 <div className="pt-1">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
                     {slide.statBadge}
                   </span>
                 </div>
 
                 {/* Plum-Inspired Dual CTA Buttons */}
                 <div className="pt-3 sm:pt-4 flex flex-wrap items-center gap-3">
-                  {/* Purple Pill Button like Plum's signature CTA */}
+                  {/* Purple Button */}
                   <button
                     onClick={() => handleAction(slide.ctaPrimaryAction)}
-                    className="px-7 sm:px-8 py-3.5 bg-[#5B0868] hover:bg-[#480653] text-white font-sans font-bold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
+                    className="px-7 sm:px-8 py-3.5 bg-[#5B0868] hover:bg-[#480653] text-white font-sans font-semibold text-xs sm:text-sm uppercase tracking-wider rounded-xl shadow-md transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer"
                   >
                     <span>{slide.ctaPrimary}</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
-                  {/* Clean White Pill Button */}
+                  {/* Clean White Button */}
                   <button
                     onClick={() => handleAction(slide.ctaSecondaryAction)}
-                    className="px-6 sm:px-7 py-3.5 bg-white hover:bg-gray-50 text-[#1e1e1e] font-sans font-bold text-xs sm:text-sm uppercase tracking-wider rounded-full border border-gray-300 shadow-sm transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
+                    className="px-6 sm:px-7 py-3.5 bg-white hover:bg-gray-50 text-[#1e1e1e] font-sans font-semibold text-xs sm:text-sm uppercase tracking-wider rounded-xl border border-gray-300 shadow-sm transition-all duration-200 hover:shadow hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 cursor-pointer"
                   >
-                    <Sparkles className="w-4 h-4 text-[#5B0868]" />
                     <span>{slide.ctaSecondary}</span>
                   </button>
                 </div>

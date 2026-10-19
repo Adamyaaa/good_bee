@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, Search, FlaskConical, Sparkles, CheckCircle2, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { Leaf, Search, FlaskConical, Sun, CheckCircle2, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 
 const STORY_STEPS = [
   {
@@ -56,7 +56,7 @@ const STORY_STEPS = [
     shortLabel: 'Skin Ritual',
     title: 'The Skin Transformation Ritual',
     subtitle: 'Cellular Restoration & Lasting Radiance',
-    icon: Sparkles,
+    icon: Sun,
     image: '/assets/goodbee-hero-model.jpg',
     protocolBadge: 'Dermal Assimilation Protocol',
     description:

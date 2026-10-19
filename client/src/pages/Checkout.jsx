@@ -3,7 +3,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import DynamicPaymentQrModal from '../components/storefront/DynamicPaymentQrModal';
 import { GoodBeeApi } from '../services/api';
-import { ShieldCheck, QrCode, CheckCircle2, MessageCircle, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { ShieldCheck, QrCode, CheckCircle2, MessageCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function Checkout({ onBack, onNavigateHome }) {

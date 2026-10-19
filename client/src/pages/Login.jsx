@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, DEMO_ACCOUNTS } from '../context/AuthContext';
-import { Shield, Sparkles, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key } from 'lucide-react';
+import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key } from 'lucide-react';
 
 const ROLE_TABS = [
   { id: 'CUSTOMER', label: 'Good Being Club', sublabel: 'Patron Loyalty', icon: User, demoKey: 'CUSTOMER', color: 'text-amber-800' },

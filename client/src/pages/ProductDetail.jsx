@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Star, ShoppingBag, ShieldCheck, Droplets, FlaskConical, MessageCircle, ChevronRight, Check, Sparkles, ArrowLeft } from 'lucide-react';
+import { Star, ShoppingBag, ShieldCheck, Droplets, FlaskConical, MessageCircle, ChevronRight, Check, ArrowLeft } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import ProductCard from '../components/storefront/ProductCard';
 
@@ -219,17 +219,17 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
               <div className="flex items-center gap-4">
                 
                 {/* Quantity picker */}
-                <div className="flex items-center border border-brand-gold/40 rounded-full bg-brand-cream px-3 py-2">
+                <div className="flex items-center border border-gray-200 rounded-xl bg-gray-50 px-3 py-2">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-2 font-bold text-brand-charcoal hover:text-brand-gold text-sm"
+                    className="px-2 font-bold text-brand-charcoal hover:text-[#5B0868] text-sm cursor-pointer"
                   >
                     -
                   </button>
                   <span className="px-3 text-xs font-bold text-brand-charcoal">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-2 font-bold text-brand-charcoal hover:text-brand-gold text-sm"
+                    className="px-2 font-bold text-brand-charcoal hover:text-[#5B0868] text-sm cursor-pointer"
                   >
                     +
                   </button>
@@ -238,19 +238,18 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
                 {/* Add to Bag */}
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 py-3.5 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-2"
+                  className="flex-1 py-3.5 bg-white text-brand-charcoal border border-gray-200 text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-gray-50 transition-all duration-300 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-4 h-4 text-[#5B0868]" />
                   <span>Add to Bag</span>
                 </button>
 
                 {/* Instant Dynamic QR Buy Now */}
                 <button
                   onClick={() => onInstantBuy(p, quantity)}
-                  className="px-6 py-3.5 bg-brand-gold text-brand-charcoal text-xs font-bold uppercase tracking-wider rounded-full hover:bg-brand-gold-light transition-all shadow-md flex items-center justify-center gap-1.5"
+                  className="px-6 py-3.5 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
                   title="Direct checkout with dynamic UPI QR"
                 >
-                  <Sparkles className="w-4 h-4" />
                   <span>Buy Now</span>
                 </button>
 
@@ -268,7 +267,7 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
                 href={whatsappInquiryUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 bg-transparent border border-emerald-700/30 text-emerald-800 text-xs font-semibold rounded-full hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2.5 bg-transparent border border-emerald-700/30 text-emerald-800 text-xs font-semibold rounded-xl hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-600" />
                 <span>Consult Skincare Advisor on WhatsApp</span>

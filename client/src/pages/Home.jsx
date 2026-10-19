@@ -6,7 +6,7 @@ import ShopByConcern from '../components/storefront/ShopByConcern';
 import ScrollyBrandStory from '../components/storefront/ScrollyBrandStory';
 import ProductCard from '../components/storefront/ProductCard';
 import { GoodBeeApi } from '../services/api';
-import { ArrowRight, Sparkles, FlaskConical, Award, Star, CheckCircle, ShieldCheck } from 'lucide-react';
+import { ArrowRight, FlaskConical, Award, Star, CheckCircle, ShieldCheck } from 'lucide-react';
 
 export default function Home({ onNavigate, onSelectProduct }) {
   const [featuredProducts, setFeaturedProducts] = useState([]);

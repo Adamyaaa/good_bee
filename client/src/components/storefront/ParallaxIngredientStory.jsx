@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sparkles, Droplets, Shield, Award } from 'lucide-react';
+import { Droplets, Shield, Award } from 'lucide-react';
 
 const ACTIVES = [
   {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Gift, X, Sparkles, Check, ArrowRight, ShieldCheck, Heart } from 'lucide-react';
+import { Gift, X, Check, ArrowRight, ShieldCheck, Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function SurpriseGiftModal({ isOpen, onClose }) {
@@ -70,13 +70,13 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
         {!isSubmitted ? (
           <div>
             {/* Top Gift Emblem */}
-            <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-brand-gold to-brand-gold-light p-0.5 shadow-lg flex items-center justify-center mb-4">
-              <div className="w-full h-full bg-brand-ivory rounded-full flex items-center justify-center">
-                <Gift className="w-8 h-8 text-brand-gold-dark animate-bounce" />
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-purple-100 p-0.5 border border-purple-200 shadow-md flex items-center justify-center mb-4">
+              <div className="w-full h-full bg-white rounded-xl flex items-center justify-center">
+                <Gift className="w-8 h-8 text-[#5B0868]" />
               </div>
             </div>
 
-            <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-brand-gold-dark bg-brand-cream px-3 py-1 rounded-full border border-brand-gold/30 inline-block mb-2">
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#5B0868] bg-purple-50 px-3 py-1 rounded-xl border border-purple-200 inline-block mb-2">
               Patron Welcome Surprise
             </span>
 
@@ -103,7 +103,7 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
                     setMobileNumber(e.target.value.replace(/[^0-9]/g, ''));
                     if (error) setError('');
                   }}
-                  className="w-full pl-12 pr-4 py-3 bg-white border border-brand-gold/40 rounded-xl text-sm font-medium text-brand-charcoal focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold shadow-sm font-mono placeholder:font-sans"
+                  className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-brand-charcoal focus:outline-none focus:border-[#5B0868] focus:ring-1 focus:ring-[#5B0868] shadow-sm font-mono placeholder:font-sans"
                 />
               </div>
 
@@ -111,7 +111,7 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
 
               <button
                 type="submit"
-                className="w-full py-3.5 bg-brand-charcoal text-brand-ivory rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-brand-gold-dark transition-colors shadow-luxury flex items-center justify-center gap-2 group"
+                className="w-full py-3.5 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center justify-center gap-2 group cursor-pointer"
               >
                 <span>Reveal My Surprise 🎁</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -125,8 +125,8 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
           </div>
         ) : (
           <div className="space-y-4 py-2">
-            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 border border-emerald-300 text-emerald-700 flex items-center justify-center shadow-md animate-in zoom-in-75 duration-300">
-              <Sparkles className="w-8 h-8" />
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-purple-50 border border-purple-200 text-[#5B0868] flex items-center justify-center shadow-md animate-in zoom-in-75 duration-300">
+              <Gift className="w-8 h-8" />
             </div>
 
             <h3 className="font-serif text-2xl sm:text-3xl text-brand-charcoal font-medium">
@@ -137,17 +137,17 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
               We’ve reserved your <strong>10ml Frankincense Honey Elixir</strong>. Apply the code below during checkout to activate your 15% discount:
             </p>
 
-            <div className="p-4 bg-brand-cream/80 border-2 border-dashed border-brand-gold/60 rounded-2xl flex items-center justify-between gap-3 shadow-inner">
+            <div className="p-4 bg-purple-50/50 border-2 border-dashed border-purple-200 rounded-2xl flex items-center justify-between gap-3 shadow-inner">
               <div className="text-left">
-                <span className="text-[10px] font-bold text-brand-gold-dark tracking-wider uppercase block">Your VIP Code</span>
+                <span className="text-[10px] font-bold text-[#5B0868] tracking-wider uppercase block">Your VIP Code</span>
                 <span className="font-mono text-xl font-extrabold tracking-widest text-brand-charcoal">PUREBEE15</span>
               </div>
               <button
                 onClick={handleCopyCode}
-                className={`px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-colors ${
+                className={`px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-colors cursor-pointer ${
                   copied
                     ? 'bg-emerald-700 text-white'
-                    : 'bg-brand-gold text-brand-charcoal hover:bg-brand-gold-dark hover:text-white'
+                    : 'bg-[#5B0868] text-white hover:bg-[#480653]'
                 }`}
               >
                 {copied ? (
@@ -162,7 +162,7 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
 
             <button
               onClick={onClose}
-              className="w-full py-3 bg-brand-charcoal text-brand-ivory rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-brand-gold-dark transition-colors shadow-sm"
+              className="w-full py-3 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
             >
               Shop Formulations Now →
             </button>

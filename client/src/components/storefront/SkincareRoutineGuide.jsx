@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, 
   Droplets, 
   Sun, 
   Moon, 
@@ -29,11 +28,11 @@ export const ROUTINES = {
     badge: '☀️ MORNING REGIMEN',
     timeEst: '3 Minutes',
     colorTheme: {
-      tabActive: 'bg-gradient-to-r from-amber-500 to-rose-400 text-white shadow-md',
-      pill: 'bg-amber-100 text-amber-900 border-amber-300',
-      accentGlow: 'from-amber-400/20 via-rose-300/20 to-transparent',
-      cardBorder: 'border-amber-200/80',
-      badgeBg: 'bg-amber-500 text-white'
+      tabActive: 'bg-[#5B0868] text-white shadow-sm',
+      pill: 'bg-purple-50 text-[#5B0868] border-purple-200',
+      accentGlow: 'transparent',
+      cardBorder: 'border-purple-200',
+      badgeBg: 'bg-[#5B0868] text-white'
     },
     bundleDiscount: 20,
     steps: [
@@ -131,11 +130,11 @@ export const ROUTINES = {
     badge: '🌙 NIGHT RECOVERY',
     timeEst: '4 Minutes',
     colorTheme: {
-      tabActive: 'bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-500 text-white shadow-md',
-      pill: 'bg-purple-100 text-purple-900 border-purple-300',
-      accentGlow: 'from-purple-400/20 via-indigo-300/20 to-transparent',
-      cardBorder: 'border-purple-200/80',
-      badgeBg: 'bg-purple-600 text-white'
+      tabActive: 'bg-[#5B0868] text-white shadow-sm',
+      pill: 'bg-purple-50 text-[#5B0868] border-purple-200',
+      accentGlow: 'transparent',
+      cardBorder: 'border-purple-200',
+      badgeBg: 'bg-[#5B0868] text-white'
     },
     bundleDiscount: 20,
     steps: [
@@ -233,11 +232,11 @@ export const ROUTINES = {
     badge: '⚡ 48H CLARIFYING REGIMEN',
     timeEst: '2 Minutes',
     colorTheme: {
-      tabActive: 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md',
-      pill: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-      accentGlow: 'from-emerald-400/20 via-teal-300/20 to-transparent',
-      cardBorder: 'border-emerald-200/80',
-      badgeBg: 'bg-emerald-600 text-white'
+      tabActive: 'bg-[#5B0868] text-white shadow-sm',
+      pill: 'bg-purple-50 text-[#5B0868] border-purple-200',
+      accentGlow: 'transparent',
+      cardBorder: 'border-purple-200',
+      badgeBg: 'bg-[#5B0868] text-white'
     },
     bundleDiscount: 20,
     steps: [
@@ -381,18 +380,13 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
   };
 
   return (
-    <section id="how-to-apply" className="py-20 sm:py-28 bg-gradient-to-b from-white via-amber-50/40 to-white relative overflow-hidden border-t border-brand-gold/20">
-      
-      {/* Luminous Ambient Background Glows like Dot & Key's vibrant aesthetic */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-amber-200/30 via-rose-200/25 to-pink-200/20 blur-3xl pointer-events-none rounded-full" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-emerald-200/20 blur-3xl pointer-events-none rounded-full" />
+    <section id="how-to-apply" className="py-20 sm:py-28 bg-[#FAF7F2] relative border-t border-purple-100">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header: High Energy, Luminous Cosmetic Aesthetic */}
+        {/* Section Header: Clean Cosmetic Aesthetic */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-100 via-rose-100 to-amber-100 border border-amber-300/80 text-amber-950 text-xs font-bold uppercase tracking-widest shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-spin" style={{ animationDuration: '6s' }} />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] text-xs font-bold uppercase tracking-widest shadow-sm">
             <span>DAILY REGIMEN GUIDE • HOW TO APPLY</span>
           </div>
 
@@ -416,16 +410,16 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                     setActiveTab(r.id);
                     setActiveStepIndex(0);
                   }}
-                  className={`flex items-center gap-2.5 px-5 sm:px-7 py-3 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer ${
+                  className={`flex items-center gap-2.5 px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer ${
                     isSelected
                       ? r.colorTheme.tabActive
-                      : 'bg-white/90 text-brand-charcoal hover:bg-amber-50 border border-brand-gold/30 shadow-sm'
+                      : 'bg-white text-brand-charcoal hover:bg-purple-50 border border-gray-200 shadow-sm'
                   }`}
                 >
-                  <IconComp className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-amber-600'}`} />
+                  <IconComp className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-[#5B0868]'}`} />
                   <span>{r.name}</span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full ml-1 ${
-                    isSelected ? 'bg-white/20 text-white' : 'bg-brand-sand/40 text-brand-charcoal'
+                  <span className={`text-[10px] px-2 py-0.5 rounded-md ml-1 ${
+                    isSelected ? 'bg-white/20 text-white' : 'bg-gray-100 text-brand-charcoal'
                   }`}>
                     {r.timeEst}
                   </span>
@@ -437,7 +431,7 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
 
         {/* Dynamic Tagline Banner */}
         <div className="mb-10 text-center">
-          <p className="text-xs sm:text-sm font-medium text-brand-charcoal/80 bg-white/80 backdrop-blur-sm inline-block px-6 py-2 rounded-full border border-brand-gold/25 shadow-sm">
+          <p className="text-xs sm:text-sm font-medium text-brand-charcoal/80 bg-white inline-block px-6 py-2 rounded-xl border border-purple-100 shadow-sm">
             💡 <span className="font-semibold text-brand-charcoal">{routine.badge}:</span> {routine.tagline}
           </p>
         </div>
@@ -513,20 +507,19 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="bg-white rounded-3xl p-6 sm:p-8 border border-amber-200/80 shadow-2xl relative overflow-hidden"
+                className="bg-white rounded-3xl p-6 sm:p-8 border border-purple-200 shadow-xl relative overflow-hidden"
               >
                 {/* Decorative Top Accent Stripe */}
-                <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-amber-400 via-rose-400 to-amber-500" />
+                <div className="absolute top-0 inset-x-0 h-1.5 bg-[#5B0868]" />
 
                 {/* Header of Active Step */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-brand-gold/15">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${routine.colorTheme.badgeBg}`}>
+                      <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg ${routine.colorTheme.badgeBg}`}>
                         STEP {activeStep.stepNumber} • {activeStep.category}
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-emerald-600" />
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex items-center gap-1">
                         {activeStep.aiActiveScore}
                       </span>
                     </div>
@@ -551,14 +544,14 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                   
                   {/* Product Visual Box */}
                   <div className="md:col-span-5 relative group">
-                    <div className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-amber-50 to-rose-50 border border-brand-gold/30 shadow-md flex items-center justify-center p-3">
+                    <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#FBFBFA] border border-gray-200 shadow-sm flex items-center justify-center p-3">
                       <img
                         src={activeStep.image}
                         alt={activeStep.title}
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute bottom-3 left-3 right-3 text-center">
-                        <span className={`inline-block text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-full backdrop-blur-md shadow-sm border ${activeStep.textureColor}`}>
+                        <span className={`inline-block text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-lg backdrop-blur-md shadow-sm border ${activeStep.textureColor}`}>
                           Texture: {activeStep.texture}
                         </span>
                       </div>
@@ -569,12 +562,12 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                   <div className="md:col-span-7 space-y-4">
                     
                     {/* Dose / Amount */}
-                    <div className="flex items-start gap-3 bg-amber-50/50 p-3 rounded-xl border border-amber-200/50">
-                      <div className="p-1.5 rounded-lg bg-amber-100 text-amber-800 flex-shrink-0 mt-0.5">
+                    <div className="flex items-start gap-3 bg-purple-50/40 p-3 rounded-xl border border-purple-100">
+                      <div className="p-1.5 rounded-lg bg-purple-100 text-[#5B0868] flex-shrink-0 mt-0.5">
                         <Droplets className="w-4 h-4" />
                       </div>
                       <div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-wider text-amber-950">
+                        <h5 className="text-[11px] font-bold uppercase tracking-wider text-purple-950">
                           Recommended Amount
                         </h5>
                         <p className="text-xs text-brand-charcoal/85 mt-0.5 font-medium">
@@ -584,9 +577,9 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                     </div>
 
                     {/* Application Motion / Gesture */}
-                    <div className="flex items-start gap-3 bg-rose-50/50 p-3 rounded-xl border border-rose-200/50">
+                    <div className="flex items-start gap-3 bg-rose-50/40 p-3 rounded-xl border border-rose-100">
                       <div className="p-1.5 rounded-lg bg-rose-100 text-rose-800 flex-shrink-0 mt-0.5">
-                        <Sparkles className="w-4 h-4" />
+                        <Sun className="w-4 h-4" />
                       </div>
                       <div>
                         <h5 className="text-[11px] font-bold uppercase tracking-wider text-rose-950">
@@ -599,7 +592,7 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                     </div>
 
                     {/* Pro Tip */}
-                    <div className="flex items-start gap-3 bg-emerald-50/50 p-3 rounded-xl border border-emerald-200/50">
+                    <div className="flex items-start gap-3 bg-emerald-50/40 p-3 rounded-xl border border-emerald-100">
                       <div className="p-1.5 rounded-lg bg-emerald-100 text-emerald-800 flex-shrink-0 mt-0.5">
                         <Award className="w-4 h-4" />
                       </div>
@@ -618,7 +611,7 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                 </div>
 
                 {/* Footer Actions of Active Step */}
-                <div className="pt-4 border-t border-brand-gold/15 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-2 text-xs text-brand-muted">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     <span>Free of synthetic sulfates, artificial perfumes & mineral oils</span>
@@ -627,7 +620,7 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <button
                       onClick={() => handleAddSingleStep(activeStep)}
-                      className="flex-1 sm:flex-none px-6 py-3 rounded-full bg-brand-charcoal hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                      className="flex-1 sm:flex-none px-6 py-3 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {addedItems[activeStep.productId] ? (
                         <>
@@ -651,83 +644,75 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
         </div>
 
         {/* 4-Step Regimen Bundle Offer Card (One-Click Routine Purchase like Dot & Key) */}
-        <div className="relative rounded-3xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 p-1 shadow-2xl text-white">
-          <div className="bg-gradient-to-br from-brand-charcoal/95 via-slate-900 to-brand-charcoal rounded-[22px] p-6 sm:p-10 relative overflow-hidden">
+        <div className="relative rounded-2xl bg-[#5B0868] text-white p-6 sm:p-10 shadow-xl border border-purple-900/30">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             
-            {/* Ambient Background Glow in Bundle Box */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-amber-400/20 blur-3xl rounded-full pointer-events-none" />
+            {/* Left Column: Routine Summary & Micro Product Thumbnails */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-xl bg-white/15 border border-white/25 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+                <Flame className="w-3.5 h-3.5 text-amber-300 animate-bounce" />
+                <span>SPECIAL REGIMEN BUNDLE OFFER • SAVE 20%</span>
+              </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-              
-              {/* Left Column: Routine Summary & Micro Product Thumbnails */}
-              <div className="lg:col-span-7 space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/40 text-amber-300 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                  <Flame className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
-                  <span>SPECIAL REGIMEN BUNDLE OFFER • SAVE 20%</span>
-                </div>
+              <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium leading-tight text-white">
+                Get The Complete 4-Step {routine.name}
+              </h3>
 
-                <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium leading-tight text-white">
-                  Get The Complete 4-Step {routine.name}
-                </h3>
+              <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed max-w-xl">
+                Formulated to work synergistically. Layering all 4 steps boosts botanical active-stabilization efficacy and delivers visible results in under 7 days.
+              </p>
 
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-xl">
-                  Formulated to work synergistically. Layering all 4 steps boosts botanical active-stabilization efficacy and delivers visible results in under 7 days.
-                </p>
-
-                {/* Mini Step Thumbnails Strip */}
-                <div className="pt-2 flex flex-wrap items-center gap-3">
-                  {routine.steps.map((step, idx) => (
-                    <div key={step.stepNumber} className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-2 rounded-xl border border-white/15">
-                      <div className="w-8 h-8 rounded-lg overflow-hidden bg-white/20 flex-shrink-0">
-                        <img src={step.image} alt={step.title} className="w-full h-full object-contain" />
-                      </div>
-                      <div className="text-left">
-                        <span className="text-[9px] text-amber-300 font-bold block">STEP {step.stepNumber}</span>
-                        <span className="text-[11px] text-white font-medium truncate max-w-[110px] block">{step.title}</span>
-                      </div>
+              {/* Mini Step Thumbnails Strip */}
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                {routine.steps.map((step) => (
+                  <div key={step.stepNumber} className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-xl border border-white/15">
+                    <div className="w-8 h-8 rounded-lg overflow-hidden bg-white/20 flex-shrink-0">
+                      <img src={step.image} alt={step.title} className="w-full h-full object-contain" />
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right Column: Bundle Pricing & One-Click Buy Button */}
-              <div className="lg:col-span-5 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 text-center lg:text-right space-y-4">
-                <div>
-                  <span className="text-xs uppercase tracking-widest text-amber-300 font-bold block">
-                    Routine Value: <span className="line-through text-gray-400">₹{totalRoutineMrp}</span>
-                  </span>
-                  <div className="flex items-baseline justify-center lg:justify-end gap-3 mt-1">
-                    <span className="font-serif text-3xl sm:text-4xl font-bold text-white">
-                      ₹{bundleDiscountedPrice}
-                    </span>
-                    <span className="text-xs uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 font-bold">
-                      SAVE ₹{totalSaved} (20% OFF)
-                    </span>
+                    <div className="text-left">
+                      <span className="text-[9px] text-amber-300 font-bold block">STEP {step.stepNumber}</span>
+                      <span className="text-[11px] text-white font-medium truncate max-w-[110px] block">{step.title}</span>
+                    </div>
                   </div>
-                  <p className="text-[11px] text-gray-300 mt-1">
-                    + Complimentary Pan-India Shipping & Botanical Sample Gift
-                  </p>
-                </div>
+                ))}
+              </div>
+            </div>
 
-                <button
-                  onClick={handleAddEntireRoutine}
-                  className="w-full py-4 px-8 rounded-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-bold text-xs sm:text-sm uppercase tracking-[0.18em] transition-all duration-300 shadow-[0_10px_30px_rgba(251,191,36,0.35)] transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 cursor-pointer"
-                >
-                  {bundleAdded ? (
-                    <>
-                      <Check className="w-5 h-5 text-slate-950" />
-                      <span>All 4 Items Added to Cart!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4 text-slate-950" />
-                      <span>Buy Complete 4-Step Routine (Save 20%)</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
+            {/* Right Column: Bundle Pricing & One-Click Buy Button */}
+            <div className="lg:col-span-5 bg-white/10 rounded-xl p-6 border border-white/20 text-center lg:text-right space-y-4">
+              <div>
+                <span className="text-xs uppercase tracking-widest text-purple-200 font-bold block">
+                  Routine Value: <span className="line-through text-purple-300/80">₹{totalRoutineMrp}</span>
+                </span>
+                <div className="flex items-baseline justify-center lg:justify-end gap-3 mt-1">
+                  <span className="font-serif text-3xl sm:text-4xl font-bold text-white">
+                    ₹{bundleDiscountedPrice}
+                  </span>
+                  <span className="text-xs uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 font-bold">
+                    SAVE ₹{totalSaved} (20% OFF)
+                  </span>
+                </div>
+                <p className="text-[11px] text-purple-200 mt-1">
+                  + Complimentary Pan-India Shipping & Botanical Sample Gift
+                </p>
               </div>
 
+              <button
+                onClick={handleAddEntireRoutine}
+                className="w-full py-4 px-8 rounded-xl bg-white hover:bg-purple-50 text-[#5B0868] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {bundleAdded ? (
+                  <>
+                    <Check className="w-5 h-5 text-[#5B0868]" />
+                    <span>All 4 Items Added to Cart!</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Buy Complete 4-Step Routine (Save 20%)</span>
+                    <ArrowRight className="w-4 h-4 text-[#5B0868]" />
+                  </>
+                )}
+              </button>
             </div>
 
           </div>

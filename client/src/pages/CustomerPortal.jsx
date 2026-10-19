@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { User, Package, Award, MapPin, Sparkles, ArrowRight, MessageCircle } from 'lucide-react';
+import { User, Package, Award, MapPin, ArrowRight, MessageCircle } from 'lucide-react';
 
 export default function CustomerPortal({ onNavigateHome }) {
   const { user, token } = useAuth();

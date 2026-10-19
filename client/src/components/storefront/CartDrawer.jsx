@@ -176,7 +176,7 @@ export default function CartDrawer({ onCheckout }) {
                 </div>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-wider rounded-lg hover:bg-brand-gold-dark transition-colors"
+                  className="px-4 py-2 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-semibold uppercase tracking-wider rounded-xl transition-colors cursor-pointer"
                 >
                   Apply
                 </button>
@@ -227,7 +227,7 @@ export default function CartDrawer({ onCheckout }) {
                   setIsDrawerOpen(false);
                   onCheckout();
                 }}
-                className="w-full py-4 bg-brand-charcoal text-brand-ivory text-xs font-semibold tracking-widest uppercase rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-2 group"
+                className="w-full py-4 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2 group cursor-pointer"
               >
                 <span>Proceed to Checkout</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

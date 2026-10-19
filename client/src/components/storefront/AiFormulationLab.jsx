@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, 
   Cpu, 
   FlaskConical, 
   Droplets, 
@@ -143,18 +142,14 @@ export default function AiFormulationLab() {
   const totalBundlePrice = rec.stepProducts.reduce((sum, p) => sum + p.price, 0);
 
   return (
-    <section id="ai-formulation-lab" className="py-20 sm:py-28 bg-gradient-to-b from-white via-rose-50/30 to-amber-50/30 relative overflow-hidden border-t border-brand-gold/20">
-      
-      {/* 3D AI-Style Ambient Pastel Orbs (Like Dot & Key) */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-rose-200/35 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '8s' }} />
-      <div className="absolute bottom-10 -right-20 w-96 h-96 bg-amber-200/35 rounded-full blur-3xl pointer-events-none" />
+    <section id="ai-formulation-lab" className="py-20 sm:py-28 bg-white relative border-t border-purple-100">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header: Tech-Forward Clinical Cosmetic Styling */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-rose-100 via-amber-100 to-rose-100 border border-rose-300 text-rose-950 text-xs font-bold uppercase tracking-widest shadow-sm">
-            <Cpu className="w-3.5 h-3.5 text-rose-600 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] text-xs font-bold uppercase tracking-widest shadow-sm">
+            <Cpu className="w-3.5 h-3.5 text-[#5B0868]" />
             <span>AI FORMULATION INTELLIGENCE • SKIN DIAGNOSTIC</span>
           </div>
 
@@ -168,7 +163,7 @@ export default function AiFormulationLab() {
         </div>
 
         {/* Main Diagnostic Panel */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl border border-amber-200/80 shadow-2xl p-6 sm:p-10 relative overflow-hidden">
+        <div className="bg-[#FAF7F2] rounded-3xl border border-purple-100 shadow-md p-6 sm:p-10 relative overflow-hidden">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
@@ -179,7 +174,7 @@ export default function AiFormulationLab() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-charcoal flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-[11px] font-bold">1</span>
+                    <span className="w-5 h-5 rounded-md bg-purple-100 text-[#5B0868] flex items-center justify-center text-[11px] font-bold">1</span>
                     <span>Your Current Skin Barrier Type</span>
                   </span>
                 </div>
@@ -189,15 +184,15 @@ export default function AiFormulationLab() {
                     <button
                       key={t.id}
                       onClick={() => handleSelectSkin(t.id)}
-                      className={`p-3 rounded-2xl text-left border transition-all duration-200 cursor-pointer ${
+                      className={`p-3 rounded-xl text-left border transition-all duration-200 cursor-pointer ${
                         selectedSkin === t.id
-                          ? 'bg-amber-500 text-white border-amber-600 shadow-md ring-2 ring-amber-300/50'
-                          : 'bg-white hover:bg-amber-50/50 border-brand-gold/25 text-brand-charcoal'
+                          ? 'bg-[#5B0868] text-white border-[#5B0868] shadow-sm'
+                          : 'bg-white hover:bg-purple-50 border-gray-200 text-brand-charcoal'
                       }`}
                     >
                       <div className="text-xl mb-1">{t.icon}</div>
                       <div className="text-xs font-bold leading-tight">{t.label}</div>
-                      <div className={`text-[10px] mt-0.5 leading-tight ${selectedSkin === t.id ? 'text-amber-100' : 'text-brand-muted'}`}>
+                      <div className={`text-[10px] mt-0.5 leading-tight ${selectedSkin === t.id ? 'text-purple-200' : 'text-brand-muted'}`}>
                         {t.desc}
                       </div>
                     </button>
@@ -209,7 +204,7 @@ export default function AiFormulationLab() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-charcoal flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-900 flex items-center justify-center text-[11px] font-bold">2</span>
+                    <span className="w-5 h-5 rounded-md bg-purple-100 text-[#5B0868] flex items-center justify-center text-[11px] font-bold">2</span>
                     <span>Target Transformation Goal</span>
                   </span>
                 </div>
@@ -219,14 +214,14 @@ export default function AiFormulationLab() {
                     <button
                       key={g.id}
                       onClick={() => handleSelectGoal(g.id)}
-                      className={`p-3 rounded-2xl text-left border transition-all duration-200 cursor-pointer ${
+                      className={`p-3 rounded-xl text-left border transition-all duration-200 cursor-pointer ${
                         selectedGoal === g.id
-                          ? 'bg-gradient-to-r from-rose-500 to-amber-500 text-white border-rose-600 shadow-md ring-2 ring-rose-300/50'
-                          : 'bg-white hover:bg-rose-50/50 border-brand-gold/25 text-brand-charcoal'
+                          ? 'bg-[#5B0868] text-white border-[#5B0868] shadow-sm'
+                          : 'bg-white hover:bg-purple-50 border-gray-200 text-brand-charcoal'
                       }`}
                     >
-                      <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full inline-block mb-1.5 ${
-                        selectedGoal === g.id ? 'bg-white/20 text-white' : 'bg-brand-cream text-brand-gold-dark'
+                      <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-md inline-block mb-1.5 ${
+                        selectedGoal === g.id ? 'bg-white/20 text-white' : 'bg-purple-50 text-[#5B0868]'
                       }`}>
                         {g.badge}
                       </span>
@@ -237,7 +232,7 @@ export default function AiFormulationLab() {
               </div>
 
               {/* AI Trust Guarantee Strip */}
-              <div className="bg-amber-50/60 rounded-2xl p-4 border border-amber-200/60 flex items-center gap-3">
+              <div className="bg-white rounded-xl p-4 border border-purple-100 flex items-center gap-3">
                 <ShieldCheck className="w-6 h-6 text-emerald-600 flex-shrink-0" />
                 <div className="text-[11px] text-brand-charcoal/80 leading-snug">
                   <span className="font-bold text-brand-charcoal">Clean Formulation AI Matrix:</span> Guaranteed 100% free of synthetic sulfates, artificial perfumes, silicones, and phthalates.
@@ -255,9 +250,9 @@ export default function AiFormulationLab() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="h-full min-h-[380px] flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-amber-50/40 to-rose-50/40 rounded-2xl border border-dashed border-amber-300"
+                    className="h-full min-h-[380px] flex flex-col items-center justify-center text-center p-8 bg-white rounded-2xl border border-dashed border-purple-200"
                   >
-                    <RefreshCw className="w-8 h-8 text-amber-600 animate-spin mb-3" />
+                    <RefreshCw className="w-8 h-8 text-[#5B0868] animate-spin mb-3" />
                     <p className="font-serif text-lg font-medium text-brand-charcoal">Analyzing Lipid Profile & Active Stability...</p>
                     <p className="text-xs text-brand-muted mt-1">Cross-referencing 100% natural botanical synergies</p>
                   </motion.div>
@@ -267,13 +262,12 @@ export default function AiFormulationLab() {
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="h-full flex flex-col justify-between bg-gradient-to-br from-amber-50/60 via-white to-rose-50/50 rounded-2xl p-6 sm:p-8 border border-amber-200 shadow-lg relative"
+                    className="h-full flex flex-col justify-between bg-white rounded-2xl p-6 sm:p-8 border border-purple-100 shadow-md relative"
                   >
                     {/* Top Row: AI Match Score & Title */}
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-brand-gold/15">
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold">
-                          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                      <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
                           <span>AI Compatibility: {rec.matchScore} Match</span>
                         </div>
                         <span className="text-[11px] font-mono text-brand-muted uppercase tracking-wider">
@@ -292,16 +286,16 @@ export default function AiFormulationLab() {
 
                       {/* Active Botanical Synergies Pills */}
                       <div className="space-y-1.5 pt-1">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold-dark block">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868] block">
                           AI-Verified Active Ingredients:
                         </span>
                         <div className="flex flex-wrap gap-2">
                           {rec.activeSynergies.map((act, i) => (
                             <span
                               key={i}
-                              className="px-3 py-1 rounded-full bg-white text-brand-charcoal text-xs font-medium border border-amber-200 shadow-sm flex items-center gap-1.5"
+                              className="px-3 py-1 rounded-lg bg-[#FAF7F2] text-brand-charcoal text-xs font-medium border border-gray-200 shadow-sm flex items-center gap-1.5"
                             >
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#5B0868]" />
                               <span>{act}</span>
                             </span>
                           ))}
@@ -310,17 +304,17 @@ export default function AiFormulationLab() {
 
                       {/* Recommended 3-Step Product Stack */}
                       <div className="space-y-2 pt-2">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold-dark block">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868] block">
                           Your Customized 3-Step Product Stack:
                         </span>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           {rec.stepProducts.map((p, i) => (
-                            <div key={p.id} className="bg-white p-3 rounded-xl border border-amber-100 shadow-sm flex items-center gap-2.5">
-                              <div className="w-10 h-10 rounded-lg overflow-hidden bg-brand-cream/50 flex-shrink-0">
+                            <div key={p.id} className="bg-[#FAF7F2] p-3 rounded-xl border border-gray-100 shadow-sm flex items-center gap-2.5">
+                              <div className="w-10 h-10 rounded-lg overflow-hidden bg-white flex-shrink-0">
                                 <img src={p.image} alt={p.title} className="w-full h-full object-contain" />
                               </div>
                               <div className="min-w-0">
-                                <span className="text-[9px] font-bold text-amber-700 block">STEP 0{i + 1}</span>
+                                <span className="text-[9px] font-bold text-[#5B0868] block">STEP 0{i + 1}</span>
                                 <p className="text-xs font-semibold text-brand-charcoal truncate">{p.title}</p>
                                 <span className="text-xs font-bold text-brand-charcoal">₹{p.price}</span>
                               </div>
@@ -330,9 +324,9 @@ export default function AiFormulationLab() {
                       </div>
 
                       {/* Expected Transformation Timeline */}
-                      <div className="bg-white/80 p-3.5 rounded-xl border border-brand-gold/20 space-y-2">
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-xl border border-gray-200/60 space-y-2">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-brand-charcoal flex items-center gap-1.5">
-                          <Activity className="w-3.5 h-3.5 text-amber-600" />
+                          <Activity className="w-3.5 h-3.5 text-[#5B0868]" />
                           <span>Expected Clinical Results Timeline:</span>
                         </span>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -348,17 +342,16 @@ export default function AiFormulationLab() {
                     </div>
 
                     {/* Bottom CTA Button */}
-                    <div className="pt-6 border-t border-brand-gold/15 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                       <div>
                         <span className="text-[11px] text-brand-muted block">3-Product AI Bundle:</span>
-                        <span className="font-serif text-2xl font-bold text-brand-charcoal">₹{totalBundlePrice}</span>
+                        <span className="font-serif text-2xl font-bold text-[#5B0868]">₹{totalBundlePrice}</span>
                       </div>
 
                       <button
                         onClick={handleAddAiRoutine}
-                        className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
                       >
-                        <Sparkles className="w-4 h-4" />
                         <span>Add My Custom AI Routine to Cart</span>
                         <ArrowRight className="w-4 h-4" />
                       </button>

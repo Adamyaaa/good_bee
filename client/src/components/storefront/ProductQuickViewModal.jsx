@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Star, ShoppingBag, Sparkles, MessageCircle, ShieldCheck, Droplets, FlaskConical, Check } from 'lucide-react';
+import { X, Star, ShoppingBag, MessageCircle, ShieldCheck, Droplets, FlaskConical, Check } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export default function ProductQuickViewModal({ product, onClose, onInstantBuy }) {
@@ -116,18 +116,18 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
               </div>
 
               {/* Stock Scarcity & Social Proof Progress Block */}
-              <div className="p-3 bg-gradient-to-r from-amber-50/80 to-emerald-50/70 rounded-xl border border-brand-gold/25 space-y-2">
+              <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-100 space-y-2">
                 <div className="flex items-center justify-between text-xs font-semibold">
                   <span className="flex items-center gap-1.5 text-emerald-800">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span>2,500+ claimed this month</span>
                   </span>
-                  <span className="text-amber-800">
+                  <span className="text-[#5B0868]">
                     Only {product.stock && product.stock < 50 ? product.stock : 18} left in current batch
                   </span>
                 </div>
-                <div className="w-full bg-amber-100 rounded-full h-1.5 overflow-hidden">
-                  <div className="bg-gradient-to-r from-brand-gold to-emerald-600 h-1.5 rounded-full w-[82%]" />
+                <div className="w-full bg-purple-100 rounded-full h-1.5 overflow-hidden">
+                  <div className="bg-[#5B0868] h-1.5 rounded-full w-[82%]" />
                 </div>
               </div>
 
@@ -137,8 +137,8 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
 
               {/* Disclosed Actives Snippet */}
               {product.ingredients && (
-                <div className="p-3 rounded-xl bg-brand-sand/30 border border-brand-gold/20 space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-brand-gold-dark block">
+                <div className="p-3 rounded-xl bg-gray-50 border border-gray-200 space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#5B0868] block">
                     Active Botanical Compounds:
                   </span>
                   <p className="text-xs text-brand-charcoal font-medium">
@@ -149,20 +149,20 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
             </div>
 
             {/* Actions */}
-            <div className="space-y-3 pt-3 border-t border-brand-gold/20">
+            <div className="space-y-3 pt-3 border-t border-gray-100">
               <div className="flex items-center gap-3">
                 {/* Qty */}
-                <div className="flex items-center border border-brand-gold/40 rounded-full bg-brand-cream px-3 py-1.5 text-xs">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="font-bold px-1.5">-</button>
+                <div className="flex items-center border border-gray-200 rounded-xl bg-gray-50 px-3 py-1.5 text-xs">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="font-bold px-1.5 cursor-pointer">-</button>
                   <span className="font-bold px-2.5">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="font-bold px-1.5">+</button>
+                  <button onClick={() => setQuantity(quantity + 1)} className="font-bold px-1.5 cursor-pointer">+</button>
                 </div>
 
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 py-3 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-brand-gold-dark transition-colors flex items-center justify-center gap-2 shadow-sm"
+                  className="flex-1 py-3 bg-white text-brand-charcoal border border-gray-200 hover:bg-gray-50 text-xs font-semibold uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-4 h-4 text-[#5B0868]" />
                   <span>Add to Bag</span>
                 </button>
 
@@ -171,9 +171,8 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
                     onClose();
                     onInstantBuy(product, quantity);
                   }}
-                  className="px-5 py-3 bg-brand-gold text-brand-charcoal text-xs font-bold uppercase tracking-wider rounded-full hover:bg-brand-gold-light transition-colors shadow-sm flex items-center gap-1"
+                  className="px-5 py-3 bg-[#5B0868] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#480653] transition-colors shadow-sm flex items-center gap-1 cursor-pointer"
                 >
-                  <Sparkles className="w-4 h-4" />
                   <span>Buy Now</span>
                 </button>
               </div>

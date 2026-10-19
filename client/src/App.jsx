@@ -236,7 +236,7 @@ function SpaLandingContent() {
               <div className="pt-6 flex flex-wrap justify-center gap-4">
                 <button
                   onClick={() => handleScrollTo('formulations')}
-                  className="px-8 py-3.5 bg-brand-charcoal text-brand-ivory text-xs font-bold tracking-wider uppercase rounded-full hover:bg-brand-gold-dark transition-colors shadow-luxury inline-flex items-center gap-2"
+                  className="px-8 py-3.5 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase rounded-xl transition-colors shadow-md inline-flex items-center gap-2 cursor-pointer"
                 >
                   <span>{siteContent.sourcingCtaText || 'Explore Pure Formulations'}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -245,7 +245,7 @@ function SpaLandingContent() {
                   href={`https://wa.me/${(siteContent.whatsappNumber || '+91-9963075000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(siteContent.whatsappGreeting || 'Hello Good Bee Team, I would like to learn more about your botanical sourcing and harvests.')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-7 py-3.5 bg-brand-ivory border border-brand-gold/40 text-brand-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-cream transition-colors shadow-sm inline-flex items-center gap-2"
+                  className="px-7 py-3.5 bg-white border border-gray-300 text-brand-charcoal text-xs font-semibold tracking-wider uppercase rounded-xl hover:bg-gray-50 transition-colors shadow-sm inline-flex items-center gap-2"
                 >
                   <span>Inquire with Concierge</span>
                 </a>
@@ -345,13 +345,13 @@ function SpaLandingContent() {
       {/* Floating WhatsApp Concierge */}
       <WhatsAppConcierge />
 
-      {/* Docked Surprise Gift Edge Badge (Bright Plum/Honey Gradient) */}
+      {/* Docked Surprise Gift Edge Badge (Solid Plum) */}
       <button
         onClick={() => setIsSurpriseOpen(true)}
-        className="fixed left-0 top-1/2 -translate-y-1/2 z-30 bg-gradient-to-r from-amber-400 via-orange-400 to-[#5B0868] text-white hover:opacity-95 pl-2.5 pr-3 py-3 rounded-r-2xl shadow-xl border-y border-r border-amber-300 flex items-center gap-1.5 group transition-all duration-300 hover:scale-105 cursor-pointer"
+        className="fixed left-0 top-1/2 -translate-y-1/2 z-30 bg-[#5B0868] hover:bg-[#480653] text-white pl-2.5 pr-3 py-3 rounded-r-xl shadow-lg border-y border-r border-purple-400/40 flex items-center gap-1.5 group transition-all duration-300 hover:scale-105 cursor-pointer"
         title="Claim Mystery Skincare Surprise Gift"
       >
-        <Gift className="w-4 h-4 text-white group-hover:scale-110 transition-transform animate-bounce" />
+        <Gift className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
         <span className="text-[10px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] rotate-180 hidden sm:inline text-white">
           🎁 15% OFF SURPRISE
         </span>

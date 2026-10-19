@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, Shield, Sun, Droplets, Sparkles, ArrowRight, Zap, CheckCircle2 } from 'lucide-react';
+import { Activity, Shield, Sun, Droplets, ArrowRight, Zap, CheckCircle2 } from 'lucide-react';
 
 const CONCERNS = [
   {
@@ -14,8 +14,8 @@ const CONCERNS = [
     productImg: '/images_ref/Clear-skin-300x300.webp',
     keyActives: 'Neem Extract • Tea Tree • Eucalyptus Terpenes',
     highlights: ['Non-comedogenic pore flush', 'Reduces active inflammation', 'Prevents post-acne marks'],
-    accentGradient: 'from-emerald-900/90 via-emerald-800/70 to-teal-950/40',
-    tagBg: 'bg-emerald-500 text-white'
+    accentGradient: 'from-slate-950/90 via-slate-900/60 to-transparent',
+    tagBg: 'bg-emerald-600 text-white'
   },
   {
     id: 'Barrier Repair',
@@ -29,8 +29,8 @@ const CONCERNS = [
     productImg: '/images_ref/Donkey-Milk-Soap-300x300.webp',
     keyActives: 'Donkey Milk Ceramides • Raw Organic Beeswax',
     highlights: ['Deep epidermal lipid seal', 'Relieves tightness in minutes'],
-    accentGradient: 'from-amber-900/90 via-orange-800/70 to-amber-950/40',
-    tagBg: 'bg-amber-500 text-white'
+    accentGradient: 'from-slate-950/90 via-slate-900/60 to-transparent',
+    tagBg: 'bg-amber-600 text-white'
   },
   {
     id: 'Pigmentation & Tone',
@@ -44,8 +44,8 @@ const CONCERNS = [
     productImg: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.26-1-300x300.webp',
     keyActives: 'Cold-Infused Turmeric • Raw Beeswax Infusion',
     highlights: ['Clarifies cellular debris', 'Even luminous skin tone'],
-    accentGradient: 'from-amber-950/90 via-yellow-900/70 to-orange-950/40',
-    tagBg: 'bg-orange-500 text-white'
+    accentGradient: 'from-slate-950/90 via-slate-900/60 to-transparent',
+    tagBg: 'bg-orange-600 text-white'
   },
   {
     id: 'Dryness & Moisture Deficit',
@@ -59,8 +59,8 @@ const CONCERNS = [
     productImg: '/images_ref/Pink-Lotus-300x300.webp',
     keyActives: 'Pink Lotus Hydrosol • Cold-Pressed Almond Oil',
     highlights: ['Non-greasy all-day shield', 'Silky, supple finish'],
-    accentGradient: 'from-rose-900/90 via-pink-800/70 to-rose-950/40',
-    tagBg: 'bg-rose-500 text-white'
+    accentGradient: 'from-slate-950/90 via-slate-900/60 to-transparent',
+    tagBg: 'bg-rose-600 text-white'
   },
   {
     id: 'Youth & Radiance',
@@ -74,8 +74,8 @@ const CONCERNS = [
     productImg: '/images_ref/Frankin-300x300.webp',
     keyActives: 'Sacred Boswellia Frankincense Terpenes',
     highlights: ['Stimulates cellular firmness', 'Aromatherapeutic calm'],
-    accentGradient: 'from-indigo-950/90 via-purple-900/70 to-indigo-900/40',
-    tagBg: 'bg-purple-600 text-white'
+    accentGradient: 'from-slate-950/90 via-slate-900/60 to-transparent',
+    tagBg: 'bg-purple-700 text-white'
   }
 ];
 
@@ -84,14 +84,14 @@ export default function ShopByConcern({ onSelectConcern }) {
   const otherConcerns = CONCERNS.filter((c) => !c.isHero);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-amber-50/20 to-white border-t border-brand-gold/20">
+    <section className="py-20 bg-[#FAF7F2] border-t border-purple-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header: Fresh Cosmetic Styling */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/80 border border-emerald-300 text-emerald-900 text-[11px] font-bold tracking-wider uppercase shadow-sm">
-              <Zap className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] text-[11px] font-bold tracking-wider uppercase shadow-sm">
+              <Zap className="w-3.5 h-3.5 text-[#5B0868]" />
               <span>Targeted Skin Concern Diagnostics</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl text-brand-charcoal font-medium">
@@ -104,7 +104,7 @@ export default function ShopByConcern({ onSelectConcern }) {
 
           <button
             onClick={() => onSelectConcern('All')}
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-amber-700 hover:text-brand-charcoal transition-colors group self-start md:self-end cursor-pointer"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-[#5B0868] hover:text-[#480653] transition-colors group self-start md:self-end cursor-pointer"
           >
             <span>Explore All Formulations</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -118,7 +118,7 @@ export default function ShopByConcern({ onSelectConcern }) {
           {heroConcern && (
             <div
               onClick={() => onSelectConcern(heroConcern.category)}
-              className="lg:col-span-7 group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-200 bg-white shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between min-h-[460px]"
+              className="lg:col-span-7 group relative cursor-pointer overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between min-h-[460px]"
             >
               {/* Background Lifestyle Visual with Luminous Balance */}
               <div className="absolute inset-0 z-0">
@@ -133,16 +133,16 @@ export default function ShopByConcern({ onSelectConcern }) {
               {/* Card Header Pills */}
               <div className="relative z-10 p-6 sm:p-8 flex items-start justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-3 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-bold tracking-wider uppercase shadow-md flex items-center gap-1.5">
+                  <span className="px-3 py-1 rounded-lg bg-emerald-600 text-white text-[11px] font-bold tracking-wider uppercase shadow-md flex items-center gap-1.5">
                     <Activity className="w-3.5 h-3.5" />
                     {heroConcern.badge}
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-white/30 backdrop-blur-md text-white text-[10px] font-semibold border border-white/40">
+                  <span className="px-2.5 py-1 rounded-lg bg-white/20 backdrop-blur-md text-white text-[10px] font-semibold border border-white/30">
                     {heroConcern.stat}
                   </span>
                 </div>
 
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[11px] text-white">
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-[11px] text-white">
                   <span>Life Moment:</span>
                   <span className="text-emerald-200 font-medium italic">Breakouts & Flare-ups</span>
                 </div>
@@ -164,7 +164,7 @@ export default function ShopByConcern({ onSelectConcern }) {
                   {/* Quick Feature Badges */}
                   <div className="flex flex-wrap gap-2 pt-1">
                     {heroConcern.highlights.map((h, idx) => (
-                      <span key={idx} className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white">
+                      <span key={idx} className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-sm border border-white/30 text-white">
                         <CheckCircle2 className="w-2.5 h-2.5 text-emerald-300" />
                         {h}
                       </span>
@@ -196,7 +196,7 @@ export default function ShopByConcern({ onSelectConcern }) {
               <div
                 key={c.id}
                 onClick={() => onSelectConcern(c.category)}
-                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-amber-200/60 bg-white aspect-[4/5] shadow-md hover:shadow-xl transition-all duration-400 hover:-translate-y-1 flex flex-col justify-between p-4"
+                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white aspect-[4/5] shadow-md hover:shadow-xl transition-all duration-400 hover:-translate-y-1 flex flex-col justify-between p-4"
               >
                 {/* Background Image */}
                 <img
@@ -229,7 +229,7 @@ export default function ShopByConcern({ onSelectConcern }) {
                   <p className="text-[10px] text-white/80 line-clamp-1 italic">
                     {c.lifeMoment}
                   </p>
-                  <div className="pt-1 border-t border-white/20 flex items-center justify-between text-[10px] text-amber-200 font-medium">
+                  <div className="pt-1 border-t border-white/20 flex items-center justify-between text-[10px] text-purple-200 font-medium">
                     <span className="truncate max-w-[120px]">{c.keyActives}</span>
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -242,22 +242,22 @@ export default function ShopByConcern({ onSelectConcern }) {
         </div>
 
         {/* Life Moment Highlights Strip below */}
-        <div className="mt-8 pt-6 border-t border-brand-gold/20 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-200/60 shadow-sm">
-            <p className="text-xs font-bold text-emerald-950">Breakout Calming</p>
-            <p className="text-[10px] text-emerald-800/80">Overnight anti-bacterial active relief</p>
+        <div className="mt-8 pt-6 border-t border-purple-100 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-sm">
+            <p className="text-xs font-bold text-[#1E1E1E]">Breakout Calming</p>
+            <p className="text-[10px] text-brand-muted">Overnight anti-bacterial active relief</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200/60 shadow-sm">
-            <p className="text-xs font-bold text-amber-950">Ceramide Sealing</p>
-            <p className="text-[10px] text-amber-800/80">Donkey milk lipids repair tight barrier</p>
+          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-sm">
+            <p className="text-xs font-bold text-[#1E1E1E]">Ceramide Sealing</p>
+            <p className="text-[10px] text-brand-muted">Donkey milk lipids repair tight barrier</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-orange-50/60 border border-orange-200/60 shadow-sm">
-            <p className="text-xs font-bold text-orange-950">Post-Acne Fade</p>
-            <p className="text-[10px] text-orange-800/80">Cold-turmeric active clears marks</p>
+          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-sm">
+            <p className="text-xs font-bold text-[#1E1E1E]">Post-Acne Fade</p>
+            <p className="text-[10px] text-brand-muted">Cold-turmeric active clears marks</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-rose-50/60 border border-rose-200/60 shadow-sm">
-            <p className="text-xs font-bold text-rose-950">Deep Dermal Dew</p>
-            <p className="text-[10px] text-rose-800/80">Pink lotus hydrosol hydration lock</p>
+          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-sm">
+            <p className="text-xs font-bold text-[#1E1E1E]">Deep Dermal Dew</p>
+            <p className="text-[10px] text-brand-muted">Pink lotus hydrosol hydration lock</p>
           </div>
         </div>
 
