@@ -98,12 +98,6 @@ export default function ProductCard({ product, onViewDetails }) {
               </span>
             )}
           </div>
-
-          {/* Monthly Sales Proof */}
-          <div className="flex items-center gap-1.5 text-[10.5px] text-emerald-800 font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
-            <span>2,500+ claimed this month</span>
-          </div>
         </div>
 
         {/* Price & Action Row */}
