@@ -142,7 +142,7 @@ export default function AiFormulationLab() {
   const totalBundlePrice = rec.stepProducts.reduce((sum, p) => sum + p.price, 0);
 
   return (
-    <section id="ai-formulation-lab" className="py-20 sm:py-28 bg-white relative border-t border-purple-100">
+    <section id="ai-formulation-lab" className="py-20 sm:py-28 bg-white relative border-t border-purple-100 scroll-mt-28">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         

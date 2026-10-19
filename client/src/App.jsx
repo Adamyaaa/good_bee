@@ -76,13 +76,27 @@ function SpaLandingContent() {
     return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);
   }, []);
 
-  // Smooth scroll handler
+  // Smooth scroll handler with fixed navbar clearance
   const handleScrollTo = (id) => {
     setIsCheckoutOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      if (id === 'hero') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const element = document.getElementById(id);
+      if (element) {
+        const navOffset = 115;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = element.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = Math.max(0, elementPosition - navOffset);
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 60);
   };
 
   const handleOpenPortal = (role = 'CUSTOMER') => {
@@ -134,7 +148,7 @@ function SpaLandingContent() {
           <AiFormulationLab />
 
           {/* 4. Interactive Diagnostic Skin Concerns */}
-          <div id="shop-by-concern">
+          <div id="shop-by-concern" className="scroll-mt-28">
             <ShopByConcern
               onSelectConcern={(concern) => {
                 setSelectedConcern(concern);
@@ -159,8 +173,7 @@ function SpaLandingContent() {
           <ParallaxIngredientStory />
 
           {/* 6. High-End Research & Active Stabilization Philosophy */}
-          {/* 6. High-End Research & Active Stabilization Philosophy */}
-          <section id="research-story" className="py-24 bg-brand-ivory relative border-t border-brand-gold/20">
+          <section id="research-story" className="py-24 bg-brand-ivory relative border-t border-brand-gold/20 scroll-mt-28">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
@@ -225,7 +238,7 @@ function SpaLandingContent() {
           </section>
 
           {/* 7. Artisanal Extraction Labs & Ethical Apiaries */}
-          <section id="producer-spotlight" className="py-20 bg-brand-cream/60 border-t border-brand-gold/20">
+          <section id="producer-spotlight" className="py-20 bg-brand-cream/60 border-t border-brand-gold/20 scroll-mt-28">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
               <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
                 {siteContent.sourcingBadge || 'Traceable Origin & Sourcing'}
@@ -257,7 +270,7 @@ function SpaLandingContent() {
           </section>
 
           {/* 8. Customer Stories / UGC */}
-          <section id="stories" className="py-20 bg-brand-ivory border-t border-brand-gold/20">
+          <section id="stories" className="py-20 bg-brand-ivory border-t border-brand-gold/20 scroll-mt-28">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
                 <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">

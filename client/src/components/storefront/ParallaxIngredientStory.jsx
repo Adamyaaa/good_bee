@@ -48,7 +48,7 @@ export default function ParallaxIngredientStory() {
     <section
       ref={containerRef}
       id="ingredients"
-      className="py-24 bg-brand-ivory relative overflow-hidden border-t border-brand-gold/20"
+      className="py-24 bg-brand-ivory relative overflow-hidden border-t border-brand-gold/20 scroll-mt-28"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         

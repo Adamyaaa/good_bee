@@ -51,7 +51,7 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
   };
 
   return (
-    <section id="formulations" className="py-24 bg-white border-t border-purple-100">
+    <section id="formulations" className="py-24 bg-white border-t border-purple-100 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Section Header */}

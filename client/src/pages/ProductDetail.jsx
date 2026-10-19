@@ -35,7 +35,7 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
 
   if (loading) {
     return (
-      <div className="py-24 max-w-7xl mx-auto px-4 text-center">
+      <div className="pt-28 sm:pt-36 pb-20 max-w-7xl mx-auto px-4 text-center">
         <div className="w-12 h-12 border-2 border-brand-gold border-t-transparent rounded-full animate-spin mx-auto mb-4" />
         <p className="text-xs text-brand-muted tracking-widest uppercase">Loading Botanical Formulation...</p>
       </div>
@@ -44,7 +44,7 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
 
   if (!productData) {
     return (
-      <div className="py-24 max-w-7xl mx-auto px-4 text-center space-y-4">
+      <div className="pt-28 sm:pt-36 pb-20 max-w-7xl mx-auto px-4 text-center space-y-4">
         <h2 className="font-serif text-2xl text-brand-charcoal">Formulation not found</h2>
         <button
           onClick={onBack}
@@ -71,7 +71,7 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
   )}`;
 
   return (
-    <div className="py-10 bg-brand-ivory min-h-screen">
+    <div className="pt-28 sm:pt-36 pb-16 bg-brand-ivory min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Breadcrumb / Back button */}

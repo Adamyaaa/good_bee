@@ -96,7 +96,7 @@ export default function ScrollyBrandStory() {
   };
 
   return (
-    <section id="scrolly-story" className="py-20 lg:py-24 bg-brand-cream/60 border-y border-brand-gold/25 relative overflow-hidden">
+    <section id="scrolly-story" className="py-20 lg:py-24 bg-brand-cream/60 border-y border-brand-gold/25 relative overflow-hidden scroll-mt-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Top Header */}

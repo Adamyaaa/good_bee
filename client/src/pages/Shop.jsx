@@ -73,7 +73,7 @@ export default function Shop({ initialConcern, initialCategory, onSelectProduct 
     selectedCategory !== 'All' || selectedConcern !== 'All' || searchQuery !== '';
 
   return (
-    <div className="py-12 bg-brand-ivory min-h-screen">
+    <div className="pt-28 sm:pt-36 pb-16 bg-brand-ivory min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Title & Breadcrumb */}

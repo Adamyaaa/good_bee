@@ -183,7 +183,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
     const cleanCustomerPhone = (confirmedOrder.customerPhone || form.phone || '').replace(/[^0-9]/g, '');
 
     return (
-      <div className="py-20 bg-brand-ivory min-h-screen">
+      <div className="pt-28 sm:pt-36 pb-20 bg-brand-ivory min-h-screen">
         <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
           <div className="w-20 h-20 mx-auto rounded-full bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center text-emerald-700 shadow-luxury">
             <CheckCircle2 className="w-10 h-10" />
@@ -308,7 +308,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
   }
 
   return (
-    <div className="py-12 bg-brand-ivory min-h-screen">
+    <div className="pt-28 sm:pt-36 pb-20 bg-brand-ivory min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Back navigation */}
