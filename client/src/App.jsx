@@ -24,8 +24,10 @@ import TrackOrderModal from './components/storefront/TrackOrderModal';
 import SurpriseGiftModal from './components/storefront/SurpriseGiftModal';
 import Checkout from './pages/Checkout';
 
+import { motion } from 'framer-motion';
+
 // Icons for editorial sections
-import { FlaskConical, ShieldCheck, ArrowRight, Star, Gift } from 'lucide-react';
+import { FlaskConical, ShieldCheck, ArrowRight, Star, Gift, GripVertical } from 'lucide-react';
 
 function SpaLandingContent() {
   const { user } = useAuth();
@@ -38,6 +40,7 @@ function SpaLandingContent() {
   const [portalModalConfig, setPortalModalConfig] = useState({ isOpen: false, role: 'CUSTOMER' });
   const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
   const [isSurpriseOpen, setIsSurpriseOpen] = useState(false);
+  const [isSurpriseDragging, setIsSurpriseDragging] = useState(false);
 
   // Auto-open surprise gift lead capture after delay if not already claimed
   React.useEffect(() => {
@@ -345,17 +348,35 @@ function SpaLandingContent() {
       {/* Floating WhatsApp Concierge */}
       <WhatsAppConcierge />
 
-      {/* Docked Surprise Gift Edge Badge (Solid Plum) */}
-      <button
-        onClick={() => setIsSurpriseOpen(true)}
-        className="fixed left-0 top-1/2 -translate-y-1/2 z-30 bg-[#5B0868] hover:bg-[#480653] text-white pl-2.5 pr-3 py-3 rounded-r-xl shadow-lg border-y border-r border-purple-400/40 flex items-center gap-1.5 group transition-all duration-300 hover:scale-105 cursor-pointer"
-        title="Claim Mystery Skincare Surprise Gift"
+      {/* Docked Surprise Gift Edge Badge (Movable / Draggable) */}
+      <motion.div
+        drag
+        dragMomentum={false}
+        dragElastic={0.08}
+        onDragStart={() => setIsSurpriseDragging(true)}
+        onDragEnd={() => {
+          setTimeout(() => setIsSurpriseDragging(false), 120);
+        }}
+        className="fixed left-0 top-[62%] -translate-y-1/2 z-30 flex items-center"
       >
-        <Gift className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
-        <span className="text-[10px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] rotate-180 hidden sm:inline text-white">
-          🎁 15% OFF SURPRISE
-        </span>
-      </button>
+        <button
+          onClick={(e) => {
+            if (isSurpriseDragging) {
+              e.preventDefault();
+              return;
+            }
+            setIsSurpriseOpen(true);
+          }}
+          className="bg-[#5B0868] hover:bg-[#480653] text-white pl-1.5 pr-3 py-3 rounded-r-xl shadow-xl border-y border-r border-purple-400/30 flex items-center gap-1.5 group cursor-grab active:cursor-grabbing select-none transition-shadow active:shadow-2xl"
+          title="Claim Mystery Skincare Surprise Gift (Drag to move)"
+        >
+          <GripVertical className="w-3.5 h-3.5 text-purple-200/50 group-hover:text-purple-200 transition-colors pointer-events-none" />
+          <Gift className="w-4 h-4 text-white group-hover:scale-110 transition-transform pointer-events-none" />
+          <span className="text-[10px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] rotate-180 hidden sm:inline text-white pointer-events-none">
+            🎁 15% OFF SURPRISE
+          </span>
+        </button>
+      </motion.div>
 
       {/* Product Quick-View Inspection Modal */}
       {quickViewProduct && (
