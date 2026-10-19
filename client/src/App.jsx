@@ -348,11 +348,12 @@ function SpaLandingContent() {
       {/* Floating WhatsApp Concierge */}
       <WhatsAppConcierge />
 
-      {/* Docked Surprise Gift Edge Badge (Movable / Draggable) */}
+      {/* Docked Surprise Gift Edge Badge (Vertical Drag on Side Edge Only) */}
       <motion.div
-        drag
+        drag="y"
+        dragConstraints={{ top: -220, bottom: 220 }}
         dragMomentum={false}
-        dragElastic={0.08}
+        dragElastic={0.05}
         onDragStart={() => setIsSurpriseDragging(true)}
         onDragEnd={() => {
           setTimeout(() => setIsSurpriseDragging(false), 120);
@@ -368,7 +369,7 @@ function SpaLandingContent() {
             setIsSurpriseOpen(true);
           }}
           className="bg-[#5B0868] hover:bg-[#480653] text-white pl-1.5 pr-3 py-3 rounded-r-xl shadow-xl border-y border-r border-purple-400/30 flex items-center gap-1.5 group cursor-grab active:cursor-grabbing select-none transition-shadow active:shadow-2xl"
-          title="Claim Mystery Skincare Surprise Gift (Drag to move)"
+          title="Claim Mystery Skincare Surprise Gift (Slide up/down to adjust position)"
         >
           <GripVertical className="w-3.5 h-3.5 text-purple-200/50 group-hover:text-purple-200 transition-colors pointer-events-none" />
           <Gift className="w-4 h-4 text-white group-hover:scale-110 transition-transform pointer-events-none" />
