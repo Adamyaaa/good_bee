@@ -345,14 +345,14 @@ function SpaLandingContent() {
       {/* Floating WhatsApp Concierge */}
       <WhatsAppConcierge />
 
-      {/* Docked Surprise Gift Edge Badge */}
+      {/* Docked Surprise Gift Edge Badge (Bright Plum/Honey Gradient) */}
       <button
         onClick={() => setIsSurpriseOpen(true)}
-        className="fixed left-0 top-1/2 -translate-y-1/2 z-30 bg-brand-charcoal/95 text-brand-gold hover:bg-brand-gold-dark hover:text-brand-ivory pl-2.5 pr-3.5 py-3 rounded-r-2xl shadow-luxury border-y border-r border-brand-gold/40 flex items-center gap-2 group transition-all duration-300 backdrop-blur-sm"
+        className="fixed left-0 top-1/2 -translate-y-1/2 z-30 bg-gradient-to-r from-amber-400 via-orange-400 to-[#5B0868] text-white hover:opacity-95 pl-2.5 pr-3 py-3 rounded-r-2xl shadow-xl border-y border-r border-amber-300 flex items-center gap-1.5 group transition-all duration-300 hover:scale-105 cursor-pointer"
         title="Claim Mystery Skincare Surprise Gift"
       >
-        <Gift className="w-4 h-4 text-brand-gold group-hover:scale-110 transition-transform animate-pulse" />
-        <span className="text-[10px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] rotate-180 hidden sm:inline text-brand-sand">
+        <Gift className="w-4 h-4 text-white group-hover:scale-110 transition-transform animate-bounce" />
+        <span className="text-[10px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] rotate-180 hidden sm:inline text-white">
           🎁 15% OFF SURPRISE
         </span>
       </button>

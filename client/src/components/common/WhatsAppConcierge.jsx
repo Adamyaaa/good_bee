@@ -80,7 +80,7 @@ export default function WhatsAppConcierge() {
             href={config.conciergeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full py-2.5 bg-emerald-800 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 hover:bg-emerald-900 transition-colors shadow-sm"
+            className="w-full py-2.5 bg-[#5B0868] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 hover:bg-[#480653] transition-colors shadow-sm"
           >
             <MessageCircle className="w-4 h-4" />
             <span>Start WhatsApp Chat</span>
@@ -88,14 +88,14 @@ export default function WhatsAppConcierge() {
         </div>
       )}
 
-      {/* Floating Action Button */}
+      {/* Floating Action Button (Plum Style Purple Live Chat Bubble) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-emerald-800 text-white shadow-luxury hover:bg-emerald-900 transition-all duration-300 hover:scale-105 border border-emerald-600/30"
+        className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#5B0868] text-white shadow-xl hover:bg-[#480653] transition-all duration-300 hover:scale-105 border border-purple-400/30 cursor-pointer"
         title="Good Bee WhatsApp Concierge"
       >
-        <MessageCircle className="w-5 h-5 text-emerald-200" />
-        <span className="text-xs font-semibold tracking-wider hidden sm:inline">
+        <MessageCircle className="w-5 h-5 text-white" />
+        <span className="text-xs font-bold tracking-wider hidden sm:inline">
           Consult Concierge
         </span>
       </button>
