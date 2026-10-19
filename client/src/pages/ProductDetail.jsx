@@ -173,22 +173,28 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
               </p>
             </div>
 
-            {/* Real-Time Stock Availability & Monthly Proof */}
-            <div className="p-3.5 bg-gradient-to-r from-amber-50/80 to-emerald-50/70 rounded-2xl border border-brand-gold/30 space-y-2">
-              <div className="flex items-center justify-between text-xs font-semibold">
-                <span className="flex items-center gap-1.5 text-emerald-800">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>2,500+ claimed this month</span>
-                </span>
-                <span className="text-amber-800 font-bold">
-                  Only {p.stock && p.stock < 50 ? p.stock : 18} bottles left in batch
-                </span>
+            {/* Low Stock Alert (Only shown when under 10) */}
+            {typeof p.stock === 'number' && p.stock > 0 && p.stock < 10 ? (
+              <div className="p-3.5 bg-rose-50/60 rounded-xl border border-rose-200 space-y-2">
+                <div className="flex items-center justify-between text-xs font-semibold">
+                  <span className="flex items-center gap-1.5 text-emerald-800">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>2,500+ claimed this month</span>
+                  </span>
+                  <span className="text-rose-700 font-bold">
+                    Only a few units remaining
+                  </span>
+                </div>
+                <div className="w-full bg-rose-100 rounded-full h-1.5 overflow-hidden">
+                  <div className="bg-rose-600 h-1.5 rounded-full w-[85%]" />
+                </div>
               </div>
-              <div className="w-full bg-amber-100 rounded-full h-1.5 overflow-hidden">
-                <div className="bg-gradient-to-r from-brand-gold to-emerald-600 h-1.5 rounded-full w-[84%]" />
+            ) : (
+              <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-800">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>2,500+ claimed this month</span>
               </div>
-              <p className="text-[11px] text-brand-muted italic">Batch verification: High seasonal demand across dermatological patrons</p>
-            </div>
+            )}
 
             {/* Target Concerns */}
             {p.concerns && p.concerns.length > 0 && (
@@ -200,7 +206,7 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
                   {p.concerns.map((c) => (
                     <span
                       key={c}
-                      className="px-3 py-1 bg-brand-ivory text-brand-charcoal text-xs rounded-full border border-brand-gold/30 font-medium"
+                      className="px-3 py-1 bg-purple-50 text-[#5B0868] text-xs rounded-lg border border-purple-200 font-medium"
                     >
                       {c}
                     </span>

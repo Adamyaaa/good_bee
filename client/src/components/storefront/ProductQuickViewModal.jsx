@@ -115,21 +115,28 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
                 </span>
               </div>
 
-              {/* Stock Scarcity & Social Proof Progress Block */}
-              <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-100 space-y-2">
-                <div className="flex items-center justify-between text-xs font-semibold">
-                  <span className="flex items-center gap-1.5 text-emerald-800">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>2,500+ claimed this month</span>
-                  </span>
-                  <span className="text-[#5B0868]">
-                    Only {product.stock && product.stock < 50 ? product.stock : 18} left in current batch
-                  </span>
+              {/* Low Stock Alert (Only shown when under 10) */}
+              {typeof product.stock === 'number' && product.stock > 0 && product.stock < 10 ? (
+                <div className="p-3 bg-rose-50/60 rounded-xl border border-rose-200 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-semibold">
+                    <span className="flex items-center gap-1.5 text-emerald-800">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>2,500+ claimed this month</span>
+                    </span>
+                    <span className="text-rose-700 font-bold">
+                      Only a few units remaining
+                    </span>
+                  </div>
+                  <div className="w-full bg-rose-100 rounded-full h-1.5 overflow-hidden">
+                    <div className="bg-rose-600 h-1.5 rounded-full w-[85%]" />
+                  </div>
                 </div>
-                <div className="w-full bg-purple-100 rounded-full h-1.5 overflow-hidden">
-                  <div className="bg-[#5B0868] h-1.5 rounded-full w-[82%]" />
+              ) : (
+                <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-800">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>2,500+ claimed this month</span>
                 </div>
-              </div>
+              )}
 
               <p className="text-xs text-brand-charcoal/80 leading-relaxed">
                 {product.shortDescription || product.description}

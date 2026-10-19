@@ -85,16 +85,18 @@ export default function ProductCard({ product, onViewDetails }) {
             {product.subtitle || product.shortDescription}
           </p>
 
-          {/* Primary Concern Pill & Stock Scarcity Row */}
+          {/* Primary Concern Pill & Low Stock Alert */}
           <div className="pt-1 flex items-center justify-between gap-1 flex-wrap">
             {product.concerns && product.concerns.length > 0 && (
-              <span className="inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 bg-brand-cream text-brand-gold-dark font-semibold rounded border border-brand-gold/20">
+              <span className="inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 bg-purple-50 text-[#5B0868] font-semibold rounded border border-purple-200">
                 {product.concerns[0]}
               </span>
             )}
-            <span className="text-[10px] font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/60">
-              Only {product.stock && product.stock < 50 ? product.stock : 24} left
-            </span>
+            {typeof product.stock === 'number' && product.stock > 0 && product.stock < 10 && (
+              <span className="text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                Only a few units remaining
+              </span>
+            )}
           </div>
 
           {/* Monthly Sales Proof */}
