@@ -819,7 +819,7 @@ export default function AdminDashboard({ onNavigateHome }) {
                 </div>
 
                 <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-[11px] text-slate-400">
-                  💡 Changes made in the Admin CMS reflect immediately on the live customer storefront.
+                  Note: Changes made in the Admin CMS reflect immediately on the live customer storefront.
                 </div>
               </div>
 

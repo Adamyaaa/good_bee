@@ -25,7 +25,7 @@ export const ROUTINES = {
     name: 'AM Glass Skin Glow',
     tagline: 'Wake up dull skin & seal 72H dewy hydration before facing pollution',
     icon: Sun,
-    badge: '☀️ MORNING REGIMEN',
+    badge: 'MORNING REGIMEN',
     timeEst: '3 Minutes',
     colorTheme: {
       tabActive: 'bg-[#5B0868] text-white shadow-sm',
@@ -127,7 +127,7 @@ export const ROUTINES = {
     name: 'PM Deep Barrier Repair',
     tagline: 'Reset cellular fatigue, reverse sun damage, and wake up with plump bouncy skin',
     icon: Moon,
-    badge: '🌙 NIGHT RECOVERY',
+    badge: 'NIGHT RECOVERY',
     timeEst: '4 Minutes',
     colorTheme: {
       tabActive: 'bg-[#5B0868] text-white shadow-sm',
@@ -229,7 +229,7 @@ export const ROUTINES = {
     name: 'Acne & Blemish Reset',
     tagline: 'Target active pimples, soothe flaming redness, and fade stubborn acne marks naturally',
     icon: Zap,
-    badge: '⚡ 48H CLARIFYING REGIMEN',
+    badge: '48H CLARIFYING REGIMEN',
     timeEst: '2 Minutes',
     colorTheme: {
       tabActive: 'bg-[#5B0868] text-white shadow-sm',
@@ -432,7 +432,7 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
         {/* Dynamic Tagline Banner */}
         <div className="mb-10 text-center">
           <p className="text-xs sm:text-sm font-medium text-brand-charcoal/80 bg-white inline-block px-6 py-2 rounded-xl border border-purple-100 shadow-sm">
-            💡 <span className="font-semibold text-brand-charcoal">{routine.badge}:</span> {routine.tagline}
+            <span className="font-semibold text-brand-charcoal">{routine.badge}:</span> {routine.tagline}
           </p>
         </div>
 

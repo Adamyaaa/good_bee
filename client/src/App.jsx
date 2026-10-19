@@ -374,7 +374,7 @@ function SpaLandingContent() {
           <GripVertical className="w-3.5 h-3.5 text-purple-200/50 group-hover:text-purple-200 transition-colors pointer-events-none" />
           <Gift className="w-4 h-4 text-white group-hover:scale-110 transition-transform pointer-events-none" />
           <span className="text-[10px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] rotate-180 hidden sm:inline text-white pointer-events-none">
-            🎁 15% OFF SURPRISE
+            15% OFF SURPRISE
           </span>
         </button>
       </motion.div>

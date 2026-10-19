@@ -148,35 +148,35 @@ export default function Checkout({ onBack, onNavigateHome }) {
       .map((it, idx) => `${idx + 1}. ${it.title || it.product?.title} (Qty: ${it.quantity}) - ₹${((it.price || it.product?.price || 0) * it.quantity).toLocaleString('en-IN')}`)
       .join('\n');
 
-    const customerReceiptMsg = `🌿 *GOOD BEE — OFFICIAL PAYMENT RECEIPT*
+    const customerReceiptMsg = `*GOOD BEE — OFFICIAL PAYMENT RECEIPT*
 ━━━━━━━━━━━━━━━━━━━━
-📋 *Order ID:* #${confirmedOrder.id}
-📅 *Date:* ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-👤 *Patron:* ${confirmedOrder.customerName || form.name}
-📞 *Mobile:* ${confirmedOrder.customerPhone || form.phone}
+*Order ID:* #${confirmedOrder.id}
+*Date:* ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+*Patron:* ${confirmedOrder.customerName || form.name}
+*Mobile:* ${confirmedOrder.customerPhone || form.phone}
 
-📦 *ITEMS ORDERED:*
+*ITEMS ORDERED:*
 ${itemsSummary}
 
-💰 *TOTAL PAID:* ₹${confirmedOrder.total.toLocaleString('en-IN')}
-💳 *Payment Mode:* Dynamic UPI QR [VERIFIED]
-📍 *Delivery Address:* ${confirmedOrder.shippingAddress.street}, ${confirmedOrder.shippingAddress.city} - ${confirmedOrder.shippingAddress.pincode}
-🚚 *Courier Partner:* Blue Dart Express Priority
+*TOTAL PAID:* ₹${confirmedOrder.total.toLocaleString('en-IN')}
+*Payment Mode:* Dynamic UPI QR [VERIFIED]
+*Delivery Address:* ${confirmedOrder.shippingAddress.street}, ${confirmedOrder.shippingAddress.city} - ${confirmedOrder.shippingAddress.pincode}
+*Courier Partner:* Blue Dart Express Priority
 ━━━━━━━━━━━━━━━━━━━━
-✨ *Status:* Batch Allocation & Laboratory Inspection in progress.
+*Status:* Batch Allocation & Laboratory Inspection in progress.
 Thank you for choosing 100% natural, research-driven skincare!`;
 
-    const operationsDispatchMsg = `🚨 *NEW ORDER PACKING & DISPATCH SLIP — GoodBEE*
+    const operationsDispatchMsg = `*NEW ORDER PACKING & DISPATCH SLIP — GoodBEE*
 ━━━━━━━━━━━━━━━━━━━━
-🆔 *Order Ref:* #${confirmedOrder.id}
-👤 *Customer:* ${confirmedOrder.customerName || form.name} (${confirmedOrder.customerPhone || form.phone})
-📍 *Ship Destination:* ${confirmedOrder.shippingAddress.street}, ${confirmedOrder.shippingAddress.city}, ${confirmedOrder.shippingAddress.state} - ${confirmedOrder.shippingAddress.pincode}
+*Order Ref:* #${confirmedOrder.id}
+*Customer:* ${confirmedOrder.customerName || form.name} (${confirmedOrder.customerPhone || form.phone})
+*Ship Destination:* ${confirmedOrder.shippingAddress.street}, ${confirmedOrder.shippingAddress.city}, ${confirmedOrder.shippingAddress.state} - ${confirmedOrder.shippingAddress.pincode}
 
-📦 *ITEMS TO PACK:*
+*ITEMS TO PACK:*
 ${itemsSummary}
 
-💵 *Amount Collected:* ₹${confirmedOrder.total.toLocaleString('en-IN')} [PAID via UPI QR]
-🚚 *Priority:* Blue Dart Air Priority
+*Amount Collected:* ₹${confirmedOrder.total.toLocaleString('en-IN')} [PAID via UPI QR]
+*Priority:* Blue Dart Air Priority
 ━━━━━━━━━━━━━━━━━━━━
 Action: Please print lot batch certificate and initiate packaging.`;
 

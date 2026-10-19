@@ -17,17 +17,17 @@ import {
 import { useCart } from '../../context/CartContext';
 
 const SKIN_TYPES = [
-  { id: 'dry', label: 'Dry & Flaky', icon: '🌵', desc: 'Tight after washing, dull texture' },
-  { id: 'oily', label: 'Oily & Congested', icon: '✨', desc: 'Excess shine, enlarged pores' },
-  { id: 'combination', label: 'Combination (T-Zone)', icon: '🌓', desc: 'Oily forehead/nose, dry cheeks' },
-  { id: 'sensitive', label: 'Sensitized & Red', icon: '🌸', desc: 'Prone to stinging, barrier burn' }
+  { id: 'dry', label: 'Dry & Flaky', icon: Droplets, desc: 'Tight after washing, dull texture' },
+  { id: 'oily', label: 'Oily & Congested', icon: Zap, desc: 'Excess shine, enlarged pores' },
+  { id: 'combination', label: 'Combination (T-Zone)', icon: Layers, desc: 'Oily forehead/nose, dry cheeks' },
+  { id: 'sensitive', label: 'Sensitized & Red', icon: ShieldCheck, desc: 'Prone to stinging, barrier burn' }
 ];
 
 const PRIMARY_GOALS = [
-  { id: 'glass_glow', label: 'Dewy Glass Skin', badge: '✨ #1 Trend' },
-  { id: 'acne_reset', label: 'Active Breakout Reset', badge: '🔥 48H Action' },
-  { id: 'barrier_repair', label: 'Lipid Barrier Recovery', badge: '🛡️ Deep Calming' },
-  { id: 'tone_polish', label: 'Fade Dark Spots & Tan', badge: '☀️ Tone Clarifying' }
+  { id: 'glass_glow', label: 'Dewy Glass Skin', badge: 'Top Regimen' },
+  { id: 'acne_reset', label: 'Active Breakout Reset', badge: 'Fast Acting' },
+  { id: 'barrier_repair', label: 'Lipid Barrier Recovery', badge: 'Deep Calming' },
+  { id: 'tone_polish', label: 'Fade Dark Spots & Tan', badge: 'Tone Clarifying' }
 ];
 
 const AI_RECOMMENDATIONS = {
@@ -190,7 +190,7 @@ export default function AiFormulationLab() {
                           : 'bg-white hover:bg-purple-50 border-gray-200 text-brand-charcoal'
                       }`}
                     >
-                      <div className="text-xl mb-1">{t.icon}</div>
+                      <t.icon className={`w-5 h-5 mb-1.5 ${selectedSkin === t.id ? 'text-white' : 'text-[#5B0868]'}`} />
                       <div className="text-xs font-bold leading-tight">{t.label}</div>
                       <div className={`text-[10px] mt-0.5 leading-tight ${selectedSkin === t.id ? 'text-purple-200' : 'text-brand-muted'}`}>
                         {t.desc}

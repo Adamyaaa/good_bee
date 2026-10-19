@@ -113,7 +113,7 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
                 type="submit"
                 className="w-full py-3.5 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center justify-center gap-2 group cursor-pointer"
               >
-                <span>Reveal My Surprise 🎁</span>
+                <span>Reveal My Surprise</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </form>

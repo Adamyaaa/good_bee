@@ -47,16 +47,16 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
       <div className="bg-[#5B0868] text-white py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium tracking-wide overflow-hidden select-none">
         <div className="animate-marquee-right flex items-center">
           {[
-            { text: '⚡ Buy any 3 Good Bee formulations @ flat 30% off + free botanical gift ⚡', isOffer: true },
-            { text: siteContent.announcement || '🚚 Complimentary Delivery Across India on Orders Above ₹999' },
-            { text: '✨ Chemistry with heart • 100% Vegan & Cold-Stabilized Actives' },
-            { text: `💬 WhatsApp Concierge for Skincare Guidance: ${phoneNumber}`, isWhatsapp: true },
-            { text: '🎁 Claim 15% Off Your First Order • Use Code HONEY15', isGift: true },
-            { text: '⚡ Buy any 3 Good Bee formulations @ flat 30% off + free botanical gift ⚡', isOffer: true },
-            { text: siteContent.announcement || '🚚 Complimentary Delivery Across India on Orders Above ₹999' },
-            { text: '✨ Chemistry with heart • 100% Vegan & Cold-Stabilized Actives' },
-            { text: `💬 WhatsApp Concierge for Skincare Guidance: ${phoneNumber}`, isWhatsapp: true },
-            { text: '🎁 Claim 15% Off Your First Order • Use Code HONEY15', isGift: true }
+            { text: 'Buy any 3 Good Bee formulations @ flat 30% off + free botanical gift', isOffer: true },
+            { text: siteContent.announcement || 'Complimentary Delivery Across India on Orders Above ₹999' },
+            { text: 'Chemistry with heart • 100% Vegan & Cold-Stabilized Actives' },
+            { text: `WhatsApp Concierge for Skincare Guidance: ${phoneNumber}`, isWhatsapp: true },
+            { text: 'Claim 15% Off Your First Order • Use Code HONEY15', isGift: true },
+            { text: 'Buy any 3 Good Bee formulations @ flat 30% off + free botanical gift', isOffer: true },
+            { text: siteContent.announcement || 'Complimentary Delivery Across India on Orders Above ₹999' },
+            { text: 'Chemistry with heart • 100% Vegan & Cold-Stabilized Actives' },
+            { text: `WhatsApp Concierge for Skincare Guidance: ${phoneNumber}`, isWhatsapp: true },
+            { text: 'Claim 15% Off Your First Order • Use Code HONEY15', isGift: true }
           ].map((item, idx) => (
             <div key={idx} className="flex items-center whitespace-nowrap px-8 gap-3">
               <span className="font-sans font-medium text-white">{item.text}</span>
@@ -415,7 +415,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
             }}
             className="block w-full text-left text-sm font-bold text-amber-700 py-2 border-b border-gray-100"
           >
-            🎁 Claim Surprise Gift (15% OFF)
+            Claim Surprise Gift (15% OFF)
           </button>
 
           {/* Mobile Socials */}

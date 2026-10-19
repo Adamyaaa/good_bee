@@ -9,7 +9,7 @@ const CONCERNS = [
     isHero: true, // Bento Spotlight
     lifeMoment: 'Late-night stress breakouts & hormonal acne',
     stat: 'Calms redness in 24h',
-    badge: '🔥 #1 Gen-Z Concern Focus',
+    badge: 'Top Concern Focus',
     lifestyleImg: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80',
     productImg: '/images_ref/Clear-skin-300x300.webp',
     keyActives: 'Neem Extract • Tea Tree • Eucalyptus Terpenes',
