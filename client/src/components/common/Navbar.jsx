@@ -116,12 +116,9 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                   }}
                 />
               </div>
-              <div className="flex flex-col justify-center">
+              <div className="flex items-center">
                 <span className="font-serif text-2xl sm:text-3xl tracking-[0.16em] font-medium text-[#1e1e1e] block leading-none">
                   GOOD BEE
-                </span>
-                <span className="text-[9px] sm:text-[10px] tracking-[0.25em] text-[#5B0868] font-sans uppercase font-bold mt-1 leading-none">
-                  Natural Science Skincare
                 </span>
               </div>
             </button>
