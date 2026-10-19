@@ -23,8 +23,8 @@ const HERO_SLIDES = [
     ctaPrimaryAction: 'explore',
     ctaSecondary: 'How To Apply',
     ctaSecondaryAction: 'routine',
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1800&q=85',
-    objectPosition: 'object-[center_32%]',
+    image: '/assets/goodbee-skincare-hero.jpg',
+    objectPosition: 'object-[right_center]',
     statBadge: '✨ 72H Deep Moisture Lock'
   },
   {
@@ -37,8 +37,8 @@ const HERO_SLIDES = [
     ctaPrimaryAction: 'explore',
     ctaSecondary: 'See Routine Guide',
     ctaSecondaryAction: 'routine',
-    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=1800&q=85',
-    objectPosition: 'object-[center_40%]',
+    image: '/assets/goodbee-skincare-hero-2.jpg',
+    objectPosition: 'object-[right_25%]',
     statBadge: '💧 100% Pure Active Botanical'
   },
   {
@@ -51,8 +51,8 @@ const HERO_SLIDES = [
     ctaPrimaryAction: 'explore',
     ctaSecondary: 'View Regimen Steps',
     ctaSecondaryAction: 'routine',
-    image: 'https://images.unsplash.com/photo-1512290900672-1f0230f878f4?auto=format&fit=crop&w=1800&q=85',
-    objectPosition: 'object-[center_30%]',
+    image: '/images_ref/Donkey-Milk-Soap-300x300.webp',
+    objectPosition: 'object-center',
     statBadge: '🛡️ 99.8% Epidermal Barrier Seal'
   },
   {
@@ -65,8 +65,8 @@ const HERO_SLIDES = [
     ctaPrimaryAction: 'explore',
     ctaSecondary: 'AM Glow Routine',
     ctaSecondaryAction: 'routine',
-    image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=1800&q=85',
-    objectPosition: 'object-[center_28%]',
+    image: '/images_ref/Pink-Lotus-300x300.webp',
+    objectPosition: 'object-center',
     statBadge: '🌸 First Steam Hydro-Distillate'
   }
 ];
