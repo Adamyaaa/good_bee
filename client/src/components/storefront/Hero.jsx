@@ -6,8 +6,7 @@ import {
   ArrowRight, 
   Pause, 
   Play,
-  Heart,
-  Droplets
+  Heart
 } from 'lucide-react';
 
 const HERO_SLIDES = [
@@ -23,8 +22,7 @@ const HERO_SLIDES = [
     ctaSecondary: 'How To Apply',
     ctaSecondaryAction: 'routine',
     image: '/assets/goodbee-skincare-hero.jpg',
-    objectPosition: 'object-[right_center]',
-    statBadge: '✨ 72H Deep Moisture Lock'
+    objectPosition: 'object-[right_center]'
   },
   {
     id: 'slide-2',
@@ -37,8 +35,7 @@ const HERO_SLIDES = [
     ctaSecondary: 'See Routine Guide',
     ctaSecondaryAction: 'routine',
     image: '/assets/goodbee-skincare-hero-2.jpg',
-    objectPosition: 'object-[right_25%]',
-    statBadge: '💧 100% Pure Active Botanical'
+    objectPosition: 'object-[right_25%]'
   },
   {
     id: 'slide-3',
@@ -51,8 +48,7 @@ const HERO_SLIDES = [
     ctaSecondary: 'View Regimen Steps',
     ctaSecondaryAction: 'routine',
     image: '/images_ref/Donkey-Milk-Soap-300x300.webp',
-    objectPosition: 'object-center',
-    statBadge: '🛡️ 99.8% Epidermal Barrier Seal'
+    objectPosition: 'object-center'
   },
   {
     id: 'slide-4',
@@ -65,8 +61,7 @@ const HERO_SLIDES = [
     ctaSecondary: 'AM Glow Routine',
     ctaSecondaryAction: 'routine',
     image: '/images_ref/Pink-Lotus-300x300.webp',
-    objectPosition: 'object-center',
-    statBadge: '🌸 First Steam Hydro-Distillate'
+    objectPosition: 'object-center'
   }
 ];
 
@@ -214,13 +209,6 @@ export default function Hero({ onExplore, onRoutine }) {
                 <p className="text-xs sm:text-sm text-gray-600 font-sans leading-relaxed max-w-md pt-1">
                   {slide.description}
                 </p>
-
-                {/* Benefit Pill */}
-                <div className="pt-1">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
-                    {slide.statBadge}
-                  </span>
-                </div>
 
                 {/* Plum-Inspired Dual CTA Buttons */}
                 <div className="pt-3 sm:pt-4 flex flex-wrap items-center gap-3">
