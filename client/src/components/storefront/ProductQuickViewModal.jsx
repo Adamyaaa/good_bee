@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { X, Star, ShoppingBag, MessageCircle, ShieldCheck, Droplets, FlaskConical, Check } from 'lucide-react';
+import { X, Star, ShoppingBag, MessageCircle, ShieldCheck, Droplets, FlaskConical, Check, ArrowRight } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
-export default function ProductQuickViewModal({ product, onClose, onInstantBuy }) {
+export default function ProductQuickViewModal({ product, onClose, onInstantBuy, onOpenDedicatedPage }) {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(product?.image || '');
@@ -186,6 +186,23 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy }
                 <MessageCircle className="w-4 h-4 text-emerald-600" />
                 <span>Enquire via WhatsApp Concierge</span>
               </a>
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  if (onOpenDedicatedPage) {
+                    onOpenDedicatedPage(product);
+                  } else {
+                    window.location.hash = `#product=${product.id || product.slug}`;
+                  }
+                }}
+                className="w-full py-2.5 bg-brand-cream/80 hover:bg-brand-cream text-brand-charcoal text-xs font-semibold rounded-xl border border-brand-gold/40 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs mt-2"
+              >
+                <span>View Dedicated Product Page (Ingredients & Process)</span>
+                <ArrowRight className="w-3.5 h-3.5 text-brand-gold-dark" />
+              </button>
+              <span className="hidden">
+</span>
             </div>
 
           </div>

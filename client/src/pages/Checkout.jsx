@@ -3,8 +3,33 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import DynamicPaymentQrModal from '../components/storefront/DynamicPaymentQrModal';
 import { GoodBeeApi } from '../services/api';
-import { ShieldCheck, QrCode, CheckCircle2, MessageCircle, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ShieldCheck, QrCode, CheckCircle2, MessageCircle, ArrowLeft, ArrowRight, MapPin, Zap } from 'lucide-react';
 import confetti from 'canvas-confetti';
+
+const STATE_CITIES = {
+  'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Nashik', 'Thane', 'Navi Mumbai', 'Aurangabad', 'Kolhapur', 'Other City...'],
+  'Karnataka': ['Bengaluru', 'Mysuru', 'Hubli-Dharwad', 'Mangaluru', 'Belagavi', 'Davanagere', 'Other City...'],
+  'Delhi': ['New Delhi', 'South Delhi', 'Central Delhi', 'West Delhi', 'North Delhi', 'East Delhi', 'Other City...'],
+  'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli', 'Salem', 'Tiruppur', 'Other City...'],
+  'Telangana': ['Hyderabad', 'Secunderabad', 'Warangal', 'Nizamabad', 'Karimnagar', 'Other City...'],
+  'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Bhavnagar', 'Gandhinagar', 'Other City...'],
+  'West Bengal': ['Kolkata', 'Howrah', 'Durgapur', 'Asansol', 'Siliguri', 'Other City...'],
+  'Uttar Pradesh': ['Lucknow', 'Noida', 'Greater Noida', 'Kanpur', 'Varanasi', 'Agra', 'Ghaziabad', 'Other City...'],
+  'Rajasthan': ['Jaipur', 'Jodhpur', 'Udaipur', 'Kota', 'Bikaner', 'Ajmer', 'Other City...'],
+  'Kerala': ['Kochi', 'Thiruvananthapuram', 'Kozhikode', 'Thrissur', 'Kannur', 'Other City...'],
+  'Punjab': ['Chandigarh', 'Ludhiana', 'Amritsar', 'Jalandhar', 'Patiala', 'Other City...'],
+  'Madhya Pradesh': ['Indore', 'Bhopal', 'Jabalpur', 'Gwalior', 'Ujjain', 'Other City...'],
+  'Haryana': ['Gurugram', 'Faridabad', 'Panipat', 'Ambala', 'Panchkula', 'Other City...'],
+  'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Nellore', 'Tirupati', 'Other City...'],
+  'Goa': ['Panaji', 'Margao', 'Vasco da Gama', 'Mapusa', 'Other City...'],
+  'Other State / UT': ['Metropolitan Area', 'Regional Town', 'Other City...']
+};
+
+const SAVED_ADDRESS_PRESETS = [
+  { id: 'addr_1', label: 'Home (Mumbai)', street: '402, Lotus Greens, Bandra West', city: 'Mumbai', state: 'Maharashtra', pincode: '400050' },
+  { id: 'addr_2', label: 'Office Studio (Bengaluru)', street: 'Level 4, Brigade Tech Gardens, Whitefield', city: 'Bengaluru', state: 'Karnataka', pincode: '560066' },
+  { id: 'addr_3', label: 'Delhi NCR Hub', street: 'B-12, Greater Kailash Part 1', city: 'New Delhi', state: 'Delhi', pincode: '110048' }
+];
 
 export default function Checkout({ onBack, onNavigateHome }) {
   const { items, subtotal, discount, shipping, total, promoterCode, clearCart } = useCart();
@@ -20,6 +45,10 @@ export default function Checkout({ onBack, onNavigateHome }) {
     pincode: '400001',
     paymentMethod: 'DYNAMIC_UPI_QR'
   });
+
+  const [isCustomCity, setIsCustomCity] = useState(false);
+  const [customCity, setCustomCity] = useState('');
+  const [selectedAddressPreset, setSelectedAddressPreset] = useState(null);
 
   const [placingOrder, setPlacingOrder] = useState(false);
   const [activeOrder, setActiveOrder] = useState(null);
@@ -371,12 +400,55 @@ Action: Please print lot batch certificate and initiate packaging.`;
               </div>
             </div>
 
-            {/* Delivery Address */}
+            {/* Delivery Address with Drop-Down Optimization (Akash Kumar Requirement) */}
             <div className="bg-brand-cream/50 p-6 rounded-2xl border border-brand-gold/30 space-y-4">
-              <h3 className="font-serif text-xl font-semibold text-brand-charcoal">
-                2. Shipping Address
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <h3 className="font-serif text-xl font-semibold text-brand-charcoal flex items-center gap-2">
+                  <span>2. Delivery Destination</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    Dropdown Optimized
+                  </span>
+                </h3>
+              </div>
+
+              {/* Quick Select Saved Address Pills */}
+              <div className="space-y-1.5 pt-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-brand-muted flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-brand-gold-dark" />
+                  <span>1-Click Quick Select Saved Address:</span>
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {SAVED_ADDRESS_PRESETS.map((addr) => (
+                    <button
+                      key={addr.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedAddressPreset(addr.id);
+                        setForm({
+                          ...form,
+                          street: addr.street,
+                          city: addr.city,
+                          state: addr.state,
+                          pincode: addr.pincode
+                        });
+                        setIsCustomCity(false);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                        selectedAddressPreset === addr.id
+                          ? 'bg-[#5B0868] text-white shadow-sm'
+                          : 'bg-white hover:bg-brand-cream border border-brand-gold/30 text-brand-charcoal'
+                      }`}
+                    >
+                      <MapPin className="w-3 h-3 text-brand-gold" />
+                      <span>{addr.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-2">
+                
+                {/* Street */}
                 <div className="sm:col-span-2">
                   <label className="block mb-1 font-medium text-brand-charcoal">Street Address / Landmark</label>
                   <input
@@ -385,39 +457,103 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     value={form.street}
                     onChange={(e) => setForm({ ...form, street: e.target.value })}
                     className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
-                    placeholder="Apartment, Studio, Floor"
+                    placeholder="Flat / Floor, Society, Street"
                   />
                 </div>
+
+                {/* State Dropdown */}
                 <div>
-                  <label className="block mb-1 font-medium text-brand-charcoal">City</label>
-                  <input
-                    type="text"
-                    required
-                    value={form.city}
-                    onChange={(e) => setForm({ ...form, city: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-medium text-brand-charcoal">State</label>
-                  <input
-                    type="text"
+                  <label className="block mb-1 font-medium text-brand-charcoal">State / Region (Dropdown)</label>
+                  <select
                     required
                     value={form.state}
-                    onChange={(e) => setForm({ ...form, state: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
-                  />
+                    onChange={(e) => {
+                      const newState = e.target.value;
+                      const citiesForState = STATE_CITIES[newState] || ['Metropolitan Area'];
+                      setForm({
+                        ...form,
+                        state: newState,
+                        city: citiesForState[0] === 'Other City...' ? '' : citiesForState[0]
+                      });
+                      setIsCustomCity(citiesForState[0] === 'Other City...');
+                      setSelectedAddressPreset(null);
+                    }}
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer"
+                  >
+                    {Object.keys(STATE_CITIES).map((st) => (
+                      <option key={st} value={st}>
+                        {st}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+
+                {/* City Cascading Dropdown */}
+                <div>
+                  <label className="block mb-1 font-medium text-brand-charcoal">City / District (Dropdown)</label>
+                  <select
+                    required
+                    value={isCustomCity ? 'Other City...' : form.city}
+                    onChange={(e) => {
+                      if (e.target.value === 'Other City...') {
+                        setIsCustomCity(true);
+                        setForm({ ...form, city: customCity || '' });
+                      } else {
+                        setIsCustomCity(false);
+                        setForm({ ...form, city: e.target.value });
+                      }
+                      setSelectedAddressPreset(null);
+                    }}
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer"
+                  >
+                    {(STATE_CITIES[form.state] || ['Other City...']).map((ct) => (
+                      <option key={ct} value={ct}>
+                        {ct}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Optional Custom City input if 'Other City...' selected */}
+                {isCustomCity && (
+                  <div className="sm:col-span-2">
+                    <label className="block mb-1 font-medium text-brand-charcoal">Enter Your Town / Locality Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={form.city}
+                      onChange={(e) => {
+                        setForm({ ...form, city: e.target.value });
+                        setCustomCity(e.target.value);
+                      }}
+                      placeholder="Enter city or district"
+                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                    />
+                  </div>
+                )}
+
+                {/* PIN Code with 6-digit regex validation */}
                 <div className="sm:col-span-2">
-                  <label className="block mb-1 font-medium text-brand-charcoal">PIN Code</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="font-medium text-brand-charcoal">PIN Code (6 Digits)</label>
+                    {/^[1-9][0-9]{5}$/.test(form.pincode) && (
+                      <span className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Express BlueDart Priority Dispatch Available
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="text"
                     required
+                    maxLength={6}
+                    pattern="^[1-9][0-9]{5}$"
                     value={form.pincode}
-                    onChange={(e) => setForm({ ...form, pincode: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                    onChange={(e) => setForm({ ...form, pincode: e.target.value.replace(/\D/g, '') })}
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-mono"
+                    placeholder="e.g. 400050"
                   />
                 </div>
+
               </div>
             </div>
 

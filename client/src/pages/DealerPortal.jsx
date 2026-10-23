@@ -58,7 +58,9 @@ const FALLBACK_DEALER_CATALOG = [
 export default function DealerPortal({ onNavigateHome }) {
   const { user, token } = useAuth();
   const [catalog, setCatalog] = useState(FALLBACK_DEALER_CATALOG);
-  const [discountPct, setDiscountPct] = useState(18);
+  const [discountPct, setDiscountPct] = useState(() => {
+    return user?.commissionMarginPct !== undefined ? Number(user.commissionMarginPct) : 22;
+  });
   const [loading, setLoading] = useState(false);
   const [orderNotice, setOrderNotice] = useState('');
 

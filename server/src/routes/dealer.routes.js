@@ -8,9 +8,15 @@ const router = Router();
 // Gated to DEALER and ADMIN
 router.use(requireAuth, requireRole([ROLES.DEALER, ROLES.ADMIN]));
 
-// GET /api/v1/dealer/catalog - Wholesale pricing catalog
+// GET /api/v1/dealer/catalog - Wholesale pricing catalog with per-dealer custom margin
 router.get('/catalog', (req, res) => {
-  const discountRate = store.config.rules.dealerCommissionPct / 100;
+  // Find current user's personalized margin if assigned, otherwise fallback to global rule
+  const matchedUser = store.users.find((u) => u.id === req.user.id);
+  const effectiveMargin = (matchedUser && matchedUser.commissionMarginPct !== undefined)
+    ? Number(matchedUser.commissionMarginPct)
+    : (req.user.commissionMarginPct !== undefined ? Number(req.user.commissionMarginPct) : store.config.rules.dealerCommissionPct);
+
+  const discountRate = effectiveMargin / 100;
 
   const catalog = store.products
     .filter((p) => p.status === PRODUCT_STATUS.PUBLISHED)
@@ -20,14 +26,16 @@ router.get('/catalog', (req, res) => {
         ...p,
         retailPrice: p.price,
         wholesalePrice,
-        dealerMarginPct: store.config.rules.dealerCommissionPct,
+        dealerMarginPct: effectiveMargin,
         minOrderQuantity: 5
       };
     });
 
   res.json({
-    dealerTier: req.user.tier || 'Standard Wholesale Partner',
-    discountPct: store.config.rules.dealerCommissionPct,
+    dealerName: matchedUser?.name || req.user.name,
+    dealerCompany: matchedUser?.companyName || req.user.companyName,
+    dealerTier: matchedUser?.tier || req.user.tier || 'Standard Wholesale Partner',
+    discountPct: effectiveMargin,
     catalog
   });
 });

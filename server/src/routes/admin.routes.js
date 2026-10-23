@@ -84,11 +84,14 @@ router.post('/submissions/:id/decide', (req, res) => {
       producerName: submission.producerName,
       shortDescription: submission.description,
       description: submission.description,
-      ingredients: typeof submission.ingredients === 'string' ? [submission.ingredients] : submission.ingredients,
+      ingredients: typeof submission.ingredients === 'string' ? submission.ingredients.split(',').map((s) => s.trim()) : submission.ingredients,
       ritual: 'Apply gently to clean skin daily.',
-      researchNotes: `Batch authenticated by Good Bee Quality Review on ${new Date().toLocaleDateString()}.`,
+      researchNotes: submission.batchDoc
+        ? `${submission.batchDoc} verified by Good Bee Quality Review on ${new Date().toLocaleDateString()}.`
+        : `Batch authenticated by Good Bee Quality Review on ${new Date().toLocaleDateString()}.`,
+      manufacturingProcess: submission.manufacturingProcess || 'Artisanal low-temperature botanical processing.',
       image: submission.image,
-      gallery: [submission.image]
+      gallery: submission.gallery && submission.gallery.length > 0 ? submission.gallery : [submission.image]
     };
 
     store.products.unshift(newProduct);
@@ -107,8 +110,17 @@ router.post('/submissions/:id/decide', (req, res) => {
       message: 'Product rejected. Producer has been notified with the feedback comment.',
       submission
     });
+  } else if (decision === 'REVISION') {
+    submission.status = 'REVISIONS_REQUESTED';
+    submission.adminNotes = reason || 'Please provide higher-resolution product images and certified batch lab reports.';
+    submission.reviewedAt = new Date().toISOString();
+
+    return res.json({
+      message: 'Revision requested from producer with feedback notes.',
+      submission
+    });
   } else {
-    return res.status(400).json({ error: 'Invalid decision. Must be APPROVE or REJECT.' });
+    return res.status(400).json({ error: 'Invalid decision. Must be APPROVE, REJECT, or REVISION.' });
   }
 });
 
@@ -167,6 +179,146 @@ router.put('/rules', (req, res) => {
   });
 
   res.json({ message: 'Platform business rules updated successfully.', rules: store.config.rules });
+});
+
+// GET /api/v1/admin/wholesalers - List 10 to 15 wholesalers with individual commission margins
+router.get('/wholesalers', (req, res) => {
+  const wholesalers = store.users
+    .filter((u) => u.role === ROLES.DEALER)
+    .map((w) => ({
+      id: w.id,
+      name: w.name,
+      companyName: w.companyName || w.name,
+      email: w.email,
+      phone: w.phone,
+      dealerCode: w.dealerCode || `DLR-${w.id.slice(-4).toUpperCase()}`,
+      gstNumber: w.gstNumber || '27AABCU0000R1ZX',
+      tier: w.tier || 'Gold Tier Partner',
+      commissionMarginPct: w.commissionMarginPct !== undefined ? Number(w.commissionMarginPct) : store.config.rules.dealerCommissionPct,
+      city: w.city || 'Mumbai',
+      state: w.state || 'Maharashtra',
+      totalOrders: w.totalOrders || 0,
+      totalSpend: w.totalSpend || 0,
+      status: w.status || 'ACTIVE',
+      createdAt: w.createdAt
+    }));
+
+  res.json({
+    wholesalers,
+    count: wholesalers.length,
+    defaultMarginPct: store.config.rules.dealerCommissionPct
+  });
+});
+
+// PUT /api/v1/admin/wholesalers/:id/commission - Update individual wholesaler margin %
+router.put('/wholesalers/:id/commission', (req, res) => {
+  const { id } = req.params;
+  const { marginPct } = req.body;
+
+  if (marginPct === undefined || isNaN(marginPct)) {
+    return res.status(400).json({ error: 'Valid numeric margin percentage is required.' });
+  }
+
+  const clampedMargin = Math.min(Math.max(Number(marginPct), 5), 45); // Safety clamp 5% - 45%
+
+  const dealer = store.users.find((u) => u.id === id && u.role === ROLES.DEALER);
+  if (!dealer) {
+    return res.status(404).json({ error: 'Wholesaler not found.' });
+  }
+
+  dealer.commissionMarginPct = clampedMargin;
+
+  res.json({
+    message: `Updated commission margin for ${dealer.companyName || dealer.name} to ${clampedMargin}%`,
+    wholesaler: dealer
+  });
+});
+
+// POST /api/v1/admin/wholesalers - Onboard new wholesaler
+router.post('/wholesalers', (req, res) => {
+  const {
+    name,
+    companyName,
+    email,
+    phone,
+    dealerCode,
+    gstNumber,
+    tier = 'Gold Tier Partner',
+    commissionMarginPct = 20,
+    city = 'Mumbai',
+    state = 'Maharashtra'
+  } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Wholesaler name and email are required.' });
+  }
+
+  const existing = store.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+  if (existing) {
+    return res.status(400).json({ error: 'A partner with this email already exists.' });
+  }
+
+  const newDealer = {
+    id: `usr_dealer_${Date.now()}`,
+    name,
+    companyName: companyName || name,
+    email,
+    password: 'dealer',
+    role: ROLES.DEALER,
+    dealerCode: dealerCode || `DLR-${city.slice(0, 3).toUpperCase()}-${Math.floor(10 + Math.random() * 90)}`,
+    gstNumber: gstNumber || `27AABC${Math.floor(1000 + Math.random() * 9000)}R1ZM`,
+    tier,
+    commissionMarginPct: Number(commissionMarginPct) || 20,
+    city,
+    state,
+    phone: phone || '+919876543200',
+    totalOrders: 0,
+    totalSpend: 0,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  };
+
+  store.users.push(newDealer);
+
+  res.status(201).json({
+    message: `Wholesaler ${newDealer.companyName} registered with ${newDealer.commissionMarginPct}% margin.`,
+    wholesaler: newDealer
+  });
+});
+
+// PUT /api/v1/admin/wholesalers/:id - Update wholesaler details
+router.put('/wholesalers/:id', (req, res) => {
+  const { id } = req.params;
+  const dealer = store.users.find((u) => u.id === id && u.role === ROLES.DEALER);
+  if (!dealer) {
+    return res.status(404).json({ error: 'Wholesaler not found.' });
+  }
+
+  const updatable = [
+    'name',
+    'companyName',
+    'email',
+    'phone',
+    'dealerCode',
+    'gstNumber',
+    'tier',
+    'commissionMarginPct',
+    'city',
+    'state',
+    'status'
+  ];
+
+  updatable.forEach((field) => {
+    if (req.body[field] !== undefined) {
+      if (field === 'commissionMarginPct') {
+        dealer[field] = Math.min(Math.max(Number(req.body[field]), 5), 45);
+      } else {
+        dealer[field] = req.body[field];
+      }
+    }
+  });
+
+  res.json({ message: 'Wholesaler profile updated successfully.', wholesaler: dealer });
 });
 
 export default router;

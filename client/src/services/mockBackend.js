@@ -29,10 +29,264 @@ const DEFAULT_USERS = [
     email: 'dealer@goodbee.com',
     password: 'dealer',
     role: 'DEALER',
+    companyName: 'Apex Luxury Skincare Distributors Pvt Ltd',
     dealerCode: 'DLR-MUM-01',
     gstNumber: '27AABCU9603R1ZM',
-    tier: 'Gold Tier Distributor',
+    tier: 'Gold Tier Partner',
+    commissionMarginPct: 22.0,
+    city: 'Mumbai',
+    state: 'Maharashtra',
     phone: '+919876543202',
+    totalOrders: 28,
+    totalSpend: 384000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_2',
+    name: 'Bengaluru Botanical Essentials',
+    email: 'bengaluru.botanics@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Bengaluru Botanical Essentials LLP',
+    dealerCode: 'DLR-BLR-02',
+    gstNumber: '29AABCB1234F1Z5',
+    tier: 'Platinum Apex Partner',
+    commissionMarginPct: 24.5,
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    phone: '+919876543212',
+    totalOrders: 35,
+    totalSpend: 512000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_3',
+    name: 'Northern Heritage Wellness Desk',
+    email: 'northern.wellness@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Northern Heritage Wellness India',
+    dealerCode: 'DLR-DEL-03',
+    gstNumber: '07AAACN5678K1ZQ',
+    tier: 'Platinum Apex Partner',
+    commissionMarginPct: 25.0,
+    city: 'New Delhi',
+    state: 'Delhi',
+    phone: '+919876543213',
+    totalOrders: 41,
+    totalSpend: 620000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_4',
+    name: 'Deccan Pure Botanics Hub',
+    email: 'deccan.botanics@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Deccan Pure Botanics Pvt Ltd',
+    dealerCode: 'DLR-HYD-04',
+    gstNumber: '36AABCD9012M1Z8',
+    tier: 'Silver Regional Hub',
+    commissionMarginPct: 18.0,
+    city: 'Hyderabad',
+    state: 'Telangana',
+    phone: '+919876543214',
+    totalOrders: 19,
+    totalSpend: 245000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_5',
+    name: 'Coromandel Herbal Distributors',
+    email: 'coromandel.herbal@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Coromandel Herbal Agencies',
+    dealerCode: 'DLR-CHN-05',
+    gstNumber: '33AABCC3456P1Z3',
+    tier: 'Gold Tier Partner',
+    commissionMarginPct: 21.0,
+    city: 'Chennai',
+    state: 'Tamil Nadu',
+    phone: '+919876543215',
+    totalOrders: 24,
+    totalSpend: 310000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_6',
+    name: 'Eastern Organic Storefronts',
+    email: 'eastern.organics@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Eastern Organic Trade Link',
+    dealerCode: 'DLR-KOL-06',
+    gstNumber: '19AABCE7890H1ZV',
+    tier: 'Silver Regional Hub',
+    commissionMarginPct: 17.5,
+    city: 'Kolkata',
+    state: 'West Bengal',
+    phone: '+919876543216',
+    totalOrders: 16,
+    totalSpend: 198000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_7',
+    name: 'Western Ghats Apiary Network',
+    email: 'wghats.apiary@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Western Ghats Bee & Botanicals Co',
+    dealerCode: 'DLR-PUN-07',
+    gstNumber: '27AABCG2345L1ZT',
+    tier: 'Platinum Apex Partner',
+    commissionMarginPct: 26.0,
+    city: 'Pune',
+    state: 'Maharashtra',
+    phone: '+919876543217',
+    totalOrders: 38,
+    totalSpend: 540000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_8',
+    name: 'Royal Rajputana Organic Desk',
+    email: 'rajputana.organic@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Royal Rajputana Wellness Guild',
+    dealerCode: 'DLR-JAI-08',
+    gstNumber: '08AABCR6789D1ZW',
+    tier: 'Silver Regional Hub',
+    commissionMarginPct: 18.5,
+    city: 'Jaipur',
+    state: 'Rajasthan',
+    phone: '+919876543218',
+    totalOrders: 14,
+    totalSpend: 175000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_9',
+    name: 'Malabar Spices & Spa Supply',
+    email: 'malabar.spa@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Malabar Spa & Wellness Exports',
+    dealerCode: 'DLR-KOC-09',
+    gstNumber: '32AABCM0123K1ZA',
+    tier: 'Gold Tier Partner',
+    commissionMarginPct: 20.0,
+    city: 'Kochi',
+    state: 'Kerala',
+    phone: '+919876543219',
+    totalOrders: 22,
+    totalSpend: 289000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_10',
+    name: 'Gujarat Pure Organics Emporium',
+    email: 'gujarat.pure@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Gujarat Pure Organics Ltd',
+    dealerCode: 'DLR-AMD-10',
+    gstNumber: '24AABCG4567J1ZE',
+    tier: 'Gold Tier Partner',
+    commissionMarginPct: 22.0,
+    city: 'Ahmedabad',
+    state: 'Gujarat',
+    phone: '+919876543220',
+    totalOrders: 27,
+    totalSpend: 350000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_11',
+    name: 'Punjab Herbal Distributors',
+    email: 'punjab.herbal@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Punjab Herbal Supply Co',
+    dealerCode: 'DLR-CHD-11',
+    gstNumber: '04AABCP8901N1ZY',
+    tier: 'Silver Regional Hub',
+    commissionMarginPct: 17.0,
+    city: 'Chandigarh',
+    state: 'Punjab',
+    phone: '+919876543221',
+    totalOrders: 12,
+    totalSpend: 142000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_12',
+    name: 'Awadh Botanical Natural Care',
+    email: 'awadh.botanical@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Awadh Botanical Remedies LLP',
+    dealerCode: 'DLR-LKO-12',
+    gstNumber: '09AABCA2345B1ZR',
+    tier: 'Gold Tier Partner',
+    commissionMarginPct: 23.0,
+    city: 'Lucknow',
+    state: 'Uttar Pradesh',
+    phone: '+919876543222',
+    totalOrders: 25,
+    totalSpend: 318000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_13',
+    name: 'Nilgiri Biosphere Apothecary Traders',
+    email: 'nilgiri.apothecary@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Nilgiri Apothecary Consortium',
+    dealerCode: 'DLR-CBE-13',
+    gstNumber: '33AABCN6789S1ZX',
+    tier: 'Platinum Apex Partner',
+    commissionMarginPct: 26.5,
+    city: 'Coimbatore',
+    state: 'Tamil Nadu',
+    phone: '+919876543223',
+    totalOrders: 31,
+    totalSpend: 470000,
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_dealer_14',
+    name: 'Central Malwa Botanical Hub',
+    email: 'central.malwa@goodbee.com',
+    password: 'dealer',
+    role: 'DEALER',
+    companyName: 'Central Malwa Organics Pvt Ltd',
+    dealerCode: 'DLR-IND-14',
+    gstNumber: '23AABCC0123E1ZU',
+    tier: 'Silver Regional Hub',
+    commissionMarginPct: 19.0,
+    city: 'Indore',
+    state: 'Madhya Pradesh',
+    phone: '+919876543224',
+    totalOrders: 15,
+    totalSpend: 182000,
+    status: 'ACTIVE',
     createdAt: new Date().toISOString()
   },
   {
@@ -596,6 +850,133 @@ export async function handleMockApiRequest(url, init = {}) {
     if (method === 'PUT') {
       setStored('goodbee_config', body);
       return jsonResponse({ message: 'Settings saved successfully.', config: body });
+    }
+  }
+
+  // 14.1 Admin: Wholesalers Management
+  if (path === '/api/v1/admin/wholesalers' && method === 'GET') {
+    const users = getStored('goodbee_users', DEFAULT_USERS);
+    const wholesalers = users.filter((u) => u.role === 'DEALER');
+    return jsonResponse({ count: wholesalers.length, wholesalers });
+  }
+
+  if (path === '/api/v1/admin/wholesalers' && method === 'POST') {
+    const users = getStored('goodbee_users', DEFAULT_USERS);
+    const newWholesaler = {
+      id: `usr_dealer_${Date.now()}`,
+      name: body.name,
+      companyName: body.companyName || body.name,
+      email: body.email,
+      password: 'dealer',
+      role: 'DEALER',
+      dealerCode: body.dealerCode || `DLR-${(body.city || 'MUM').slice(0, 3).toUpperCase()}-${Math.floor(10 + Math.random() * 90)}`,
+      gstNumber: body.gstNumber || `27AABC${Math.floor(1000 + Math.random() * 9000)}R1ZM`,
+      tier: body.tier || 'Gold Tier Partner',
+      commissionMarginPct: Number(body.commissionMarginPct) || 20,
+      city: body.city || 'Mumbai',
+      state: body.state || 'Maharashtra',
+      phone: body.phone || '+919876543200',
+      totalOrders: 0,
+      totalSpend: 0,
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString()
+    };
+    users.push(newWholesaler);
+    setStored('goodbee_users', users);
+    return jsonResponse({ message: `Wholesaler ${newWholesaler.companyName} registered with ${newWholesaler.commissionMarginPct}% margin.`, wholesaler: newWholesaler }, 201);
+  }
+
+  if (path.startsWith('/api/v1/admin/wholesalers/') && path.endsWith('/commission') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const users = getStored('goodbee_users', DEFAULT_USERS);
+    const wIndex = users.findIndex((u) => u.id === id);
+    if (wIndex !== -1) {
+      const clamped = Math.min(Math.max(Number(body.marginPct), 5), 45);
+      users[wIndex].commissionMarginPct = clamped;
+      setStored('goodbee_users', users);
+      return jsonResponse({ message: `Margin updated to ${clamped}% for ${users[wIndex].companyName}`, wholesaler: users[wIndex] });
+    }
+    return jsonResponse({ error: 'Wholesaler not found' }, 404);
+  }
+
+  if (path.startsWith('/api/v1/admin/wholesalers/') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const users = getStored('goodbee_users', DEFAULT_USERS);
+    const wIndex = users.findIndex((u) => u.id === id);
+    if (wIndex !== -1) {
+      users[wIndex] = { ...users[wIndex], ...body };
+      setStored('goodbee_users', users);
+      return jsonResponse({ message: 'Wholesaler profile updated.', wholesaler: users[wIndex] });
+    }
+    return jsonResponse({ error: 'Wholesaler not found' }, 404);
+  }
+
+  // 14.2 Admin: Submissions review & decision
+  if (path === '/api/v1/admin/submissions' && method === 'GET') {
+    const submissions = getStored('goodbee_submissions', DEFAULT_SUBMISSIONS);
+    return jsonResponse({ count: submissions.length, submissions });
+  }
+
+  if (path.startsWith('/api/v1/admin/submissions/') && path.endsWith('/decide') && method === 'POST') {
+    const id = path.split('/')[5];
+    const submissions = getStored('goodbee_submissions', DEFAULT_SUBMISSIONS);
+    const sIndex = submissions.findIndex((s) => s.id === id);
+    if (sIndex === -1) return jsonResponse({ error: 'Submission not found' }, 404);
+
+    const sub = submissions[sIndex];
+    const { decision, reason = '' } = body;
+
+    if (decision === 'APPROVE') {
+      sub.status = 'APPROVED';
+      sub.adminNotes = reason || 'Formulation and batch specification verified. Approved for public catalog.';
+      sub.reviewedAt = new Date().toISOString();
+
+      // Convert to live product
+      const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+      const slug = sub.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const newProd = {
+        id: `gb_prod_${Date.now()}`,
+        title: sub.title,
+        subtitle: 'Artisanal Partner Formulation',
+        slug,
+        sku: `GB-${sub.category.substring(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`,
+        category: sub.category,
+        concerns: sub.concerns || ['Barrier Repair'],
+        price: sub.price,
+        mrp: sub.mrp || Math.round(sub.price * 1.25),
+        volume: sub.volume || '50 ml',
+        rating: 5.0,
+        reviewsCount: 1,
+        stock: sub.stock || 50,
+        lowStockThreshold: 10,
+        badge: 'Partner Craft',
+        status: 'PUBLISHED',
+        producerId: sub.producerId,
+        producerName: sub.producerName,
+        shortDescription: sub.description,
+        description: sub.description,
+        ingredients: typeof sub.ingredients === 'string' ? sub.ingredients.split(',').map((s) => s.trim()) : sub.ingredients,
+        ritual: 'Apply gently to clean skin daily.',
+        researchNotes: 'Gas chromatography verified purity.',
+        image: sub.image,
+        gallery: sub.gallery && sub.gallery.length > 0 ? sub.gallery : [sub.image]
+      };
+      products.unshift(newProd);
+      setStored('goodbee_products', products);
+      setStored('goodbee_submissions', submissions);
+      return jsonResponse({ message: 'Product approved and published to storefront!', submission: sub, publishedProduct: newProd });
+    } else if (decision === 'REJECT') {
+      sub.status = 'REJECTED';
+      sub.adminNotes = reason || 'Does not meet purity standards.';
+      sub.reviewedAt = new Date().toISOString();
+      setStored('goodbee_submissions', submissions);
+      return jsonResponse({ message: 'Product rejected.', submission: sub });
+    } else if (decision === 'REVISION') {
+      sub.status = 'REVISIONS_REQUESTED';
+      sub.adminNotes = reason || 'Please provide higher-resolution photos and batch certificates.';
+      sub.reviewedAt = new Date().toISOString();
+      setStored('goodbee_submissions', submissions);
+      return jsonResponse({ message: 'Revision requested.', submission: sub });
     }
   }
 

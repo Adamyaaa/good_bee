@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { DEFAULT_SITE_CONTENT } from '../services/mockBackend';
+import WholesalerManager from '../components/admin/WholesalerManager';
+import SupplierApprovalQueue from '../components/admin/SupplierApprovalQueue';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -32,7 +34,10 @@ import {
   Compass,
   FileText,
   Download,
-  BarChart3
+  BarChart3,
+  Building2,
+  Users,
+  Layers
 } from 'lucide-react';
 
 const PRESET_IMAGES = [
@@ -70,6 +75,8 @@ export default function AdminDashboard({ onNavigateHome }) {
   const [analytics, setAnalytics] = useState(null);
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
+  const [wholesalers, setWholesalers] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
   const [productSearch, setProductSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [salesReportTimeframe, setSalesReportTimeframe] = useState('ALL'); // 'THIS_MONTH', 'LAST_30_DAYS', 'ALL'
@@ -238,10 +245,80 @@ export default function AdminDashboard({ onNavigateHome }) {
       const resSite = await fetch('/api/v1/admin/site-content', { headers });
       const siteData = await resSite.json();
       if (siteData.content) setSiteContent(siteData.content);
+
+      // Load Wholesalers & Margins
+      try {
+        const resWhole = await fetch('/api/v1/admin/wholesalers', { headers });
+        const wholeData = await resWhole.json();
+        if (wholeData.wholesalers) setWholesalers(wholeData.wholesalers);
+      } catch (e) {}
+
+      // Load Quarantined Submissions
+      try {
+        const resSub = await fetch('/api/v1/admin/submissions', { headers });
+        const subData = await resSub.json();
+        if (subData.submissions) setSubmissions(subData.submissions);
+      } catch (e) {}
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdateWholesalerCommission = async (wholesalerId, marginPct) => {
+    try {
+      const res = await fetch(`/api/v1/admin/wholesalers/${wholesalerId}/commission`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ marginPct })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setWholesalers((prev) =>
+          prev.map((w) => (w.id === wholesalerId ? { ...w, commissionMarginPct: Number(marginPct) } : w))
+        );
+        setActionSuccess(data.message || 'Wholesaler commission updated!');
+        setTimeout(() => setActionSuccess(''), 3000);
+      }
+    } catch (err) {
+      alert('Failed to update commission');
+    }
+  };
+
+  const handleAddWholesaler = async (formData) => {
+    try {
+      const res = await fetch('/api/v1/admin/wholesalers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (res.ok && data.wholesaler) {
+        setWholesalers((prev) => [data.wholesaler, ...prev]);
+        setActionSuccess(data.message || 'Wholesaler onboarded successfully!');
+        setTimeout(() => setActionSuccess(''), 3000);
+      }
+    } catch (err) {
+      alert('Failed to onboard wholesaler');
+    }
+  };
+
+  const handleDecideSubmission = async (submissionId, decision, reason) => {
+    try {
+      const res = await fetch(`/api/v1/admin/submissions/${submissionId}/decide`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ decision, reason })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setActionSuccess(data.message || 'Submission decision processed!');
+        setTimeout(() => setActionSuccess(''), 4000);
+        loadAllAdminData();
+      }
+    } catch (err) {
+      alert('Failed to process submission decision');
     }
   };
 
@@ -574,6 +651,7 @@ export default function AdminDashboard({ onNavigateHome }) {
   };
 
   const pendingOrdersCount = orders.filter((o) => o.status === 'PROCESSING').length;
+  const pendingSubmissionsCount = submissions.filter((s) => s.status === 'PENDING_REVIEW' || s.status === 'PENDING').length;
 
   const filteredProducts = products.filter((p) => {
     const matchesCat = categoryFilter === 'All' || p.category === categoryFilter;
@@ -637,6 +715,8 @@ export default function AdminDashboard({ onNavigateHome }) {
           {[
             { id: 'ANALYTICS', label: 'Overview Telemetry', icon: LayoutDashboard },
             { id: 'ORDERS', label: `Patron Orders (${pendingOrdersCount} Pending)`, icon: ShoppingBag, badge: pendingOrdersCount > 0 },
+            { id: 'WHOLESALERS', label: `Wholesaler Matrix (${wholesalers.length || 14})`, icon: Building2 },
+            { id: 'SUBMISSIONS', label: `Supplier Proposals (${pendingSubmissionsCount} Pending)`, icon: FlaskConical, badge: pendingSubmissionsCount > 0 },
             { id: 'PRODUCTS', label: `Catalog CMS & Products (${products.length})`, icon: Package },
             { id: 'SALES_REPORT', label: 'Product-wise Sale Report', icon: FileText },
             { id: 'SITE_CONTENT', label: 'Site Content & Gateway CMS', icon: Sliders }
@@ -1004,6 +1084,25 @@ export default function AdminDashboard({ onNavigateHome }) {
               </div>
             )}
           </div>
+        )}
+
+        {/* WHOLESALER MATRIX & INDIVIDUAL MARGINS TAB */}
+        {activeTab === 'WHOLESALERS' && (
+          <WholesalerManager
+            wholesalers={wholesalers}
+            onUpdateCommission={handleUpdateWholesalerCommission}
+            onAddWholesaler={handleAddWholesaler}
+            token={token}
+          />
+        )}
+
+        {/* QUARANTINED SUPPLIER PROPOSALS APPROVAL TAB */}
+        {activeTab === 'SUBMISSIONS' && (
+          <SupplierApprovalQueue
+            submissions={submissions}
+            onDecideSubmission={handleDecideSubmission}
+            token={token}
+          />
         )}
 
         {/* 3. CATALOG CMS & FULL PRODUCT EDITOR */}

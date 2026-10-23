@@ -18,6 +18,8 @@ import InteractiveSpaCatalog from './components/storefront/InteractiveSpaCatalog
 import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
 import ParallaxIngredientStory from './components/storefront/ParallaxIngredientStory';
 import ProductQuickViewModal from './components/storefront/ProductQuickViewModal';
+import ProductDetailPage from './pages/ProductDetailPage';
+import { GoodBeeApi } from './services/api';
 // Kept for client review: import ShopByReels from './components/storefront/ShopByReels';
 import PortalModal from './components/portal/PortalModal';
 import TrackOrderModal from './components/storefront/TrackOrderModal';
@@ -36,6 +38,28 @@ function SpaLandingContent() {
   // Modal states for seamless SPA experience
   const [selectedConcern, setSelectedConcern] = useState('All');
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [activePdpProduct, setActivePdpProduct] = useState(null);
+
+  // Handle deep-link hashtag #product=<id_or_slug>
+  React.useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#product=')) {
+        const targetId = hash.replace('#product=', '');
+        GoodBeeApi.fetchProducts().then((list) => {
+          const found = list.find((p) => p.id === targetId || p.slug === targetId);
+          if (found) {
+            setActivePdpProduct(found);
+            setIsCheckoutOpen(false);
+    setActivePdpProduct(null);
+          }
+        });
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [portalModalConfig, setPortalModalConfig] = useState({ isOpen: false, role: 'CUSTOMER' });
   const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
@@ -79,6 +103,7 @@ function SpaLandingContent() {
   // Smooth scroll handler with fixed navbar clearance
   const handleScrollTo = (id) => {
     setIsCheckoutOpen(false);
+    setActivePdpProduct(null);
     setTimeout(() => {
       if (id === 'hero') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -128,6 +153,19 @@ function SpaLandingContent() {
           <Checkout
             onBack={() => setIsCheckoutOpen(false)}
             onNavigateHome={() => setIsCheckoutOpen(false)}
+          />
+        </main>
+      ) : activePdpProduct ? (
+        <main className="flex-grow">
+          <ProductDetailPage
+            product={activePdpProduct}
+            onBack={() => {
+              setActivePdpProduct(null);
+              if (window.location.hash.startsWith('#product=')) {
+                window.history.pushState(null, '', window.location.pathname);
+              }
+            }}
+            onInstantBuy={handleInstantBuy}
           />
         </main>
       ) : (
@@ -398,6 +436,10 @@ function SpaLandingContent() {
           product={quickViewProduct}
           onClose={() => setQuickViewProduct(null)}
           onInstantBuy={handleInstantBuy}
+          onOpenDedicatedPage={(prod) => {
+            setQuickViewProduct(null);
+            setActivePdpProduct(prod);
+          }}
         />
       )}
 
