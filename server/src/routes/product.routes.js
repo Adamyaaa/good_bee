@@ -16,8 +16,10 @@ router.get('/', (req, res) => {
   }
 
   if (concern && concern !== 'All') {
+    const q = concern.toLowerCase();
     list = list.filter((p) =>
-      p.concerns.some((c) => c.toLowerCase() === concern.toLowerCase())
+      p.concerns.some((c) => c.toLowerCase() === q || c.toLowerCase().includes(q) || q.includes(c.toLowerCase())) ||
+      p.category.toLowerCase() === q
     );
   }
 

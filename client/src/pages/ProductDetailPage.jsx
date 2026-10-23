@@ -396,7 +396,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             })}
           </div>
 
-          {/* TAB 1: NATURAL INGREDIENTS BREAKDOWN (Akash Kumar's Main Directive) */}
+          {/* TAB 1: NATURAL INGREDIENTS BREAKDOWN */}
           {activeTab === 'INGREDIENTS' && (
             <div className="space-y-6">
               <div className="max-w-3xl space-y-2">
@@ -454,7 +454,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             </div>
           )}
 
-          {/* TAB 2: ARTISANAL MANUFACTURING PROCESS (Akash Kumar's Main Directive) */}
+          {/* TAB 2: ARTISANAL MANUFACTURING PROCESS */}
           {activeTab === 'PROCESS' && (
             <div className="space-y-6">
               <div className="max-w-3xl space-y-2">
@@ -532,7 +532,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
           {activeTab === 'REVIEWS' && (
             <div className="space-y-8">
               
-              {/* Instagram & UGC Review Videos Strip (Akash Kumar's Requirement) */}
+              {/* Instagram & UGC Review Videos Strip */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>

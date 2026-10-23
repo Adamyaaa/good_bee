@@ -100,7 +100,7 @@ export const INITIAL_PRODUCTS = [
     slug: 'good-bee-rosemary-pure-essential-oil',
     sku: 'GB-OIL-RSM-15',
     category: 'Pure Essential Oils',
-    concerns: ['Acne & Blemishes', 'Youth & Radiance'],
+    concerns: ['Hair Fall & Scalp', 'Acne & Blemishes', 'Youth & Radiance'],
     price: 950,
     mrp: 1150,
     volume: '15 ml / 0.5 fl. oz.',
@@ -534,7 +534,7 @@ export const INITIAL_PRODUCTS = [
     slug: 'good-bee-brahmi-neem-hair-oil',
     sku: 'GB-HAR-BRH-100',
     category: 'Hair & Wellness',
-    concerns: ['Youth & Radiance', 'Acne & Blemishes'],
+    concerns: ['Hair Fall & Scalp', 'Youth & Radiance', 'Acne & Blemishes'],
     price: 750,
     mrp: 890,
     volume: '100 ml / 3.4 fl. oz.',
@@ -569,7 +569,7 @@ export const INITIAL_PRODUCTS = [
     slug: 'good-bee-rosemary-hydrosol-mist',
     sku: 'GB-MST-RSM-100',
     category: 'Botanical Mists',
-    concerns: ['Acne & Blemishes', 'Pigmentation & Tone'],
+    concerns: ['Hair Fall & Scalp', 'Acne & Blemishes', 'Pigmentation & Tone'],
     price: 499,
     mrp: 599,
     volume: '100 ml / 3.4 fl. oz.',
@@ -673,7 +673,18 @@ export class GoodBeeApi {
     let list;
     try {
       const stored = typeof window !== 'undefined' ? localStorage.getItem('goodbee_products') : null;
-      list = stored ? JSON.parse(stored) : [...INITIAL_PRODUCTS];
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        list = INITIAL_PRODUCTS.map((initProd) => {
+          const found = parsed.find((p) => p.id === initProd.id);
+          return found ? { ...initProd, ...found, concerns: initProd.concerns, category: initProd.category } : initProd;
+        });
+        parsed.forEach((p) => {
+          if (!list.some((m) => m.id === p.id)) list.push(p);
+        });
+      } else {
+        list = [...INITIAL_PRODUCTS];
+      }
     } catch (e) {
       list = [...INITIAL_PRODUCTS];
     }
@@ -681,7 +692,11 @@ export class GoodBeeApi {
       list = list.filter((p) => p.category.toLowerCase() === params.category.toLowerCase());
     }
     if (params.concern && params.concern !== 'All') {
-      list = list.filter((p) => p.concerns.some((c) => c.toLowerCase() === params.concern.toLowerCase()));
+      const q = params.concern.toLowerCase();
+      list = list.filter((p) =>
+        p.concerns?.some((c) => c.toLowerCase() === q || c.toLowerCase().includes(q) || q.includes(c.toLowerCase())) ||
+        p.category?.toLowerCase() === q
+      );
     }
     if (params.search) {
       const q = params.search.toLowerCase();

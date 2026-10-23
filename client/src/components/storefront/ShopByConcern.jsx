@@ -19,12 +19,12 @@ const CONCERNS = [
     id: 'hair-fall',
     name: 'Hair Fall & Weak Roots',
     category: 'Hair & Wellness',
-    concernTag: 'Hair Fall',
+    concernTag: 'Hair Fall & Scalp',
     isHero: true, // Spotlight
     targetDemo: 'Ages 20–45 • Stress, hard water & post-monsoon shedding',
     lifeMoment: 'Excessive hair strands in comb & thinning scalp line',
     stat: 'Follicle anchor active',
-    badge: 'Akash & Adamya Focus',
+    badge: 'Top Concern Focus',
     lifestyleImg: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80',
     productImg: '/images_ref/Rosmary-2-300x300.webp',
     productName: 'Good Bee Rosemary & Brahmi Scalp Oil',
@@ -176,10 +176,10 @@ export default function ShopByConcern({ onSelectConcern }) {
         <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
           {[
             { label: 'All Concerns', category: 'All' },
-            { label: 'Hair Fall & Scalp', category: 'Hair & Wellness' },
+            { label: 'Hair Fall & Scalp', category: 'Hair Fall & Scalp' },
             { label: 'Under-Eye & Screen Strain', category: 'Botanical Mists' },
             { label: 'Dry & Chapped Lips', category: 'Lip & Facial Care' },
-            { label: 'Skin Barrier & Body', category: 'Cold Processed Soaps' },
+            { label: 'Skin Barrier & Body', category: 'Barrier Repair' },
             { label: 'Acne & Breakouts', category: 'Acne & Blemishes' }
           ].map((pill, idx) => (
             <button
@@ -202,7 +202,7 @@ export default function ShopByConcern({ onSelectConcern }) {
           {/* Spotlight Card: Hair Fall (Meeting Directive) */}
           {heroConcern && (
             <div
-              onClick={() => onSelectConcern(heroConcern.category)}
+              onClick={() => onSelectConcern(heroConcern.concernTag || heroConcern.category)}
               className="lg:col-span-7 group relative cursor-pointer overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between min-h-[480px]"
             >
               {/* Background Lifestyle Visual */}
@@ -279,7 +279,7 @@ export default function ShopByConcern({ onSelectConcern }) {
             {otherConcerns.map((c) => (
               <div
                 key={c.id}
-                onClick={() => onSelectConcern(c.category)}
+                onClick={() => onSelectConcern(c.id === 'barrier-body' ? 'Barrier Repair' : (c.id === 'acne-pimples' ? 'Acne & Blemishes' : c.category))}
                 className="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white aspect-[4/5] shadow-md hover:shadow-xl transition-all duration-400 hover:-translate-y-1 flex flex-col justify-between p-4"
               >
                 {/* Background Image */}

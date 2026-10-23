@@ -3,9 +3,17 @@ import ProductCard from './ProductCard';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { GoodBeeApi } from '../../services/api';
 
-const CATEGORIES = ['All', 'Face Care', 'Concentrated Serums', 'Cleansers', 'Restorative Elixirs'];
+const CATEGORIES = [
+  'All',
+  'Cold Processed Soaps',
+  'Pure Essential Oils',
+  'Lip & Facial Care',
+  'Botanical Mists',
+  'Hair & Wellness'
+];
 const CONCERNS = [
   'All',
+  'Hair Fall & Scalp',
   'Barrier Repair',
   'Acne & Blemishes',
   'Pigmentation & Tone',
@@ -21,9 +29,32 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    if (activeConcern) {
-      setSelectedConcern(activeConcern);
+    if (!activeConcern || activeConcern === 'All') {
+      setSelectedCategory('All');
+      setSelectedConcern('All');
+      return;
     }
+
+    const matchedCat = CATEGORIES.find((cat) => cat.toLowerCase() === activeConcern.toLowerCase());
+    if (matchedCat) {
+      setSelectedCategory(matchedCat);
+      setSelectedConcern('All');
+      return;
+    }
+
+    const matchedConcern = CONCERNS.find(
+      (c) =>
+        c.toLowerCase() === activeConcern.toLowerCase() ||
+        c.toLowerCase().includes(activeConcern.toLowerCase()) ||
+        activeConcern.toLowerCase().includes(c.toLowerCase())
+    );
+    if (matchedConcern) {
+      setSelectedConcern(matchedConcern);
+      setSelectedCategory('All');
+      return;
+    }
+
+    setSelectedConcern(activeConcern);
   }, [activeConcern]);
 
   useEffect(() => {

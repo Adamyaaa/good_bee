@@ -545,6 +545,30 @@ function getStored(key, defaultVal) {
       parsed.whatsappNumber = '+91-9963075000';
       localStorage.setItem(key, JSON.stringify(parsed));
     }
+    if (key === 'goodbee_products' && Array.isArray(parsed)) {
+      let changed = false;
+      const merged = INITIAL_PRODUCTS.map((initProd) => {
+        const found = parsed.find((p) => p.id === initProd.id);
+        if (!found) {
+          changed = true;
+          return initProd;
+        }
+        if (JSON.stringify(found.concerns) !== JSON.stringify(initProd.concerns) || found.category !== initProd.category) {
+          changed = true;
+          return { ...found, concerns: initProd.concerns, category: initProd.category };
+        }
+        return found;
+      });
+      parsed.forEach((p) => {
+        if (!merged.some((m) => m.id === p.id)) {
+          merged.push(p);
+        }
+      });
+      if (changed) {
+        localStorage.setItem(key, JSON.stringify(merged));
+      }
+      return merged;
+    }
     return parsed;
   } catch (e) {
     return defaultVal;
@@ -658,7 +682,11 @@ export async function handleMockApiRequest(url, init = {}) {
       list = list.filter((p) => p.category.toLowerCase() === category.toLowerCase());
     }
     if (concern && concern !== 'All') {
-      list = list.filter((p) => p.concerns?.some((c) => c.toLowerCase() === concern.toLowerCase()));
+      const q = concern.toLowerCase();
+      list = list.filter((p) =>
+        p.concerns?.some((c) => c.toLowerCase() === q || c.toLowerCase().includes(q) || q.includes(c.toLowerCase())) ||
+        p.category?.toLowerCase() === q
+      );
     }
     if (search) {
       const q = search.toLowerCase();

@@ -400,7 +400,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
               </div>
             </div>
 
-            {/* Delivery Address with Drop-Down Optimization (Akash Kumar Requirement) */}
+            {/* Delivery Address with Drop-Down Optimization */}
             <div className="bg-brand-cream/50 p-6 rounded-2xl border border-brand-gold/30 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <h3 className="font-serif text-xl font-semibold text-brand-charcoal flex items-center gap-2">
