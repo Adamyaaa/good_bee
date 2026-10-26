@@ -19,6 +19,8 @@ import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
 import ParallaxIngredientStory from './components/storefront/ParallaxIngredientStory';
 import ProductQuickViewModal from './components/storefront/ProductQuickViewModal';
 import ProductDetailPage from './pages/ProductDetailPage';
+import ConcernFilterPage from './pages/ConcernFilterPage';
+import ShopByConcernCircleBar from './components/storefront/ShopByConcernCircleBar';
 import { GoodBeeApi } from './services/api';
 // Kept for client review: import ShopByReels from './components/storefront/ShopByReels';
 import PortalModal from './components/portal/PortalModal';
@@ -39,6 +41,7 @@ function SpaLandingContent() {
   const [selectedConcern, setSelectedConcern] = useState('All');
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [activePdpProduct, setActivePdpProduct] = useState(null);
+  const [activeConcernPage, setActiveConcernPage] = useState(null);
 
   // Handle deep-link hashtag #product=<id_or_slug>
   React.useEffect(() => {
@@ -51,9 +54,14 @@ function SpaLandingContent() {
           if (found) {
             setActivePdpProduct(found);
             setIsCheckoutOpen(false);
-    setActivePdpProduct(null);
+            setActiveConcernPage(null);
           }
         });
+      } else if (hash && hash.startsWith('#concern=')) {
+        const targetConcern = hash.replace('#concern=', '');
+        setActiveConcernPage(targetConcern);
+        setIsCheckoutOpen(false);
+        setActivePdpProduct(null);
       }
     };
     handleHash();
@@ -104,6 +112,10 @@ function SpaLandingContent() {
   const handleScrollTo = (id) => {
     setIsCheckoutOpen(false);
     setActivePdpProduct(null);
+    setActiveConcernPage(null);
+    if (window.location.hash.startsWith('#concern=') || window.location.hash.startsWith('#product=')) {
+      window.history.pushState(null, '', window.location.pathname);
+    }
     setTimeout(() => {
       if (id === 'hero') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -168,6 +180,23 @@ function SpaLandingContent() {
             onInstantBuy={handleInstantBuy}
           />
         </main>
+      ) : activeConcernPage ? (
+        <main className="flex-grow">
+          <ConcernFilterPage
+            initialConcernId={activeConcernPage}
+            onBack={() => {
+              setActiveConcernPage(null);
+              if (window.location.hash.startsWith('#concern=')) {
+                window.history.pushState(null, '', window.location.pathname);
+              }
+            }}
+            onSelectProduct={(prod) => {
+              setActivePdpProduct(prod);
+              window.location.hash = `#product=${prod.id}`;
+            }}
+            onQuickView={(prod) => setQuickViewProduct(prod)}
+          />
+        </main>
       ) : (
         <main className="flex-grow space-y-0">
           
@@ -176,6 +205,19 @@ function SpaLandingContent() {
             onExplore={() => handleScrollTo('formulations')}
             onRoutine={() => handleScrollTo('how-to-apply')}
           />
+
+          {/* Top Quick Concern & Story Circular Navigation Bar */}
+          <div className="bg-white border-b border-purple-100 py-3 sm:py-4 shadow-xs">
+            <ShopByConcernCircleBar
+              variant="compact"
+              onSelectConcern={(concern) => {
+                const concernId = typeof concern === 'object' ? concern.id : concern;
+                setActiveConcernPage(concernId);
+                window.location.hash = `#concern=${concernId}`;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          </div>
 
           {/* 2. Clinically Proven Regimen: How to Apply (Like Plum & Dot & Key) */}
           <SkincareRoutineGuide
@@ -189,8 +231,10 @@ function SpaLandingContent() {
           <div id="shop-by-concern" className="scroll-mt-28">
             <ShopByConcern
               onSelectConcern={(concern) => {
-                setSelectedConcern(concern);
-                handleScrollTo('formulations');
+                const concernId = typeof concern === 'object' ? concern.id : concern;
+                setActiveConcernPage(concernId);
+                window.location.hash = `#concern=${concernId}`;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             />
           </div>
