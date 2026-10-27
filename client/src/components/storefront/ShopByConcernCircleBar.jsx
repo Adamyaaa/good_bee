@@ -193,10 +193,10 @@ export default function ShopByConcernCircleBar({
       
       {/* 1. Optional Top Panel Search Bar (Plum & Nat Habit Inspired) */}
       {showSearchBar && (
-        <div className="max-w-xl sm:max-w-2xl mx-auto px-4 mb-3 sm:mb-4 relative">
+        <div className="max-w-xl sm:max-w-2xl mx-auto px-3 sm:px-4 mb-2.5 sm:mb-4 relative">
           <form
             onSubmit={handleFormSubmit}
-            className="relative flex items-center bg-[#FAF8F5] hover:bg-white focus-within:bg-white border border-purple-200 hover:border-[#5B0868] focus-within:border-[#5B0868] rounded-full shadow-xs transition-all duration-200 px-3.5 sm:px-4 py-2 sm:py-2.5 gap-2.5 focus-within:ring-2 focus-within:ring-purple-100"
+            className="relative flex items-center bg-[#FAF8F5] hover:bg-white focus-within:bg-white border border-purple-200/90 hover:border-[#5B0868] focus-within:border-[#5B0868] rounded-full shadow-xs transition-all duration-200 px-3 sm:px-4 py-1.5 sm:py-2.5 gap-2 sm:gap-2.5 focus-within:ring-2 focus-within:ring-purple-100"
           >
             <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#5B0868] flex-shrink-0" />
             <input
@@ -211,7 +211,7 @@ export default function ShopByConcernCircleBar({
               }}
               placeholder={
                 searchPlaceholder ||
-                'Search 100% natural formulations, pure oils, cold-cured soaps...'
+                'Search natural formulations, soaps, oils...'
               }
               className="w-full bg-transparent text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-sans"
             />
@@ -227,7 +227,7 @@ export default function ShopByConcernCircleBar({
             )}
             <button
               type="submit"
-              className="bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full shadow-xs transition-all flex items-center gap-1 cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95"
+              className="bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-semibold px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-xs transition-all flex items-center gap-1 cursor-pointer flex-shrink-0 active:scale-95"
             >
               <span>Search</span>
             </button>
@@ -237,7 +237,7 @@ export default function ShopByConcernCircleBar({
           {isDropdownOpen && effectiveSearchQuery.trim().length > 1 && (
             <div
               ref={dropdownRef}
-              className="absolute left-4 right-4 sm:left-auto sm:right-auto sm:w-[600px] mt-2 bg-white rounded-2xl shadow-2xl border border-purple-100 py-3 z-50 max-h-96 overflow-y-auto animate-in fade-in slide-in-from-top-2"
+              className="absolute left-2 right-2 sm:left-auto sm:right-auto sm:w-[600px] mt-2 bg-white rounded-2xl shadow-2xl border border-purple-100 py-3 z-50 max-h-96 overflow-y-auto animate-in fade-in slide-in-from-top-2"
             >
               {/* Category / Concern quick links */}
               {matchingConcerns.length > 0 && (
@@ -365,22 +365,22 @@ export default function ShopByConcernCircleBar({
       {/* 3. Outer Wrapper with Scroll Buttons */}
       <div className="relative max-w-7xl mx-auto px-2 sm:px-4">
         
-        {/* Left Arrow Button */}
+        {/* Left Arrow Button (Desktop only, mobile uses natural touch swipe) */}
         {canScrollLeft && (
           <button
             onClick={() => handleScroll('left')}
-            className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 border border-purple-200 shadow-md text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
+            className="hidden sm:flex absolute left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 border border-purple-200 shadow-md text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         )}
 
-        {/* Right Arrow Button */}
+        {/* Right Arrow Button (Desktop only, mobile uses natural touch swipe) */}
         {canScrollRight && (
           <button
             onClick={() => handleScroll('right')}
-            className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 border border-purple-200 shadow-md text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
+            className="hidden sm:flex absolute right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 border border-purple-200 shadow-md text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
             aria-label="Scroll right"
           >
             <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -395,10 +395,10 @@ export default function ShopByConcernCircleBar({
           onMouseLeave={handleMouseLeaveOrUp}
           onMouseUp={handleMouseLeaveOrUp}
           onMouseMove={handleMouseMove}
-          className={`flex items-start gap-4 sm:gap-6 lg:gap-8 overflow-x-auto py-2 px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing ${
+          className={`flex items-start gap-3 sm:gap-6 lg:gap-8 overflow-x-auto py-2 px-2 sm:px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing touch-pan-x ${
             isDragging ? 'scroll-auto' : 'scroll-smooth'
           }`}
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         >
           {CONCERNS_DATA.map((item) => {
             const isSelected = selectedConcernId === item.id;
@@ -407,14 +407,13 @@ export default function ShopByConcernCircleBar({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectConcern && onSelectConcern(item)}
-                className="group flex flex-col items-center flex-shrink-0 cursor-pointer focus:outline-none transition-transform duration-300 hover:-translate-y-1"
-                style={{ width: '84px' }}
+                className="group flex flex-col items-center flex-shrink-0 w-[72px] sm:w-[84px] cursor-pointer focus:outline-none transition-transform duration-300 active:scale-95 sm:hover:-translate-y-1"
               >
                 {/* Circular Photo Container */}
                 <div className="relative">
                   {/* Outer Circular Ring: Exact Match to Nat Habit / Plum Reference */}
                   <div
-                    className={`w-18 h-18 sm:w-20 sm:h-20 rounded-full p-[2px] transition-all duration-300 flex items-center justify-center ${
+                    className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[2px] transition-all duration-300 flex items-center justify-center flex-shrink-0 ${
                       item.isPromo
                         ? 'border-2 border-rose-600 ring-2 ring-rose-200 ring-offset-1 shadow-xs'
                         : isSelected
@@ -448,7 +447,7 @@ export default function ShopByConcernCircleBar({
 
                 {/* Circle Label Underneath (Zero Purple Badges on top) */}
                 <span
-                  className={`mt-2 text-center text-xs font-medium leading-snug transition-colors line-clamp-2 max-w-[82px] ${
+                  className={`mt-1.5 sm:mt-2 text-center text-[11px] sm:text-xs font-medium leading-tight sm:leading-snug transition-colors line-clamp-2 max-w-[70px] sm:max-w-[82px] ${
                     isSelected
                       ? 'text-[#5B0868] font-bold'
                       : 'text-gray-800 group-hover:text-[#5B0868]'

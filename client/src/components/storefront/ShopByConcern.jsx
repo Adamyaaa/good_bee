@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   ChevronRight
 } from 'lucide-react';
-import ShopByConcernCircleBar from './ShopByConcernCircleBar';
 import { CONCERNS_DATA } from '../../data/concernsData';
 
 const APPLICATION_STEPS = [
@@ -54,11 +53,19 @@ export default function ShopByConcern({ onSelectConcern }) {
     <section className="py-16 sm:py-20 bg-gradient-to-b from-[#FAF7F2] to-white border-t border-purple-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
-        {/* Photo-Shaped Circular Concern Navigation Bar (Image 1 Feature) */}
-        <ShopByConcernCircleBar
-          variant="section"
-          onSelectConcern={handleCircleClick}
-        />
+        {/* Section Header */}
+        <div className="text-center sm:text-left space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5B0868] text-[11px] font-bold tracking-wider uppercase mb-1">
+            <Sparkles className="w-3.5 h-3.5 text-[#5B0868]" />
+            <span>Targeted Botanical Care</span>
+          </div>
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#1e1e1e] font-medium tracking-tight">
+            Curated Formulations by Concern
+          </h2>
+          <p className="text-xs sm:text-sm text-gray-600 max-w-2xl font-sans">
+            Explore cold-stabilized active rituals designed for specific skin and scalp requirements.
+          </p>
+        </div>
 
         {/* Quick Concern Spotlight Grid: 4 Top Concern Banners */}
         <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

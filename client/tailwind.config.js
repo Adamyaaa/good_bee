@@ -39,6 +39,9 @@ export default {
       boxShadow: {
         'luxury': '0 20px 40px -15px rgba(26, 25, 24, 0.07)',
         'gold-glow': '0 0 25px rgba(197, 168, 128, 0.25)'
+      },
+      spacing: {
+        '18': '4.5rem',
       }
     },
   },

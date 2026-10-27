@@ -199,7 +199,7 @@ function SpaLandingContent() {
           />
         </main>
       ) : (
-        <main className="flex-grow space-y-0 pt-24 sm:pt-28">
+        <main className="flex-grow space-y-0 pt-[100px] sm:pt-[118px] lg:pt-[122px]">
           
           {/* Top Panel: Photo-Shaped Circular Navigation + Search Bar */}
           <div className="bg-white border-b border-purple-100/80 shadow-xs pt-3 pb-3 sm:pb-4">
@@ -472,7 +472,7 @@ function SpaLandingContent() {
         onDragEnd={() => {
           setTimeout(() => setIsSurpriseDragging(false), 120);
         }}
-        className="fixed left-0 top-[62%] -translate-y-1/2 z-30 flex items-center"
+        className="hidden md:flex fixed left-0 top-[62%] -translate-y-1/2 z-30 items-center"
       >
         <button
           onClick={(e) => {

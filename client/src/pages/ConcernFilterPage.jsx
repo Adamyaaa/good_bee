@@ -118,7 +118,7 @@ export default function ConcernFilterPage({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#1e1e1e] pt-24 sm:pt-28 pb-20">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#1e1e1e] pt-[98px] sm:pt-[116px] lg:pt-[120px] pb-20">
       
       {/* 1. Top Breadcrumb & Return Action */}
       <div className="bg-white border-b border-gray-200">
@@ -248,7 +248,7 @@ export default function ConcernFilterPage({
       </div>
 
       {/* 5. Sub-Category Filter Pills Row (Exact Nat Habit Filter Bar) */}
-      <div className="bg-white border-y border-gray-200 sticky top-18 sm:top-20 z-30 shadow-xs mb-8">
+      <div className="bg-white border-y border-gray-200 sticky top-[94px] sm:top-[112px] z-30 shadow-xs mb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             
