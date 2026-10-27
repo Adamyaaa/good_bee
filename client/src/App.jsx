@@ -203,10 +203,10 @@ function SpaLandingContent() {
           />
         </main>
       ) : (
-        <main className="flex-grow space-y-0 pt-[88px] sm:pt-[104px] lg:pt-[108px]">
+        <main className="flex-grow space-y-0 pt-[72px] sm:pt-[76px] lg:pt-[80px]">
           
           {/* Top Panel: Photo-Shaped Circular Navigation (Centered & Sleek) */}
-          <div className="bg-white border-b border-gray-100 shadow-xs py-1.5 sm:py-2">
+          <div className="bg-white border-b border-gray-100 shadow-xs py-1 sm:py-1.5">
             <ShopByConcernCircleBar
               variant="compact"
               onSelectConcern={(concern) => {

@@ -47,7 +47,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
     <header className="fixed top-0 inset-x-0 z-40 w-full transition-all duration-300 bg-white shadow-sm border-b border-gray-100">
       
       {/* 1. Plum-Style Berry-Purple Top Announcement Bar */}
-      <div className="bg-[#5B0868] text-white py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium tracking-wide overflow-hidden select-none">
+      <div className="bg-[#5B0868] text-white py-1 text-[10px] sm:text-[11px] font-medium tracking-normal overflow-hidden select-none">
         <div className="animate-marquee-right flex items-center">
           {[
             { text: 'Buy any 3 Good Bee formulations @ flat 30% off + free botanical gift', isOffer: true },
@@ -61,13 +61,13 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
             { text: `WhatsApp Concierge for Skincare Guidance: ${phoneNumber}`, isWhatsapp: true },
             { text: 'Claim 15% Off Your First Order • Use Code HONEY15', isGift: true }
           ].map((item, idx) => (
-            <div key={idx} className="flex items-center whitespace-nowrap px-8 gap-3">
+            <div key={idx} className="flex items-center whitespace-nowrap px-6 gap-2.5">
               <span className="font-sans font-medium text-white">{item.text}</span>
               {item.isGift && (
                 <button
                   type="button"
                   onClick={onOpenSurprise}
-                  className="px-2.5 py-0.5 rounded-full bg-white hover:bg-amber-100 text-[#5B0868] text-[9px] font-bold tracking-wider uppercase transition-colors shadow-sm cursor-pointer"
+                  className="px-2 py-0.5 rounded-full bg-white hover:bg-amber-100 text-[#5B0868] text-[8px] font-bold tracking-wider uppercase transition-colors shadow-xs cursor-pointer"
                 >
                   Claim 15%
                 </button>
@@ -77,39 +77,39 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                   href={`https://wa.me/${cleanWhatsappPhone}?text=Hello%20Good%20Bee%20Concierge%2C%20I%20need%20assistance%20with%20natural%20skincare%20formulations.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber-200 hover:text-white underline text-[10px] font-bold uppercase"
+                  className="text-amber-200 hover:text-white underline text-[9px] font-bold uppercase"
                 >
                   Chat →
                 </a>
               )}
-              <span className="text-white/40 pl-4">•</span>
+              <span className="text-white/40 pl-3">•</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 2. Main Pure White Navbar (Exact Plum Goodness Hierarchy) */}
+      {/* 2. Main Pure White Navbar (Sleek Compact Proportions) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between h-12 sm:h-14">
           
           {/* Mobile menu toggle */}
           <div className="flex items-center lg:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-gray-700 hover:text-[#5B0868] focus:outline-none transition-colors cursor-pointer"
+              className="p-1.5 text-gray-700 hover:text-[#5B0868] focus:outline-none transition-colors cursor-pointer"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
           {/* Left Brand Logo & Plum-Style "Shop" Pill */}
-          <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-3 sm:gap-5">
             <button
               onClick={() => onScrollTo('hero')}
-              className="flex items-center gap-2.5 group text-left focus:outline-none cursor-pointer"
+              className="flex items-center gap-2 group text-left focus:outline-none cursor-pointer"
             >
-              <div className="h-9 sm:h-11 w-auto flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+              <div className="h-7 sm:h-8 w-auto flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                 <img
                   src="/assets/goodbee-bee-mark-gold.png"
                   alt="Good Bee Emblem"
@@ -120,7 +120,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                 />
               </div>
               <div className="flex items-center">
-                <span className="font-serif text-2xl sm:text-3xl tracking-[0.16em] font-medium text-[#1e1e1e] block leading-none">
+                <span className="font-serif text-lg sm:text-2xl tracking-[0.14em] font-medium text-[#1e1e1e] block leading-none">
                   GOOD BEE
                 </span>
               </div>
@@ -129,92 +129,92 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
             {/* Plum Signature Purple "Shop" Button */}
             <button
               onClick={() => onScrollTo('formulations')}
-              className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
+              className="hidden sm:inline-flex items-center justify-center px-3 py-1 rounded-md bg-[#5B0868] hover:bg-[#480653] text-white text-[11px] font-bold tracking-wider uppercase transition-all duration-200 shadow-xs hover:scale-105 active:scale-95 cursor-pointer"
             >
               Shop
             </button>
           </div>
 
           {/* Center Nav Links in Crisp Charcoal */}
-          <nav className="hidden lg:flex items-center space-x-7 text-xs font-medium tracking-wide text-gray-700">
+          <nav className="hidden lg:flex items-center space-x-5 text-[11px] font-medium tracking-wide text-gray-700">
             <button
               onClick={() => onScrollTo('how-to-apply')}
-              className="hover:text-[#5B0868] transition-colors py-1 font-semibold text-[#5B0868] cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-0.5 font-semibold text-[#5B0868] cursor-pointer"
             >
               How To Apply
             </button>
 
             <button
               onClick={() => onScrollTo('ai-formulation-lab')}
-              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
             >
               AI Diagnostic
             </button>
 
             <button
               onClick={() => onScrollTo('shop-by-concern')}
-              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
             >
               By Concern
             </button>
 
             <button
               onClick={() => onScrollTo('formulations')}
-              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
             >
               Categories
             </button>
 
             <button
               onClick={() => onScrollTo('scrolly-story')}
-              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
             >
               The Pure Cycle
             </button>
 
             <button
               onClick={() => onScrollTo('research-story')}
-              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
             >
               About Us
             </button>
           </nav>
 
           {/* Right Action Utilities (Search Bar, Account, Cart) */}
-          <div className="flex items-center space-x-3 sm:space-x-5">
+          <div className="flex items-center space-x-2.5 sm:space-x-4">
             
             {/* Plum-Style Inline Search Pill (Desktop) */}
             <form onSubmit={handleSearchSubmit} className="hidden xl:flex items-center relative">
               <input
                 type="text"
-                placeholder="Search for formulations, soaps, oils..."
+                placeholder="Search formulations, soaps, oils..."
                 value={searchVal}
                 onChange={(e) => {
                   setSearchVal(e.target.value);
                   onSearch?.(e.target.value);
                 }}
-                className="w-56 2xl:w-64 pl-9 pr-4 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white transition-all"
+                className="w-44 2xl:w-56 pl-8 pr-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-[11px] text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white transition-all"
               />
-              <Search className="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none" />
+              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 pointer-events-none" />
             </form>
 
             {/* Mobile / Compact Search Toggle */}
             <button
               onClick={() => onScrollTo('formulations')}
-              className="xl:hidden p-2 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer"
+              className="xl:hidden p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer"
               title="Search"
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-4 h-4" />
             </button>
 
             {/* Account / Portal Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setPortalDropdownOpen(!portalDropdownOpen)}
-                className="p-2 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer"
+                className="p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer"
                 title="Account"
               >
-                <User className="w-5 h-5" />
+                <User className="w-4 h-4" />
               </button>
 
               {portalDropdownOpen && (
@@ -332,12 +332,12 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
             {/* Shopping Bag Trigger with Plum Purple Accent */}
             <button
               onClick={() => setIsDrawerOpen(true)}
-              className="relative p-2 text-gray-700 hover:text-[#5B0868] transition-colors group cursor-pointer"
+              className="relative p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors group cursor-pointer"
               aria-label="View Shopping Bag"
             >
-              <ShoppingBag className="w-5 h-5 group-hover:scale-105 transition-transform" />
+              <ShoppingBag className="w-4 h-4 group-hover:scale-105 transition-transform" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#5B0868] text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-md animate-pulse">
+                <span className="absolute -top-1 -right-1 bg-[#5B0868] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-xs animate-pulse">
                   {itemCount}
                 </span>
               )}

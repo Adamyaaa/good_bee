@@ -118,7 +118,7 @@ export default function ConcernFilterPage({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#1e1e1e] pt-[88px] sm:pt-[104px] lg:pt-[108px] pb-20">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#1e1e1e] pt-[72px] sm:pt-[76px] lg:pt-[80px] pb-20">
       
       {/* 1. Top Breadcrumb & Return Action */}
       <div className="bg-white border-b border-gray-200">
@@ -148,7 +148,7 @@ export default function ConcernFilterPage({
       </div>
 
       {/* 2. Photo-Shaped Circular Navigation Bar (Centered & Sleek) */}
-      <div className="bg-white border-b border-gray-100 py-1.5 sm:py-2 shadow-xs">
+      <div className="bg-white border-b border-gray-100 py-1 sm:py-1.5 shadow-xs">
         <ShopByConcernCircleBar
           variant="compact"
           selectedConcernId={activeConcern.id}
@@ -241,7 +241,7 @@ export default function ConcernFilterPage({
       </div>
 
       {/* 5. Sub-Category Filter Pills Row (Exact Nat Habit Filter Bar) */}
-      <div className="bg-white border-y border-gray-200 sticky top-[88px] sm:top-[104px] z-30 shadow-xs mb-8">
+      <div className="bg-white border-y border-gray-200 sticky top-[72px] sm:top-[76px] z-30 shadow-xs mb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             

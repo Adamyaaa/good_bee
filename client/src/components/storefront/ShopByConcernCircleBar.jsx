@@ -106,7 +106,7 @@ export default function ShopByConcernCircleBar({
           onMouseLeave={handleMouseLeaveOrUp}
           onMouseUp={handleMouseLeaveOrUp}
           onMouseMove={handleMouseMove}
-          className={`flex items-start justify-start md:justify-center gap-2.5 sm:gap-4 md:gap-6 lg:gap-8 overflow-x-auto py-1 px-2 sm:px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing touch-pan-x ${
+          className={`flex items-start justify-start md:justify-center gap-2 sm:gap-3.5 md:gap-5 lg:gap-6 overflow-x-auto py-0.5 px-2 sm:px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing touch-pan-x ${
             isDragging ? 'scroll-auto' : 'scroll-smooth'
           }`}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
@@ -118,17 +118,17 @@ export default function ShopByConcernCircleBar({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectConcern && onSelectConcern(item)}
-                className="group flex flex-col items-center flex-shrink-0 w-[64px] sm:w-[72px] md:w-[78px] cursor-pointer focus:outline-none transition-transform duration-200 active:scale-95 sm:hover:-translate-y-0.5"
+                className="group flex flex-col items-center flex-shrink-0 w-[54px] sm:w-[60px] md:w-[66px] cursor-pointer focus:outline-none transition-transform duration-200 active:scale-95 sm:hover:-translate-y-0.5"
               >
                 {/* Circular Photo Container */}
                 <div className="relative">
                   {/* Outer Circular Ring: Exact Match to Nat Habit Aesthetic */}
                   <div
-                    className={`w-14 h-14 sm:w-[62px] sm:h-[62px] md:w-[68px] md:h-[68px] rounded-full p-[2px] transition-all duration-300 flex items-center justify-center flex-shrink-0 ${
+                    className={`w-11 h-11 sm:w-12 sm:h-12 md:w-[52px] md:h-[52px] rounded-full p-[1.5px] transition-all duration-300 flex items-center justify-center flex-shrink-0 ${
                       item.isPromo
-                        ? 'border-2 border-rose-600 ring-2 ring-rose-200 ring-offset-1 shadow-xs'
+                        ? 'border-2 border-rose-600 ring-1 ring-rose-200 shadow-xs'
                         : isSelected
-                        ? 'border-2 border-[#5B0868] ring-2 ring-purple-200 ring-offset-1 shadow-xs'
+                        ? 'border-2 border-[#5B0868] ring-1 ring-purple-200 shadow-xs'
                         : 'border-[1.5px] border-[#F5BEBE] hover:border-[#5B0868] hover:shadow-xs'
                     }`}
                   >
@@ -143,11 +143,11 @@ export default function ShopByConcernCircleBar({
 
                       {/* Flash Deals 40% OFF overlay badge */}
                       {item.isPromo && (
-                        <div className="absolute inset-0 bg-rose-900/50 backdrop-blur-[0.5px] flex flex-col items-center justify-center text-white px-0.5">
-                          <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-tight text-white drop-shadow leading-none">
-                            Flash Deals
+                        <div className="absolute inset-0 bg-rose-900/55 backdrop-blur-[0.5px] flex flex-col items-center justify-center text-white px-0.5">
+                          <span className="text-[7px] sm:text-[8px] font-bold uppercase tracking-tight text-white drop-shadow leading-none">
+                            Flash
                           </span>
-                          <span className="text-[10px] sm:text-[11px] font-black text-amber-200 tracking-tighter leading-none mt-0.5">
+                          <span className="text-[8px] sm:text-[9px] font-black text-amber-200 tracking-tighter leading-none mt-0.5">
                             40% OFF
                           </span>
                         </div>
@@ -156,9 +156,9 @@ export default function ShopByConcernCircleBar({
                   </div>
                 </div>
 
-                {/* Circle Label Underneath (Clean, Compact, 1-2 lines) */}
+                {/* Circle Label Underneath (Clean, Compact, 1 line) */}
                 <span
-                  className={`mt-1 sm:mt-1.5 text-center text-[10px] sm:text-[11px] md:text-xs font-medium leading-tight transition-colors line-clamp-1 sm:line-clamp-2 max-w-[64px] sm:max-w-[72px] md:max-w-[78px] ${
+                  className={`mt-0.5 text-center text-[9px] sm:text-[10px] md:text-[11px] font-medium leading-tight transition-colors line-clamp-1 max-w-[54px] sm:max-w-[60px] md:max-w-[66px] ${
                     isSelected
                       ? 'text-[#5B0868] font-bold'
                       : 'text-gray-800 group-hover:text-[#5B0868]'
