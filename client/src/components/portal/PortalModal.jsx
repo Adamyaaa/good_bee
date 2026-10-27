@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { X, Shield, FlaskConical, Package, User, LogOut, GripVertical, Maximize2, Minimize2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Shield, FlaskConical, Package, User, LogOut, ArrowLeft, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 // Portals
@@ -14,275 +14,182 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
   const { user, logout, quickSwitchRole } = useAuth();
   const [selectedRole, setSelectedRole] = useState(initialRole || (user ? user.role : 'CUSTOMER'));
 
-  // Draggable Resizing State
-  const [drawerWidth, setDrawerWidth] = useState(() => {
-    if (typeof window === 'undefined') return 980;
-    try {
-      const saved = localStorage.getItem('goodbee_portal_width');
-      if (saved) {
-        return Math.min(Math.max(Number(saved), 380), window.innerWidth);
-      }
-    } catch (e) {}
-    return Math.min(Math.max(window.innerWidth * 0.72, 700), 1180);
-  });
+  if (!isOpen) return null;
 
-  const [isDragging, setIsDragging] = useState(false);
-  const [isMaximized, setIsMaximized] = useState(false);
-  const prevWidthRef = useRef(drawerWidth);
+  const currentRole = user ? user.role : selectedRole;
 
-  // Mouse drag listeners attached to window for smooth dragging anywhere
-  useEffect(() => {
-    if (!isDragging) return;
+  const ROLES = [
+    { id: 'ADMIN', label: 'Admin Suite', badge: 'Operations', icon: Shield, color: 'text-purple-700 bg-purple-50 border-purple-200' },
+    { id: 'PRODUCER', label: 'Vendor & Labs', badge: 'Supplier', icon: FlaskConical, color: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
+    { id: 'DEALER', label: 'Wholesale Desk', badge: 'B2B', icon: Package, color: 'text-blue-700 bg-blue-50 border-blue-200' },
+    { id: 'CUSTOMER', label: 'Patron Club', badge: 'Retail', icon: User, color: 'text-amber-800 bg-amber-50 border-amber-200' }
+  ];
 
-    const handleMouseMove = (e) => {
-      e.preventDefault();
-      const newWidth = window.innerWidth - e.clientX;
-      const minW = Math.min(380, window.innerWidth);
-      const maxW = window.innerWidth;
-      const clamped = Math.min(Math.max(newWidth, minW), maxW);
-      setDrawerWidth(clamped);
-      if (clamped >= window.innerWidth - 20) {
-        setIsMaximized(true);
-      } else {
-        setIsMaximized(false);
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-      document.body.style.userSelect = '';
-      document.body.style.cursor = '';
-      try {
-        localStorage.setItem('goodbee_portal_width', String(drawerWidth));
-      } catch (e) {}
-    };
-
-    document.body.style.userSelect = 'none';
-    document.body.style.cursor = 'col-resize';
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      document.body.style.userSelect = '';
-      document.body.style.cursor = '';
-    };
-  }, [isDragging, drawerWidth]);
-
-  // Touch support for tablets & mobile
-  useEffect(() => {
-    if (!isDragging) return;
-
-    const handleTouchMove = (e) => {
-      if (!e.touches || e.touches.length === 0) return;
-      const touch = e.touches[0];
-      const newWidth = window.innerWidth - touch.clientX;
-      const minW = Math.min(360, window.innerWidth);
-      const maxW = window.innerWidth;
-      const clamped = Math.min(Math.max(newWidth, minW), maxW);
-      setDrawerWidth(clamped);
-    };
-
-    const handleTouchEnd = () => {
-      setIsDragging(false);
-    };
-
-    window.addEventListener('touchmove', handleTouchMove);
-    window.addEventListener('touchend', handleTouchEnd);
-
-    return () => {
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [isDragging]);
-
-  const handleToggleMaximize = () => {
-    if (isMaximized) {
-      setDrawerWidth(prevWidthRef.current || 980);
-      setIsMaximized(false);
-    } else {
-      prevWidthRef.current = drawerWidth;
-      setDrawerWidth(window.innerWidth);
-      setIsMaximized(true);
+  const handleRoleSelect = (roleId) => {
+    setSelectedRole(roleId);
+    if (user && quickSwitchRole) {
+      quickSwitchRole(roleId);
     }
   };
 
-  if (!isOpen) return null;
-
-  const activeRole = user ? user.role : selectedRole;
-
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-brand-charcoal/70 backdrop-blur-md transition-opacity"
-        onClick={onClose}
-      />
-
-      <div className="fixed inset-y-0 right-0 max-w-full flex">
-        
-        {/* Slide-over Window with dynamic draggable width */}
-        <div
-          style={{ width: `${drawerWidth}px` }}
-          className={`relative max-w-full bg-brand-ivory border-l border-brand-gold/40 shadow-2xl flex flex-col justify-between overflow-y-auto ${
-            isDragging ? 'select-none transition-none' : 'transition-[width] duration-200 ease-out'
-          }`}
-        >
-          {/* Draggable Resize Handle on Left Border */}
-          <div
-            onMouseDown={(e) => {
-              e.preventDefault();
-              setIsDragging(true);
-            }}
-            onTouchStart={() => setIsDragging(true)}
-            onDoubleClick={handleToggleMaximize}
-            className={`group absolute left-0 top-0 bottom-0 w-3.5 -translate-x-2 z-50 cursor-col-resize flex items-center justify-center select-none ${
-              isDragging ? 'bg-amber-400/40 ring-1 ring-amber-400' : 'hover:bg-amber-400/25'
-            }`}
-            title="Drag with mouse to resize window (Double-click to toggle fullscreen)"
-          >
-            {/* Visual Grip Pill */}
-            <div
-              className={`w-1.5 h-16 rounded-full transition-all duration-200 flex items-center justify-center shadow-lg ${
-                isDragging
-                  ? 'bg-amber-400 h-28 ring-2 ring-amber-400/60 scale-110'
-                  : 'bg-brand-gold/80 group-hover:bg-amber-400 group-hover:h-24'
-              }`}
-            >
-              <GripVertical className="w-2.5 h-2.5 text-slate-950 opacity-0 group-hover:opacity-100" />
-            </div>
-
-            {/* Live Pixel Indicator Badge while Dragging */}
-            {isDragging && (
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-950 text-amber-300 border border-amber-400/60 rounded-md font-mono text-[10px] whitespace-nowrap shadow-2xl pointer-events-none">
-                ↔ {Math.round(drawerWidth)}px
-              </div>
-            )}
-          </div>
-          
-          {/* Top Bar */}
-          <div className="p-4 sm:p-5 bg-brand-charcoal text-brand-ivory flex items-center justify-between border-b border-brand-gold/30">
+    <div className="fixed inset-0 z-50 bg-[#FAF7F2] flex flex-col overflow-hidden animate-in fade-in duration-200">
+      
+      {/* 1. Dedicated Portal Header Navigation */}
+      <header className="bg-white border-b border-gray-200 shadow-xs flex-shrink-0 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-18 gap-4">
+            
+            {/* Left Brand & Portal Emblem */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white p-1 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <img
-                  src="/assets/goodbee-white-logo.png"
-                  alt="Good Bee Emblem"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono tracking-widest uppercase text-brand-gold-light block">
-                    {user?.role === 'ADMIN' ? 'Administrative Suite' : 'Good Bee Patron Account'}
-                  </span>
-                  <span className="hidden md:inline-block text-[9px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono border border-slate-700/60">
-                    Drag left border ↔
+              <button
+                onClick={onClose}
+                className="flex items-center gap-2.5 group cursor-pointer text-left focus:outline-none"
+                title="Return to Good Bee Storefront"
+              >
+                <div className="h-8 sm:h-9 w-auto flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <img
+                    src="/assets/goodbee-bee-mark-gold.png"
+                    alt="Good Bee Emblem"
+                    className="h-full w-auto object-contain"
+                    onError={(e) => {
+                      e.target.src = '/assets/goodbee-bee-mark.png';
+                    }}
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-serif text-lg sm:text-xl font-bold tracking-[0.14em] text-[#1e1e1e] leading-none">
+                      GOOD BEE
+                    </span>
+                    <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded bg-purple-50 text-[#5B0868] border border-purple-200">
+                      Partner Console
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-gray-500 font-sans block mt-0.5">
+                    {currentRole === 'ADMIN'
+                      ? 'Storefront Control Tower & Analytics'
+                      : currentRole === 'PRODUCER'
+                      ? 'Botanical Sourcing, Lot Submissions & QC Testing'
+                      : currentRole === 'DEALER'
+                      ? 'B2B Regional Wholesale & Bulk Purchase Orders'
+                      : 'Patron Membership & Formulation Rewards'}
                   </span>
                 </div>
-                <h3 className="font-serif text-lg font-semibold text-brand-ivory">
-                  {user ? (user.role === 'ADMIN' ? 'Store Control Tower' : `Welcome, ${user.name}`) : 'Sign In / Register'}
-                </h3>
-              </div>
+              </button>
             </div>
 
-            {/* Controls */}
-            <div className="flex items-center gap-2">
-              {/* Maximize / Restore Toggle */}
-              <button
-                onClick={handleToggleMaximize}
-                className="p-2 text-brand-sand hover:text-amber-400 hover:bg-slate-800 rounded-lg transition-colors"
-                title={isMaximized ? 'Restore standard width' : 'Expand full screen'}
-              >
-                {isMaximized ? (
-                  <Minimize2 className="w-4 h-4 text-amber-400" />
-                ) : (
-                  <Maximize2 className="w-4 h-4 text-amber-400" />
-                )}
-              </button>
+            {/* Center Role Quick-Switcher Pills (Client Demonstration & Ease of Navigation) */}
+            <nav className="hidden md:flex items-center gap-1.5 bg-gray-50 p-1 rounded-xl border border-gray-200">
+              {ROLES.map((r) => {
+                const Icon = r.icon;
+                const isActive = currentRole === r.id;
+                return (
+                  <button
+                    key={r.id}
+                    onClick={() => handleRoleSelect(r.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-[#5B0868] text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-white'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{r.label}</span>
+                    <span
+                      className={`text-[9px] px-1.5 py-0.2 rounded font-bold uppercase ${
+                        isActive ? 'bg-white/20 text-white' : 'bg-gray-200/70 text-gray-600'
+                      }`}
+                    >
+                      {r.badge}
+                    </span>
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Right Action Utilities (User, Return to Storefront) */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {user && (
+                <div className="hidden sm:flex flex-col text-right">
+                  <span className="text-xs font-semibold text-gray-800 leading-tight">
+                    {user.name || user.email}
+                  </span>
+                  <span className="text-[10px] text-gray-500 font-mono">
+                    {user.role} Verified
+                  </span>
+                </div>
+              )}
 
               {user && (
                 <button
                   onClick={() => logout()}
-                  className="px-3 py-1.5 text-xs text-brand-sand hover:text-red-400 rounded-lg transition-colors flex items-center gap-1.5 border border-brand-gold/20 hover:border-red-400/40"
+                  className="p-2 text-gray-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                   title="Sign Out"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Sign Out</span>
+                  <LogOut className="w-4 h-4" />
                 </button>
               )}
 
               <button
                 onClick={onClose}
-                className="p-2 text-brand-ivory hover:text-brand-gold transition-colors rounded-full"
-                title="Return to Landing Page"
+                className="px-3.5 sm:px-4 py-2 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-semibold uppercase tracking-wider rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
               >
-                <X className="w-6 h-6" />
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Storefront</span>
               </button>
             </div>
+
           </div>
 
-          {/* Multi-Role Partner Mode Quick-Switcher (Enabled for Client Demonstration) */}
-          <div className="bg-brand-cream border-b border-brand-gold/25 px-4 py-2 flex items-center justify-between gap-2 overflow-x-auto text-xs">
-            <span className="text-[10px] uppercase font-bold text-brand-gold-dark tracking-wider whitespace-nowrap hidden sm:inline">
-              Partner Console:
-            </span>
-            <div className="flex items-center gap-1.5 overflow-x-auto">
-              {[
-                { id: 'ADMIN', label: 'Admin', icon: Shield },
-                { id: 'PRODUCER', label: 'Vendor (Supplier)', icon: FlaskConical },
-                { id: 'DEALER', label: 'Wholesaler (B2B)', icon: Package },
-                { id: 'CUSTOMER', label: 'Good Being Club', icon: User }
-              ].map((r) => {
-                const Icon = r.icon;
-                const isCurrent = (user ? user.role : selectedRole) === r.id;
-                return (
-                  <button
-                    key={r.id}
-                    onClick={() => {
-                      setSelectedRole(r.id);
-                      if (user) {
-                        quickSwitchRole(r.id);
-                      }
-                    }}
-                    className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap ${
-                      isCurrent
-                        ? 'bg-brand-charcoal text-brand-ivory shadow-sm'
-                        : 'bg-brand-ivory hover:bg-brand-sand/50 text-brand-charcoal border border-brand-gold/20'
-                    }`}
-                  >
-                    <Icon className="w-3 h-3 text-brand-gold" />
-                    <span>{r.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Portal Content Body */}
-          <div className="flex-1 overflow-y-auto">
-            {!user ? (
-              <Login
-                defaultRole={selectedRole}
-                onLoggedIn={() => {}}
-                onBack={onClose}
-              />
-            ) : user.role === 'ADMIN' ? (
-              <AdminDashboard onNavigateHome={onClose} />
-            ) : user.role === 'PRODUCER' ? (
-              <ProducerPortal onNavigateHome={onClose} />
-            ) : user.role === 'DEALER' ? (
-              <DealerPortal onNavigateHome={onClose} />
-            ) : user.role === 'PROMOTER' ? (
-              <PromoterPortal onNavigateHome={onClose} />
-            ) : (
-              <CustomerPortal onNavigateHome={onClose} />
-            )}
+          {/* Mobile Role Switcher Strip */}
+          <div className="md:hidden flex items-center gap-1 overflow-x-auto py-2 border-t border-gray-100 no-scrollbar">
+            {ROLES.map((r) => {
+              const Icon = r.icon;
+              const isActive = currentRole === r.id;
+              return (
+                <button
+                  key={r.id}
+                  onClick={() => handleRoleSelect(r.id)}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 whitespace-nowrap ${
+                    isActive
+                      ? 'bg-[#5B0868] text-white shadow-xs'
+                      : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  <Icon className="w-3 h-3" />
+                  <span>{r.label}</span>
+                </button>
+              );
+            })}
           </div>
 
         </div>
-      </div>
+      </header>
+
+      {/* 2. Main Scrollable Portal Canvas */}
+      <main className="flex-1 overflow-y-auto bg-[#FAF7F2]">
+        {!user ? (
+          <div className="max-w-md mx-auto py-12 px-4">
+            <Login
+              defaultRole={selectedRole}
+              onLoggedIn={() => {}}
+              onBack={onClose}
+            />
+          </div>
+        ) : currentRole === 'ADMIN' ? (
+          <AdminDashboard onNavigateHome={onClose} />
+        ) : currentRole === 'PRODUCER' ? (
+          <ProducerPortal onNavigateHome={onClose} />
+        ) : currentRole === 'DEALER' ? (
+          <DealerPortal onNavigateHome={onClose} />
+        ) : currentRole === 'PROMOTER' ? (
+          <PromoterPortal onNavigateHome={onClose} />
+        ) : (
+          <CustomerPortal onNavigateHome={onClose} />
+        )}
+      </main>
+
     </div>
   );
 }
