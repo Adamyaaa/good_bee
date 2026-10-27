@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft,
   Search,
@@ -9,8 +9,7 @@ import {
   Check,
   Sparkles,
   ShieldCheck,
-  ChevronRight,
-  Filter,
+  ArrowRight,
   RotateCcw
 } from 'lucide-react';
 import { CONCERNS_DATA, getConcernById } from '../data/concernsData';
@@ -19,7 +18,7 @@ import { useCart } from '../context/CartContext';
 import ShopByConcernCircleBar from '../components/storefront/ShopByConcernCircleBar';
 
 export default function ConcernFilterPage({
-  initialConcernId = 'hair-fall',
+  initialConcernId = 'winter-care',
   onBack,
   onSelectProduct,
   onQuickView
@@ -40,6 +39,7 @@ export default function ConcernFilterPage({
       if (found) {
         setActiveConcern(found);
         setActiveSubPill('all');
+        setSearchQuery('');
       }
     }
   }, [initialConcernId]);
@@ -53,79 +53,25 @@ export default function ConcernFilterPage({
     setLoading(true);
     try {
       const allList = await GoodBeeApi.fetchProducts({});
-      let filtered = [...allList];
+      let filtered = [];
 
-      const type = activeConcern.filterType;
-      const targetVal = (activeConcern.filterValue || '').toLowerCase();
-
-      if (type === 'deals') {
-        filtered = filtered.filter((p) => (p.mrp && p.mrp > p.price) || p.badge);
-      } else if (type === 'gifting') {
-        filtered = filtered.filter(
-          (p) =>
-            p.category === 'Lip & Facial Care' ||
-            p.category === 'Pure Essential Oils' ||
-            p.id === 'gb_prod_donkey_milk_soap' ||
-            p.id === 'gb_prod_rose_mist' ||
-            p.id === 'gb_prod_pink_lip_balm' ||
-            p.price > 450
-        );
-      } else if (type === 'trending') {
-        filtered = filtered.filter(
-          (p) =>
-            p.rating >= 4.9 ||
-            p.badge === 'Bestseller' ||
-            (p.reviewsCount && p.reviewsCount >= 80)
-        );
-      } else if (type === 'face') {
-        filtered = filtered.filter(
-          (p) =>
-            p.category === 'Lip & Facial Care' ||
-            p.category === 'Botanical Mists' ||
-            p.category === 'Pure Essential Oils' ||
-            p.title.toLowerCase().includes('face') ||
-            p.title.toLowerCase().includes('skin') ||
-            p.concerns?.some((c) =>
-              ['acne', 'pigmentation', 'radiance', 'tone', 'blemish'].some((k) =>
-                c.toLowerCase().includes(k)
-              )
-            )
-        );
-      } else if (type === 'eyes-lips') {
-        filtered = filtered.filter(
-          (p) =>
-            p.category === 'Lip & Facial Care' ||
-            p.id === 'gb_prod_rose_mist' ||
-            p.id === 'gb_prod_frankincense' ||
-            p.concerns?.some((c) =>
-              c.toLowerCase().includes('lip') ||
-              c.toLowerCase().includes('eye') ||
-              c.toLowerCase().includes('fatigue')
-            )
-        );
-      } else if (type === 'baby') {
-        filtered = filtered.filter(
-          (p) =>
-            p.id === 'gb_prod_baby_soap' ||
-            p.id === 'gb_prod_donkey_milk_soap' ||
-            p.concerns?.some((c) => c.toLowerCase().includes('baby'))
-        );
-      } else if (type === 'category') {
-        filtered = filtered.filter((p) => p.category.toLowerCase() === targetVal);
-      } else if (type === 'diagnostic') {
-        // AI Formulation lab view shows curated recommended starter formulations
-        filtered = filtered.filter((p) => p.badge || p.rating >= 4.9);
+      // 1. Filter by active category / sub-pill
+      if (activeSubPill !== 'all') {
+        const subPillObj = activeConcern.subPills?.find((p) => p.id === activeSubPill);
+        if (subPillObj && subPillObj.productIds && subPillObj.productIds.length > 0) {
+          filtered = allList.filter((p) => subPillObj.productIds.includes(p.id));
+        } else {
+          filtered = allList.filter((p) => activeConcern.productIds?.includes(p.id));
+        }
       } else {
-        // General concern match
-        filtered = filtered.filter((p) =>
-          p.concerns?.some(
-            (c) =>
-              c.toLowerCase().includes(targetVal) ||
-              targetVal.includes(c.toLowerCase())
-          ) || p.category?.toLowerCase() === targetVal
-        );
+        if (activeConcern.productIds && activeConcern.productIds.length > 0) {
+          filtered = allList.filter((p) => activeConcern.productIds.includes(p.id));
+        } else {
+          filtered = allList;
+        }
       }
 
+      // 2. Search query filter within this category
       if (searchQuery.trim()) {
         const q = searchQuery.trim().toLowerCase();
         filtered = filtered.filter(
@@ -137,32 +83,7 @@ export default function ConcernFilterPage({
         );
       }
 
-      // Additional client-side sub-filter if specific sub-pill is selected
-      if (activeSubPill !== 'all') {
-        const subPillObj = activeConcern.subPills?.find((p) => p.id === activeSubPill);
-        if (subPillObj) {
-          const term = subPillObj.label.toLowerCase();
-          filtered = filtered.filter((p) => {
-            if (activeSubPill === 'under-500') return p.price < 500;
-            if (activeSubPill === 'under-1000') return p.price < 1000;
-            if (activeSubPill === 'essential-oils' || activeSubPill === 'pure-rosemary' || activeSubPill === 'essential-pack') {
-              return p.category === 'Pure Essential Oils';
-            }
-            if (activeSubPill === 'soaps' || activeSubPill === 'milks' || activeSubPill === 'luxury-milks') {
-              return p.category === 'Cold Processed Soaps';
-            }
-            return (
-              p.title.toLowerCase().includes(term) ||
-              p.subtitle.toLowerCase().includes(term) ||
-              p.category.toLowerCase().includes(term) ||
-              p.concerns?.some((c) => c.toLowerCase().includes(term) || term.includes(c.toLowerCase())) ||
-              p.ingredients?.some((ing) => ing.toLowerCase().includes(term))
-            );
-          });
-        }
-      }
-
-      // Sorting
+      // 3. Sorting
       if (sortBy === 'price-low') {
         filtered.sort((a, b) => a.price - b.price);
       } else if (sortBy === 'price-high') {
@@ -183,8 +104,8 @@ export default function ConcernFilterPage({
     setActiveConcern(concernItem);
     setActiveSubPill('all');
     setSearchQuery('');
-    // Update hash for seamless browser history without reload
     window.location.hash = `#concern=${concernItem.id}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleAddToCart = (e, product) => {
@@ -199,7 +120,7 @@ export default function ConcernFilterPage({
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#1e1e1e] pt-24 sm:pt-28 pb-20">
       
-      {/* 1. Top Breadcrumb & Back Action Bar */}
+      {/* 1. Top Breadcrumb & Return Action */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between text-xs font-medium text-gray-500">
           <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap">
@@ -211,15 +132,6 @@ export default function ConcernFilterPage({
               <span>Home</span>
             </button>
             <span className="text-gray-300">/</span>
-            <button
-              onClick={() => {
-                setActiveSubPill('all');
-              }}
-              className="text-gray-600 hover:text-[#5B0868] transition-colors cursor-pointer"
-            >
-              Concerns
-            </button>
-            <span className="text-gray-300">/</span>
             <span className="text-[#5B0868] font-bold truncate max-w-[200px] sm:max-w-none">
               {activeConcern.label}
             </span>
@@ -229,13 +141,13 @@ export default function ConcernFilterPage({
             onClick={onBack}
             className="hidden sm:inline-flex items-center gap-1 text-xs text-[#5B0868] hover:text-[#480653] font-semibold cursor-pointer"
           >
-            <span>Return to Main Storefront</span>
+            <span>Return to Storefront</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      {/* 2. Photo-Shaped Circular Navigation Bar (Top Circle Switcher like Nat Habit) */}
+      {/* 2. Photo-Shaped Circular Navigation Bar (Clean avatars matching Nat Habit) */}
       <div className="bg-white border-b border-purple-100 py-3 shadow-xs">
         <ShopByConcernCircleBar
           variant="compact"
@@ -244,16 +156,100 @@ export default function ConcernFilterPage({
         />
       </div>
 
-      {/* 3. Sub-Category / Filter Pills Row (Exact Nat Habit Inspiration Match) */}
-      <div className="bg-white border-b border-gray-200 sticky top-18 sm:top-20 z-30 shadow-xs">
+      {/* 3. Nat Habit Exact Editorial Split Banner (Reference Screenshot Match) */}
+      {activeConcern.editorialBanner && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
+          <div
+            className={`rounded-3xl overflow-hidden bg-gradient-to-r ${
+              activeConcern.editorialBanner.bgGradient || 'from-[#D6ECEF] via-[#E4F3F5] to-[#BEE3E8]'
+            } border border-teal-100/80 shadow-xs flex flex-col md:flex-row items-center justify-between`}
+          >
+            {/* Left Column: Problem Whisper vs Fresh Botanical Reply */}
+            <div className="p-6 sm:p-10 lg:p-12 space-y-4 max-w-xl">
+              <div>
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#144A50] font-semibold tracking-tight">
+                  {activeConcern.editorialBanner.whisperTopic}
+                </h2>
+                <p className="text-lg sm:text-xl lg:text-2xl text-[#D9534F] font-serif font-medium mt-1">
+                  {activeConcern.editorialBanner.whisperSubtitle}
+                </p>
+              </div>
+
+              <div className="w-16 h-0.5 bg-[#D9534F]/40 my-3" />
+
+              <div>
+                <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#144A50] font-semibold tracking-tight">
+                  {activeConcern.editorialBanner.replyTopic}
+                </h3>
+                <p className="text-lg sm:text-xl lg:text-2xl text-[#D9534F] font-serif font-medium mt-1">
+                  {activeConcern.editorialBanner.replySubtitle}
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column: Model / Formulation Lifestyle Image */}
+            <div className="relative w-full md:w-1/2 h-64 sm:h-80 md:h-96 overflow-hidden flex-shrink-0">
+              <img
+                src={activeConcern.editorialBanner.image}
+                alt={activeConcern.label}
+                className="w-full h-full object-cover object-center filter brightness-95"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent md:hidden" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Diagnostic Headline (Reference Screenshot Match) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-3">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-gray-200/80 pb-4">
+          <div>
+            <h2 className="font-serif text-2xl sm:text-3xl text-[#1e1e1e] font-semibold tracking-tight">
+              {activeConcern.ritualHeadline || `Your Curated Ritual for ${activeConcern.label}`}
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 font-sans mt-1">
+              {activeConcern.tagline}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Quick Search */}
+            <div className="relative w-full sm:w-56">
+              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={`Search in ${activeConcern.label}...`}
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#5B0868]"
+              />
+            </div>
+
+            {/* Sort Dropdown */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs text-gray-700 font-medium focus:outline-none focus:border-[#5B0868] cursor-pointer"
+            >
+              <option value="featured">Featured (Most Loved)</option>
+              <option value="rating">Highest Rated</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Sub-Category Filter Pills Row (Exact Nat Habit Filter Bar) */}
+      <div className="bg-white border-y border-gray-200 sticky top-18 sm:top-20 z-30 shadow-xs mb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             
             {/* Filter Toggle Icon */}
-            <div className="flex-shrink-0 pr-1 border-r border-gray-200 flex items-center">
-              <span className="p-2 text-gray-700 bg-gray-50 rounded-lg flex items-center gap-1 text-xs font-semibold">
+            <div className="flex-shrink-0 pr-2 border-r border-gray-200 flex items-center">
+              <span className="p-1.5 text-gray-700 bg-gray-50 rounded-lg flex items-center gap-1.5 text-xs font-semibold">
                 <SlidersHorizontal className="w-3.5 h-3.5 text-[#5B0868]" />
-                <span className="hidden sm:inline text-[11px] uppercase tracking-wider">Filter</span>
+                <span className="text-[11px] uppercase tracking-wider hidden sm:inline">Filter</span>
               </span>
             </div>
 
@@ -278,66 +274,8 @@ export default function ConcernFilterPage({
         </div>
       </div>
 
-      {/* 4. Main Section Header & Search / Sort Toolbar (Matching Image 2) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200/80 pb-6">
-          
-          {/* Header Title (Nat Habit exact layout) */}
-          <div className="space-y-1">
-            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium text-[#1e1e1e] tracking-tight">
-              Filter by Concerns
-            </h1>
-            <p className="text-xs sm:text-sm text-gray-600 font-sans">
-              {activeConcern.tagline}
-            </p>
-          </div>
-
-          {/* Search & Sort Controls */}
-          <div className="flex flex-wrap items-center gap-3">
-            
-            {/* Search Input */}
-            <div className="relative w-full sm:w-64">
-              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={`Search in ${activeConcern.label}...`}
-                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] transition-colors"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-2 text-gray-400 hover:text-gray-600 text-xs font-bold"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-
-            {/* Sort Dropdown */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs text-gray-700 font-medium focus:outline-none focus:border-[#5B0868] cursor-pointer"
-            >
-              <option value="featured">Featured (Most Loved)</option>
-              <option value="rating">Highest Rated</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-            </select>
-
-            {/* Formulation Count Badge */}
-            <span className="hidden lg:inline-flex items-center px-2.5 py-1 rounded-md bg-purple-50 text-[#5B0868] text-[11px] font-bold border border-purple-200">
-              {products.length} Formulations
-            </span>
-          </div>
-
-        </div>
-      </div>
-
-      {/* 5. Product Grid (Nat Habit Inspiration Matching Cards) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      {/* 6. Filtered Products Grid (Matching Nat Habit Inspiration Cards) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {[1, 2, 3, 4].map((i) => (
@@ -512,14 +450,14 @@ export default function ConcernFilterPage({
         )}
       </div>
 
-      {/* 6. Concern-Specific 3-Step Botanical Routine Guide (Diagnostic Ritual) */}
+      {/* 7. Concern-Specific 3-Step Botanical Routine Guide */}
       {activeConcern.ritual && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
           <div className="bg-white rounded-3xl border border-purple-100 p-6 sm:p-8 lg:p-10 shadow-sm space-y-6">
             
             <div className="text-center max-w-2xl mx-auto space-y-1">
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#5B0868]">
-                Application Ritual & Diagnostic Routine
+                Application Ritual & Diagnostic Method
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-medium text-gray-900">
                 {activeConcern.ritual.headline || `The 3-Step Routine for ${activeConcern.label}`}

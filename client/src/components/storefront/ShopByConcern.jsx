@@ -19,7 +19,7 @@ const APPLICATION_STEPS = [
     time: '60 Seconds',
     instruction: 'Lather between damp hands with tepid water. Massage creamy botanical foam into skin without harsh scrubbing.',
     img: '/images_ref/Donkey-Milk-Soap-300x300.webp',
-    targetConcern: 'skin-barrier'
+    targetConcern: 'body-soaps'
   },
   {
     step: '02',
@@ -28,7 +28,7 @@ const APPLICATION_STEPS = [
     time: 'Instant Absorption',
     instruction: 'Hold 6 inches away and mist face and neck. Press gently with warm palms to flood dermal pores with water-soluble actives.',
     img: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.54-300x300.webp',
-    targetConcern: 'under-eye'
+    targetConcern: 'face-care'
   },
   {
     step: '03',
@@ -37,7 +37,7 @@ const APPLICATION_STEPS = [
     time: 'Overnight Therapy',
     instruction: 'Warm 2–3 drops between fingertips. Press into damp skin or scalp roots to lock in nutrients with unrefined natural waxes.',
     img: '/images_ref/Rosmary-2-300x300.webp',
-    targetConcern: 'hair-fall'
+    targetConcern: 'hair-care'
   }
 ];
 
