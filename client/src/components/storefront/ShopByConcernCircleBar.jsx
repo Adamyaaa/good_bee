@@ -164,15 +164,6 @@ export default function ShopByConcernCircleBar({
                       )}
                     </div>
                   </div>
-
-                  {/* Micro Top Badge if not promo (e.g. Bestseller, De-Puffs) */}
-                  {!item.isPromo && item.badge && (
-                    <div className="absolute -top-1 right-0 sm:-right-1">
-                      <span className="px-1.5 py-0.2 rounded-full text-[8.5px] font-bold uppercase tracking-wider bg-[#5B0868] text-white shadow-sm border border-white leading-tight block">
-                        {item.badge}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 {/* Circle Label Underneath */}
