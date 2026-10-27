@@ -42,6 +42,7 @@ function SpaLandingContent() {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [activePdpProduct, setActivePdpProduct] = useState(null);
   const [activeConcernPage, setActiveConcernPage] = useState(null);
+  const [catalogSearch, setCatalogSearch] = useState('');
 
   // Handle deep-link hashtag #product=<id_or_slug>
   React.useEffect(() => {
@@ -198,18 +199,13 @@ function SpaLandingContent() {
           />
         </main>
       ) : (
-        <main className="flex-grow space-y-0">
+        <main className="flex-grow space-y-0 pt-24 sm:pt-28">
           
-          {/* 1. Bright & Luminous Cosmetic Hero Section */}
-          <Hero
-            onExplore={() => handleScrollTo('formulations')}
-            onRoutine={() => handleScrollTo('how-to-apply')}
-          />
-
-          {/* Top Quick Concern & Story Circular Navigation Bar */}
-          <div className="bg-white border-b border-purple-100 py-3 sm:py-4 shadow-xs">
+          {/* Top Panel: Photo-Shaped Circular Navigation + Search Bar */}
+          <div className="bg-white border-b border-purple-100/80 shadow-xs pt-3 pb-3 sm:pb-4">
             <ShopByConcernCircleBar
               variant="compact"
+              showSearchBar={true}
               onSelectConcern={(concern) => {
                 const concernId = typeof concern === 'object' ? concern.id : concern;
                 if (concernId === 'analyse-skin') {
@@ -220,8 +216,22 @@ function SpaLandingContent() {
                 window.location.hash = `#concern=${concernId}`;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              onSelectProduct={(prod) => {
+                setActivePdpProduct(prod);
+                window.location.hash = `#product=${prod.id}`;
+              }}
+              onSearchSubmit={(query) => {
+                setCatalogSearch(query);
+                handleScrollTo('formulations');
+              }}
             />
           </div>
+
+          {/* 1. Bright & Luminous Cosmetic Hero Section */}
+          <Hero
+            onExplore={() => handleScrollTo('formulations')}
+            onRoutine={() => handleScrollTo('how-to-apply')}
+          />
 
           {/* 2. Clinically Proven Regimen: How to Apply (Like Plum & Dot & Key) */}
           <SkincareRoutineGuide
@@ -250,6 +260,7 @@ function SpaLandingContent() {
           {/* 5. Real-Time Interactive Formulations Catalog */}
           <InteractiveSpaCatalog
             activeConcern={selectedConcern}
+            externalSearchQuery={catalogSearch}
             onQuickView={(prod) => setQuickViewProduct(prod)}
           />
 

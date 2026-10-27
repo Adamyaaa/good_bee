@@ -21,12 +21,18 @@ const CONCERNS = [
   'Youth & Radiance'
 ];
 
-export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickView }) {
+export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickView, externalSearchQuery = '' }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedConcern, setSelectedConcern] = useState(activeConcern);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(externalSearchQuery);
+
+  useEffect(() => {
+    if (externalSearchQuery !== undefined) {
+      setSearchQuery(externalSearchQuery);
+    }
+  }, [externalSearchQuery]);
 
   useEffect(() => {
     if (!activeConcern || activeConcern === 'All') {

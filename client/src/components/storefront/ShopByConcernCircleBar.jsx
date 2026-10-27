@@ -1,19 +1,102 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Search,
+  X,
+  ArrowRight,
+  Star,
+  ShoppingBag
+} from 'lucide-react';
 import { CONCERNS_DATA } from '../../data/concernsData';
+import { GoodBeeApi } from '../../services/api';
 
 export default function ShopByConcernCircleBar({
   selectedConcernId,
   onSelectConcern,
   variant = 'section', // 'section' (home section with header) or 'compact' (top bar for filter page)
+  showSearchBar = false,
+  searchValue,
+  onSearchChange,
+  onSearchSubmit,
+  onSelectProduct,
+  searchPlaceholder,
   className = ''
 }) {
   const scrollContainerRef = useRef(null);
+  const searchInputRef = useRef(null);
+  const dropdownRef = useRef(null);
+
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeftState, setScrollLeftState] = useState(0);
+
+  // Search state
+  const [internalQuery, setInternalQuery] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [allProducts, setAllProducts] = useState([]);
+  const [matchingProducts, setMatchingProducts] = useState([]);
+  const [matchingConcerns, setMatchingConcerns] = useState([]);
+
+  const effectiveSearchQuery = searchValue !== undefined ? searchValue : internalQuery;
+
+  // Load products once for search autocomplete suggestions
+  useEffect(() => {
+    let isMounted = true;
+    GoodBeeApi.fetchProducts({}).then((prods) => {
+      if (isMounted && Array.isArray(prods)) {
+        setAllProducts(prods);
+      }
+    }).catch(() => {});
+    return () => { isMounted = false; };
+  }, []);
+
+  // Update suggestions when effectiveSearchQuery changes
+  useEffect(() => {
+    const q = effectiveSearchQuery.trim().toLowerCase();
+    if (q.length < 2) {
+      setMatchingProducts([]);
+      setMatchingConcerns([]);
+      return;
+    }
+
+    // Match products
+    const filteredP = allProducts.filter((p) =>
+      p.title?.toLowerCase().includes(q) ||
+      p.subtitle?.toLowerCase().includes(q) ||
+      p.category?.toLowerCase().includes(q) ||
+      p.shortDescription?.toLowerCase().includes(q) ||
+      p.ingredients?.some((ing) => ing.toLowerCase().includes(q))
+    ).slice(0, 5);
+    setMatchingProducts(filteredP);
+
+    // Match concern categories
+    const filteredC = CONCERNS_DATA.filter((c) =>
+      c.label.toLowerCase().includes(q) ||
+      c.tagline?.toLowerCase().includes(q) ||
+      c.id.toLowerCase().includes(q)
+    ).slice(0, 3);
+    setMatchingConcerns(filteredC);
+  }, [effectiveSearchQuery, allProducts]);
+
+  // Click outside listener to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(e.target)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
@@ -57,8 +140,205 @@ export default function ShopByConcernCircleBar({
     checkScroll();
   };
 
+  const handleSearchInputChange = (e) => {
+    const val = e.target.value;
+    if (searchValue === undefined) {
+      setInternalQuery(val);
+    }
+    if (onSearchChange) {
+      onSearchChange(val);
+    }
+    setIsDropdownOpen(val.trim().length > 0);
+  };
+
+  const handleClearSearch = () => {
+    if (searchValue === undefined) {
+      setInternalQuery('');
+    }
+    if (onSearchChange) {
+      onSearchChange('');
+    }
+    setIsDropdownOpen(false);
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setIsDropdownOpen(false);
+    if (onSearchSubmit) {
+      onSearchSubmit(effectiveSearchQuery.trim());
+    }
+  };
+
+  const handleSelectProductItem = (prod) => {
+    setIsDropdownOpen(false);
+    if (onSelectProduct) {
+      onSelectProduct(prod);
+    } else {
+      window.location.hash = `#product=${prod.id}`;
+    }
+  };
+
+  const handleSelectConcernItem = (concern) => {
+    setIsDropdownOpen(false);
+    if (onSelectConcern) {
+      onSelectConcern(concern);
+    }
+  };
+
   return (
     <div className={`relative w-full ${className}`}>
+      
+      {/* 1. Optional Top Panel Search Bar (Plum & Nat Habit Inspired) */}
+      {showSearchBar && (
+        <div className="max-w-xl sm:max-w-2xl mx-auto px-4 mb-3 sm:mb-4 relative">
+          <form
+            onSubmit={handleFormSubmit}
+            className="relative flex items-center bg-[#FAF8F5] hover:bg-white focus-within:bg-white border border-purple-200 hover:border-[#5B0868] focus-within:border-[#5B0868] rounded-full shadow-xs transition-all duration-200 px-3.5 sm:px-4 py-2 sm:py-2.5 gap-2.5 focus-within:ring-2 focus-within:ring-purple-100"
+          >
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#5B0868] flex-shrink-0" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={effectiveSearchQuery}
+              onChange={handleSearchInputChange}
+              onFocus={() => {
+                if (effectiveSearchQuery.trim().length > 1) {
+                  setIsDropdownOpen(true);
+                }
+              }}
+              placeholder={
+                searchPlaceholder ||
+                'Search 100% natural formulations, pure oils, cold-cured soaps...'
+              }
+              className="w-full bg-transparent text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-sans"
+            />
+            {effectiveSearchQuery && (
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="text-gray-400 hover:text-gray-600 p-1 rounded-full cursor-pointer transition-colors"
+                title="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+            <button
+              type="submit"
+              className="bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full shadow-xs transition-all flex items-center gap-1 cursor-pointer flex-shrink-0 hover:scale-105 active:scale-95"
+            >
+              <span>Search</span>
+            </button>
+          </form>
+
+          {/* Autocomplete Suggestions Flyout */}
+          {isDropdownOpen && effectiveSearchQuery.trim().length > 1 && (
+            <div
+              ref={dropdownRef}
+              className="absolute left-4 right-4 sm:left-auto sm:right-auto sm:w-[600px] mt-2 bg-white rounded-2xl shadow-2xl border border-purple-100 py-3 z-50 max-h-96 overflow-y-auto animate-in fade-in slide-in-from-top-2"
+            >
+              {/* Category / Concern quick links */}
+              {matchingConcerns.length > 0 && (
+                <div className="px-4 pb-2 mb-2 border-b border-gray-100">
+                  <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                    Suggested Categories
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {matchingConcerns.map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => handleSelectConcernItem(c)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-[#5B0868] text-xs font-semibold transition-colors cursor-pointer"
+                      >
+                        <Sparkles className="w-3 h-3 text-[#5B0868]" />
+                        <span>{c.label}</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Matching Products */}
+              {matchingProducts.length > 0 ? (
+                <div>
+                  <div className="px-4 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                    Matching Formulations ({matchingProducts.length})
+                  </div>
+                  <div className="divide-y divide-gray-50">
+                    {matchingProducts.map((p) => (
+                      <div
+                        key={p.id}
+                        onClick={() => handleSelectProductItem(p)}
+                        className="px-4 py-2.5 hover:bg-purple-50/50 flex items-center justify-between gap-3 cursor-pointer transition-colors"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            className="w-10 h-10 rounded-lg object-cover bg-gray-100 border border-gray-100 flex-shrink-0"
+                            onError={(e) => {
+                              e.target.src = '/assets/goodbee-skincare-hero.jpg';
+                            }}
+                          />
+                          <div className="min-w-0">
+                            <h4 className="text-xs font-semibold text-[#1e1e1e] truncate">
+                              {p.title}
+                            </h4>
+                            <p className="text-[11px] text-gray-500 truncate">
+                              {p.subtitle || p.category}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          <div className="text-right">
+                            <span className="text-xs font-bold text-[#5B0868]">
+                              ₹{p.price}
+                            </span>
+                            {p.mrp && p.mrp > p.price && (
+                              <span className="text-[10px] text-gray-400 line-through block">
+                                ₹{p.mrp}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-xs text-[#5B0868] hover:underline font-semibold flex items-center gap-0.5">
+                            <span>View</span>
+                            <ArrowRight className="w-3 h-3" />
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="px-4 pt-2.5 mt-1 border-t border-gray-100 flex justify-between items-center text-xs">
+                    <span className="text-gray-500">
+                      Press Enter to view all results in Formulations
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleFormSubmit}
+                      className="text-[#5B0868] font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>See all</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              ) : matchingConcerns.length === 0 ? (
+                <div className="px-4 py-6 text-center text-xs text-gray-500">
+                  No botanical formulations found for "{effectiveSearchQuery}". Try "Rose", "Soap", "Oil", or "Winter".
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 2. Section Header (only shown if variant === 'section') */}
       {variant === 'section' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8 text-center sm:text-left">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
@@ -75,14 +355,14 @@ export default function ShopByConcernCircleBar({
               </p>
             </div>
             <div className="text-xs text-[#5B0868] font-semibold hidden sm:flex items-center gap-1">
-              <span>Scroll to explore all 12 concerns</span>
+              <span>Scroll to explore all 8 categories</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </div>
           </div>
         </div>
       )}
 
-      {/* Outer Wrapper with Scroll Buttons */}
+      {/* 3. Outer Wrapper with Scroll Buttons */}
       <div className="relative max-w-7xl mx-auto px-2 sm:px-4">
         
         {/* Left Arrow Button */}
@@ -115,7 +395,7 @@ export default function ShopByConcernCircleBar({
           onMouseLeave={handleMouseLeaveOrUp}
           onMouseUp={handleMouseLeaveOrUp}
           onMouseMove={handleMouseMove}
-          className={`flex items-start gap-4 sm:gap-6 lg:gap-8 overflow-x-auto py-3 px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing ${
+          className={`flex items-start gap-4 sm:gap-6 lg:gap-8 overflow-x-auto py-2 px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing ${
             isDragging ? 'scroll-auto' : 'scroll-smooth'
           }`}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
@@ -166,7 +446,7 @@ export default function ShopByConcernCircleBar({
                   </div>
                 </div>
 
-                {/* Circle Label Underneath */}
+                {/* Circle Label Underneath (Zero Purple Badges on top) */}
                 <span
                   className={`mt-2 text-center text-xs font-medium leading-snug transition-colors line-clamp-2 max-w-[82px] ${
                     isSelected

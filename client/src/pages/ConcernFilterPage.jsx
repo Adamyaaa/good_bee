@@ -147,12 +147,19 @@ export default function ConcernFilterPage({
         </div>
       </div>
 
-      {/* 2. Photo-Shaped Circular Navigation Bar (Clean avatars matching Nat Habit) */}
-      <div className="bg-white border-b border-purple-100 py-3 shadow-xs">
+      {/* 2. Photo-Shaped Circular Navigation Bar with Search (Clean avatars matching Nat Habit) */}
+      <div className="bg-white border-b border-purple-100 py-3 sm:py-4 shadow-xs">
         <ShopByConcernCircleBar
           variant="compact"
+          showSearchBar={true}
           selectedConcernId={activeConcern.id}
           onSelectConcern={handleSelectNewConcern}
+          searchValue={searchQuery}
+          onSearchChange={(q) => setSearchQuery(q)}
+          searchPlaceholder={`Search within ${activeConcern.label} or across natural formulations...`}
+          onSelectProduct={(prod) => {
+            onSelectProduct?.(prod);
+          }}
         />
       </div>
 

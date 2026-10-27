@@ -130,7 +130,7 @@ export default function Hero({ onExplore, onRoutine }) {
       
       {/* Main Full-Bleed Luminous Stage (Pure Daylight & High-Key Studio Lighting like Plum Goodness) */}
       <div
-        className="relative w-full min-h-[82vh] sm:min-h-[88vh] lg:min-h-[92vh] flex items-center justify-start pt-24 sm:pt-28 lg:pt-32 pb-12 overflow-hidden"
+        className="relative w-full min-h-[72vh] sm:min-h-[78vh] lg:min-h-[82vh] flex items-center justify-start pt-6 sm:pt-8 lg:pt-10 pb-10 sm:pb-12 overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
