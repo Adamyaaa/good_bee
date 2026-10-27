@@ -52,21 +52,90 @@ export default function ConcernFilterPage({
   const fetchFilteredProducts = async () => {
     setLoading(true);
     try {
-      let params = {};
-      if (activeConcern.filterType === 'deals') {
-        params.concern = 'deals';
-      } else if (activeConcern.filterType === 'category') {
-        params.category = activeConcern.filterValue;
+      const allList = await GoodBeeApi.fetchProducts({});
+      let filtered = [...allList];
+
+      const type = activeConcern.filterType;
+      const targetVal = (activeConcern.filterValue || '').toLowerCase();
+
+      if (type === 'deals') {
+        filtered = filtered.filter((p) => (p.mrp && p.mrp > p.price) || p.badge);
+      } else if (type === 'gifting') {
+        filtered = filtered.filter(
+          (p) =>
+            p.category === 'Lip & Facial Care' ||
+            p.category === 'Pure Essential Oils' ||
+            p.id === 'gb_prod_donkey_milk_soap' ||
+            p.id === 'gb_prod_rose_mist' ||
+            p.id === 'gb_prod_pink_lip_balm' ||
+            p.price > 450
+        );
+      } else if (type === 'trending') {
+        filtered = filtered.filter(
+          (p) =>
+            p.rating >= 4.9 ||
+            p.badge === 'Bestseller' ||
+            (p.reviewsCount && p.reviewsCount >= 80)
+        );
+      } else if (type === 'face') {
+        filtered = filtered.filter(
+          (p) =>
+            p.category === 'Lip & Facial Care' ||
+            p.category === 'Botanical Mists' ||
+            p.category === 'Pure Essential Oils' ||
+            p.title.toLowerCase().includes('face') ||
+            p.title.toLowerCase().includes('skin') ||
+            p.concerns?.some((c) =>
+              ['acne', 'pigmentation', 'radiance', 'tone', 'blemish'].some((k) =>
+                c.toLowerCase().includes(k)
+              )
+            )
+        );
+      } else if (type === 'eyes-lips') {
+        filtered = filtered.filter(
+          (p) =>
+            p.category === 'Lip & Facial Care' ||
+            p.id === 'gb_prod_rose_mist' ||
+            p.id === 'gb_prod_frankincense' ||
+            p.concerns?.some((c) =>
+              c.toLowerCase().includes('lip') ||
+              c.toLowerCase().includes('eye') ||
+              c.toLowerCase().includes('fatigue')
+            )
+        );
+      } else if (type === 'baby') {
+        filtered = filtered.filter(
+          (p) =>
+            p.id === 'gb_prod_baby_soap' ||
+            p.id === 'gb_prod_donkey_milk_soap' ||
+            p.concerns?.some((c) => c.toLowerCase().includes('baby'))
+        );
+      } else if (type === 'category') {
+        filtered = filtered.filter((p) => p.category.toLowerCase() === targetVal);
+      } else if (type === 'diagnostic') {
+        // AI Formulation lab view shows curated recommended starter formulations
+        filtered = filtered.filter((p) => p.badge || p.rating >= 4.9);
       } else {
-        params.concern = activeConcern.filterValue;
+        // General concern match
+        filtered = filtered.filter((p) =>
+          p.concerns?.some(
+            (c) =>
+              c.toLowerCase().includes(targetVal) ||
+              targetVal.includes(c.toLowerCase())
+          ) || p.category?.toLowerCase() === targetVal
+        );
       }
 
       if (searchQuery.trim()) {
-        params.search = searchQuery.trim();
+        const q = searchQuery.trim().toLowerCase();
+        filtered = filtered.filter(
+          (p) =>
+            p.title.toLowerCase().includes(q) ||
+            p.subtitle.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q) ||
+            p.ingredients?.some((ing) => ing.toLowerCase().includes(q))
+        );
       }
-
-      const allList = await GoodBeeApi.fetchProducts(params);
-      let filtered = [...allList];
 
       // Additional client-side sub-filter if specific sub-pill is selected
       if (activeSubPill !== 'all') {
@@ -76,8 +145,12 @@ export default function ConcernFilterPage({
           filtered = filtered.filter((p) => {
             if (activeSubPill === 'under-500') return p.price < 500;
             if (activeSubPill === 'under-1000') return p.price < 1000;
-            if (activeSubPill === 'essential-oils') return p.category === 'Pure Essential Oils';
-            if (activeSubPill === 'soaps') return p.category === 'Cold Processed Soaps';
+            if (activeSubPill === 'essential-oils' || activeSubPill === 'pure-rosemary' || activeSubPill === 'essential-pack') {
+              return p.category === 'Pure Essential Oils';
+            }
+            if (activeSubPill === 'soaps' || activeSubPill === 'milks' || activeSubPill === 'luxury-milks') {
+              return p.category === 'Cold Processed Soaps';
+            }
             return (
               p.title.toLowerCase().includes(term) ||
               p.subtitle.toLowerCase().includes(term) ||

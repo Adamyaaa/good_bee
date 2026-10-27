@@ -212,6 +212,10 @@ function SpaLandingContent() {
               variant="compact"
               onSelectConcern={(concern) => {
                 const concernId = typeof concern === 'object' ? concern.id : concern;
+                if (concernId === 'analyse-skin') {
+                  handleScrollTo('ai-formulation-lab');
+                  return;
+                }
                 setActiveConcernPage(concernId);
                 window.location.hash = `#concern=${concernId}`;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -232,6 +236,10 @@ function SpaLandingContent() {
             <ShopByConcern
               onSelectConcern={(concern) => {
                 const concernId = typeof concern === 'object' ? concern.id : concern;
+                if (concernId === 'analyse-skin') {
+                  handleScrollTo('ai-formulation-lab');
+                  return;
+                }
                 setActiveConcernPage(concernId);
                 window.location.hash = `#concern=${concernId}`;
                 window.scrollTo({ top: 0, behavior: 'smooth' });

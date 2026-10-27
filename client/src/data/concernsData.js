@@ -1,4 +1,5 @@
 export const CONCERNS_DATA = [
+  // 1. Flash Deals (Exact match with 40% OFF overlay badge)
   {
     id: 'flash-deals',
     label: 'Flash Deals ⚡',
@@ -23,187 +24,62 @@ export const CONCERNS_DATA = [
       step3: 'Seal with 2 drops of unadulterated plant oil for all-day barrier defense.'
     }
   },
+
+  // 2. Gifting
   {
-    id: 'hair-fall',
-    label: 'Hair Fall',
-    title: 'Hair Fall & Scalp Weakness',
-    tagline: 'For Your Unique Hair & Scalp Needs',
-    badge: 'Bestseller',
-    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Hair Fall & Scalp',
+    id: 'gifting',
+    label: 'Gifting',
+    title: 'Artisanal Skincare Hampers & Gifting Combos',
+    tagline: 'Handcrafted Botanical Sets for Pure Self-Care & Festivals',
+    badge: 'Gift Sets',
+    image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=400&q=80',
+    filterType: 'gifting',
+    filterValue: 'gifting',
     subPills: [
-      { id: 'all', label: 'All Hair Formulations' },
-      { id: 'hair-oils', label: 'Hair Growth Oils' },
-      { id: 'hydrosols', label: 'Scalp Mists & Tonics' },
-      { id: 'rosemary', label: 'Pure Rosemary Extracted' }
+      { id: 'all', label: 'All Gift Combos' },
+      { id: 'luxury-milks', label: 'Artisanal Milk Bars' },
+      { id: 'lip-duo', label: 'Natural Lip Care Trio' },
+      { id: 'essential-pack', label: 'Pure Essential Oils' }
     ],
     ritual: {
-      headline: 'Hair & Scalp Density Ritual',
-      step1: 'Warm 2 tablespoons of Brahmi & Neem Hair Oil between palms.',
-      step2: 'Part hair and massage deeply into roots and crown for 10 minutes.',
-      step3: 'Post-wash, spritz Rosemary Hydrosol directly onto scalp roots to seal micro-circulation.'
+      headline: 'Luxury Gifting Self-Care Ritual',
+      step1: 'Unbox cold-cured botanical bars wrapped in biodegradable parchment.',
+      step2: 'Pair with steam-distilled Damask Rose floral mist for morning dewy glow.',
+      step3: 'Complete the luxury experience with Nilgiri pure beeswax lip balm.'
     }
   },
+
+  // 3. Trending 🔥
   {
-    id: 'under-eye',
-    label: 'Under Eye',
-    title: 'Under-Eye Dark Circles & Screen Strain',
-    tagline: 'For Late Night Laptop Screen Fatigue & Morning Puffiness',
-    badge: 'De-Puffs',
-    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Under-Eye Care',
+    id: 'trending',
+    label: 'Trending 🔥',
+    title: 'Trending Formulations & Customer Favorites',
+    tagline: 'Most-Loved 100% Pure Plant Solutions Backed by 5-Star Reviews',
+    badge: '🔥 Hot',
+    image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=400&q=80',
+    filterType: 'trending',
+    filterValue: 'trending',
     subPills: [
-      { id: 'all', label: 'All Eye & Face Care' },
-      { id: 'rose-hydrosol', label: 'Damask Rose Hydrosols' },
-      { id: 'frankincense', label: 'Frankincense Cellular Oils' },
-      { id: 'depuff', label: 'Instant Cooling Rituals' }
+      { id: 'all', label: 'All Trending' },
+      { id: 'hair-bestseller', label: 'Brahmi & Rosemary Oil' },
+      { id: 'donkey-milk', label: 'Donkey Milk & Saffron' },
+      { id: 'rose-mist', label: 'Damask Rose Hydrosol' },
+      { id: 'lip-tint', label: 'Tinted Pink Lotus Balm' }
     ],
     ritual: {
-      headline: 'Ocular Strain & Dark Circle Ritual',
-      step1: 'Saturate two cotton pads with chilled Damask Rose Hydrosol Mist.',
-      step2: 'Rest over closed eyelids for 5 minutes to soothe dilated micro-capillaries.',
-      step3: 'Gently dab 1 drop of Frankincense-infused carrier oil around the orbital bone.'
+      headline: 'The Viral 3-Step Good Bee Ritual',
+      step1: 'Cleanse with Donkey Milk Soap rich in natural ceramides and retinol-analogous lipids.',
+      step2: 'Saturate dermal pores with single-origin steam-distilled Damask Rose Mist.',
+      step3: 'Nourish hair roots and scalp micro-circulation with slow-infused Brahmi Oil.'
     }
   },
-  {
-    id: 'acne-pimples',
-    label: 'Acne & Pimples',
-    title: 'Active Pimples, Acne & Red Flare-ups',
-    tagline: 'For Clear Pores & Natural Microbial Balance',
-    badge: 'Clear Skin',
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Acne & Blemishes',
-    subPills: [
-      { id: 'all', label: 'All Clarifying Formulations' },
-      { id: 'clear-soap', label: 'Cold-Cured Neem & Basil' },
-      { id: 'charcoal', label: 'Charcoal Pore Flush' },
-      { id: 'lemongrass', label: 'Lemongrass Antimicrobial' }
-    ],
-    ritual: {
-      headline: 'Anti-Blemish Flush Ritual',
-      step1: 'Lather Clear Skin Soap between palms; gently massage into t-zone for 60 seconds.',
-      step2: 'Spritz Rosemary Hydrosol Mist across face to balance pore pH without stinging.',
-      step3: 'Spot-treat active flare-ups with diluted Lemongrass or Geranium essential oil.'
-    }
-  },
-  {
-    id: 'skin-barrier',
-    label: 'Skin Barrier',
-    title: 'Compromised Barrier & Body Roughness',
-    tagline: 'For Dryness, Tanning & Cellular Lipid Repair',
-    badge: 'Ceramides',
-    image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Barrier Repair',
-    subPills: [
-      { id: 'all', label: 'All Barrier Formulations' },
-      { id: 'donkey-milk', label: 'Donkey Milk Ceramides' },
-      { id: 'earth-clay', label: 'Natural Mineral Clay' },
-      { id: 'joint-relief', label: 'Joint & Muscle Roll-On' }
-    ],
-    ritual: {
-      headline: 'Cellular Lipid Reconstruction Ritual',
-      step1: 'Cleanse with Donkey Milk Cold Processed Bar to cushion the lipid matrix.',
-      step2: 'Spritz Damask Rose Hydrosol generously onto damp face and body.',
-      step3: 'Lock in restorative moisture while skin is still dewy using beeswax-infused balms.'
-    }
-  },
-  {
-    id: 'lip-care',
-    label: 'Lip Care',
-    title: 'Chapped, Peeling & Pigmented Lips',
-    tagline: 'For 24h Natural Beeswax Hydration & Rosy Tint',
-    badge: '100% Beeswax',
-    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Lip & Facial Care',
-    subPills: [
-      { id: 'all', label: 'All Lip Care' },
-      { id: 'pink-lotus', label: 'Tinted Pink Lotus' },
-      { id: 'lavender', label: 'Lavender & Vitamin E' },
-      { id: 'lipstick', label: 'Botanical Natural Lipsticks' }
-    ],
-    ritual: {
-      headline: 'Dewy Botanical Lip Ritual',
-      step1: 'Gently buff lips using a warm damp muslin cloth after morning shower.',
-      step2: 'Glide Tinted Pink Lotus Balm for a breathable moisture seal with natural flush.',
-      step3: 'Apply a generous coat of No-Tint Balm before sleep for intensive overnight conditioning.'
-    }
-  },
-  {
-    id: 'youth-radiance',
-    label: 'Youth & Glow',
-    title: 'Fine Lines, Dullness & Youth Radiance',
-    tagline: 'For Cellular Firmness & Botanical Collagen Support',
-    badge: 'Radiance',
-    image: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Youth & Radiance',
-    subPills: [
-      { id: 'all', label: 'All Youth Formulations' },
-      { id: 'frankincense', label: 'Frankincense Resin Extract' },
-      { id: 'donkey-milk', label: 'Donkey Milk Bars' },
-      { id: 'rose-water', label: 'Damask Rose Water' }
-    ],
-    ritual: {
-      headline: 'Cellular Vitality & Collagen Ritual',
-      step1: 'Bathe with Donkey Milk Soap rich in natural retinol-analogous ceramides.',
-      step2: 'Hydrate with antioxidant-dense Damask Rose Floral Mist.',
-      step3: 'Press 2 drops of Frankincense Pure Essential Oil into face and décolletage.'
-    }
-  },
-  {
-    id: 'pigmentation',
-    label: 'Pigmentation',
-    title: 'Uneven Tone, Sun Spots & Pigmentation',
-    tagline: 'For Natural Luminous Clarity & Melanin Harmonization',
-    badge: 'Tone Repair',
-    image: 'https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Pigmentation & Tone',
-    subPills: [
-      { id: 'all', label: 'All Tone Formulations' },
-      { id: 'turmeric', label: 'Turmeric Oil Infused' },
-      { id: 'sunnipindi', label: 'Sunnipindi Heritage Bath' },
-      { id: 'geranium', label: 'Geranium Balancing Oil' }
-    ],
-    ritual: {
-      headline: 'Melanin Harmonization Ritual',
-      step1: 'Cleanse with Turmeric Oil Cold Processed Soap to fade post-sun dullness.',
-      step2: 'Use Sunnipindi Soap 3x weekly for gentle multi-grain enzymatic polishing.',
-      step3: 'Massage with diluted Geranium oil to unify cutaneous undertones.'
-    }
-  },
-  {
-    id: 'baby-care',
-    label: 'Baby Care',
-    title: 'Gentle Newborn & Sensitive Infant Skin',
-    tagline: 'Formulated with Pure A2 Cow Milk & Raw Shea Butter',
-    badge: 'Tear-Free',
-    image: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=400&q=80',
-    filterType: 'concern',
-    filterValue: 'Baby & Gentle Care',
-    subPills: [
-      { id: 'all', label: 'All Baby Formulations' },
-      { id: 'a2-milk', label: 'A2 Cow Milk Bars' },
-      { id: 'shea', label: 'Raw Shea Butter Infusion' },
-      { id: 'hypoallergenic', label: 'Pure Hypoallergenic' }
-    ],
-    ritual: {
-      headline: 'Gentle Newborn Bathing Ritual',
-      step1: 'Lather Soft Baby Soap between warm hands until a velvety foam appears.',
-      step2: 'Gently cleanse baby\'s delicate folds without scrubbing or tugging.',
-      step3: 'Rinse with warm water and pat dry with a soft organic cotton towel.'
-    }
-  },
+
+  // 4. Winter Care
   {
     id: 'winter-care',
     label: 'Winter Care',
-    title: 'Deep Winter Dryness & Cold Wind Chapping',
-    tagline: 'Intense Moisture Sealing for Winter Weather',
+    title: 'Winter Care & Deep Moisture Shield',
+    tagline: 'Intense Lipid Reconstruction for Parched Winter Skin & Chapped Lips',
     badge: 'Winter SOS',
     image: 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=400&q=80',
     filterType: 'concern',
@@ -221,49 +97,177 @@ export const CONCERNS_DATA = [
       step3: 'Apply beeswax lip conditioning balm to lock in dermal hydration.'
     }
   },
+
+  // 5. Hair
   {
-    id: 'body-soaps',
-    label: 'Body Soaps',
-    title: 'Cold Processed Artisanal Botanical Soaps',
-    tagline: '45-Day Cured Without Harsh SLS or Synthetic Detergents',
-    badge: 'Cold Cured',
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80',
+    id: 'hair',
+    label: 'Hair',
+    title: 'Botanical Hair & Scalp Therapy',
+    tagline: 'Targeted Follicle Stimulation, Root Strengthening & Pure Scalp Tonics',
+    badge: 'Pure Scalp',
+    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80',
+    filterType: 'category',
+    filterValue: 'Hair & Wellness',
+    subPills: [
+      { id: 'all', label: 'All Hair Formulations' },
+      { id: 'hair-oils', label: 'Slow-Cooked Hair Oils' },
+      { id: 'hydrosols', label: 'Rosemary Scalp Tonics' },
+      { id: 'rosemary-oil', label: 'Pure Rosemary Extract' }
+    ],
+    ritual: {
+      headline: 'Hair & Scalp Density Ritual',
+      step1: 'Warm 2 tablespoons of Brahmi & Neem Hair Oil between palms.',
+      step2: 'Part hair and massage deeply into roots and crown for 10 minutes.',
+      step3: 'Post-wash, spritz Rosemary Hydrosol directly onto scalp roots to seal micro-circulation.'
+    }
+  },
+
+  // 6. Face
+  {
+    id: 'face',
+    label: 'Face',
+    title: 'Pure Botanical Facial Care & Ubtan Bars',
+    tagline: 'Steam Distillates, Micro-Exfoliating Herbal Bars & Botanical Serums',
+    badge: 'Radiant Glow',
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80',
+    filterType: 'face',
+    filterValue: 'face',
+    subPills: [
+      { id: 'all', label: 'All Facial Formulations' },
+      { id: 'neem-clear', label: 'Neem & Clear Skin' },
+      { id: 'rose-mist', label: 'Damask Rose Water' },
+      { id: 'turmeric-bar', label: 'Turmeric Oil Bar' },
+      { id: 'geranium', label: 'Geranium Balancing Oil' }
+    ],
+    ritual: {
+      headline: 'Radiant Facial Clarifying Ritual',
+      step1: 'Cleanse with Clear Skin Neem & Basil Bar for 60 seconds with lukewarm water.',
+      step2: 'Hold Damask Rose Hydrosol 6 inches away; mist liberally across face and neck.',
+      step3: 'Press 2 drops of Frankincense or Geranium floral oil into damp dermal pores.'
+    }
+  },
+
+  // 7. Analyse Skin
+  {
+    id: 'analyse-skin',
+    label: 'Analyse Skin',
+    title: 'AI Formulation Lab & Dermal Diagnostics',
+    tagline: 'Personalized Botanical Matching Algorithm for Your Unique Skin Metrics',
+    badge: 'AI Diagnostic',
+    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=400&q=80',
+    isAction: true,
+    actionTarget: 'ai-formulation-lab',
+    filterType: 'diagnostic',
+    filterValue: 'diagnostic',
+    subPills: [
+      { id: 'all', label: 'AI Diagnostic Tool' },
+      { id: 'barrier', label: 'Barrier Diagnostics' },
+      { id: 'acne', label: 'Acne & Sebum Profile' },
+      { id: 'scalp', label: 'Scalp Density Scan' }
+    ],
+    ritual: {
+      headline: 'Custom Diagnostic Formulation Path',
+      step1: 'Select your dominant skin or scalp symptom in the AI Formulation Lab.',
+      step2: 'Our algorithm maps botanical active compounds specifically to your barrier profile.',
+      step3: 'Receive verified batch laboratory certificates for every recommended extract.'
+    }
+  },
+
+  // 8. Body
+  {
+    id: 'body',
+    label: 'Body',
+    title: 'Cold Processed Body Bars & Muscle Care',
+    tagline: 'Artisanal Saponified Cleansing Bars & Fast-Acting Herbal Relief',
+    badge: 'Artisanal Body',
+    image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=400&q=80',
     filterType: 'category',
     filterValue: 'Cold Processed Soaps',
     subPills: [
-      { id: 'all', label: 'All Soaps (8 Bars)' },
-      { id: 'luxury-milks', label: 'Donkey & Cow Milk' },
-      { id: 'herbal-neem', label: 'Neem & Clear Skin' },
-      { id: 'scrub-coffee', label: 'Robusta Coffee Scrub' }
+      { id: 'all', label: 'All Body Bars & Oils' },
+      { id: 'donkey-milk', label: 'Donkey Milk & Saffron' },
+      { id: 'coffee-scrub', label: 'Robusta Coffee Scrub' },
+      { id: 'mineral-clay', label: 'Earthy Mineral Clay' },
+      { id: 'pain-relief', label: 'Active Pain Relief Roll-On' }
     ],
     ritual: {
-      headline: 'Artisanal Cold-Process Bath Ritual',
-      step1: 'Wet bar and work up creamy, rich botanical micro-bubbles in hands.',
-      step2: 'Massage across wet limbs; allow natural plant glycerin to soften the skin.',
-      step3: 'Store on a dry wooden soap dish between uses for maximum bar longevity.'
+      headline: 'Artisanal Body Restoration Bath',
+      step1: 'Work up a dense, creamy micro-foam with Donkey Milk or Coffee Scrub Bar.',
+      step2: 'Gently massage across limbs in circular motions to boost lymphatic circulation.',
+      step3: 'Glide the steel-ball Pain Relief Roll-On over tight neck and shoulder muscles.'
     }
   },
+
+  // 9. Eyes & Lips
   {
-    id: 'pure-oils',
-    label: 'Pure Oils',
-    title: 'Steam-Distilled Pure Essential & Therapeutic Oils',
-    tagline: 'Single-Origin Botanical Extractions with Batch Transparency',
-    badge: '100% Pure',
-    image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=400&q=80',
-    filterType: 'category',
-    filterValue: 'Pure Essential Oils',
+    id: 'eyes-lips',
+    label: 'Eyes & Lips',
+    title: 'Under-Eye De-Puffing & Beeswax Lip Care',
+    tagline: 'Soothe Late-Night Screen Strain & Heal Chapped or Peeling Lips',
+    badge: 'De-Puff & Tint',
+    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80',
+    filterType: 'eyes-lips',
+    filterValue: 'eyes-lips',
     subPills: [
-      { id: 'all', label: 'All Essential Oils' },
-      { id: 'rosemary-oil', label: 'Rosemary Terpene Oil' },
-      { id: 'frankincense-oil', label: 'Frankincense Resin' },
-      { id: 'geranium-oil', label: 'Geranium Floral Oil' },
-      { id: 'lemongrass-oil', label: 'Lemongrass Herbal' }
+      { id: 'all', label: 'All Eyes & Lips Care' },
+      { id: 'pink-lotus', label: 'Tinted Pink Lotus Balm' },
+      { id: 'rose-mist', label: 'Damask Rose Eye Tonic' },
+      { id: 'clear-balm', label: 'Lavender No-Tint Balm' },
+      { id: 'lipstick', label: 'Botanical Satin Lipstick' }
     ],
     ritual: {
-      headline: 'Aromatherapeutic Facial & Scalp Ritual',
-      step1: 'Always dilute 2–3 drops into a cold-pressed carrier oil (Jojoba, Brahmi, or Coconut).',
-      step2: 'Warm between palms and inhale aromatic terpenes deeply for sensory grounding.',
-      step3: 'Press gently onto target skin or scalp roots before evening rest.'
+      headline: 'Ocular Strain & Lip Nourishment Ritual',
+      step1: 'Rest chilled Damask Rose Hydrosol cotton pads over eyelids for 5 minutes.',
+      step2: 'Glide Tinted Pink Lotus Balm for a breathable moisture seal with natural flush.',
+      step3: 'Apply a generous coat of No-Tint Balm before sleep for intensive overnight conditioning.'
+    }
+  },
+
+  // 10. Baby
+  {
+    id: 'baby',
+    label: 'Baby',
+    title: 'Soft Baby & Ultra-Sensitive Newborn Care',
+    tagline: 'Crafted with Pure Desi A2 Cow Milk, Raw Shea Butter & Calming Lavender',
+    badge: 'Tear-Free Mild',
+    image: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=400&q=80',
+    filterType: 'baby',
+    filterValue: 'Baby & Gentle Care',
+    subPills: [
+      { id: 'all', label: 'All Baby Formulations' },
+      { id: 'a2-milk', label: 'Soft Baby A2 Cow Milk Bar' },
+      { id: 'shea-butter', label: 'Raw Shea Butter Nutrition' },
+      { id: 'gentle-care', label: 'Hypoallergenic Care' }
+    ],
+    ritual: {
+      headline: 'Gentle Baby Bathing Ritual',
+      step1: 'Lather Soft Baby Soap between warm hands until a velvety milk foam appears.',
+      step2: 'Gently cleanse baby\'s delicate folds without scrubbing or tugging.',
+      step3: 'Rinse with warm water and pat dry with a soft organic cotton towel.'
+    }
+  },
+
+  // 11. Hair Fall
+  {
+    id: 'hair-fall',
+    label: 'Hair Fall',
+    title: 'Hair Fall, Weak Roots & Scalp Shedding',
+    tagline: 'Targeted Botanical Actives for Stress, Hard Water & Monsoon Shedding',
+    badge: 'Root Shield',
+    image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=400&q=80',
+    filterType: 'concern',
+    filterValue: 'Hair Fall & Scalp',
+    subPills: [
+      { id: 'all', label: 'All Hair Fall Solutions' },
+      { id: 'brahmi-oil', label: 'Brahmi & Neem Hair Oil' },
+      { id: 'rosemary-tonic', label: 'Rosemary Hydrosol Mist' },
+      { id: 'pure-rosemary', label: 'Rosemary Pure Essential Oil' }
+    ],
+    ritual: {
+      headline: 'Follicle Anchor & Density Ritual',
+      step1: 'Warm Brahmi & Neem Hair Oil; massage deeply into scalp roots for 10 minutes.',
+      step2: 'Wash gently with lukewarm water and a mild botanical cleanser.',
+      step3: 'Mist clean scalp roots with steam-distilled Rosemary Hydrosol to stimulate follicle blood flow.'
     }
   }
 ];
@@ -277,7 +281,7 @@ export function getConcernById(id) {
         c.id === id ||
         c.id === normalized ||
         c.label.toLowerCase().includes(id.toLowerCase()) ||
-        c.filterValue.toLowerCase().includes(id.toLowerCase())
+        (c.filterValue && c.filterValue.toLowerCase().includes(id.toLowerCase()))
     ) || CONCERNS_DATA[0]
   );
 }

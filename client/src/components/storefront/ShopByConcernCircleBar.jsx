@@ -132,29 +132,29 @@ export default function ShopByConcernCircleBar({
               >
                 {/* Circular Photo Container */}
                 <div className="relative">
-                  {/* Outer Circular Ring: Nat Habit / Plum Inspired */}
+                  {/* Outer Circular Ring: Exact Match to Nat Habit / Plum Reference */}
                   <div
-                    className={`w-18 h-18 sm:w-20 sm:h-20 rounded-full p-[2.5px] transition-all duration-300 flex items-center justify-center ${
+                    className={`w-18 h-18 sm:w-20 sm:h-20 rounded-full p-[2px] transition-all duration-300 flex items-center justify-center ${
                       item.isPromo
-                        ? 'bg-gradient-to-tr from-rose-600 via-pink-500 to-amber-400 shadow-md ring-2 ring-rose-300/60 ring-offset-2'
+                        ? 'border-2 border-rose-600 ring-2 ring-rose-200 ring-offset-1 shadow-xs'
                         : isSelected
-                        ? 'bg-gradient-to-tr from-[#5B0868] to-purple-400 ring-2 ring-[#5B0868] ring-offset-2 shadow-md'
-                        : 'bg-gradient-to-tr from-rose-200 via-amber-200 to-rose-100 group-hover:from-purple-400 group-hover:to-pink-400 group-hover:shadow-md'
+                        ? 'border-2 border-[#5B0868] ring-2 ring-purple-200 ring-offset-1 shadow-xs'
+                        : 'border-[1.5px] border-[#F5BEBE] hover:border-[#5B0868] hover:shadow-xs'
                     }`}
                   >
                     {/* Inner Photo Circle */}
-                    <div className="w-full h-full rounded-full overflow-hidden bg-amber-50 relative border-2 border-white shadow-inner">
+                    <div className="w-full h-full rounded-full overflow-hidden bg-amber-50/50 relative">
                       <img
                         src={item.image}
                         alt={item.label}
-                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-115"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
                       />
 
                       {/* Nat Habit Exact Match: Flash Deals 40% OFF overlay badge */}
                       {item.isPromo && (
-                        <div className="absolute inset-x-0 bottom-0 top-0 bg-rose-900/40 backdrop-blur-[0.5px] flex flex-col items-center justify-center text-white px-1">
-                          <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-tight text-white drop-shadow leading-none">
+                        <div className="absolute inset-0 bg-rose-900/45 backdrop-blur-[0.5px] flex flex-col items-center justify-center text-white px-1">
+                          <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tight text-white drop-shadow leading-none">
                             Flash Deals
                           </span>
                           <span className="text-[11px] sm:text-[12px] font-black text-amber-200 tracking-tighter leading-none mt-0.5">
