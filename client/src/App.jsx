@@ -158,6 +158,10 @@ function SpaLandingContent() {
         onOpenPortal={handleOpenPortal}
         onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
         onOpenSurprise={() => setIsSurpriseOpen(true)}
+        onSearch={(query) => {
+          setCatalogSearch(query);
+          handleScrollTo('formulations');
+        }}
       />
 
       {/* If Checkout is triggered, render on top or full modal */}
@@ -199,13 +203,12 @@ function SpaLandingContent() {
           />
         </main>
       ) : (
-        <main className="flex-grow space-y-0 pt-[100px] sm:pt-[118px] lg:pt-[122px]">
+        <main className="flex-grow space-y-0 pt-[88px] sm:pt-[104px] lg:pt-[108px]">
           
-          {/* Top Panel: Photo-Shaped Circular Navigation + Search Bar */}
-          <div className="bg-white border-b border-purple-100/80 shadow-xs pt-3 pb-3 sm:pb-4">
+          {/* Top Panel: Photo-Shaped Circular Navigation (Centered & Sleek) */}
+          <div className="bg-white border-b border-gray-100 shadow-xs py-1.5 sm:py-2">
             <ShopByConcernCircleBar
               variant="compact"
-              showSearchBar={true}
               onSelectConcern={(concern) => {
                 const concernId = typeof concern === 'object' ? concern.id : concern;
                 if (concernId === 'analyse-skin') {
@@ -215,14 +218,6 @@ function SpaLandingContent() {
                 setActiveConcernPage(concernId);
                 window.location.hash = `#concern=${concernId}`;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              onSelectProduct={(prod) => {
-                setActivePdpProduct(prod);
-                window.location.hash = `#product=${prod.id}`;
-              }}
-              onSearchSubmit={(query) => {
-                setCatalogSearch(query);
-                handleScrollTo('formulations');
               }}
             />
           </div>

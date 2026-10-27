@@ -4,7 +4,7 @@ import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 
-export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onOpenSurprise }) {
+export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onOpenSurprise, onSearch }) {
   const { itemCount, setIsDrawerOpen } = useCart();
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -37,6 +37,9 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    if (onSearch) {
+      onSearch(searchVal);
+    }
     onScrollTo('formulations');
   };
 
@@ -186,7 +189,10 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                 type="text"
                 placeholder="Search for formulations, soaps, oils..."
                 value={searchVal}
-                onChange={(e) => setSearchVal(e.target.value)}
+                onChange={(e) => {
+                  setSearchVal(e.target.value);
+                  onSearch?.(e.target.value);
+                }}
                 className="w-56 2xl:w-64 pl-9 pr-4 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white transition-all"
               />
               <Search className="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none" />
