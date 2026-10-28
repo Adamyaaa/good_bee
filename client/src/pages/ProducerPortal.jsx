@@ -464,16 +464,10 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
           <div className="flex flex-wrap items-center gap-3 self-stretch lg:self-auto justify-end">
             <button
               onClick={() => setShowSubmitModal(true)}
-              className="px-5 py-2.5 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-brand-gold-dark transition-all flex items-center gap-2 shadow-md hover:shadow-lg"
+              className="px-5 py-2.5 bg-[#5B0868] text-white text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-[#480653] transition-all flex items-center gap-2 shadow-xs"
             >
               <Plus className="w-4 h-4" />
               <span>Submit Botanical Batch</span>
-            </button>
-            <button
-              onClick={onNavigateHome}
-              className="px-4 py-2 bg-brand-cream border border-brand-gold/30 rounded-full text-xs font-medium text-brand-charcoal hover:bg-brand-sand/50 transition-colors"
-            >
-              ← Storefront
             </button>
           </div>
         </div>

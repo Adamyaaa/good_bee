@@ -63,6 +63,9 @@ function SpaLandingContent() {
         setActiveConcernPage(targetConcern);
         setIsCheckoutOpen(false);
         setActivePdpProduct(null);
+      } else if (hash && hash.startsWith('#portal=')) {
+        const targetRole = hash.replace('#portal=', '').toUpperCase();
+        setPortalModalConfig({ isOpen: true, role: targetRole });
       }
     };
     handleHash();

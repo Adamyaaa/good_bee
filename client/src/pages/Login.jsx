@@ -78,11 +78,14 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
         
         {/* Brand Heading */}
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 mx-auto rounded-full bg-white p-1 border border-brand-gold/40 shadow-sm flex items-center justify-center">
+          <div className="w-14 h-14 mx-auto rounded-full bg-white p-2 border border-brand-gold/40 shadow-sm flex items-center justify-center">
             <img
-              src="/assets/goodbee-white-logo.png"
+              src="/assets/goodbee-bee-mark-gold.png"
               alt="Good Bee Emblem"
               className="w-full h-full object-contain"
+              onError={(e) => {
+                e.target.src = '/assets/goodbee-bee-mark.png';
+              }}
             />
           </div>
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-brand-charcoal">
@@ -93,8 +96,8 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
           </p>
         </div>
 
-        {/* 5-Role Horizontal Selector Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-brand-cream/80 p-2 rounded-2xl border border-brand-gold/30 shadow-sm">
+        {/* 4-Role Horizontal Selector Tabs */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-brand-cream/80 p-2 rounded-2xl border border-brand-gold/30 shadow-sm">
           {ROLE_TABS.map((tab) => {
             const Icon = tab.icon;
             const isSelected = selectedRole === tab.id;

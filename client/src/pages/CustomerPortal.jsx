@@ -50,13 +50,6 @@ export default function CustomerPortal({ onNavigateHome }) {
               </p>
             </div>
           </div>
-
-          <button
-            onClick={onNavigateHome}
-            className="px-4 py-2 bg-brand-cream border border-brand-gold/30 rounded-full text-xs font-medium text-brand-charcoal hover:bg-brand-sand/50"
-          >
-            Storefront
-          </button>
         </div>
 
         {/* Loyalty Reward Card */}
