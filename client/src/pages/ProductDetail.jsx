@@ -71,12 +71,12 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
   )}`;
 
   return (
-    <div className="pt-28 sm:pt-36 pb-16 bg-brand-ivory min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="pt-[74px] sm:pt-[78px] pb-16 bg-brand-ivory min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3 sm:space-y-4">
         
         {/* Breadcrumb / Back button */}
-        <div className="flex items-center gap-2 text-xs text-brand-muted">
-          <button onClick={onBack} className="hover:text-brand-charcoal flex items-center gap-1">
+        <div className="flex items-center gap-2 text-xs text-brand-muted py-1 border-b border-gray-200/80">
+          <button onClick={onBack} className="hover:text-[#5B0868] flex items-center gap-1 font-semibold">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Catalog</span>
           </button>
@@ -87,15 +87,15 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
         </div>
 
         {/* Main Product Showcase Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
-          {/* Gallery Stage (Col 6) */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="relative rounded-3xl overflow-hidden border border-gray-200 bg-[#FAF7F2] aspect-square shadow-sm">
+          {/* Gallery Stage (Col 5) */}
+          <div className="lg:col-span-5 space-y-3">
+            <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-[#FAF7F2] aspect-square max-h-[min(440px,calc(100vh-170px))] w-full shadow-xs flex items-center justify-center">
               <img
                 src={selectedImage || p.image}
                 alt={p.title}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-contain p-2 sm:p-3"
               />
               {p.badge && (
                 <span className="absolute top-4 left-4 px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-brand-charcoal text-brand-ivory rounded-lg shadow-sm">
@@ -122,8 +122,8 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
             )}
           </div>
 
-          {/* Details & Actions Stage (Col 6) */}
-          <div className="lg:col-span-6 space-y-6">
+          {/* Details & Actions Stage (Col 7) */}
+          <div className="lg:col-span-7 space-y-4">
             
             <div className="space-y-2">
               <div className="flex items-center gap-2">

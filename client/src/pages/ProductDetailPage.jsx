@@ -126,85 +126,85 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
   ];
 
   return (
-    <div className="pt-28 pb-20 bg-brand-ivory min-h-screen text-brand-charcoal">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="pt-[74px] sm:pt-[78px] pb-16 bg-brand-ivory min-h-screen text-brand-charcoal">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3 sm:space-y-4">
         
-        {/* Navigation Breadcrumb Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-brand-gold/20 gap-3">
+        {/* Sleek Compact Navigation Bar */}
+        <div className="flex items-center justify-between py-1.5 border-b border-gray-200/80 text-xs">
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-brand-muted hover:text-brand-charcoal transition-colors cursor-pointer self-start"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-[#5B0868] transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Formulation Archive</span>
           </button>
 
-          <div className="flex items-center gap-3 self-end sm:self-auto">
-            <span className="text-[11px] text-brand-muted hidden md:inline">
-              Home / {product.category} / <span className="text-brand-charcoal font-medium">{product.title}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] text-gray-400 hidden md:inline truncate max-w-sm lg:max-w-md">
+              Home / {product.category} / <span className="text-gray-700 font-medium">{product.title}</span>
             </span>
             <button
               onClick={handleShare}
-              className="p-2 bg-white rounded-xl border border-brand-gold/30 hover:border-brand-gold transition-colors text-xs text-brand-charcoal flex items-center gap-1.5 cursor-pointer shadow-sm"
+              className="px-2.5 py-1 bg-white rounded-lg border border-gray-200 hover:border-[#5B0868] transition-colors text-xs text-gray-700 flex items-center gap-1.5 cursor-pointer shadow-2xs"
               title="Share formulation URL"
             >
-              <Share2 className="w-3.5 h-3.5 text-brand-gold-dark" />
+              <Share2 className="w-3.5 h-3.5 text-[#5B0868]" />
               <span>{copiedLink ? 'Link Copied!' : 'Share'}</span>
             </button>
           </div>
         </div>
 
         {/* Product Showcase Master Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-start">
           
-          {/* Left Column (Col 6): 4-5 High-Resolution Gallery Viewer */}
-          <div className="lg:col-span-6 space-y-4">
+          {/* Left Column (Col 5): Focused High-Resolution Visual Stage */}
+          <div className="lg:col-span-5 space-y-3">
             
             {/* Main Stage Image Viewport */}
-            <div className="relative rounded-3xl overflow-hidden border border-gray-200 bg-[#FAF7F2] aspect-square shadow-sm group">
+            <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-[#FAF7F2] aspect-square max-h-[min(440px,calc(100vh-170px))] w-full shadow-xs group flex items-center justify-center">
               <img
                 src={gallery[selectedImageIndex]?.url || product.image}
                 alt={product.title}
-                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-contain p-2 sm:p-3 transition-transform duration-500 group-hover:scale-105"
               />
 
               {/* Tag Badges */}
-              <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+              <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                 {product.badge && (
-                  <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-[#1e1e1e] text-white rounded-md shadow-md">
+                  <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-[#1e1e1e] text-white rounded-md shadow-md">
                     {product.badge}
                   </span>
                 )}
-                <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-[#5B0868] border border-purple-200 rounded-md shadow-sm">
+                <span className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-purple-100 text-[#5B0868] border border-purple-200 rounded shadow-2xs">
                   {discountPercent}% OFF MSRP
                 </span>
               </div>
 
               {/* Asset Descriptor Pill */}
-              <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between pointer-events-none">
-                <span className="px-3 py-1 rounded-xl bg-brand-charcoal/85 backdrop-blur-md text-white text-[10px] font-bold tracking-wider uppercase border border-white/20">
+              <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
+                <span className="px-2.5 py-0.5 rounded-lg bg-brand-charcoal/85 backdrop-blur-md text-white text-[9px] font-bold tracking-wider uppercase border border-white/20">
                   {gallery[selectedImageIndex]?.label}
                 </span>
-                <span className="text-[10px] text-brand-ivory bg-black/60 px-2 py-0.5 rounded-lg backdrop-blur-sm">
+                <span className="text-[9px] text-brand-ivory bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">
                   {selectedImageIndex + 1} of {gallery.length} High-Res Assets
                 </span>
               </div>
             </div>
 
             {/* 4–5 Image Thumbnails Strip */}
-            <div className="grid grid-cols-5 gap-2.5">
+            <div className="grid grid-cols-5 gap-2">
               {gallery.map((asset, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedImageIndex(i)}
-                  className={`aspect-square rounded-2xl overflow-hidden border-2 transition-all p-0.5 relative cursor-pointer ${
+                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-all p-0.5 relative cursor-pointer ${
                     selectedImageIndex === i
-                      ? 'border-[#5B0868] shadow-md scale-102 ring-2 ring-purple-200'
+                      ? 'border-[#5B0868] shadow-sm scale-102 ring-2 ring-purple-200'
                       : 'border-transparent opacity-70 hover:opacity-100 bg-white'
                   }`}
                 >
-                  <img src={asset.url} alt={asset.label} className="w-full h-full object-cover rounded-xl" />
-                  <span className="absolute bottom-1 inset-x-1 text-[8px] font-bold truncate text-center bg-black/60 text-white rounded px-0.5">
+                  <img src={asset.url} alt={asset.label} className="w-full h-full object-cover rounded-lg" />
+                  <span className="absolute bottom-0.5 inset-x-0.5 text-[7px] font-bold truncate text-center bg-black/60 text-white rounded px-0.5">
                     {asset.tag}
                   </span>
                 </button>
@@ -212,46 +212,46 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             </div>
 
             {/* Brand Purity Assurance Seal */}
-            <div className="p-4 rounded-2xl bg-white border border-brand-gold/20 flex items-center justify-between text-xs text-brand-charcoal shadow-sm">
-              <div className="flex items-center gap-2.5">
-                <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+            <div className="p-3 rounded-xl bg-white border border-gray-200 flex items-center justify-between text-xs text-brand-charcoal shadow-2xs">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                 <div>
-                  <span className="font-bold block text-[11px]">Active-Stabilization Batch Certified</span>
-                  <span className="text-[10px] text-brand-muted">Gas chromatography tested 100% pure botanical chemistry</span>
+                  <span className="font-bold block text-[10px]">Active-Stabilization Batch Certified</span>
+                  <span className="text-[9px] text-brand-muted">Gas chromatography tested 100% pure botanical chemistry</span>
                 </div>
               </div>
-              <span className="font-mono text-[10px] text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
+              <span className="font-mono text-[9px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                 100% Natural
               </span>
             </div>
 
           </div>
 
-          {/* Right Column (Col 6): Purchase Controls & Botanical Narrative */}
-          <div className="lg:col-span-6 space-y-6">
+          {/* Right Column (Col 7): Purchase Controls & Botanical Narrative */}
+          <div className="lg:col-span-7 space-y-3.5">
             
-            <div className="space-y-3">
+            <div className="space-y-1.5">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-3 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-[#5B0868] border border-purple-200">
+                <span className="px-2.5 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider bg-purple-50 text-[#5B0868] border border-purple-200">
                   {product.category}
                 </span>
                 <span className="text-xs text-brand-muted font-mono">{product.volume}</span>
                 <span className="text-xs text-brand-muted">• SKU: {product.sku || 'GB-NAT-01'}</span>
               </div>
 
-              <h1 className="font-serif text-3xl sm:text-4xl font-medium text-brand-charcoal leading-tight">
+              <h1 className="font-serif text-2xl sm:text-3xl font-medium text-brand-charcoal leading-tight">
                 {product.title}
               </h1>
 
-              <p className="text-xs sm:text-sm text-brand-muted italic font-sans leading-relaxed">
+              <p className="text-xs text-brand-muted italic font-sans leading-relaxed">
                 {product.subtitle || '100% Pure Botanical Formulation • Cold-Stabilized Actives'}
               </p>
 
               {/* Star Rating & Verified Count */}
-              <div className="flex items-center gap-2 text-xs pt-1">
+              <div className="flex items-center gap-2 text-xs pt-0.5">
                 <div className="flex text-amber-500 gap-0.5">
                   {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <Star key={idx} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 <span className="font-bold text-brand-charcoal">{product.rating || '4.9'}</span>
@@ -260,38 +260,85 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             </div>
 
             {/* Price & Savings Block */}
-            <div className="p-5 rounded-2xl bg-brand-cream/70 border border-brand-gold/30 flex items-baseline justify-between flex-wrap gap-3">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF7F2] border border-gray-200 flex items-baseline justify-between flex-wrap gap-2">
               <div className="space-y-0.5">
-                <div className="flex items-baseline gap-3">
-                  <span className="font-sans text-3xl font-bold text-brand-charcoal">
+                <div className="flex items-baseline gap-2.5">
+                  <span className="font-sans text-2xl sm:text-3xl font-bold text-brand-charcoal">
                     ₹{product.price.toLocaleString('en-IN')}
                   </span>
                   <span className="text-sm text-brand-muted line-through font-mono">
                     ₹{effectiveMrp.toLocaleString('en-IN')}
                   </span>
-                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
                     Save {discountPercent}%
                   </span>
                 </div>
-                <p className="text-[11px] text-brand-muted">Inclusive of all taxes • Free express shipping above ₹999</p>
+                <p className="text-[10px] text-brand-muted">Inclusive of all taxes • Free express shipping above ₹999</p>
               </div>
 
               {typeof product.stock === 'number' && product.stock > 0 && product.stock < 15 && (
-                <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200">
+                <span className="text-[9px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
                   Only {product.stock} units left in batch
                 </span>
               )}
             </div>
 
+            {/* Quantity Selector & Action Buttons (Above the Fold) */}
+            <div className="space-y-2.5 pt-1">
+              <div className="flex items-center gap-2.5">
+                <div className="flex items-center border border-gray-300 rounded-xl bg-white px-2.5 py-1.5 text-xs shadow-2xs">
+                  <span className="text-[10px] text-brand-muted mr-2">Qty:</span>
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="font-bold px-1.5 py-0.5 hover:bg-gray-100 rounded text-brand-charcoal cursor-pointer"
+                  >
+                    -
+                  </button>
+                  <span className="font-bold px-2.5 text-xs">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="font-bold px-1.5 py-0.5 hover:bg-gray-100 rounded text-brand-charcoal cursor-pointer"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  onClick={handleAdd}
+                  className="flex-1 py-2.5 px-4 bg-white hover:bg-gray-50 text-brand-charcoal border border-gray-300 hover:border-[#5B0868] rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <ShoppingBag className="w-4 h-4 text-[#5B0868]" />
+                  <span>Add to Shopping Bag</span>
+                </button>
+              </div>
+
+              {/* Instant Buy with UPI */}
+              <button
+                onClick={() => onInstantBuy && onInstantBuy(product, quantity)}
+                className="w-full py-3 px-5 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
+                <span>Instant Buy Now with Dynamic UPI (₹{((product.price || 0) * quantity).toLocaleString('en-IN')})</span>
+              </button>
+
+              {/* Added notice */}
+              {addedNotice && (
+                <div className="p-2.5 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs flex items-center gap-2 animate-in fade-in">
+                  <Check className="w-4 h-4 text-emerald-600" />
+                  <span>Added {quantity}x "{product.title}" to your shopping bag!</span>
+                </div>
+              )}
+            </div>
+
             {/* Primary Concerns Tagged */}
             {product.concerns && product.concerns.length > 0 && (
-              <div className="space-y-1.5">
+              <div className="space-y-1 pt-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-brand-muted block">
                   Targeted Skin Realities:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {product.concerns.map((c, i) => (
-                    <span key={i} className="px-3 py-1 rounded-lg bg-white border border-purple-100 text-xs font-medium text-brand-charcoal shadow-2xs">
+                    <span key={i} className="px-2.5 py-0.5 rounded-lg bg-white border border-gray-200 text-xs font-medium text-brand-charcoal shadow-2xs">
                       🎯 {c}
                     </span>
                   ))}
@@ -300,67 +347,20 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             )}
 
             {/* Short Description */}
-            <p className="text-xs sm:text-sm text-brand-charcoal/80 leading-relaxed font-sans">
+            <p className="text-xs text-brand-charcoal/80 leading-relaxed font-sans pt-1">
               {product.description || product.shortDescription}
             </p>
 
-            {/* Quantity Selector & Action Buttons */}
-            <div className="space-y-3 pt-2">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center border border-gray-300 rounded-xl bg-white px-3 py-2 text-xs shadow-sm">
-                  <span className="text-[11px] text-brand-muted mr-3">Qty:</span>
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="font-bold px-2 py-0.5 hover:bg-gray-100 rounded text-brand-charcoal cursor-pointer"
-                  >
-                    -
-                  </button>
-                  <span className="font-bold px-3 text-sm">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="font-bold px-2 py-0.5 hover:bg-gray-100 rounded text-brand-charcoal cursor-pointer"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <button
-                  onClick={handleAdd}
-                  className="flex-1 py-3 px-6 bg-white hover:bg-brand-cream text-brand-charcoal border border-brand-gold rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <ShoppingBag className="w-4 h-4 text-brand-gold-dark" />
-                  <span>Add to Shopping Bag</span>
-                </button>
-              </div>
-
-              {/* Instant Buy with UPI */}
-              <button
-                onClick={() => onInstantBuy && onInstantBuy(product, quantity)}
-                className="w-full py-3.5 px-6 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
-                <span>Instant Buy Now with Dynamic UPI (₹{((product.price || 0) * quantity).toLocaleString('en-IN')})</span>
-              </button>
-
-              {/* Added notice */}
-              {addedNotice && (
-                <div className="p-3 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs flex items-center gap-2 animate-in fade-in">
-                  <Check className="w-4 h-4 text-emerald-600" />
-                  <span>Added {quantity}x "{product.title}" to your shopping bag!</span>
-                </div>
-              )}
-
-              {/* Direct Concierge WhatsApp Query */}
-              <a
-                href={whatsappInquiryUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
-              >
-                <MessageCircle className="w-4 h-4 text-emerald-600" />
-                <span>Ask Skincare Concierge on WhatsApp about this formulation</span>
-              </a>
-            </div>
+            {/* Direct Concierge WhatsApp Query */}
+            <a
+              href={whatsappInquiryUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2 px-3 bg-emerald-50/70 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 rounded-xl text-[11px] font-semibold flex items-center justify-center gap-2 transition-colors"
+            >
+              <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Ask Skincare Concierge on WhatsApp about this formulation</span>
+            </a>
 
           </div>
 
