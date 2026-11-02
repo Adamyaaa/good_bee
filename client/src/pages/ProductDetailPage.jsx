@@ -36,42 +36,15 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
   if (!product) return null;
 
-  // 4 to 5 High-Resolution Image standard per SKU (Meeting Requirement)
-  const defaultGallery = [
-    {
-      url: product.image,
-      label: 'Studio Hero Pack',
-      tag: 'Primary Pack'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=85',
-      label: 'Botanical Actives Infographic',
-      tag: 'Ingredients Poster'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=85',
-      label: 'Artisanal Cold Extraction',
-      tag: 'Process Timeline'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=1200&q=85',
-      label: 'Clinical Results & Efficacy',
-      tag: 'Benefit Poster'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1512290900672-1f0230f878f4?auto=format&fit=crop&w=1200&q=85',
-      label: 'Dewy Skin Feel & Texture',
-      tag: 'Texture Swatch'
-    }
-  ];
+  // Authentic product images only (no placeholder stock images)
+  const productImages = (product.gallery && product.gallery.length > 0)
+    ? product.gallery
+    : (product.image ? [product.image] : []);
 
-  const gallery = (product.gallery && product.gallery.length > 1)
-    ? product.gallery.map((url, idx) => ({
-        url,
-        label: idx === 0 ? 'Studio Hero Pack' : idx === 1 ? 'Botanical Actives Infographic' : idx === 2 ? 'Artisanal Cold Extraction' : idx === 3 ? 'Clinical Results' : 'Texture Swatch',
-        tag: idx === 0 ? 'Primary Pack' : idx === 1 ? 'Actives' : idx === 2 ? 'Process' : 'Results'
-      }))
-    : defaultGallery;
+  const gallery = productImages.map((url, idx) => ({
+    url,
+    label: idx === 0 ? 'Primary Pack' : `Angle ${idx + 1}`
+  }));
 
   const effectiveMrp = product.mrp && product.mrp > product.price
     ? product.mrp
@@ -179,51 +152,26 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                   {discountPercent}% OFF MSRP
                 </span>
               </div>
+            </div>
 
-              {/* Asset Descriptor Pill */}
-              <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between pointer-events-none">
-                <span className="px-2.5 py-0.5 rounded-lg bg-brand-charcoal/85 backdrop-blur-md text-white text-[9px] font-bold tracking-wider uppercase border border-white/20">
-                  {gallery[selectedImageIndex]?.label}
-                </span>
-                <span className="text-[9px] text-brand-ivory bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">
-                  {selectedImageIndex + 1} of {gallery.length} High-Res Assets
-                </span>
+            {/* Gallery Thumbnails (Only when multiple authentic assets exist) */}
+            {gallery.length > 1 && (
+              <div className="flex items-center gap-2 pt-1">
+                {gallery.map((asset, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedImageIndex(i)}
+                    className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all p-0.5 relative cursor-pointer bg-white ${
+                      selectedImageIndex === i
+                        ? 'border-[#5B0868] shadow-sm ring-1 ring-[#5B0868]'
+                        : 'border-gray-200 opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img src={asset.url} alt={`Angle ${i + 1}`} className="w-full h-full object-cover rounded-lg" />
+                  </button>
+                ))}
               </div>
-            </div>
-
-            {/* 4–5 Image Thumbnails Strip */}
-            <div className="grid grid-cols-5 gap-2">
-              {gallery.map((asset, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSelectedImageIndex(i)}
-                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-all p-0.5 relative cursor-pointer ${
-                    selectedImageIndex === i
-                      ? 'border-[#5B0868] shadow-sm scale-102 ring-2 ring-purple-200'
-                      : 'border-transparent opacity-70 hover:opacity-100 bg-white'
-                  }`}
-                >
-                  <img src={asset.url} alt={asset.label} className="w-full h-full object-cover rounded-lg" />
-                  <span className="absolute bottom-0.5 inset-x-0.5 text-[7px] font-bold truncate text-center bg-black/60 text-white rounded px-0.5">
-                    {asset.tag}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Brand Purity Assurance Seal */}
-            <div className="p-3 rounded-xl bg-white border border-gray-200 flex items-center justify-between text-xs text-brand-charcoal shadow-2xs">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <div>
-                  <span className="font-bold block text-[10px]">Active-Stabilization Batch Certified</span>
-                  <span className="text-[9px] text-brand-muted">Gas chromatography tested 100% pure botanical chemistry</span>
-                </div>
-              </div>
-              <span className="font-mono text-[9px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                100% Natural
-              </span>
-            </div>
+            )}
 
           </div>
 
@@ -332,14 +280,17 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
             {/* Primary Concerns Tagged */}
             {product.concerns && product.concerns.length > 0 && (
-              <div className="space-y-1 pt-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-muted block">
-                  Targeted Skin Realities:
+              <div className="space-y-1.5 pt-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 block">
+                  Target Concerns:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {product.concerns.map((c, i) => (
-                    <span key={i} className="px-2.5 py-0.5 rounded-lg bg-white border border-gray-200 text-xs font-medium text-brand-charcoal shadow-2xs">
-                      🎯 {c}
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 rounded-md bg-[#FAF7F2] border border-gray-200 text-xs font-medium text-gray-700"
+                    >
+                      {c}
                     </span>
                   ))}
                 </div>
@@ -350,17 +301,6 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             <p className="text-xs text-brand-charcoal/80 leading-relaxed font-sans pt-1">
               {product.description || product.shortDescription}
             </p>
-
-            {/* Direct Concierge WhatsApp Query */}
-            <a
-              href={whatsappInquiryUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-2 px-3 bg-emerald-50/70 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 rounded-xl text-[11px] font-semibold flex items-center justify-center gap-2 transition-colors"
-            >
-              <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Ask Skincare Concierge on WhatsApp about this formulation</span>
-            </a>
 
           </div>
 
@@ -520,7 +460,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                 {product.ritual || 'Glide gently across clean, slightly damp skin. Massage in upward circular motions for 60 seconds to stimulate cellular micro-circulation. Follow with your favorite Good Bee mist or oil.'}
               </p>
               <div className="p-4 rounded-2xl bg-purple-50 border border-purple-200 text-xs text-[#5B0868] space-y-1">
-                <span className="font-bold block">💡 Concierge Efficacy Tip:</span>
+                <span className="font-bold block">Application Tip:</span>
                 <p>
                   For maximum absorption of plant ceramides, apply immediately after showering when cutaneous pores are warm and receptive.
                 </p>
@@ -588,9 +528,6 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                       <span className="text-[11px] text-brand-muted">{product.reviewsCount || 124} Verified Patron Ratings</span>
                     </div>
                   </div>
-                  <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                    99.2% Would Recommend
-                  </span>
                 </div>
 
                 <div className="space-y-4 pt-2">
