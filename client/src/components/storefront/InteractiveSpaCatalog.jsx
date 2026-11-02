@@ -97,7 +97,7 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
             <span>COMPLETE FORMULATION ARCHIVE</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-charcoal font-medium">
-            Formulations & Targeted Diagnostics
+            Formulations & Targeted Botanical Care
           </h2>
           <p className="text-sm text-brand-charcoal/70">
             Filtered in real time. Every botanical active is cold-stabilized and batch traceable.

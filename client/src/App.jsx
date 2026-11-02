@@ -12,7 +12,7 @@ import CartDrawer from './components/storefront/CartDrawer';
 // SPA Sections
 import Hero from './components/storefront/Hero';
 import SkincareRoutineGuide from './components/storefront/SkincareRoutineGuide';
-import AiFormulationLab from './components/storefront/AiFormulationLab';
+// Kept for future AI integration review: import AiFormulationLab from './components/storefront/AiFormulationLab';
 import ShopByConcern from './components/storefront/ShopByConcern';
 import InteractiveSpaCatalog from './components/storefront/InteractiveSpaCatalog';
 import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
@@ -214,10 +214,6 @@ function SpaLandingContent() {
               variant="compact"
               onSelectConcern={(concern) => {
                 const concernId = typeof concern === 'object' ? concern.id : concern;
-                if (concernId === 'analyse-skin') {
-                  handleScrollTo('ai-formulation-lab');
-                  return;
-                }
                 setActiveConcernPage(concernId);
                 window.location.hash = `#concern=${concernId}`;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -236,18 +232,11 @@ function SpaLandingContent() {
             onSelectProduct={(prod) => setQuickViewProduct(prod)}
           />
 
-          {/* 3. AI Formulation Lab & Skin Diagnostic Matcher */}
-          <AiFormulationLab />
-
-          {/* 4. Interactive Diagnostic Skin Concerns */}
+          {/* 3. Interactive Botanical Skin Concerns */}
           <div id="shop-by-concern" className="scroll-mt-28">
             <ShopByConcern
               onSelectConcern={(concern) => {
                 const concernId = typeof concern === 'object' ? concern.id : concern;
-                if (concernId === 'analyse-skin') {
-                  handleScrollTo('ai-formulation-lab');
-                  return;
-                }
                 setActiveConcernPage(concernId);
                 window.location.hash = `#concern=${concernId}`;
                 window.scrollTo({ top: 0, behavior: 'smooth' });

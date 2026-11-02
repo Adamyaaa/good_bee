@@ -91,7 +91,7 @@ export const CONCERNS_DATA = [
       image: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=800&q=80',
       bgGradient: 'from-[#FFF8E7] via-[#FFF3D1] to-[#FCEABB]'
     },
-    ritualHeadline: 'Your Daily Diagnostic Facial Routine for Luminous Clarity',
+    ritualHeadline: 'Your Daily Botanical Facial Routine for Luminous Clarity',
     productIds: [
       'gb_prod_clear_skin_soap',
       'gb_prod_turmeric_soap',

@@ -457,7 +457,7 @@ export default function ConcernFilterPage({
             
             <div className="text-center max-w-2xl mx-auto space-y-1">
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#5B0868]">
-                Application Ritual & Diagnostic Method
+                Application Ritual & Botanical Method
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-medium text-gray-900">
                 {activeConcern.ritual.headline || `The 3-Step Routine for ${activeConcern.label}`}

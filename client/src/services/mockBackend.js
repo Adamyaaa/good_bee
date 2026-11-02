@@ -474,7 +474,7 @@ export const DEFAULT_SITE_CONTENT = {
   heroHeadline: 'Nature, Refined Through Research.',
   heroDescription: 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.',
   heroCtaPrimary: 'Explore Pure Formulations',
-  heroCtaSecondary: 'Diagnostic Routine',
+  heroCtaSecondary: 'Daily Regimen Guide',
 
   // 3. Research & Formulation Philosophy Section
   philosophyBadge: 'Formulation Philosophy',

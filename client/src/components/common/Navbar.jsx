@@ -145,13 +145,6 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
             </button>
 
             <button
-              onClick={() => onScrollTo('ai-formulation-lab')}
-              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
-            >
-              AI Diagnostic
-            </button>
-
-            <button
               onClick={() => onScrollTo('shop-by-concern')}
               className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
             >
@@ -358,15 +351,6 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
             className="w-full text-left text-sm font-semibold text-[#5B0868] py-2 border-b border-gray-100"
           >
             How To Apply (Daily Regimen)
-          </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onScrollTo('ai-formulation-lab');
-            }}
-            className="w-full text-left text-sm font-semibold text-gray-700 py-2 border-b border-gray-100"
-          >
-            AI Skin Diagnostic
           </button>
           <button
             onClick={() => {

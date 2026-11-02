@@ -1555,7 +1555,7 @@ export default function AdminDashboard({ onNavigateHome }) {
                         <label className="block mb-1 text-gray-600 font-medium">Secondary CTA Button Label</label>
                         <input
                           type="text"
-                          value={siteContent.heroCtaSecondary || 'Diagnostic Concerns'}
+                          value={siteContent.heroCtaSecondary || 'Daily Regimen Guide'}
                           onChange={(e) => setSiteContent({ ...siteContent, heroCtaSecondary: e.target.value })}
                           className="w-full p-2.5 bg-white border border-gray-200 rounded-xl text-gray-900"
                         />
