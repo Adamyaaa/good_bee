@@ -46,7 +46,7 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy, 
           
           {/* Gallery Col (5) */}
           <div className="md:col-span-5 space-y-3">
-            <div className="relative rounded-2xl overflow-hidden border border-brand-gold/30 bg-brand-cream/80 aspect-[4/4.5] shadow-luxury">
+            <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-[#FAF7F2] aspect-square shadow-sm">
               <img
                 src={selectedImage || product.image}
                 alt={product.title}

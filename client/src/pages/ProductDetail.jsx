@@ -91,7 +91,7 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
           
           {/* Gallery Stage (Col 6) */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="relative rounded-3xl overflow-hidden border border-brand-gold/30 bg-brand-cream/80 aspect-[4/4.5] shadow-luxury">
+            <div className="relative rounded-3xl overflow-hidden border border-gray-200 bg-[#FAF7F2] aspect-square shadow-sm">
               <img
                 src={selectedImage || p.image}
                 alt={p.title}

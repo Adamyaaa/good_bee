@@ -174,8 +174,8 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((n) => (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {[1, 2, 3, 4].map((n) => (
                 <div key={n} className="h-96 rounded-2xl bg-gray-100 animate-pulse" />
               ))}
             </div>
@@ -194,11 +194,12 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.map((product) => (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {products.map((product, idx) => (
                 <ProductCard
                   key={product.id}
                   product={product}
+                  idx={idx}
                   onViewDetails={onQuickView}
                 />
               ))}
