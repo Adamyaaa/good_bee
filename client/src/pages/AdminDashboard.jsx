@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { DEFAULT_SITE_CONTENT } from '../services/mockBackend';
 import WholesalerManager from '../components/admin/WholesalerManager';
 import SupplierApprovalQueue from '../components/admin/SupplierApprovalQueue';
+import RoleAccessManager from '../components/admin/RoleAccessManager';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -705,6 +706,7 @@ export default function AdminDashboard({ onNavigateHome }) {
         <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-1 text-xs font-semibold no-scrollbar">
           {[
             { id: 'ANALYTICS', label: 'Overview Telemetry', icon: LayoutDashboard },
+            { id: 'ROLES', label: 'User Roles & Access', icon: Users },
             { id: 'ORDERS', label: `Patron Orders (${pendingOrdersCount})`, icon: ShoppingBag, badge: pendingOrdersCount > 0 },
             { id: 'WHOLESALERS', label: `Wholesaler Matrix (${wholesalers.length || 14})`, icon: Building2 },
             { id: 'SUBMISSIONS', label: `Supplier Proposals (${pendingSubmissionsCount})`, icon: FlaskConical, badge: pendingSubmissionsCount > 0 },
@@ -1075,6 +1077,11 @@ export default function AdminDashboard({ onNavigateHome }) {
               </div>
             )}
           </div>
+        )}
+
+        {/* USER ROLES & ACCESS PROMOTION TOWER */}
+        {activeTab === 'ROLES' && (
+          <RoleAccessManager token={token} />
         )}
 
         {/* WHOLESALER MATRIX & INDIVIDUAL MARGINS TAB */}

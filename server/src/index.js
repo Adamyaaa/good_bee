@@ -11,11 +11,17 @@ import promoterRoutes from './routes/promoter.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import configRoutes from './routes/config.routes.js';
+import { initPostgres, isConnected } from './db/pg.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Initialize Database (PostgreSQL if DATABASE_URL provided, else fallback engine)
+initPostgres().catch((err) => {
+  console.warn('[Database Init Catch]', err.message);
+});
 
 // Middleware
 app.use(cors());
@@ -37,6 +43,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ONLINE',
     service: 'Good Bee Skincare Ecosystem API',
+    database: isConnected() ? 'PostgreSQL (Connected & Synchronized)' : 'Resilient Dual-Sync Engine',
     version: '1.0.0',
     timestamp: new Date().toISOString()
   });

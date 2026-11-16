@@ -4,7 +4,7 @@ import { InstagramIcon, FacebookIcon, YoutubeIcon } from './SocialIcons';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 
-export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onOpenSurprise, onSearch }) {
+export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTrackOrder, onOpenSurprise, onSearch }) {
   const { itemCount, setIsDrawerOpen } = useCart();
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -200,28 +200,50 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
               <Search className="w-4 h-4" />
             </button>
 
-            {/* Account / Portal Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setPortalDropdownOpen(!portalDropdownOpen)}
-                className="p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer"
-                title="Account"
-              >
-                <User className="w-4 h-4" />
-              </button>
-
-              {portalDropdownOpen && (
-                <div
-                  className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2"
-                  onMouseLeave={() => setPortalDropdownOpen(false)}
+            {/* CONDITIONAL AUTH CONTROLS:
+                - LOGGED OUT: Show clean "Log In" & "Sign Up" buttons in place of Cart & Profile icons.
+                - LOGGED IN: Show Profile Icon (with user initial badge/dropdown) and Shopping Bag. */}
+            {!user ? (
+              <div className="flex items-center gap-1 sm:gap-2 ml-1">
+                <button
+                  type="button"
+                  onClick={() => onOpenAuth ? onOpenAuth('login') : onOpenPortal('CUSTOMER')}
+                  className="px-3 py-1.5 text-xs font-bold text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 rounded-xl transition-all cursor-pointer"
                 >
-                  {user ? (
-                    <>
+                  Log In
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onOpenAuth ? onOpenAuth('register') : onOpenPortal('CUSTOMER')}
+                  className="px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 rounded-xl shadow-xs transition-all cursor-pointer hover:scale-105 active:scale-95"
+                >
+                  Sign Up
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Account / Portal Dropdown (Logged in only) */}
+                <div className="relative">
+                  <button
+                    onClick={() => setPortalDropdownOpen(!portalDropdownOpen)}
+                    className="p-1 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer flex items-center gap-1 rounded-xl hover:bg-gray-50"
+                    title="Account"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-purple-100 text-[#5B0868] font-bold text-xs flex items-center justify-center border border-purple-200 shadow-2xs">
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                  </button>
+
+                  {portalDropdownOpen && (
+                    <div
+                      className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2"
+                      onMouseLeave={() => setPortalDropdownOpen(false)}
+                    >
                       <div className="px-4 py-2 border-b border-gray-100">
                         <p className="text-xs text-gray-500">Signed in as</p>
                         <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
                         <span className="inline-block mt-1 text-[10px] tracking-wider uppercase px-2 py-0.5 bg-purple-50 text-[#5B0868] font-bold rounded">
-                          {user.role === 'ADMIN' ? 'Store Administrator' : 'Patron Member'}
+                          {user.role === 'ADMIN' ? 'Store Administrator' : user.role === 'DEALER' ? 'Wholesaler Partner' : user.role === 'PRODUCER' ? 'Botanical Vendor' : 'Good Being Club Member'}
                         </span>
                       </div>
                       <button
@@ -243,98 +265,25 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenTrackOrder, onO
                       >
                         Sign Out
                       </button>
-                    </>
-                  ) : (
-                    <>
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="text-[10px] text-[#5B0868] font-bold uppercase tracking-wider">Good Bee Ecosystem</p>
-                        <p className="text-xs font-semibold text-gray-800">Select Portal Access</p>
-                      </div>
-
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          onOpenPortal('CUSTOMER');
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-purple-50 flex items-center justify-between cursor-pointer"
-                      >
-                        <span className="flex items-center gap-2">
-                          <User className="w-3.5 h-3.5 text-[#5B0868]" />
-                          <span>Good Being Club</span>
-                        </span>
-                        <span className="text-[10px] text-[#5B0868] font-bold">Patron →</span>
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          onOpenPortal('DEALER');
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-purple-50 flex items-center justify-between cursor-pointer"
-                      >
-                        <span className="flex items-center gap-2">
-                          <Package className="w-3.5 h-3.5 text-blue-600" />
-                          <span>Wholesale & Stockist</span>
-                        </span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">B2B</span>
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          onOpenPortal('PRODUCER');
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-purple-50 flex items-center justify-between cursor-pointer"
-                      >
-                        <span className="flex items-center gap-2">
-                          <FlaskConical className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Vendors & Botanical Labs</span>
-                        </span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">SUPPLIER</span>
-                      </button>
-
-                      <div className="border-t border-gray-100 my-1" />
-
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          onOpenTrackOrder?.();
-                        }}
-                        className="w-full text-left px-4 py-1.5 text-xs text-gray-700 hover:bg-purple-50 flex items-center justify-between cursor-pointer"
-                      >
-                        <span>Track Live Order</span>
-                        <span className="text-[10px] text-[#5B0868] font-bold">Live Hub →</span>
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          onOpenPortal('ADMIN');
-                        }}
-                        className="w-full text-left px-4 py-1.5 text-[11px] text-gray-400 hover:text-[#5B0868] flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Shield className="w-3 h-3 text-gray-400" />
-                        <span>Store Admin Suite</span>
-                      </button>
-                    </>
+                    </div>
                   )}
                 </div>
-              )}
-            </div>
 
-            {/* Shopping Bag Trigger with Plum Purple Accent */}
-            <button
-              onClick={() => setIsDrawerOpen(true)}
-              className="relative p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors group cursor-pointer"
-              aria-label="View Shopping Bag"
-            >
-              <ShoppingBag className="w-4 h-4 group-hover:scale-105 transition-transform" />
-              {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#5B0868] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-xs animate-pulse">
-                  {itemCount}
-                </span>
-              )}
-            </button>
+                {/* Shopping Bag Trigger with Plum Purple Accent (Logged in only) */}
+                <button
+                  onClick={() => setIsDrawerOpen(true)}
+                  className="relative p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors group cursor-pointer"
+                  aria-label="View Shopping Bag"
+                >
+                  <ShoppingBag className="w-4 h-4 group-hover:scale-105 transition-transform" />
+                  {itemCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-[#5B0868] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-xs animate-pulse">
+                      {itemCount}
+                    </span>
+                  )}
+                </button>
+              </>
+            )}
           </div>
 
         </div>

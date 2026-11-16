@@ -1,8 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
+import AuthModal from '../components/common/AuthModal';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const { user } = useAuth();
+
   const [items, setItems] = useState(() => {
     const saved = localStorage.getItem('goodbee_cart');
     return saved ? JSON.parse(saved) : [];
@@ -11,11 +15,15 @@ export const CartProvider = ({ children }) => {
   const [promoterCode, setPromoterCode] = useState('');
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
+  // Authentication gating modal state
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [pendingCartAction, setPendingCartAction] = useState(null);
+
   useEffect(() => {
     localStorage.setItem('goodbee_cart', JSON.stringify(items));
   }, [items]);
 
-  const addToCart = (product, quantity = 1) => {
+  const executeAddToCart = (product, quantity = 1) => {
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
@@ -39,6 +47,29 @@ export const CartProvider = ({ children }) => {
       ];
     });
     setIsDrawerOpen(true);
+  };
+
+  /**
+   * Add to Cart with Authentication Check:
+   * If user is not logged in, trigger the seamless AuthModal and preserve the target item.
+   * After login/registration succeeds, the item is instantly added to the cart!
+   */
+  const addToCart = (product, quantity = 1) => {
+    if (!user) {
+      setPendingCartAction({ product, quantity });
+      setIsAuthModalOpen(true);
+      return false;
+    }
+
+    executeAddToCart(product, quantity);
+    return true;
+  };
+
+  const handleAuthSuccess = () => {
+    if (pendingCartAction) {
+      executeAddToCart(pendingCartAction.product, pendingCartAction.quantity);
+      setPendingCartAction(null);
+    }
   };
 
   const updateQuantity = (id, newQty) => {
@@ -97,6 +128,16 @@ export const CartProvider = ({ children }) => {
       }}
     >
       {children}
+      {/* Global Auth Gate Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => {
+          setIsAuthModalOpen(false);
+          setPendingCartAction(null);
+        }}
+        onSuccess={handleAuthSuccess}
+        pendingProduct={pendingCartAction?.product}
+      />
     </CartContext.Provider>
   );
 };

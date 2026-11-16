@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { store } from '../db/store.js';
+import { query, isConnected } from '../db/pg.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { ROLES, PRODUCT_STATUS, ORDER_STATUS } from '../config/constants.js';
 
@@ -319,6 +320,126 @@ router.put('/wholesalers/:id', (req, res) => {
   });
 
   res.json({ message: 'Wholesaler profile updated successfully.', wholesaler: dealer });
+});
+
+// GET /api/v1/admin/users - List all users across all roles with cloud sync
+router.get('/users', async (req, res) => {
+  if (isConnected()) {
+    try {
+      const dbRes = await query('SELECT id, name, email, role, phone, company_name, tier, loyalty_points, status, created_at FROM users ORDER BY created_at DESC');
+      const mapped = dbRes.rows.map(r => ({
+        id: r.id,
+        name: r.name,
+        email: r.email,
+        role: r.role,
+        phone: r.phone,
+        companyName: r.company_name,
+        tier: r.tier,
+        loyaltyPoints: r.loyalty_points,
+        status: r.status,
+        createdAt: r.created_at
+      }));
+      return res.json({ users: mapped, count: mapped.length });
+    } catch (err) {
+      console.warn('[Admin GET Users DB Error]', err.message);
+    }
+  }
+
+  // Fallback to store.users
+  const userList = store.users.map(u => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    role: u.role,
+    phone: u.phone,
+    companyName: u.companyName,
+    tier: u.tier,
+    loyaltyPoints: u.loyaltyPoints,
+    status: u.status || 'ACTIVE',
+    createdAt: u.createdAt
+  }));
+  res.json({ users: userList, count: userList.length });
+});
+
+// PUT /api/v1/admin/users/:id/role - Admin-only endpoint to elevate or reassign roles
+// Valid target roles: CUSTOMER (Good Being Club), PRODUCER (Vendor/Labs), DEALER (Wholesaler)
+router.put('/users/:id/role', async (req, res) => {
+  const { id } = req.params;
+  const { role, companyName, tier, commissionMarginPct } = req.body;
+
+  const validRoles = [ROLES.CUSTOMER, ROLES.PRODUCER, ROLES.DEALER];
+  if (!validRoles.includes(role)) {
+    return res.status(400).json({ error: `Invalid role. Allowed roles are: ${validRoles.join(', ')}` });
+  }
+
+  // 1. Update in Cloud PostgreSQL if connected
+  if (isConnected()) {
+    try {
+      const dbRes = await query(
+        `UPDATE users
+         SET role = $1,
+             company_name = COALESCE($2, company_name),
+             tier = COALESCE($3, tier),
+             commission_margin_pct = COALESCE($4, commission_margin_pct),
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $5
+         RETURNING id, name, email, role, phone, company_name, tier, loyalty_points, status`,
+        [role, companyName || null, tier || null, commissionMarginPct || null, id]
+      );
+
+      if (dbRes.rows.length > 0) {
+        const row = dbRes.rows[0];
+        // Also update local store
+        const storeUser = store.users.find(u => u.id === id);
+        if (storeUser) {
+          storeUser.role = role;
+          if (companyName) storeUser.companyName = companyName;
+          if (tier) storeUser.tier = tier;
+        }
+
+        return res.json({
+          message: `User role elevated to ${role} successfully in Cloud PostgreSQL!`,
+          user: {
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            role: row.role,
+            phone: row.phone,
+            companyName: row.company_name,
+            tier: row.tier,
+            loyaltyPoints: row.loyalty_points
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('[Admin Role Update DB Error]', err.message);
+    }
+  }
+
+  // 2. Fallback update in store.users
+  const user = store.users.find((u) => u.id === id);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found.' });
+  }
+
+  user.role = role;
+  if (companyName) user.companyName = companyName;
+  if (tier) user.tier = tier;
+  if (commissionMarginPct) user.commissionMarginPct = Number(commissionMarginPct);
+
+  res.json({
+    message: `User role elevated to ${role} successfully!`,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone,
+      companyName: user.companyName,
+      tier: user.tier,
+      loyaltyPoints: user.loyaltyPoints
+    }
+  });
 });
 
 export default router;

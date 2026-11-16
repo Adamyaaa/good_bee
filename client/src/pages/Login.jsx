@@ -51,14 +51,15 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
         const u = await login(email, password);
         onLoggedIn?.(u);
       } else {
+        // Enforce default CUSTOMER role on signup
         const u = await register({
           name,
           email,
           password,
           phone,
-          role: selectedRole,
-          companyName,
-          gstNumber
+          role: 'CUSTOMER',
+          companyName: selectedRole !== 'CUSTOMER' ? companyName : '',
+          gstNumber: selectedRole === 'DEALER' ? gstNumber : ''
         });
         onLoggedIn?.(u);
       }

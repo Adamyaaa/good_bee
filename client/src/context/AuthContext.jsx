@@ -64,19 +64,14 @@ export const AuthProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem('goodbee_user');
       if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.name === 'Ananya Sharma') {
-          parsed.name = 'Customer';
-          localStorage.setItem('goodbee_user', JSON.stringify(parsed));
-        }
-        return parsed;
+        return JSON.parse(saved);
       }
       return null;
     } catch (e) {
       return null;
     }
   });
-  const [token, setToken] = useState(() => localStorage.getItem('goodbee_token') || 'gb_token_demo');
+  const [token, setToken] = useState(() => localStorage.getItem('goodbee_token') || '');
 
   const login = async (email, password) => {
     // 1. Try server endpoint first

@@ -27,6 +27,7 @@ import PortalModal from './components/portal/PortalModal';
 import TrackOrderModal from './components/storefront/TrackOrderModal';
 import SurpriseGiftModal from './components/storefront/SurpriseGiftModal';
 import Checkout from './pages/Checkout';
+import AuthPage from './pages/AuthPage';
 
 import { motion } from 'framer-motion';
 
@@ -66,12 +67,15 @@ function SpaLandingContent() {
       } else if (hash && hash.startsWith('#portal=')) {
         const targetRole = hash.replace('#portal=', '').toUpperCase();
         setPortalModalConfig({ isOpen: true, role: targetRole });
+      } else if (hash === '#login' || hash === '#auth' || hash === '#register') {
+        setIsAuthPageOpen({ isOpen: true, mode: hash === '#register' ? 'register' : 'login' });
       }
     };
     handleHash();
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
+  const [isAuthPageOpen, setIsAuthPageOpen] = useState({ isOpen: false, mode: 'login' });
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [portalModalConfig, setPortalModalConfig] = useState({ isOpen: false, role: 'CUSTOMER' });
   const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
@@ -159,6 +163,10 @@ function SpaLandingContent() {
       <Navbar
         onScrollTo={handleScrollTo}
         onOpenPortal={handleOpenPortal}
+        onOpenAuth={(mode = 'login') => {
+          setIsAuthPageOpen({ isOpen: true, mode });
+          window.location.hash = `#${mode}`;
+        }}
         onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
         onOpenSurprise={() => setIsSurpriseOpen(true)}
         onSearch={(query) => {
@@ -167,8 +175,26 @@ function SpaLandingContent() {
         }}
       />
 
-      {/* If Checkout is triggered, render on top or full modal */}
-      {isCheckoutOpen ? (
+      {/* If Dedicated Auth Page is triggered, render full page */}
+      {isAuthPageOpen.isOpen ? (
+        <main className="flex-grow">
+          <AuthPage
+            initialMode={isAuthPageOpen.mode}
+            onBack={() => {
+              setIsAuthPageOpen({ isOpen: false, mode: 'login' });
+              if (window.location.hash === '#login' || window.location.hash === '#register' || window.location.hash === '#auth') {
+                window.history.pushState(null, '', window.location.pathname);
+              }
+            }}
+            onAuthSuccess={() => {
+              setIsAuthPageOpen({ isOpen: false, mode: 'login' });
+              if (window.location.hash === '#login' || window.location.hash === '#register' || window.location.hash === '#auth') {
+                window.history.pushState(null, '', window.location.pathname);
+              }
+            }}
+          />
+        </main>
+      ) : isCheckoutOpen ? (
         <main className="flex-grow">
           <Checkout
             onBack={() => setIsCheckoutOpen(false)}

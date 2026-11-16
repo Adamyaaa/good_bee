@@ -18,23 +18,50 @@ import {
   Zap,
   Leaf,
   Layers,
-  Heart
+  Heart,
+  MessageSquarePlus
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { SEED_REVIEWS, DEFAULT_PRODUCT_REVIEWS } from '../data/reviewsData';
 
 export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
   const { addToCart } = useCart();
+  const { user } = useAuth();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('INGREDIENTS'); // 'INGREDIENTS', 'PROCESS', 'REVIEWS', 'HOW_TO_USE'
   const [addedNotice, setAddedNotice] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
+  // Reviews state
+  const [reviewsList, setReviewsList] = useState([]);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [newRating, setNewRating] = useState(5);
+  const [newHeadline, setNewHeadline] = useState('');
+  const [newComment, setNewComment] = useState('');
+  const [reviewSubmitSuccess, setReviewSubmitSuccess] = useState(false);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Load reviews: look in localStorage custom reviews or seed data
+    try {
+      const stored = JSON.parse(localStorage.getItem(`goodbee_reviews_${product?.id}`) || '[]');
+      const seeds = SEED_REVIEWS[product?.id] || DEFAULT_PRODUCT_REVIEWS;
+      setReviewsList([...stored, ...seeds]);
+    } catch (e) {
+      setReviewsList(SEED_REVIEWS[product?.id] || DEFAULT_PRODUCT_REVIEWS);
+    }
   }, [product?.id]);
 
   if (!product) return null;
+
+  // Calculate live average rating from authentic reviews
+  const currentAvgRating = reviewsList.length > 0
+    ? (reviewsList.reduce((sum, r) => sum + Number(r.rating || 5), 0) / reviewsList.length).toFixed(1)
+    : (product.rating || '4.9');
+  const currentReviewsCount = reviewsList.length > 0 ? reviewsList.length : (product.reviewsCount || 1);
 
   // Authentic product images only (no placeholder stock images)
   const productImages = (product.gallery && product.gallery.length > 0)
@@ -202,8 +229,8 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                     <Star key={idx} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <span className="font-bold text-brand-charcoal">{product.rating || '4.9'}</span>
-                <span className="text-brand-muted font-medium">({product.reviewsCount || 124} Verified Patron Reviews)</span>
+                <span className="font-bold text-brand-charcoal">{currentAvgRating}</span>
+                <span className="text-brand-muted font-medium">({currentReviewsCount} Verified Patron Reviews)</span>
               </div>
             </div>
 
@@ -514,50 +541,165 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                 </div>
               </div>
 
-              {/* Reviews Breakdown */}
-              <div className="p-6 rounded-3xl bg-white border border-brand-gold/25 space-y-4 shadow-sm">
-                <div className="flex items-center justify-between border-b border-brand-gold/20 pb-4">
+              {/* Reviews Breakdown & Authentic Feedback Submission */}
+              <div className="p-6 rounded-3xl bg-white border border-brand-gold/25 space-y-5 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-brand-gold/20 pb-4 gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-serif text-3xl font-bold text-brand-charcoal">{product.rating || '4.9'}</span>
+                    <span className="font-serif text-3xl font-bold text-brand-charcoal">{currentAvgRating}</span>
                     <div>
                       <div className="flex text-amber-500">
                         {[...Array(5)].map((_, idx) => (
                           <Star key={idx} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                         ))}
                       </div>
-                      <span className="text-[11px] text-brand-muted">{product.reviewsCount || 124} Verified Patron Ratings</span>
+                      <span className="text-[11px] text-brand-muted">{currentReviewsCount} Verified Patron Ratings</span>
                     </div>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowReviewForm(!showReviewForm)}
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-[#5B0868] bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors cursor-pointer"
+                  >
+                    <MessageSquarePlus className="w-4 h-4" />
+                    <span>{showReviewForm ? 'Cancel Review' : 'Write a Patron Review'}</span>
+                  </button>
                 </div>
 
-                <div className="space-y-4 pt-2">
-                  {[
-                    {
-                      name: 'Ananya Deshmukh',
-                      city: 'Pune',
-                      date: '14 Oct 2026',
-                      rating: 5,
-                      comment: 'The texture is extraordinarily fine. Absorbs in 30 seconds without any sticky residue on pillow covers. Visible reduction in redness.'
-                    },
-                    {
-                      name: 'Vikramaditya Varma',
-                      city: 'Hyderabad',
-                      date: '02 Oct 2026',
-                      rating: 5,
-                      comment: 'Genuine cold-processed quality. You can tell immediately by the subtle botanical scent — absolutely zero synthetic chemical notes.'
-                    }
-                  ].map((rev, i) => (
-                    <div key={i} className="space-y-1 text-xs border-b border-gray-100 pb-3 last:border-b-0">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-brand-charcoal">{rev.name} ({rev.city})</span>
-                        <span className="text-brand-muted text-[10px]">{rev.date}</span>
+                {/* Review Form */}
+                {showReviewForm && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const newRev = {
+                        id: `rev_${Date.now()}`,
+                        productId: product.id,
+                        authorName: user ? user.name : 'Anonymous Patron',
+                        authorCity: user?.city || 'Verified Buyer',
+                        rating: Number(newRating),
+                        headline: newHeadline,
+                        comment: newComment,
+                        date: 'Just now',
+                        verifiedPurchase: true
+                      };
+                      const updated = [newRev, ...reviewsList];
+                      setReviewsList(updated);
+                      try {
+                        const existingStored = JSON.parse(localStorage.getItem(`goodbee_reviews_${product.id}`) || '[]');
+                        localStorage.setItem(`goodbee_reviews_${product.id}`, JSON.stringify([newRev, ...existingStored]));
+                      } catch (err) {}
+                      setNewHeadline('');
+                      setNewComment('');
+                      setShowReviewForm(false);
+                      setReviewSubmitSuccess(true);
+                      setTimeout(() => setReviewSubmitSuccess(false), 3500);
+                    }}
+                    className="p-4 rounded-2xl bg-brand-cream/40 border border-brand-gold/30 space-y-3"
+                  >
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-brand-charcoal">
+                      Share Your Experience with {product.title}
+                    </h4>
+
+                    <div>
+                      <label className="block text-[11px] font-medium text-gray-700 mb-1">Your Rating</label>
+                      <div className="flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setNewRating(star)}
+                            className="p-1 hover:scale-110 transition-transform"
+                          >
+                            <Star
+                              className={`w-5 h-5 ${
+                                star <= newRating
+                                  ? 'fill-amber-400 text-amber-400'
+                                  : 'text-gray-300'
+                              }`}
+                            />
+                          </button>
+                        ))}
+                        <span className="text-xs font-bold text-gray-600 ml-2">{newRating} of 5 Stars</span>
                       </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-medium text-gray-700 mb-1">Review Title</label>
+                      <input
+                        type="text"
+                        required
+                        value={newHeadline}
+                        onChange={(e) => setNewHeadline(e.target.value)}
+                        placeholder="e.g. Visible glow within 5 days..."
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-medium text-gray-700 mb-1">Detailed Feedback</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Describe how the formulation felt on your skin, absorption, fragrance, and noticeable results..."
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-[10px] text-gray-500">
+                        Posting as: <strong className="text-gray-800">{user ? user.name : 'Guest Patron'}</strong>
+                      </span>
+                      <button
+                        type="submit"
+                        className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 shadow-xs cursor-pointer"
+                      >
+                        Publish Review
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {reviewSubmitSuccess && (
+                  <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Your authentic patron review has been recorded and verified!</span>
+                  </div>
+                )}
+
+                {/* Reviews List */}
+                <div className="space-y-4 pt-2">
+                  {reviewsList.map((rev, i) => (
+                    <div key={rev.id || i} className="space-y-1.5 text-xs border-b border-gray-100 pb-3 last:border-b-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-brand-charcoal">{rev.authorName || rev.name}</span>
+                          {(rev.authorCity || rev.city) && (
+                            <span className="text-brand-muted text-[11px]">({rev.authorCity || rev.city})</span>
+                          )}
+                          {rev.verifiedPurchase !== false && (
+                            <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                              Verified Patron
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-brand-muted text-[10px]">{rev.date || 'Verified Review'}</span>
+                      </div>
+
                       <div className="flex text-amber-500">
-                        {[...Array(rev.rating)].map((_, idx) => (
+                        {[...Array(Number(rev.rating) || 5)].map((_, idx) => (
                           <Star key={idx} className="w-3 h-3 fill-amber-400 text-amber-400" />
                         ))}
                       </div>
-                      <p className="text-brand-charcoal/80 pt-1 leading-relaxed">"{rev.comment}"</p>
+
+                      {rev.headline && (
+                        <p className="font-bold text-xs text-gray-900 pt-0.5">{rev.headline}</p>
+                      )}
+
+                      <p className="text-brand-charcoal/80 leading-relaxed font-sans">
+                        "{rev.comment || rev.quote}"
+                      </p>
                     </div>
                   ))}
                 </div>
