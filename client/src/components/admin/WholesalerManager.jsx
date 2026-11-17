@@ -109,6 +109,54 @@ export default function WholesalerManager({
 
   return (
     <div className="space-y-6">
+
+      {/* Unit-wise Partner Margin Control Rule Box */}
+      <div className="bg-[#FAF7F2] p-5 rounded-2xl border border-brand-gold/40 shadow-xs space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Sliders className="w-5 h-5 text-[#5B0868]" />
+            <div>
+              <h4 className="font-serif font-bold text-base text-gray-900">
+                Partner & Unit-Wise Dynamic Margin Rules
+              </h4>
+              <p className="text-xs text-gray-500">
+                Admin policy formula for unit-wise partner commissions across profit tiers
+              </p>
+            </div>
+          </div>
+          <span className="text-[10px] font-bold bg-[#5B0868] text-white px-3 py-1 rounded-full uppercase tracking-wider self-start sm:self-auto">
+            Live Policy Active
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          {/* Rule Band 1: 20-49% */}
+          <div className="p-3.5 bg-white rounded-xl border border-gray-200/80 space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-xs text-gray-800">Standard Tier (20% to 49% Unit Margin)</span>
+              <span className="font-mono font-bold text-xs bg-purple-100 text-[#5B0868] px-2 py-0.5 rounded">
+                30% to Partner
+              </span>
+            </div>
+            <p className="text-[11px] text-gray-500">
+              When gross margin on product unit is between 20–49%, partner commission automatically anchors at 30% of margin profit.
+            </p>
+          </div>
+
+          {/* Rule Band 2: 50-80% */}
+          <div className="p-3.5 bg-white rounded-xl border border-gray-200/80 space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-xs text-gray-800">High-Margin Tier (50% to 80% Unit Margin)</span>
+              <span className="font-mono font-bold text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
+                70% to Partner
+              </span>
+            </div>
+            <p className="text-[11px] text-gray-500">
+              When gross margin on high-yield extraction active is between 50–80%, partner commission increases to 70% of margin profit.
+            </p>
+          </div>
+        </div>
+      </div>
       
       {/* KPI Metrics Header */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">

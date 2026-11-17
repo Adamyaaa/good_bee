@@ -38,7 +38,8 @@ import {
   BarChart3,
   Building2,
   Users,
-  Layers
+  Layers,
+  ShoppingCart
 } from 'lucide-react';
 
 const PRESET_IMAGES = [
@@ -214,6 +215,49 @@ export default function AdminDashboard({ onNavigateHome }) {
 
   // Site content CMS state
   const [siteContent, setSiteContent] = useState(DEFAULT_SITE_CONTENT);
+
+  // Abandoned carts recovery state
+  const [abandonedCarts, setAbandonedCarts] = useState(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('goodbee_abandoned_carts') || '[]');
+      if (stored.length > 0) return stored;
+    } catch (e) {}
+    return [
+      {
+        id: 'cart_demo_01',
+        customerName: 'Ananya Sharma',
+        customerPhone: '+919876543299',
+        customerEmail: 'ananya.sharma@example.com',
+        items: [
+          { title: 'Good Bee Frankincense Pure Essential Oil', price: 1450, quantity: 1, volume: '15 ml' },
+          { title: 'Wild Himalayan Rosemary Extract', price: 2400, quantity: 1, volume: '500 ml' }
+        ],
+        subtotal: 3850,
+        total: 3850,
+        city: 'Bengaluru',
+        state: 'Karnataka',
+        pincode: '560001',
+        abandonedAt: '2026-11-17T14:20:00.000Z',
+        status: 'LEFT_IN_CART'
+      },
+      {
+        id: 'cart_demo_02',
+        customerName: 'Vikramaditya Roy',
+        customerPhone: '+919876543288',
+        customerEmail: 'vikram.roy@example.com',
+        items: [
+          { title: 'Kashmir Crocus Saffron Active Stigmas', price: 9500, quantity: 1, volume: '50 g jar' }
+        ],
+        subtotal: 9500,
+        total: 9500,
+        city: 'Mumbai',
+        state: 'Maharashtra',
+        pincode: '400050',
+        abandonedAt: '2026-11-17T11:45:00.000Z',
+        status: 'LEFT_IN_CART'
+      }
+    ];
+  });
 
   const [loading, setLoading] = useState(true);
   const [actionSuccess, setActionSuccess] = useState('');
@@ -707,8 +751,9 @@ export default function AdminDashboard({ onNavigateHome }) {
           {[
             { id: 'ANALYTICS', label: 'Overview Telemetry', icon: LayoutDashboard },
             { id: 'ROLES', label: 'User Roles & Access', icon: Users },
-            { id: 'ORDERS', label: `Patron Orders (${pendingOrdersCount})`, icon: ShoppingBag, badge: pendingOrdersCount > 0 },
-            { id: 'WHOLESALERS', label: `Wholesaler Matrix (${wholesalers.length || 14})`, icon: Building2 },
+            { id: 'ORDERS', label: `Customer Orders (${pendingOrdersCount})`, icon: ShoppingBag, badge: pendingOrdersCount > 0 },
+            { id: 'ABANDONED_CARTS', label: `Abandoned Carts (${abandonedCarts.length})`, icon: ShoppingCart, badge: abandonedCarts.length > 0 },
+            { id: 'WHOLESALERS', label: `Wholesaler Matrix & Margins (${wholesalers.length || 14})`, icon: Building2 },
             { id: 'SUBMISSIONS', label: `Supplier Proposals (${pendingSubmissionsCount})`, icon: FlaskConical, badge: pendingSubmissionsCount > 0 },
             { id: 'PRODUCTS', label: `Catalog CMS (${products.length})`, icon: Package },
             { id: 'SALES_REPORT', label: 'Sales Report', icon: FileText },
@@ -1070,6 +1115,126 @@ export default function AdminDashboard({ onNavigateHome }) {
                           </div>
                         </div>
 
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ABANDONED CARTS & WHATSAPP FOLLOW-UP TAB */}
+        {activeTab === 'ABANDONED_CARTS' && (
+          <div className="space-y-6">
+            <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                  Revenue Recovery Desk
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-gray-900 mt-1">
+                  Abandoned & Left-Out Cart Follow-Up
+                </h3>
+                <p className="text-xs text-gray-500 mt-0.5 max-w-2xl">
+                  Automated customer sessions where items were added or checkout started but left unfinished. Re-engage shoppers directly on WhatsApp with pre-crafted order completion links and special offers.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Total Left in Carts</span>
+                  <span className="font-serif text-xl font-bold text-[#5B0868]">
+                    ₹{abandonedCarts.reduce((sum, c) => sum + (c.total || 0), 0).toLocaleString('en-IN')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {abandonedCarts.length === 0 ? (
+              <div className="p-12 text-center bg-white rounded-2xl border border-gray-200">
+                <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
+                <h4 className="font-serif text-base font-bold text-gray-800">Zero Abandoned Carts</h4>
+                <p className="text-xs text-gray-500 mt-1">All shopper checkout funnels are converting cleanly.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {abandonedCarts.map((cart) => {
+                  const itemsList = cart.items || [];
+                  const itemsText = itemsList.map((it) => it.title).join(', ');
+                  const waMsg = encodeURIComponent(
+                    `Hello ${cart.customerName || 'there'}! We noticed you left pure botanical items in your Good Bee cart (${itemsText}). Complete your order today and enjoy complimentary priority delivery: https://good-bee.vercel.app/#checkout`
+                  );
+                  const waUrl = `https://wa.me/${(cart.customerPhone || '919963075000').replace(/\D/g, '')}?text=${waMsg}`;
+
+                  return (
+                    <div
+                      key={cart.id}
+                      className="bg-white rounded-2xl border border-amber-200/80 p-5 space-y-4 shadow-xs flex flex-col justify-between hover:border-amber-300 transition-colors"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <span className="font-serif font-bold text-base text-gray-900 block">
+                              {cart.customerName || 'Shopper'}
+                            </span>
+                            <span className="text-xs text-gray-500">{cart.customerPhone || 'Phone unprovided'} • {cart.city || 'District detected'}, {cart.state || 'India'}</span>
+                          </div>
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-200">
+                            Left Out Cart
+                          </span>
+                        </div>
+
+                        {/* Items in Left-Out Cart */}
+                        <div className="p-3 bg-[#FAF7F2] rounded-xl border border-gray-200/80 space-y-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">
+                            Left-Out Items ({itemsList.length}):
+                          </span>
+                          <div className="space-y-1.5">
+                            {itemsList.map((item, idx) => (
+                              <div key={idx} className="flex justify-between text-xs text-gray-800">
+                                <span className="font-medium truncate max-w-[240px]">• {item.title}</span>
+                                <span className="font-mono font-bold text-[#5B0868]">₹{item.price} &times; {item.quantity || 1}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="pt-2 border-t border-gray-200 flex justify-between text-xs font-bold text-gray-900">
+                            <span>Cart Subtotal</span>
+                            <span className="font-mono">₹{cart.total?.toLocaleString('en-IN')}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[11px] text-gray-400">
+                          <span>Postal Destination: <strong className="text-gray-700">{cart.pincode || '400050'}</strong></span>
+                          <span>{new Date(cart.abandonedAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                      </div>
+
+                      {/* WhatsApp Follow-Up Action Button */}
+                      <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-3">
+                        <a
+                          href={waUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-colors flex items-center justify-center gap-2 font-bold text-xs shadow-xs"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                          <span>WhatsApp Follow-Up & Recover</span>
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = abandonedCarts.filter((c) => c.id !== cart.id);
+                            setAbandonedCarts(updated);
+                            localStorage.setItem('goodbee_abandoned_carts', JSON.stringify(updated));
+                            setActionSuccess(`Cleared abandoned cart for ${cart.customerName}`);
+                            setTimeout(() => setActionSuccess(''), 3000);
+                          }}
+                          className="p-2 text-gray-400 hover:text-red-600 rounded-lg border border-gray-200 hover:bg-red-50"
+                          title="Dismiss"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
                   );

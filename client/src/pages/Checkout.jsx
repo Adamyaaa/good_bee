@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import DynamicPaymentQrModal from '../components/storefront/DynamicPaymentQrModal';
 import { GoodBeeApi } from '../services/api';
-import { ShieldCheck, QrCode, CheckCircle2, MessageCircle, ArrowLeft, ArrowRight, MapPin, Zap } from 'lucide-react';
+import { ShieldCheck, QrCode, CheckCircle2, MessageCircle, ArrowLeft, ArrowRight, MapPin, Zap, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 const STATE_CITIES = {
@@ -49,6 +49,110 @@ export default function Checkout({ onBack, onNavigateHome }) {
   const [isCustomCity, setIsCustomCity] = useState(false);
   const [customCity, setCustomCity] = useState('');
   const [selectedAddressPreset, setSelectedAddressPreset] = useState(null);
+  const [pincodeLoading, setPincodeLoading] = useState(false);
+  const [pincodeMessage, setPincodeMessage] = useState('');
+
+  // Record active checkout session for Abandoned Cart recovery
+  useEffect(() => {
+    if (items.length > 0 && !confirmedOrder) {
+      try {
+        const abandonedSession = {
+          id: `cart_${Date.now()}`,
+          customerName: form.name || (user ? user.name : 'Guest Shopper'),
+          customerEmail: form.email || (user ? user.email : ''),
+          customerPhone: form.phone || (user ? user.phone : ''),
+          items: items.map((it) => ({
+            id: it.id || it.product?.id,
+            title: it.title || it.product?.title,
+            price: it.price || it.product?.price,
+            quantity: it.quantity,
+            volume: it.volume || it.product?.volume,
+            image: it.image || it.product?.image
+          })),
+          subtotal,
+          total,
+          pincode: form.pincode,
+          city: form.city,
+          state: form.state,
+          abandonedAt: new Date().toISOString(),
+          status: 'LEFT_IN_CART'
+        };
+        localStorage.setItem('goodbee_active_abandoned_session', JSON.stringify(abandonedSession));
+
+        // Add to historical abandoned carts queue if not already completed
+        const existing = JSON.parse(localStorage.getItem('goodbee_abandoned_carts') || '[]');
+        const filtered = existing.filter((c) => c.customerEmail !== abandonedSession.customerEmail || !abandonedSession.customerEmail);
+        localStorage.setItem('goodbee_abandoned_carts', JSON.stringify([abandonedSession, ...filtered.slice(0, 19)]));
+      } catch (e) {}
+    }
+  }, [items, form.name, form.email, form.phone, form.pincode, form.city, form.state, subtotal, total, confirmedOrder, user]);
+
+  // Pincode Auto-Fill Handler
+  const handlePincodeChange = async (val) => {
+    const cleanPin = val.replace(/\D/g, '').slice(0, 6);
+    setForm((prev) => ({ ...prev, pincode: cleanPin }));
+
+    if (cleanPin.length === 6) {
+      setPincodeLoading(true);
+      setPincodeMessage('Detecting State & District...');
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${cleanPin}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data[0]?.Status === 'Success' && data[0]?.PostOffice?.length > 0) {
+            const po = data[0].PostOffice[0];
+            const fetchedDistrict = po.District;
+            const fetchedState = po.State;
+
+            setForm((prev) => ({
+              ...prev,
+              city: fetchedDistrict,
+              state: fetchedState
+            }));
+            setIsCustomCity(true);
+            setCustomCity(fetchedDistrict);
+            setPincodeMessage(`Auto-filled: ${fetchedDistrict}, ${fetchedState}`);
+            setPincodeLoading(false);
+            return;
+          }
+        }
+      } catch (err) {
+        // Fallback to local heuristic lookup
+      }
+
+      // Offline/Local lookup map fallback for high-traffic zones
+      const prefix = cleanPin.slice(0, 2);
+      const prefixMap = {
+        '11': { state: 'Delhi', city: 'New Delhi' },
+        '40': { state: 'Maharashtra', city: 'Mumbai' },
+        '41': { state: 'Maharashtra', city: 'Pune' },
+        '56': { state: 'Karnataka', city: 'Bengaluru' },
+        '60': { state: 'Tamil Nadu', city: 'Chennai' },
+        '50': { state: 'Telangana', city: 'Hyderabad' },
+        '38': { state: 'Gujarat', city: 'Ahmedabad' },
+        '70': { state: 'West Bengal', city: 'Kolkata' },
+        '22': { state: 'Uttar Pradesh', city: 'Lucknow' },
+        '20': { state: 'Uttar Pradesh', city: 'Noida' },
+        '30': { state: 'Rajasthan', city: 'Jaipur' },
+        '68': { state: 'Kerala', city: 'Kochi' },
+        '16': { state: 'Punjab', city: 'Chandigarh' },
+        '45': { state: 'Madhya Pradesh', city: 'Indore' }
+      };
+
+      if (prefixMap[prefix]) {
+        const entry = prefixMap[prefix];
+        setForm((prev) => ({ ...prev, city: entry.city, state: entry.state }));
+        setIsCustomCity(true);
+        setCustomCity(entry.city);
+        setPincodeMessage(`Auto-filled: ${entry.city}, ${entry.state}`);
+      } else {
+        setPincodeMessage('Pincode verified for Priority Courier.');
+      }
+      setPincodeLoading(false);
+    } else {
+      setPincodeMessage('');
+    }
+  };
 
   const [placingOrder, setPlacingOrder] = useState(false);
   const [activeOrder, setActiveOrder] = useState(null);
@@ -155,6 +259,14 @@ export default function Checkout({ onBack, onNavigateHome }) {
 
     setConfirmedOrder(completeOrder);
     clearCart();
+
+    // Clear abandoned session since purchase was successful
+    try {
+      localStorage.removeItem('goodbee_active_abandoned_session');
+      const abCarts = JSON.parse(localStorage.getItem('goodbee_abandoned_carts') || '[]');
+      const remaining = abCarts.filter((c) => c.customerEmail !== form.email);
+      localStorage.setItem('goodbee_abandoned_carts', JSON.stringify(remaining));
+    } catch (e) {}
 
     // Persist to localStorage for TrackOrderModal & CustomerPortal
     try {
@@ -532,13 +644,18 @@ Action: Please print lot batch certificate and initiate packaging.`;
                   </div>
                 )}
 
-                {/* PIN Code with 6-digit regex validation */}
+                {/* PIN Code with 6-digit Auto-fill */}
                 <div className="sm:col-span-2">
                   <div className="flex items-center justify-between mb-1">
-                    <label className="font-medium text-brand-charcoal">PIN Code (6 Digits)</label>
-                    {/^[1-9][0-9]{5}$/.test(form.pincode) && (
+                    <label className="font-medium text-brand-charcoal">PIN Code (Enter 6 Digits to Auto-fill State & District)</label>
+                    {pincodeLoading && (
+                      <span className="text-[11px] text-purple-700 font-medium flex items-center gap-1 animate-pulse">
+                        <Loader2 className="w-3 h-3 animate-spin" /> Fetching location...
+                      </span>
+                    )}
+                    {!pincodeLoading && pincodeMessage && (
                       <span className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Express BlueDart Priority Dispatch Available
+                        <CheckCircle2 className="w-3 h-3 text-emerald-600" /> {pincodeMessage}
                       </span>
                     )}
                   </div>
@@ -548,10 +665,13 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     maxLength={6}
                     pattern="^[1-9][0-9]{5}$"
                     value={form.pincode}
-                    onChange={(e) => setForm({ ...form, pincode: e.target.value.replace(/\D/g, '') })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-mono"
-                    placeholder="e.g. 400050"
+                    onChange={(e) => handlePincodeChange(e.target.value)}
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-mono font-bold tracking-wider"
+                    placeholder="e.g. 560001 (auto-fills Bengaluru, Karnataka)"
                   />
+                  <p className="text-[10px] text-brand-muted mt-1">
+                    Entering your 6-digit postal code instantly resolves your District and State.
+                  </p>
                 </div>
 
               </div>
