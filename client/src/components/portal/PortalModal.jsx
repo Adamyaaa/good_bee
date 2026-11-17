@@ -41,6 +41,22 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
   //   * CUSTOMER can ONLY access My Account (CUSTOMER).
   const isAuthorized = user && (user.role === 'ADMIN' || user.role === requestedPortal);
 
+  // Role Isolation: Only show roles that belong to the user's account!
+  // A customer will ONLY see "My Account". They will NEVER see Admin, Vendor, or Wholesale Desk.
+  const visibleRoles = user
+    ? user.role === 'ADMIN'
+      ? ROLES
+      : ROLES.filter((r) => r.id === user.role)
+    : ROLES.filter((r) => r.id === requestedPortal);
+
+  const portalBadge = user?.role === 'CUSTOMER' 
+    ? 'Customer Account' 
+    : user?.role === 'PRODUCER' 
+    ? 'Vendor Portal' 
+    : user?.role === 'DEALER' 
+    ? 'Wholesale Portal' 
+    : 'Admin Console';
+
   return (
     <div className="fixed inset-0 z-50 bg-[#FAF7F2] flex flex-col overflow-hidden animate-in fade-in duration-200">
       
@@ -72,39 +88,37 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
                       GOOD BEE
                     </span>
                     <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded bg-purple-50 text-[#5B0868] border border-purple-200">
-                      Partner Suites
+                      {portalBadge}
                     </span>
                   </div>
                 </div>
               </button>
             </div>
 
-            {/* Center Role Navigation */}
-            <nav className="hidden md:flex items-center gap-1.5 bg-gray-50/80 p-1 rounded-xl border border-gray-200">
-              {ROLES.map((r) => {
-                const Icon = r.icon;
-                const isSelected = requestedPortal === r.id;
-                const userOwnsThisRole = user && (user.role === 'ADMIN' || user.role === r.id);
+            {/* Center Role Navigation: ONLY shown if user is ADMIN or has multiple switchable portals */}
+            {visibleRoles.length > 1 && (
+              <nav className="hidden md:flex items-center gap-1.5 bg-gray-50/80 p-1 rounded-xl border border-gray-200">
+                {visibleRoles.map((r) => {
+                  const Icon = r.icon;
+                  const isSelected = requestedPortal === r.id;
 
-                return (
-                  <button
-                    key={r.id}
-                    onClick={() => setRequestedPortal(r.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-[#5B0868] text-white shadow-xs'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-white'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span>{r.label}</span>
-                    {!userOwnsThisRole && user && (
-                      <Lock className="w-3 h-3 text-gray-400 ml-0.5" />
-                    )}
-                  </button>
-                );
-              })}
-            </nav>
+                  return (
+                    <button
+                      key={r.id}
+                      onClick={() => setRequestedPortal(r.id)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#5B0868] text-white shadow-xs'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-white'
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      <span>{r.label}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            )}
 
             {/* Right Action Utilities (User, Return to Storefront) */}
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
@@ -140,27 +154,29 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
 
           </div>
 
-          {/* Mobile Role Switcher Strip */}
-          <div className="md:hidden flex items-center gap-1 overflow-x-auto py-2 border-t border-gray-100 no-scrollbar">
-            {ROLES.map((r) => {
-              const Icon = r.icon;
-              const isSelected = requestedPortal === r.id;
-              return (
-                <button
-                  key={r.id}
-                  onClick={() => setRequestedPortal(r.id)}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 whitespace-nowrap ${
-                    isSelected
-                      ? 'bg-[#5B0868] text-white shadow-xs'
-                      : 'bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  <Icon className="w-3 h-3" />
-                  <span>{r.label}</span>
-                </button>
-              );
-            })}
-          </div>
+          {/* Mobile Role Switcher Strip: ONLY shown if user is ADMIN */}
+          {visibleRoles.length > 1 && (
+            <div className="md:hidden flex items-center gap-1 overflow-x-auto py-2 border-t border-gray-100 no-scrollbar">
+              {visibleRoles.map((r) => {
+                const Icon = r.icon;
+                const isSelected = requestedPortal === r.id;
+                return (
+                  <button
+                    key={r.id}
+                    onClick={() => setRequestedPortal(r.id)}
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 whitespace-nowrap ${
+                      isSelected
+                        ? 'bg-[#5B0868] text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    <Icon className="w-3 h-3" />
+                    <span>{r.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
         </div>
       </header>
