@@ -31,6 +31,12 @@ router.post('/submissions', (req, res) => {
     ingredients,
     description,
     image,
+    fieldPhotos,
+    fieldVideos,
+    processingUnitPhotos,
+    processingUnitVideos,
+    accreditations,
+    farmerStory,
     status = PRODUCT_STATUS.PENDING_REVIEW
   } = req.body;
 
@@ -52,6 +58,12 @@ router.post('/submissions', (req, res) => {
     ingredients: ingredients || '',
     description: description || '',
     image: image || 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80',
+    fieldPhotos: Array.isArray(fieldPhotos) ? fieldPhotos : (fieldPhotos ? [fieldPhotos] : []),
+    fieldVideos: Array.isArray(fieldVideos) ? fieldVideos : (fieldVideos ? [fieldVideos] : []),
+    processingUnitPhotos: Array.isArray(processingUnitPhotos) ? processingUnitPhotos : (processingUnitPhotos ? [processingUnitPhotos] : []),
+    processingUnitVideos: Array.isArray(processingUnitVideos) ? processingUnitVideos : (processingUnitVideos ? [processingUnitVideos] : []),
+    accreditations: Array.isArray(accreditations) ? accreditations : [],
+    farmerStory: farmerStory || '',
     status: [PRODUCT_STATUS.DRAFT, PRODUCT_STATUS.PENDING_REVIEW].includes(status)
       ? status
       : PRODUCT_STATUS.PENDING_REVIEW,
@@ -102,6 +114,12 @@ router.put('/submissions/:id', (req, res) => {
     'ingredients',
     'description',
     'image',
+    'fieldPhotos',
+    'fieldVideos',
+    'processingUnitPhotos',
+    'processingUnitVideos',
+    'accreditations',
+    'farmerStory',
     'status'
   ];
 

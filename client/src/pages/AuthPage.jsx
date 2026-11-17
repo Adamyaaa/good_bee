@@ -68,12 +68,6 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
     }
   };
 
-  const fillQuickDemo = (demoEmail, demoPass) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setErrorMsg('');
-  };
-
   return (
     <div className="min-h-screen bg-[#FAF7F2] flex flex-col justify-between selection:bg-purple-100 selection:text-purple-900">
       
@@ -108,12 +102,12 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
         <div className="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 bg-white rounded-3xl shadow-xl border border-gray-200/80 overflow-hidden">
           
           {/* Left Hero / Brand Vignette (5 Cols) */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-[#2A0845] via-[#5B0868] to-[#9B1B62] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden">
+          <div className="lg:col-span-5 bg-[#5B0868] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden">
             {/* Subtle botanical honeycomb background effect */}
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
             <div className="relative z-10 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-[11px] font-bold uppercase tracking-wider text-amber-300">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-xs text-[11px] font-bold uppercase tracking-wider text-amber-300">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Good Being Patron Club</span>
               </div>
@@ -122,7 +116,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                 Authentic cold-processed skincare & pure botanicals.
               </h2>
 
-              <p className="text-xs text-purple-100/80 leading-relaxed font-sans">
+              <p className="text-xs text-purple-100/90 leading-relaxed font-sans">
                 Sign in to your member desk to manage batch-certified orders, earn wellness nectar loyalty points, and review formulations.
               </p>
             </div>
@@ -130,21 +124,21 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
             {/* Feature Perks Badges */}
             <div className="relative z-10 space-y-3 pt-6 border-t border-white/15 my-6">
               <div className="flex items-center gap-3 text-xs text-purple-100">
-                <div className="p-1.5 rounded-lg bg-white/10 text-amber-300"><Droplets className="w-4 h-4" /></div>
+                <div className="p-1.5 rounded-lg bg-white/15 text-amber-300"><Droplets className="w-4 h-4" /></div>
                 <span>100% Verified Steam-Distilled Terpenes</span>
               </div>
               <div className="flex items-center gap-3 text-xs text-purple-100">
-                <div className="p-1.5 rounded-lg bg-white/10 text-emerald-300"><Leaf className="w-4 h-4" /></div>
+                <div className="p-1.5 rounded-lg bg-white/15 text-emerald-300"><Leaf className="w-4 h-4" /></div>
                 <span>No Parabens, Artificial Sulphates, or Microplastics</span>
               </div>
               <div className="flex items-center gap-3 text-xs text-purple-100">
-                <div className="p-1.5 rounded-lg bg-white/10 text-pink-300"><Heart className="w-4 h-4" /></div>
+                <div className="p-1.5 rounded-lg bg-white/15 text-pink-300"><Heart className="w-4 h-4" /></div>
                 <span>Earn 100 Welcome Loyalty Points on Signup</span>
               </div>
             </div>
 
-            <div className="relative z-10 text-[10px] text-purple-200/60 font-mono">
-              Cloud PostgreSQL Protected &bull; SSL Secured
+            <div className="relative z-10 text-[11px] text-purple-200/80 font-medium">
+              Good Bee Botanical Platform
             </div>
           </div>
 
@@ -209,29 +203,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
               </div>
             )}
 
-            {/* Quick Demo Credentials Strip */}
-            <div className="mb-6 p-3 bg-purple-50/70 border border-purple-100 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#5B0868] shrink-0" />
-                <span className="text-xs text-gray-700">Quick Test Credentials:</span>
-              </div>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <button
-                  type="button"
-                  onClick={() => fillQuickDemo('customer@goodbee.com', 'customer')}
-                  className="px-2.5 py-1 text-[11px] font-bold text-[#5B0868] bg-white rounded-lg border border-purple-200 hover:bg-purple-50 shadow-2xs transition-colors"
-                >
-                  Patron Member
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillQuickDemo('admin@goodbee.com', 'admin')}
-                  className="px-2.5 py-1 text-[11px] font-bold text-gray-700 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 shadow-2xs transition-colors"
-                >
-                  Store Admin
-                </button>
-              </div>
-            </div>
+
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -311,10 +283,10 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-3 py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full mt-3 py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-[#5B0868] hover:bg-[#480653] shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
-                  <span>Authenticating with Cloud PostgreSQL...</span>
+                  <span>Signing In...</span>
                 ) : mode === 'login' ? (
                   <>
                     <span>Enter Patron Desk</span>

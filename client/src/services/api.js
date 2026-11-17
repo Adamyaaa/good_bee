@@ -30,7 +30,34 @@ export const INITIAL_PRODUCTS = [
     gallery: [
       '/images_ref/Frankin-300x300.webp',
       '/assets/goodbee-frankincense-oil.jpg'
-    ]
+    ],
+    fieldPhotos: [
+      'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1592417817098-8f3d69102353?auto=format&fit=crop&w=800&q=80'
+    ],
+    fieldVideos: [
+      {
+        title: 'Wild Resin Foraging at Dawn (Boswellia Groves)',
+        url: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80',
+        duration: '1:45 min',
+        type: 'video_embed'
+      }
+    ],
+    processingUnitPhotos: [
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=800&q=80'
+    ],
+    accreditations: [
+      { name: 'India Organic (NPOP)', certNumber: 'NPOP/NAB/0014-ORG', issuer: 'Agricultural & Processed Food Products Export Development Authority', year: '2025-2027', badge: 'Certified Organic' },
+      { name: 'Ayush GMP Certified', certNumber: 'GMP-AYUSH-TN-8821', issuer: 'Ministry of Ayush, Govt. of India', year: 'Valid thru 2027', badge: 'Good Manufacturing Practice' },
+      { name: 'ISO 22716 Cosmetics GMP', certNumber: 'ISO-22716-GB-QC', issuer: 'Bureau Veritas Quality International', year: 'Audited 2026', badge: 'ISO Verified' }
+    ],
+    farmerStory: {
+      farmerName: 'Ramanathan G. & Nilgiri Tribal Cooperative',
+      farmLocation: 'Kotagiri Highlands, Nilgiri Biosphere (2,100m ASL)',
+      cultivationMethod: '100% Wild Crafted, Zero Pesticides or Synthetic Nitrogen Fertilizers',
+      farmerQuote: 'We tap the frankincense weeping resin only on waning moon cycles to honor the trees natural vitality, never over-harvesting a single grove.'
+    }
   },
   // 2. Geranium Essential Oil
   {

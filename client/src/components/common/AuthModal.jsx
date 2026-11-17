@@ -57,7 +57,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Ribbon */}
-        <div className="bg-gradient-to-r from-[#2A0845] via-[#5B0868] to-[#9B1B62] text-white px-6 py-5 relative">
+        <div className="bg-[#5B0868] text-white px-6 py-5 relative">
           <button
             type="button"
             onClick={onClose}
@@ -68,7 +68,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           </button>
           
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            <span className="w-2 h-2 rounded-full bg-amber-400"></span>
             <span className="text-[11px] font-bold tracking-widest uppercase text-amber-200">
               Good Being Patron Club
             </span>
@@ -174,7 +174,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full mt-2 py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-[#5B0868] hover:bg-[#480653] shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <span>Authenticating...</span>

@@ -20,7 +20,14 @@ import {
   Activity,
   FileCheck,
   Eye,
-  X
+  X,
+  Camera,
+  Video,
+  FileBadge,
+  MapPin,
+  Building2,
+  Trash2,
+  Upload
 } from 'lucide-react';
 
 const INITIAL_SUBMISSIONS = [
@@ -44,6 +51,20 @@ const INITIAL_SUBMISSIONS = [
     description: 'Harvested ethically from Nilgiri cliff ledges by tribal beekeeping cooperatives. Cold-strained and active-stabilized below 38°C.',
     submittedAt: '2026-10-21T10:00:00.000Z',
     image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80',
+    fieldPhotos: [
+      'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?auto=format&fit=crop&w=800&q=80'
+    ],
+    fieldVideos: [
+      'https://www.youtube.com/watch?v=example-apiary-harvest'
+    ],
+    processingUnitPhotos: [
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80'
+    ],
+    accreditations: [
+      { name: 'NPOP India Organic', certNumber: 'NPOP/NAB/0014', authority: 'APEDA India', expiry: '2027' },
+      { name: 'Ayush GMP Certified', certNumber: 'GMP-AYUSH-TN-8821', authority: 'Ayush Ministry', expiry: '2026' }
+    ],
     adminNotes: 'Verified 100% natural purity and cold-pressed bio-active markers. Approved for master formulation.'
   },
   {
@@ -66,6 +87,16 @@ const INITIAL_SUBMISSIONS = [
     description: 'First hydraulic mechanical pressing at <30°C. High natural alpha-tocopherol and phytosterol retention without solvent extraction.',
     submittedAt: '2026-10-26T14:30:00.000Z',
     image: 'https://images.unsplash.com/photo-1608248597359-074478e17812?auto=format&fit=crop&w=800&q=80',
+    fieldPhotos: [
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80'
+    ],
+    fieldVideos: [],
+    processingUnitPhotos: [
+      'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=800&q=80'
+    ],
+    accreditations: [
+      { name: 'ISO 22716 Cosmetics GMP', certNumber: 'ISO-22716-KSM-99', authority: 'Bureau Veritas', expiry: '2027' }
+    ],
     adminNotes: null
   },
   {
@@ -88,6 +119,19 @@ const INITIAL_SUBMISSIONS = [
     description: 'Hand-culled at dawn. Vacuum-nitrogen sealed within 4 hours of harvest to preserve active safranal volatiles and antioxidant carotenoids.',
     submittedAt: '2026-10-18T09:15:00.000Z',
     image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80',
+    fieldPhotos: [
+      'https://images.unsplash.com/photo-1592417817098-8f3d69102353?auto=format&fit=crop&w=800&q=80'
+    ],
+    fieldVideos: [
+      'https://www.youtube.com/watch?v=pampore-saffron-dawn'
+    ],
+    processingUnitPhotos: [
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80'
+    ],
+    accreditations: [
+      { name: 'ISO 3632 Category 1 Saffron', certNumber: 'ISO-3632-J&K-001', authority: 'Spice Board of India', expiry: '2027' },
+      { name: 'GI Tagged Kashmir Saffron', certNumber: 'GI-IN-2020-044', authority: 'Geographical Indications Registry', expiry: 'Permanent' }
+    ],
     adminNotes: 'Superlative crocin density confirmed via spectrophotometry. Fast-tracked for Royal Saffron line.'
   },
   {
@@ -110,6 +154,14 @@ const INITIAL_SUBMISSIONS = [
     description: 'Slow-distilled over wood embers. High terpene and cineole potency for root stimulation.',
     submittedAt: '2026-10-24T16:20:00.000Z',
     image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80',
+    fieldPhotos: [
+      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80'
+    ],
+    fieldVideos: [],
+    processingUnitPhotos: [],
+    accreditations: [
+      { name: 'Himalayan Organic Wildcraft', certNumber: 'UK-ORG-778', authority: 'Uttarakhand Organic Commodity Board', expiry: '2026' }
+    ],
     adminNotes: 'Please upload second-round GC-MS chromatogram confirming camphor index is strictly within therapeutic threshold (<12%).'
   }
 ];
@@ -239,9 +291,23 @@ export default function ProducerPortal({ onNavigateHome }) {
     ingredients: '',
     description: '',
     image: 'https://images.unsplash.com/photo-1608248597359-074478e17812?auto=format&fit=crop&w=800&q=80',
+    fieldPhotos: [],
+    fieldVideos: [],
+    processingUnitPhotos: [],
+    processingUnitVideos: [],
+    accreditations: [
+      { name: 'NPOP India Organic', certNumber: '', authority: 'APEDA India', expiry: '2027' }
+    ],
+    farmerStory: '',
     labCertDeclaration: true
   });
   const [submitting, setSubmitting] = useState(false);
+  const [newFieldPhotoUrl, setNewFieldPhotoUrl] = useState('');
+  const [newFieldVideoUrl, setNewFieldVideoUrl] = useState('');
+  const [newUnitPhotoUrl, setNewUnitPhotoUrl] = useState('');
+  const [newAccredName, setNewAccredName] = useState('');
+  const [newAccredNumber, setNewAccredNumber] = useState('');
+  const [newAccredAuth, setNewAccredAuth] = useState('');
 
   useEffect(() => {
     fetchSubmissions();
@@ -286,6 +352,12 @@ export default function ProducerPortal({ onNavigateHome }) {
       ingredients: form.ingredients,
       description: form.description,
       image: form.image,
+      fieldPhotos: form.fieldPhotos || [],
+      fieldVideos: form.fieldVideos || [],
+      processingUnitPhotos: form.processingUnitPhotos || [],
+      processingUnitVideos: form.processingUnitVideos || [],
+      accreditations: form.accreditations || [],
+      farmerStory: form.farmerStory || '',
       status: 'PENDING_REVIEW',
       coaStatus: 'IN_ASSAY',
       labCertId: `COA-QC-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -325,6 +397,12 @@ export default function ProducerPortal({ onNavigateHome }) {
       ingredients: '',
       description: '',
       image: 'https://images.unsplash.com/photo-1608248597359-074478e17812?auto=format&fit=crop&w=800&q=80',
+      fieldPhotos: [],
+      fieldVideos: [],
+      processingUnitPhotos: [],
+      processingUnitVideos: [],
+      accreditations: [],
+      farmerStory: '',
       labCertDeclaration: true
     });
 
@@ -524,6 +602,7 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
         <div className="flex border-b border-brand-gold/25 gap-2 sm:gap-6 text-xs font-bold overflow-x-auto pb-1 no-scrollbar">
           {[
             { id: 'FORMULATIONS', label: `Formulations & Batches (${submissions.length})`, icon: Layers },
+            { id: 'FIELDS_AND_FACILITIES', label: 'Our Fields, Extraction Units & Accreditations', icon: MapPin },
             { id: 'QUALITY_CONTROL', label: `Batch QC & COA Registry (${BATCH_QC_RECORDS.length})`, icon: Award },
             { id: 'PAYOUTS', label: `Payouts & Settlement Ledger (₹${settledValue.toLocaleString('en-IN')})`, icon: Activity }
           ].map((tab) => {
@@ -701,6 +780,27 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                           "{sub.ingredients}"
                         </div>
 
+                        {/* Verified Farm & Facility Media Badge */}
+                        {((sub.fieldPhotos && sub.fieldPhotos.length > 0) || (sub.processingUnitPhotos && sub.processingUnitPhotos.length > 0) || (sub.accreditations && sub.accreditations.length > 0)) && (
+                          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                            {sub.fieldPhotos && sub.fieldPhotos.length > 0 && (
+                              <span className="px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-semibold flex items-center gap-1">
+                                <Camera className="w-3 h-3 text-emerald-600" /> {sub.fieldPhotos.length} Field {sub.fieldPhotos.length === 1 ? 'Photo' : 'Photos'}
+                              </span>
+                            )}
+                            {sub.processingUnitPhotos && sub.processingUnitPhotos.length > 0 && (
+                              <span className="px-2 py-0.5 rounded-md bg-purple-50 border border-purple-200 text-[#5B0868] text-[10px] font-semibold flex items-center gap-1">
+                                <Building2 className="w-3 h-3 text-[#5B0868]" /> Unit Photos
+                              </span>
+                            )}
+                            {sub.accreditations && sub.accreditations.length > 0 && (
+                              <span className="px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-[10px] font-semibold flex items-center gap-1">
+                                <FileBadge className="w-3 h-3 text-amber-700" /> {sub.accreditations.length} {sub.accreditations.length === 1 ? 'Accreditation' : 'Accreditations'}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
                         {/* Admin Feedback Box */}
                         {sub.adminNotes && (
                           <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
@@ -736,8 +836,203 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
         )}
 
         {/* ============================================================== */}
-        {/* TAB 2: BATCH QUALITY CONTROL (QC) & COA REGISTRY               */}
+        {/* TAB 1.5: OUR FIELDS, EXTRACTION UNITS & ACCREDITATIONS        */}
         {/* ============================================================== */}
+        {activeTab === 'FIELDS_AND_FACILITIES' && (
+          <div className="space-y-6">
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-brand-gold/25 shadow-sm space-y-6">
+              
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-brand-gold/20">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                    Farm Origin & Processing Unit Transparency
+                  </span>
+                  <h3 className="font-serif text-2xl font-bold text-brand-charcoal mt-1">
+                    Agricultural Fields, Apiaries & Extraction Units
+                  </h3>
+                  <p className="text-xs text-brand-muted mt-1 max-w-2xl">
+                    Client confidence is rooted in real farm transparency. Provide proof of your organic farmland, tribal beekeeping cliffs, harvesting operations, cold-press units, and government accreditations.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowSubmitModal(true)}
+                  className="px-4 py-2 bg-[#5B0868] text-white rounded-xl text-xs font-bold hover:bg-[#480653] flex items-center gap-2 self-start"
+                >
+                  <Plus className="w-4 h-4" /> Add New Farm Lot
+                </button>
+              </div>
+
+              {/* Showcase Grid of Vendor Facilities */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* 1. Agricultural Fields & Apiary Section */}
+                <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-brand-gold/30 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                        <MapPin className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-serif font-bold text-base text-gray-900">Fields & Farm Plots</h4>
+                        <p className="text-[11px] text-gray-500">Nilgiri Biosphere, Kotagiri & Pampore Plateau</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-md">
+                      2 Verified Locations
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="relative rounded-xl overflow-hidden aspect-video border border-brand-gold/20 group">
+                      <img
+                        src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80"
+                        alt="High Altitude Field"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                        <p className="text-[11px] font-bold leading-tight">Nilgiri Forest Reserve</p>
+                        <p className="text-[9px] opacity-80">2,100m ASL • Wild Apis Apiary</p>
+                      </div>
+                    </div>
+
+                    <div className="relative rounded-xl overflow-hidden aspect-video border border-brand-gold/20 group">
+                      <img
+                        src="https://images.unsplash.com/photo-1592417817098-8f3d69102353?auto=format&fit=crop&w=800&q=80"
+                        alt="Saffron Plateau"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                        <p className="text-[11px] font-bold leading-tight">Pampore Saffron Orchards</p>
+                        <p className="text-[9px] opacity-80">1,600m ASL • Organic Crocus Beds</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-white rounded-xl border border-gray-200 text-xs space-y-1">
+                    <span className="font-bold text-gray-800 text-[11px] flex items-center gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-600" /> Ethical Tribal Harvesting Guarantee
+                    </span>
+                    <p className="text-[11px] text-gray-600 leading-relaxed">
+                      All honeycomb cappings and botanicals are culled sustainably by tribal cooperatives without smoke burning or harming native bee colonies.
+                    </p>
+                  </div>
+                </div>
+
+                {/* 2. Processing Unit & Clean Laboratory */}
+                <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-brand-gold/30 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-xl bg-purple-100 text-[#5B0868] flex items-center justify-center">
+                        <Building2 className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-serif font-bold text-base text-gray-900">Processing Units & Machinery</h4>
+                        <p className="text-[11px] text-gray-500">Cold Hydraulic Press & Steam Distillation Alembics</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-100 text-[#5B0868] rounded-md">
+                      Cleanroom Class 10k
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="relative rounded-xl overflow-hidden aspect-video border border-brand-gold/20 group">
+                      <img
+                        src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
+                        alt="Stainless Steel Distiller"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                        <p className="text-[11px] font-bold leading-tight">Copper & SS Alembic Stills</p>
+                        <p className="text-[9px] opacity-80">Low-temp hydro condensation</p>
+                      </div>
+                    </div>
+
+                    <div className="relative rounded-xl overflow-hidden aspect-video border border-brand-gold/20 group">
+                      <img
+                        src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=800&q=80"
+                        alt="Cold Press Facility"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                        <p className="text-[11px] font-bold leading-tight">Hydraulic Seed Expellers</p>
+                        <p className="text-[9px] opacity-80">Cold-pressed below 28°C</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-white rounded-xl border border-gray-200 text-xs space-y-1">
+                    <span className="font-bold text-gray-800 text-[11px] flex items-center gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-600" /> Inert Nitrogen Packaging System
+                    </span>
+                    <p className="text-[11px] text-gray-600 leading-relaxed">
+                      Zero hexane, petroleum ether or synthetic chemical solvents are permitted anywhere in the processing circuit.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* 3. Accreditations & Certifications Gallery */}
+              <div className="p-6 rounded-2xl border border-brand-gold/30 bg-white space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileBadge className="w-5 h-5 text-emerald-700" />
+                    <div>
+                      <h4 className="font-serif font-bold text-base text-gray-900">
+                        Government & Quality Accreditations
+                      </h4>
+                      <p className="text-xs text-gray-500">Certified active licenses uploaded by this vendor</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {[
+                    {
+                      title: 'NPOP India Organic',
+                      license: 'NPOP/NAB/0014-ORG',
+                      body: 'APEDA Ministry of Commerce & Industry',
+                      validity: 'Valid Thru Dec 2027',
+                      desc: 'Certified zero pesticide & chemical-free agriculture on all harvested land plots.'
+                    },
+                    {
+                      title: 'Ayush GMP Certification',
+                      license: 'GMP-AYUSH-TN-8821',
+                      body: 'Department of Indian Medicine & Homeopathy',
+                      validity: 'Audited Sep 2026',
+                      desc: 'Compliant with Schedule T Good Manufacturing Practices for natural Ayurvedic cosmetics.'
+                    },
+                    {
+                      title: 'ISO 22716 / ISO 3632',
+                      license: 'ISO-22716-GB-QC',
+                      body: 'Bureau Veritas Quality International',
+                      validity: 'Annual Surveillance 2026',
+                      desc: 'Global cosmetic manufacturing cleanliness and spectrophotometric saffron grade 1 purity.'
+                    }
+                  ].map((cert, i) => (
+                    <div key={i} className="p-4 rounded-xl bg-[#FAF7F2] border border-gray-200 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-gray-900 text-xs">{cert.title}</span>
+                        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                      </div>
+                      <div className="font-mono text-[10px] text-[#5B0868] font-bold bg-white px-2 py-0.5 rounded border border-gray-200 inline-block">
+                        {cert.license}
+                      </div>
+                      <p className="text-[11px] text-gray-600">{cert.desc}</p>
+                      <div className="pt-1 border-t border-gray-200 flex justify-between text-[10px] text-gray-500">
+                        <span>{cert.body}</span>
+                        <span className="font-semibold text-emerald-700">{cert.validity}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+
         {activeTab === 'QUALITY_CONTROL' && (
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-3xl border border-brand-gold/25 shadow-sm space-y-4">
@@ -1090,6 +1385,296 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                   />
                 </div>
 
+                {/* ======================================================= */}
+                {/* FIELD / FARM & PROCESSING UNIT PHOTOS / VIDEOS          */}
+                {/* ======================================================= */}
+                <div className="sm:col-span-2 pt-2 border-t border-brand-gold/20 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Camera className="w-4 h-4 text-[#5B0868]" />
+                    <span className="font-serif font-bold text-sm text-brand-charcoal">
+                      Field & Processing Facility Media
+                    </span>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                      Client Trust Verified
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-brand-muted">
+                    Upload or attach direct photos & videos of your agricultural farm plots, organic beekeeping hives, or extraction processing facilities.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Field / Farm Photos */}
+                    <div className="p-3.5 bg-white rounded-2xl border border-brand-gold/25 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-[11px] text-brand-charcoal flex items-center gap-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-brand-gold-dark" /> Farm / Field Photos ({form.fieldPhotos.length})
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          value={newFieldPhotoUrl}
+                          onChange={(e) => setNewFieldPhotoUrl(e.target.value)}
+                          placeholder="Paste farm photo image URL..."
+                          className="flex-1 p-2 bg-brand-cream/30 border border-brand-gold/20 rounded-lg text-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (newFieldPhotoUrl.trim()) {
+                              setForm({ ...form, fieldPhotos: [...form.fieldPhotos, newFieldPhotoUrl.trim()] });
+                              setNewFieldPhotoUrl('');
+                            }
+                          }}
+                          className="px-3 py-1.5 bg-[#5B0868] text-white rounded-lg text-xs font-bold hover:bg-[#480653]"
+                        >
+                          Add
+                        </button>
+                      </div>
+
+                      {/* Quick Presets for Demo */}
+                      <div className="flex flex-wrap gap-1 text-[10px]">
+                        <span className="text-brand-muted">Demo:</span>
+                        <button
+                          type="button"
+                          onClick={() => setForm({
+                            ...form,
+                            fieldPhotos: [...form.fieldPhotos, 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80']
+                          })}
+                          className="text-[#5B0868] underline font-medium hover:text-[#3e0547]"
+                        >
+                          + Nilgiri Farm Plot
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setForm({
+                            ...form,
+                            fieldPhotos: [...form.fieldPhotos, 'https://images.unsplash.com/photo-1592417817098-8f3d69102353?auto=format&fit=crop&w=800&q=80']
+                          })}
+                          className="text-[#5B0868] underline font-medium hover:text-[#3e0547]"
+                        >
+                          + Saffron Valley
+                        </button>
+                      </div>
+
+                      {/* Photo preview chips */}
+                      {form.fieldPhotos.length > 0 && (
+                        <div className="flex gap-2 overflow-x-auto pt-1">
+                          {form.fieldPhotos.map((url, i) => (
+                            <div key={i} className="relative group w-14 h-14 rounded-lg overflow-hidden border border-brand-gold/30 flex-shrink-0">
+                              <img src={url} alt="Farm" className="w-full h-full object-cover" />
+                              <button
+                                type="button"
+                                onClick={() => setForm({ ...form, fieldPhotos: form.fieldPhotos.filter((_, idx) => idx !== i) })}
+                                className="absolute inset-0 bg-black/60 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+                              >
+                                <Trash2 className="w-3.5 h-3.5 text-red-300" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Processing Facility & Extraction Photos */}
+                    <div className="p-3.5 bg-white rounded-2xl border border-brand-gold/25 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-[11px] text-brand-charcoal flex items-center gap-1.5">
+                          <Building2 className="w-3.5 h-3.5 text-[#5B0868]" /> Processing Unit Photos ({form.processingUnitPhotos.length})
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="url"
+                          value={newUnitPhotoUrl}
+                          onChange={(e) => setNewUnitPhotoUrl(e.target.value)}
+                          placeholder="Paste processing facility image URL..."
+                          className="flex-1 p-2 bg-brand-cream/30 border border-brand-gold/20 rounded-lg text-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (newUnitPhotoUrl.trim()) {
+                              setForm({ ...form, processingUnitPhotos: [...form.processingUnitPhotos, newUnitPhotoUrl.trim()] });
+                              setNewUnitPhotoUrl('');
+                            }
+                          }}
+                          className="px-3 py-1.5 bg-[#5B0868] text-white rounded-lg text-xs font-bold hover:bg-[#480653]"
+                        >
+                          Add
+                        </button>
+                      </div>
+
+                      {/* Demo preset */}
+                      <div className="flex flex-wrap gap-1 text-[10px]">
+                        <span className="text-brand-muted">Demo:</span>
+                        <button
+                          type="button"
+                          onClick={() => setForm({
+                            ...form,
+                            processingUnitPhotos: [...form.processingUnitPhotos, 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80']
+                          })}
+                          className="text-[#5B0868] underline font-medium hover:text-[#3e0547]"
+                        >
+                          + Cold Press Extraction Unit
+                        </button>
+                      </div>
+
+                      {form.processingUnitPhotos.length > 0 && (
+                        <div className="flex gap-2 overflow-x-auto pt-1">
+                          {form.processingUnitPhotos.map((url, i) => (
+                            <div key={i} className="relative group w-14 h-14 rounded-lg overflow-hidden border border-brand-gold/30 flex-shrink-0">
+                              <img src={url} alt="Unit" className="w-full h-full object-cover" />
+                              <button
+                                type="button"
+                                onClick={() => setForm({ ...form, processingUnitPhotos: form.processingUnitPhotos.filter((_, idx) => idx !== i) })}
+                                className="absolute inset-0 bg-black/60 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+                              >
+                                <Trash2 className="w-3.5 h-3.5 text-red-300" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Field / Unit Video Links */}
+                  <div className="p-3.5 bg-white rounded-2xl border border-brand-gold/25 space-y-2">
+                    <span className="font-bold text-[11px] text-brand-charcoal flex items-center gap-1.5">
+                      <Video className="w-3.5 h-3.5 text-red-600" /> Farm / Processing Video Link (YouTube or MP4)
+                    </span>
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        value={newFieldVideoUrl}
+                        onChange={(e) => setNewFieldVideoUrl(e.target.value)}
+                        placeholder="e.g. https://www.youtube.com/watch?v=farm-harvest-tour"
+                        className="flex-1 p-2 bg-brand-cream/30 border border-brand-gold/20 rounded-lg text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (newFieldVideoUrl.trim()) {
+                            setForm({ ...form, fieldVideos: [...form.fieldVideos, newFieldVideoUrl.trim()] });
+                            setNewFieldVideoUrl('');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-[#5B0868] text-white rounded-lg text-xs font-bold hover:bg-[#480653]"
+                      >
+                        Attach Video
+                      </button>
+                    </div>
+                    {form.fieldVideos.length > 0 && (
+                      <div className="space-y-1 pt-1">
+                        {form.fieldVideos.map((vid, idx) => (
+                          <div key={idx} className="flex items-center justify-between text-[11px] bg-brand-cream/60 px-2.5 py-1 rounded-lg">
+                            <span className="truncate max-w-[450px] font-mono text-gray-700">{vid}</span>
+                            <button
+                              type="button"
+                              onClick={() => setForm({ ...form, fieldVideos: form.fieldVideos.filter((_, i) => i !== idx) })}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* ======================================================= */}
+                {/* ACCREDITATIONS & CERTIFICATIONS                         */}
+                {/* ======================================================= */}
+                <div className="sm:col-span-2 pt-2 border-t border-brand-gold/20 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <FileBadge className="w-4 h-4 text-emerald-700" />
+                    <span className="font-serif font-bold text-sm text-brand-charcoal">
+                      Accreditations & Organic Certifications
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-brand-muted">
+                    Declare and attach your certified licenses (NPOP Organic India, Ayush GMP, ISO 22716, ISO 3632, FSSAI, Non-GMO).
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input
+                      type="text"
+                      value={newAccredName}
+                      onChange={(e) => setNewAccredName(e.target.value)}
+                      placeholder="e.g. NPOP Organic India / Ayush GMP"
+                      className="p-2 bg-white border border-brand-gold/20 rounded-lg text-xs"
+                    />
+                    <input
+                      type="text"
+                      value={newAccredNumber}
+                      onChange={(e) => setNewAccredNumber(e.target.value)}
+                      placeholder="License / Certificate Number"
+                      className="p-2 bg-white border border-brand-gold/20 rounded-lg text-xs"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newAccredAuth}
+                        onChange={(e) => setNewAccredAuth(e.target.value)}
+                        placeholder="Auditing Body / Agency"
+                        className="flex-1 p-2 bg-white border border-brand-gold/20 rounded-lg text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (newAccredName.trim()) {
+                            setForm({
+                              ...form,
+                              accreditations: [
+                                ...form.accreditations,
+                                {
+                                  name: newAccredName.trim(),
+                                  certNumber: newAccredNumber.trim() || 'IN-ORG-LIC-2026',
+                                  authority: newAccredAuth.trim() || 'Authorized Certification Agency',
+                                  expiry: '2027'
+                                }
+                              ]
+                            });
+                            setNewAccredName('');
+                            setNewAccredNumber('');
+                            setNewAccredAuth('');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-[#5B0868] text-white rounded-lg text-xs font-bold hover:bg-[#480653]"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Active Accreditations List */}
+                  {form.accreditations.length > 0 && (
+                    <div className="space-y-1.5 pt-1">
+                      {form.accreditations.map((acc, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-2 rounded-xl bg-white border border-emerald-200 text-xs">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                            <div>
+                              <span className="font-bold text-gray-900">{acc.name}</span>
+                              <span className="text-[10px] text-gray-500 font-mono ml-2">[{acc.certNumber}]</span>
+                              <span className="text-[10px] text-gray-400 ml-1">• {acc.authority}</span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setForm({ ...form, accreditations: form.accreditations.filter((_, i) => i !== idx) })}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <div className="sm:col-span-2 bg-brand-cream/60 p-3.5 rounded-2xl border border-brand-gold/20 flex items-start gap-3">
                   <input
                     type="checkbox"
@@ -1201,6 +1786,39 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                   <p className="text-brand-charcoal/80 leading-relaxed text-[11px]">
                     {selectedSub.description}
                   </p>
+                </div>
+              )}
+
+              {/* Verified Field Photos & Videos */}
+              {((selectedSub.fieldPhotos && selectedSub.fieldPhotos.length > 0) || (selectedSub.processingUnitPhotos && selectedSub.processingUnitPhotos.length > 0)) && (
+                <div className="space-y-2 pt-2 border-t border-brand-gold/15">
+                  <span className="font-bold text-brand-charcoal flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+                    <Camera className="w-3.5 h-3.5 text-[#5B0868]" /> Verified Farm & Facility Media:
+                  </span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[...(selectedSub.fieldPhotos || []), ...(selectedSub.processingUnitPhotos || [])].map((img, i) => (
+                      <div key={i} className="aspect-video rounded-xl overflow-hidden border border-brand-gold/20 bg-brand-cream/50">
+                        <img src={img} alt="Farm Facility" className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Accreditations Badges in Modal */}
+              {selectedSub.accreditations && selectedSub.accreditations.length > 0 && (
+                <div className="space-y-2 pt-2 border-t border-brand-gold/15">
+                  <span className="font-bold text-brand-charcoal flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+                    <FileBadge className="w-3.5 h-3.5 text-emerald-700" /> Producer Accreditations:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedSub.accreditations.map((acc, i) => (
+                      <span key={i} className="px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-[10px] font-medium flex items-center gap-1">
+                        <CheckCircle className="w-3 h-3 text-emerald-600" />
+                        <strong>{acc.name}</strong> • {acc.certNumber}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

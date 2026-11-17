@@ -13,7 +13,12 @@ import {
   ArrowRight,
   Layers,
   X,
-  ExternalLink
+  ExternalLink,
+  Camera,
+  Video,
+  FileBadge,
+  MapPin,
+  Building2
 } from 'lucide-react';
 
 export default function SupplierApprovalQueue({
@@ -352,6 +357,83 @@ export default function SupplierApprovalQueue({
                 </div>
               )}
             </div>
+
+            {/* Farm, Field & Extraction Facility Inspection */}
+            {((selectedSub.fieldPhotos && selectedSub.fieldPhotos.length > 0) || (selectedSub.processingUnitPhotos && selectedSub.processingUnitPhotos.length > 0) || (selectedSub.fieldVideos && selectedSub.fieldVideos.length > 0)) && (
+              <div className="space-y-3 pt-3 border-t border-gray-200">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold uppercase tracking-wider text-gray-800 flex items-center gap-1.5 text-[11px]">
+                    <Camera className="w-3.5 h-3.5 text-[#5B0868]" /> Producer Farm & Extraction Facility Audit
+                  </span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                    Audited Origins
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {(selectedSub.fieldPhotos || []).map((img, i) => (
+                    <div key={`field-${i}`} className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 group">
+                      <img src={img} alt="Farm Field" className="w-full h-full object-cover" />
+                      <div className="absolute inset-x-0 bottom-0 bg-black/60 p-1 text-[9px] text-white font-medium flex items-center gap-1">
+                        <MapPin className="w-2.5 h-2.5 text-emerald-400" /> Farm Field #{i + 1}
+                      </div>
+                    </div>
+                  ))}
+                  {(selectedSub.processingUnitPhotos || []).map((img, i) => (
+                    <div key={`unit-${i}`} className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 group">
+                      <img src={img} alt="Processing Unit" className="w-full h-full object-cover" />
+                      <div className="absolute inset-x-0 bottom-0 bg-black/60 p-1 text-[9px] text-white font-medium flex items-center gap-1">
+                        <Building2 className="w-2.5 h-2.5 text-purple-400" /> Extraction Unit #{i + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {selectedSub.fieldVideos && selectedSub.fieldVideos.length > 0 && (
+                  <div className="p-2.5 bg-[#FAF7F2] rounded-xl border border-gray-200 space-y-1">
+                    <span className="font-bold text-[10px] text-gray-700 flex items-center gap-1">
+                      <Video className="w-3 h-3 text-red-600" /> Video Walkthrough Submitted:
+                    </span>
+                    {selectedSub.fieldVideos.map((vid, idx) => (
+                      <a
+                        key={idx}
+                        href={typeof vid === 'string' ? vid : vid.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[11px] text-[#5B0868] underline font-mono flex items-center gap-1 hover:text-[#45054f]"
+                      >
+                        <ExternalLink className="w-3 h-3" /> {typeof vid === 'string' ? vid : vid.title || vid.url}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Accreditations & Licenses Inspection */}
+            {selectedSub.accreditations && selectedSub.accreditations.length > 0 && (
+              <div className="space-y-2 pt-3 border-t border-gray-200">
+                <span className="font-bold uppercase tracking-wider text-gray-800 flex items-center gap-1.5 text-[11px]">
+                  <FileBadge className="w-3.5 h-3.5 text-emerald-700" /> Accreditations & Certifications Audit
+                </span>
+                <div className="space-y-1.5">
+                  {selectedSub.accreditations.map((acc, i) => (
+                    <div key={i} className="flex items-center justify-between p-2 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs">
+                      <div className="flex items-center gap-2">
+                        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                        <div>
+                          <span className="font-bold text-gray-900">{acc.name}</span>
+                          <span className="font-mono text-[10px] text-gray-600 ml-2">[{acc.certNumber}]</span>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-semibold text-emerald-800 bg-white px-2 py-0.5 rounded border border-emerald-200">
+                        {acc.authority || 'Verified Authority'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
               <button
