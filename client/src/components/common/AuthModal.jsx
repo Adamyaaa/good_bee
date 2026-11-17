@@ -67,20 +67,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             <X className="w-5 h-5" />
           </button>
           
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-            <span className="text-[11px] font-bold tracking-widest uppercase text-amber-200">
-              Good Being Patron Club
-            </span>
-          </div>
-
           <h3 className="text-xl font-serif font-bold text-white">
-            {mode === 'login' ? 'Sign In to Continue' : 'Create Your Patron Account'}
+            {mode === 'login' ? 'Sign In to Continue' : 'Create an Account'}
           </h3>
           <p className="text-xs text-purple-100/80 mt-1">
             {pendingProduct 
               ? `Please log in to add "${pendingProduct.title?.slice(0, 32)}..." to your shopping bag.`
-              : 'Join Good Bee to unlock personal apothecary access & reward points.'}
+              : 'Sign in to access your saved bag, orders, and skincare routines.'}
           </p>
         </div>
 

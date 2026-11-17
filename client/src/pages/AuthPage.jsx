@@ -103,21 +103,17 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
           
           {/* Left Hero / Brand Vignette (5 Cols) */}
           <div className="lg:col-span-5 bg-[#5B0868] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden">
-            {/* Subtle botanical honeycomb background effect */}
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-
             <div className="relative z-10 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-xs text-[11px] font-bold uppercase tracking-wider text-amber-300">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Good Being Patron Club</span>
-              </div>
+              <span className="text-[11px] font-bold uppercase tracking-widest text-amber-300 block">
+                Natural &bull; Cold-Stabilized Botanicals
+              </span>
 
               <h2 className="font-serif text-2xl sm:text-3xl font-medium leading-tight">
-                Authentic cold-processed skincare & pure botanicals.
+                Pure farm-origin skincare crafted with integrity.
               </h2>
 
               <p className="text-xs text-purple-100/90 leading-relaxed font-sans">
-                Sign in to your member desk to manage batch-certified orders, earn wellness nectar loyalty points, and review formulations.
+                Sign in to manage your orders, track batch-certified shipments, and access personalized routine consultations.
               </p>
             </div>
 
@@ -125,20 +121,20 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
             <div className="relative z-10 space-y-3 pt-6 border-t border-white/15 my-6">
               <div className="flex items-center gap-3 text-xs text-purple-100">
                 <div className="p-1.5 rounded-lg bg-white/15 text-amber-300"><Droplets className="w-4 h-4" /></div>
-                <span>100% Verified Steam-Distilled Terpenes</span>
+                <span>100% Steam-Distilled Pure Botanicals</span>
               </div>
               <div className="flex items-center gap-3 text-xs text-purple-100">
                 <div className="p-1.5 rounded-lg bg-white/15 text-emerald-300"><Leaf className="w-4 h-4" /></div>
-                <span>No Parabens, Artificial Sulphates, or Microplastics</span>
+                <span>Zero Parabens, Artificial Sulphates, or Microplastics</span>
               </div>
               <div className="flex items-center gap-3 text-xs text-purple-100">
                 <div className="p-1.5 rounded-lg bg-white/15 text-pink-300"><Heart className="w-4 h-4" /></div>
-                <span>Earn 100 Welcome Loyalty Points on Signup</span>
+                <span>Ethically Sourced from Sustainable Farm Cooperatives</span>
               </div>
             </div>
 
             <div className="relative z-10 text-[11px] text-purple-200/80 font-medium">
-              Good Bee Botanical Platform
+              Good Bee Botanical Skincare
             </div>
           </div>
 
@@ -149,12 +145,12 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
             <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
               <div>
                 <h3 className="font-serif text-2xl font-bold text-gray-900">
-                  {mode === 'login' ? 'Patron Sign In' : 'Join Good Being Club'}
+                  {mode === 'login' ? 'Customer Sign In' : 'Create an Account'}
                 </h3>
                 <p className="text-xs text-gray-500 mt-1">
                   {mode === 'login' 
                     ? 'Enter your registered credentials to access your bag & orders.' 
-                    : 'Create your personal account. Defaults to Patron Club Member.'}
+                    : 'Create your account to track orders and save your delivery details.'}
                 </p>
               </div>
 
@@ -250,7 +246,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="patron@goodbee.com"
+                    placeholder="user@example.com"
                     className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                   />
                 </div>
@@ -289,12 +285,12 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                   <span>Signing In...</span>
                 ) : mode === 'login' ? (
                   <>
-                    <span>Enter Patron Desk</span>
+                    <span>Sign In to Account</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 ) : (
                   <>
-                    <span>Complete Membership Registration</span>
+                    <span>Create Account</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -305,7 +301,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
             <p className="mt-6 text-center text-xs text-gray-500">
               {mode === 'login' ? (
                 <>
-                  Don't have a Patron account yet?{' '}
+                  Don't have an account yet?{' '}
                   <button
                     type="button"
                     onClick={() => {
