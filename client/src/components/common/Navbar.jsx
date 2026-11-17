@@ -242,8 +242,8 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
                       <div className="px-4 py-2 border-b border-gray-100">
                         <p className="text-xs text-gray-500">Signed in as</p>
                         <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
-                        <span className="inline-block mt-1 text-[10px] tracking-wider uppercase px-2 py-0.5 bg-purple-50 text-[#5B0868] font-bold rounded">
-                          {user.role === 'ADMIN' ? 'Store Administrator' : user.role === 'DEALER' ? 'Wholesaler Partner' : user.role === 'PRODUCER' ? 'Botanical Vendor' : 'Good Being Club Member'}
+                        <span className="inline-block mt-1 text-[10px] tracking-wider uppercase px-2 py-0.5 bg-gray-100 text-gray-700 font-bold rounded">
+                          {user.role === 'ADMIN' ? 'Store Administrator' : user.role === 'DEALER' ? 'Wholesaler Partner' : user.role === 'PRODUCER' ? 'Botanical Vendor' : 'Customer Account'}
                         </span>
                       </div>
                       <button
