@@ -55,7 +55,7 @@ export const DEMO_ACCOUNTS = {
     role: 'CUSTOMER',
     loyaltyPoints: 480,
     phone: '+91 99630 75004',
-    title: 'Good Being Club Member'
+    title: 'Customer Account'
   }
 };
 

@@ -29,7 +29,7 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
     { id: 'ADMIN', label: 'Admin Suite', badge: 'Control Tower', icon: Shield },
     { id: 'PRODUCER', label: 'Vendor & Labs', badge: 'Supplier', icon: FlaskConical },
     { id: 'DEALER', label: 'Wholesale Desk', badge: 'B2B Bulk', icon: Package },
-    { id: 'CUSTOMER', label: 'Good Being Club', badge: 'Patron Club', icon: User }
+    { id: 'CUSTOMER', label: 'My Account', badge: 'Customer Account', icon: User }
   ];
 
   // REAL ACCESS CONTROL ENFORCEMENT:
@@ -38,7 +38,7 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
   //   * ADMIN can view Admin Suite or inspect portals.
   //   * PRODUCER can ONLY access Vendor & Labs (PRODUCER).
   //   * DEALER can ONLY access Wholesale Desk (DEALER).
-  //   * CUSTOMER can ONLY access Good Being Club (CUSTOMER).
+  //   * CUSTOMER can ONLY access My Account (CUSTOMER).
   const isAuthorized = user && (user.role === 'ADMIN' || user.role === requestedPortal);
 
   return (
@@ -114,7 +114,7 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
                     {user.companyName || user.name || user.email}
                   </span>
                   <span className="text-[10px] text-purple-700 font-bold font-mono">
-                    {user.role === 'CUSTOMER' ? 'Club Member' : user.role === 'DEALER' ? 'Wholesaler' : user.role === 'PRODUCER' ? 'Botanical Vendor' : 'Admin'}
+                    {user.role === 'CUSTOMER' ? 'Customer Account' : user.role === 'DEALER' ? 'Wholesaler' : user.role === 'PRODUCER' ? 'Botanical Vendor' : 'Admin'}
                   </span>
                 </div>
               )}

@@ -40,13 +40,13 @@ export default function CustomerPortal({ onNavigateHome }) {
             </span>
             <div>
               <span className="text-[11px] font-bold uppercase tracking-widest text-brand-gold-dark block">
-                Patron Dashboard
+                Customer Account Dashboard
               </span>
               <h1 className="font-serif text-2xl sm:text-3xl text-brand-charcoal font-semibold">
-                Welcome, {user ? user.name : 'Valued Patron'}
+                Welcome, {user ? user.name : 'Valued Customer'}
               </h1>
               <p className="text-xs text-brand-muted">
-                {user ? user.email : 'customer@goodbee.com'} • Active Member
+                {user ? user.email : 'customer@goodbee.com'} • Active Account
               </p>
             </div>
           </div>
@@ -57,7 +57,7 @@ export default function CustomerPortal({ onNavigateHome }) {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-brand-gold-light text-xs font-bold uppercase tracking-wider">
               <Award className="w-4 h-4 text-brand-gold" />
-              <span>Good Bee Patron Privilege</span>
+              <span>Good Bee Loyalty Rewards</span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-medium">
               You Have <span className="text-brand-gold font-bold">{user?.loyaltyPoints || 340}</span> Bee-Coins

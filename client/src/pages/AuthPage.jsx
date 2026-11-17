@@ -55,7 +55,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
           phone,
           role: 'CUSTOMER'
         });
-        setSuccessMsg(`Account created successfully! Welcome to the Good Being Club.`);
+        setSuccessMsg(`Account created successfully! Welcome to Good Bee.`);
         setTimeout(() => {
           if (onAuthSuccess) onAuthSuccess(u);
           else if (onBack) onBack();
