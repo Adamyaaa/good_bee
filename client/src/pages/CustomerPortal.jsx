@@ -8,25 +8,49 @@ export default function CustomerPortal({ onNavigateHome }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch orders or fallback to customer test orders
-    setOrders([
-      {
-        id: 'GB-ORD-90821',
-        total: 1890,
-        status: 'PROCESSING',
-        date: '2026-10-07',
-        paymentMethod: 'DYNAMIC_UPI_QR',
-        items: [
+    // Read live customer orders from localStorage and/or server
+    try {
+      const allOrders = JSON.parse(localStorage.getItem('goodbee_orders') || '[]');
+      const customerEmail = user?.email?.toLowerCase();
+      
+      // Filter orders placed by this specific logged in user
+      const userOrders = customerEmail
+        ? allOrders.filter(
+            (o) =>
+              (o.customerEmail && o.customerEmail.toLowerCase() === customerEmail) ||
+              (user.id === 'usr_customer_1' && !o.customerEmail)
+          )
+        : [];
+
+      // If user has placed real orders, show them. If brand new user with no orders, show empty state.
+      // If demo default customer account ('customer@goodbee.com'), fallback to seed order.
+      if (userOrders.length > 0) {
+        setOrders(userOrders);
+      } else if (user?.email === 'customer@goodbee.com') {
+        setOrders([
           {
-            title: 'Golden Royal Propolis Restorative Nectar',
-            price: 1890,
-            quantity: 1
+            id: 'GB-ORD-90821',
+            total: 1890,
+            status: 'PROCESSING',
+            date: '2026-10-07',
+            paymentMethod: 'DYNAMIC_UPI_QR',
+            items: [
+              {
+                title: 'Golden Royal Propolis Restorative Nectar',
+                price: 1890,
+                quantity: 1
+              }
+            ]
           }
-        ]
+        ]);
+      } else {
+        setOrders([]);
       }
-    ]);
+    } catch (e) {
+      setOrders([]);
+    }
     setLoading(false);
-  }, []);
+  }, [user]);
 
   return (
     <div className="py-10 bg-brand-ivory min-h-screen">
@@ -85,7 +109,22 @@ export default function CustomerPortal({ onNavigateHome }) {
           </div>
 
           <div className="space-y-3">
-            {orders.map((ord) => (
+            {orders.length === 0 ? (
+              <div className="p-8 text-center bg-brand-ivory rounded-2xl border border-brand-gold/20 space-y-2">
+                <Package className="w-8 h-8 text-brand-gold mx-auto" />
+                <h4 className="font-serif text-sm font-semibold text-brand-charcoal">No Orders Placed Yet</h4>
+                <p className="text-xs text-brand-muted max-w-sm mx-auto">
+                  When you purchase cold-stabilized propolis nectars, serums, or essential oils, your live order invoices and tracking numbers will appear here.
+                </p>
+                <button
+                  onClick={onNavigateHome}
+                  className="mt-2 px-4 py-2 bg-brand-charcoal text-brand-ivory rounded-full text-xs font-semibold hover:bg-brand-gold-dark transition-colors"
+                >
+                  Explore Formulations
+                </button>
+              </div>
+            ) : (
+              orders.map((ord) => (
               <div
                 key={ord.id}
                 className="p-4 bg-brand-ivory rounded-2xl border border-brand-gold/20 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs"
@@ -124,7 +163,7 @@ export default function CustomerPortal({ onNavigateHome }) {
                   </a>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         </div>
 
