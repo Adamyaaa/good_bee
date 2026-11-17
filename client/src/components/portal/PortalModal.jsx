@@ -204,11 +204,11 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
               <p className="text-xs text-gray-600 leading-relaxed">
                 You are currently signed in as <strong>{user.name}</strong> ({user.email}) with the role of{' '}
                 <span className="font-bold text-purple-800">
-                  {user.role === 'CUSTOMER' ? 'Good Being Club Member (Customer)' : user.role}
+                  {user.role === 'CUSTOMER' ? 'Customer Account' : user.role}
                 </span>.
               </p>
               <div className="p-3 bg-purple-50 rounded-xl border border-purple-100 text-[11px] text-[#5B0868] text-left">
-                <strong>Default Security Policy:</strong> New accounts default to Club Members. If you are an authorized Botanical Vendor or Wholesale Distributor, your Good Bee Administrator must elevate your account in the Admin Tower before you can access this desk.
+                <strong>Default Security Policy:</strong> New accounts default to Customer Accounts. If you are an authorized Botanical Vendor or Wholesale Distributor, your Good Bee Administrator must elevate your account in the Admin Tower before you can access this desk.
               </div>
               <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center">
                 <button
@@ -216,7 +216,7 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
                   onClick={() => setRequestedPortal(user.role)}
                   className="px-4 py-2 text-xs font-bold text-white bg-[#5B0868] rounded-xl hover:bg-[#480653] transition-colors"
                 >
-                  Go to My {user.role === 'CUSTOMER' ? 'Club Member' : user.role} Portal
+                  Go to My {user.role === 'CUSTOMER' ? 'Customer' : user.role} Portal
                 </button>
                 <button
                   type="button"

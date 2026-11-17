@@ -77,7 +77,7 @@ export default function SurpriseGiftModal({ isOpen, onClose }) {
             </div>
 
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#5B0868] bg-purple-50 px-3 py-1 rounded-xl border border-purple-200 inline-block mb-2">
-              Patron Welcome Surprise
+              Welcome Gift Surprise
             </span>
 
             <h3 className="font-serif text-2xl sm:text-3xl text-brand-charcoal font-medium leading-tight">

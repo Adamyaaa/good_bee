@@ -293,7 +293,7 @@ export default function Checkout({ onBack, onNavigateHome }) {
 ━━━━━━━━━━━━━━━━━━━━
 *Order ID:* #${confirmedOrder.id}
 *Date:* ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-*Patron:* ${confirmedOrder.customerName || form.name}
+*Customer:* ${confirmedOrder.customerName || form.name}
 *Mobile:* ${confirmedOrder.customerPhone || form.phone}
 
 *ITEMS ORDERED:*
@@ -335,7 +335,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
               Payment & Order Verified
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl text-brand-charcoal font-medium">
-              Thank You for Your Patronage
+              Thank You for Your Order
             </h1>
             <p className="text-sm text-brand-charcoal/70">
               Your order <span className="font-mono font-bold text-brand-charcoal">#{confirmedOrder.id}</span> has been confirmed and queued for laboratory batch packing.
@@ -379,7 +379,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                 </span>
               </div>
               <div>
-                <span className="text-brand-muted text-[11px] block">Patron Contact:</span>
+                <span className="text-brand-muted text-[11px] block">Customer Contact:</span>
                 <span className="font-medium text-brand-charcoal block mt-0.5">
                   {confirmedOrder.customerName || form.name} ({confirmedOrder.customerPhone || form.phone})
                 </span>
@@ -473,7 +473,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
             {/* Customer Details */}
             <div className="bg-brand-cream/50 p-6 rounded-2xl border border-brand-gold/30 space-y-4">
               <h3 className="font-serif text-xl font-semibold text-brand-charcoal">
-                1. Patron Information
+                1. Customer Information
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div>
@@ -506,7 +506,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
-                    placeholder="patron@example.com"
+                    placeholder="customer@example.com"
                   />
                 </div>
               </div>

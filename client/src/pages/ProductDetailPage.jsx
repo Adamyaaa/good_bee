@@ -62,11 +62,36 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
   if (!product) return null;
 
+  // Check if current user is a verified purchaser of this formulation
+  const isVerifiedPurchaser = React.useMemo(() => {
+    if (!user?.email) return false;
+    try {
+      const orders = JSON.parse(localStorage.getItem('goodbee_orders') || '[]');
+      const customerEmail = user.email.toLowerCase();
+      const userOrders = orders.filter(
+        (o) =>
+          (o.customerEmail && o.customerEmail.toLowerCase() === customerEmail) ||
+          (user.id === 'usr_customer_1' && !o.customerEmail)
+      );
+      return userOrders.some((order) =>
+        Array.isArray(order.items) &&
+        order.items.some(
+          (it) =>
+            it.id === product.id ||
+            it.productId === product.id ||
+            it.title?.toLowerCase() === product.title?.toLowerCase()
+        )
+      );
+    } catch (e) {
+      return false;
+    }
+  }, [user, product?.id, product?.title]);
+
   // Calculate live average rating from authentic reviews
   const currentAvgRating = reviewsList.length > 0
     ? (reviewsList.reduce((sum, r) => sum + Number(r.rating || 5), 0) / reviewsList.length).toFixed(1)
-    : (product.rating || '4.9');
-  const currentReviewsCount = reviewsList.length > 0 ? reviewsList.length : (product.reviewsCount || 1);
+    : (product.rating ? Number(product.rating).toFixed(1) : null);
+  const currentReviewsCount = reviewsList.length > 0 ? reviewsList.length : (product.reviewsCount || 0);
 
   // Authentic product images only (no placeholder stock images)
   const productImages = (product.gallery && product.gallery.length > 0)
@@ -229,13 +254,30 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
               {/* Star Rating & Verified Count */}
               <div className="flex items-center gap-2 text-xs pt-0.5">
-                <div className="flex text-amber-500 gap-0.5">
-                  {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <span className="font-bold text-brand-charcoal">{currentAvgRating}</span>
-                <span className="text-brand-muted font-medium">({currentReviewsCount} Verified Patron Reviews)</span>
+                {currentReviewsCount > 0 ? (
+                  <>
+                    <div className="flex text-amber-500 gap-0.5">
+                      {[...Array(5)].map((_, idx) => (
+                        <Star
+                          key={idx}
+                          className={`w-3.5 h-3.5 ${
+                            idx < Math.round(Number(currentAvgRating) || 5)
+                              ? 'fill-amber-400 text-amber-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="font-bold text-brand-charcoal">{currentAvgRating}</span>
+                    <span className="text-brand-muted font-medium">
+                      ({currentReviewsCount} {currentReviewsCount === 1 ? 'Customer Review' : 'Customer Reviews'})
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-xs text-brand-muted italic">
+                    No reviews yet • Be the first to leave a rating
+                  </span>
+                )}
               </div>
             </div>
 
@@ -348,7 +390,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
               { id: 'FIELDS_AND_FARM', label: 'From Field & Processing Unit', icon: MapPin },
               { id: 'PROCESS', label: 'Artisanal Manufacturing Process', icon: FlaskConical },
               { id: 'HOW_TO_USE', label: 'How to Apply & Ritual', icon: Sparkles },
-              { id: 'REVIEWS', label: `Patron Reviews (${product.reviewsCount || 124})`, icon: Star }
+              { id: 'REVIEWS', label: `Customer Reviews (${reviewsList.length})`, icon: Star }
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -626,91 +668,92 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             </div>
           )}
 
-          {/* TAB 4: VERIFIED PATRON REVIEWS & REAL USER VIDEOS */}
+          {/* TAB 4: VERIFIED CUSTOMER REVIEWS */}
           {activeTab === 'REVIEWS' && (
-            <div className="space-y-8">
+            <div className="space-y-6">
               
-              {/* Instagram & UGC Review Videos Strip */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#5B0868]">
-                      Real Patron Stories (Ages 20–45)
-                    </span>
-                    <h4 className="font-serif text-xl font-medium text-brand-charcoal">
-                      Community Results — No Celebrity Hype
-                    </h4>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  {ugcReviews.map((ugc, i) => (
-                    <div
-                      key={i}
-                      className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-start gap-3.5 hover:shadow-md transition-shadow"
-                    >
-                      <div className="relative w-16 h-20 rounded-xl overflow-hidden bg-slate-900 flex-shrink-0">
-                        <img src={ugc.thumbnail} alt={ugc.handle} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                          <Play className="w-4 h-4 text-white fill-white" />
-                        </div>
-                      </div>
-                      <div className="space-y-1 text-xs">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-brand-charcoal text-[11px]">{ugc.handle}</span>
-                          <span className="text-[10px] text-brand-muted">{ugc.age} yrs • {ugc.city}</span>
-                        </div>
-                        <p className="text-[11px] text-brand-charcoal/80 italic leading-relaxed">
-                          "{ugc.quote}"
-                        </p>
-                        <span className="text-[9px] text-[#5B0868] font-bold block pt-0.5">
-                          Verified Instagram Patron
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               {/* Reviews Breakdown & Authentic Feedback Submission */}
               <div className="p-6 rounded-3xl bg-white border border-brand-gold/25 space-y-5 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-brand-gold/20 pb-4 gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-serif text-3xl font-bold text-brand-charcoal">{currentAvgRating}</span>
-                    <div>
-                      <div className="flex text-amber-500">
-                        {[...Array(5)].map((_, idx) => (
-                          <Star key={idx} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        ))}
+                    {currentReviewsCount > 0 ? (
+                      <>
+                        <span className="font-serif text-3xl font-bold text-brand-charcoal">{currentAvgRating}</span>
+                        <div>
+                          <div className="flex text-amber-500">
+                            {[...Array(5)].map((_, idx) => (
+                              <Star
+                                key={idx}
+                                className={`w-3.5 h-3.5 ${
+                                  idx < Math.round(Number(currentAvgRating) || 5)
+                                    ? 'fill-amber-400 text-amber-400'
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-[11px] text-brand-muted">
+                            {currentReviewsCount} Verified {currentReviewsCount === 1 ? 'Customer Rating' : 'Customer Ratings'}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
+                          <span className="font-serif text-lg font-semibold text-brand-charcoal">No customer reviews yet</span>
+                        </div>
+                        <p className="text-xs text-brand-muted">Be the first verified purchaser to leave a rating and review.</p>
                       </div>
-                      <span className="text-[11px] text-brand-muted">{currentReviewsCount} Verified Patron Ratings</span>
-                    </div>
+                    )}
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setShowReviewForm(!showReviewForm)}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-[#5B0868] bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors cursor-pointer"
-                  >
-                    <MessageSquarePlus className="w-4 h-4" />
-                    <span>{showReviewForm ? 'Cancel Review' : 'Write a Patron Review'}</span>
-                  </button>
+                  {isVerifiedPurchaser ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowReviewForm(!showReviewForm)}
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-[#5B0868] bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors cursor-pointer"
+                    >
+                      <MessageSquarePlus className="w-4 h-4" />
+                      <span>{showReviewForm ? 'Cancel Review' : 'Write a Customer Review'}</span>
+                    </button>
+                  ) : (
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 text-gray-600 text-[11px] font-medium border border-gray-200">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>{user ? 'Verified Purchasers Only' : 'Sign in to review (Purchasers only)'}</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Review Form */}
-                {showReviewForm && (
+                {/* Verified Purchaser Notice for Non-Purchasers */}
+                {!isVerifiedPurchaser && (
+                  <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-amber-900 text-xs flex items-start gap-3">
+                    <ShieldCheck className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+                    <div className="space-y-0.5">
+                      <p className="font-bold text-xs">Authentic & Verified Reviews Only</p>
+                      <p className="text-[11px] text-amber-800/90 leading-relaxed">
+                        {user
+                          ? 'To guarantee 100% authentic customer feedback with zero fake or sponsored reviews, ratings can only be submitted after purchasing this formulation through Good Bee. Once your order is placed, you will be able to share your experience here.'
+                          : 'To guarantee 100% authentic customer feedback, ratings can only be submitted by verified purchasers. Please sign in with the account you used to order this formulation.'}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Review Form (Only accessible to verified purchasers) */}
+                {isVerifiedPurchaser && showReviewForm && (
                   <form
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault();
                       const newRev = {
                         id: `rev_${Date.now()}`,
                         productId: product.id,
-                        authorName: user ? user.name : 'Anonymous Patron',
+                        authorName: user ? user.name : 'Verified Customer',
                         authorCity: user?.city || 'Verified Buyer',
                         rating: Number(newRating),
                         headline: newHeadline,
                         comment: newComment,
-                        date: 'Just now',
+                        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
                         verifiedPurchase: true
                       };
                       const updated = [newRev, ...reviewsList];
@@ -718,6 +761,20 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                       try {
                         const existingStored = JSON.parse(localStorage.getItem(`goodbee_reviews_${product.id}`) || '[]');
                         localStorage.setItem(`goodbee_reviews_${product.id}`, JSON.stringify([newRev, ...existingStored]));
+                        // Also sync to backend API if available
+                        await fetch(`/api/v1/products/${product.id}/reviews`, {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            ...(token ? { Authorization: `Bearer ${token}` } : {})
+                          },
+                          body: JSON.stringify({
+                            rating: Number(newRating),
+                            headline: newHeadline,
+                            comment: newComment,
+                            authorCity: user?.city || 'Verified Buyer'
+                          })
+                        }).catch(() => {});
                       } catch (err) {}
                       setNewHeadline('');
                       setNewComment('');
@@ -739,7 +796,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                             key={star}
                             type="button"
                             onClick={() => setNewRating(star)}
-                            className="p-1 hover:scale-110 transition-transform"
+                            className="p-1 hover:scale-110 transition-transform cursor-pointer"
                           >
                             <Star
                               className={`w-5 h-5 ${
@@ -780,7 +837,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
                     <div className="flex items-center justify-between pt-1">
                       <span className="text-[10px] text-gray-500">
-                        Posting as: <strong className="text-gray-800">{user ? user.name : 'Guest Patron'}</strong>
+                        Posting as: <strong className="text-gray-800">{user ? user.name : 'Verified Customer'}</strong> (✓ Verified Purchaser)
                       </span>
                       <button
                         type="submit"
@@ -795,44 +852,54 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                 {reviewSubmitSuccess && (
                   <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Your authentic patron review has been recorded and verified!</span>
+                    <span>Your authentic customer review has been recorded and verified!</span>
                   </div>
                 )}
 
                 {/* Reviews List */}
                 <div className="space-y-4 pt-2">
-                  {reviewsList.map((rev, i) => (
-                    <div key={rev.id || i} className="space-y-1.5 text-xs border-b border-gray-100 pb-3 last:border-b-0">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold text-brand-charcoal">{rev.authorName || rev.name}</span>
-                          {(rev.authorCity || rev.city) && (
-                            <span className="text-brand-muted text-[11px]">({rev.authorCity || rev.city})</span>
-                          )}
-                          {rev.verifiedPurchase !== false && (
-                            <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                              Verified Patron
-                            </span>
-                          )}
-                        </div>
-                        <span className="text-brand-muted text-[10px]">{rev.date || 'Verified Review'}</span>
-                      </div>
-
-                      <div className="flex text-amber-500">
-                        {[...Array(Number(rev.rating) || 5)].map((_, idx) => (
-                          <Star key={idx} className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        ))}
-                      </div>
-
-                      {rev.headline && (
-                        <p className="font-bold text-xs text-gray-900 pt-0.5">{rev.headline}</p>
-                      )}
-
-                      <p className="text-brand-charcoal/80 leading-relaxed font-sans">
-                        "{rev.comment || rev.quote}"
+                  {reviewsList.length === 0 ? (
+                    <div className="p-8 text-center bg-gray-50/80 rounded-2xl border border-gray-200/80 space-y-2">
+                      <Star className="w-8 h-8 text-amber-400 mx-auto" />
+                      <h4 className="font-serif text-sm font-semibold text-brand-charcoal">No Reviews Yet</h4>
+                      <p className="text-xs text-brand-muted max-w-sm mx-auto">
+                        Be the first verified purchaser to leave a rating and share your skin transformation story.
                       </p>
                     </div>
-                  ))}
+                  ) : (
+                    reviewsList.map((rev, i) => (
+                      <div key={rev.id || i} className="space-y-1.5 text-xs border-b border-gray-100 pb-3 last:border-b-0">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-brand-charcoal">{rev.authorName || rev.name}</span>
+                            {(rev.authorCity || rev.city) && (
+                              <span className="text-brand-muted text-[11px]">({rev.authorCity || rev.city})</span>
+                            )}
+                            {rev.verifiedPurchase !== false && (
+                              <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                                ✓ Verified Purchaser
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-brand-muted text-[10px]">{rev.date || 'Verified Review'}</span>
+                        </div>
+
+                        <div className="flex text-amber-500">
+                          {[...Array(Number(rev.rating) || 5)].map((_, idx) => (
+                            <Star key={idx} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                          ))}
+                        </div>
+
+                        {rev.headline && (
+                          <p className="font-bold text-xs text-gray-900 pt-0.5">{rev.headline}</p>
+                        )}
+
+                        <p className="text-brand-charcoal/80 leading-relaxed font-sans">
+                          "{rev.comment || rev.quote}"
+                        </p>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
 

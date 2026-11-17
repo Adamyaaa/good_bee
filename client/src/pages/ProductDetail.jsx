@@ -145,13 +145,22 @@ export default function ProductDetail({ productSlug, onBack, onSelectProduct, on
 
               {/* Rating */}
               <div className="flex items-center gap-2 pt-1 text-xs">
-                <div className="flex text-amber-600">
-                  {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} className="w-4 h-4 fill-amber-500 text-amber-500" />
-                  ))}
-                </div>
-                <span className="font-bold text-brand-charcoal">{p.rating || '4.9'}</span>
-                <span className="text-brand-muted">({p.reviewsCount || 100} verified patron reviews)</span>
+                {p.reviewsCount && p.reviewsCount > 0 && p.rating ? (
+                  <>
+                    <div className="flex text-amber-600">
+                      {[...Array(5)].map((_, idx) => (
+                        <Star key={idx} className="w-4 h-4 fill-amber-500 text-amber-500" />
+                      ))}
+                    </div>
+                    <span className="font-bold text-brand-charcoal">{Number(p.rating).toFixed(1)}</span>
+                    <span className="text-brand-muted">({p.reviewsCount} verified customer {p.reviewsCount === 1 ? 'review' : 'reviews'})</span>
+                  </>
+                ) : (
+                  <span className="text-xs text-brand-muted font-medium flex items-center gap-1.5">
+                    <Star className="w-3.5 h-3.5 text-gray-300" />
+                    <span>No reviews yet • Be the first to leave a rating</span>
+                  </span>
+                )}
               </div>
             </div>
 

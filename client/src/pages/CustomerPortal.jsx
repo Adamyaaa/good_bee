@@ -52,6 +52,10 @@ export default function CustomerPortal({ onNavigateHome }) {
     setLoading(false);
   }, [user]);
 
+  // Real loyalty points earned: 1 point for every ₹20 spent on completed orders
+  const earnedPoints = orders.reduce((sum, ord) => sum + Math.floor((Number(ord.total) || 0) / 20), 0);
+  const displayedCoins = orders.length > 0 ? earnedPoints : (user?.email === 'customer@goodbee.com' ? 340 : 0);
+
   return (
     <div className="py-10 bg-brand-ivory min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -84,10 +88,10 @@ export default function CustomerPortal({ onNavigateHome }) {
               <span>Good Bee Loyalty Rewards</span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-medium">
-              You Have <span className="text-brand-gold font-bold">{user?.loyaltyPoints || 340}</span> Bee-Coins
+              You Have <span className="text-brand-gold font-bold">{displayedCoins}</span> Bee-Coins
             </h2>
             <p className="text-xs text-brand-sand/80 max-w-md font-sans">
-              Earn 1 point for every ₹20 spent. Redeemable directly as ₹{user?.loyaltyPoints || 340} off any future pure formulation orders.
+              Earn 1 point for every ₹20 spent. {displayedCoins > 0 ? `Redeemable directly as ₹${displayedCoins} off any future pure formulation orders.` : 'Place your first order to start accumulating redeemable credits.'}
             </p>
           </div>
 
@@ -105,7 +109,7 @@ export default function CustomerPortal({ onNavigateHome }) {
             <h3 className="font-serif text-xl font-semibold text-brand-charcoal">
               Order History & Tracking
             </h3>
-            <span className="text-xs text-brand-muted">{orders.length} order placed</span>
+            <span className="text-xs text-brand-muted">{orders.length} {orders.length === 1 ? 'order' : 'orders'} placed</span>
           </div>
 
           <div className="space-y-3">

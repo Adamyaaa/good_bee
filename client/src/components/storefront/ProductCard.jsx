@@ -91,17 +91,26 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
             {product.subtitle || product.shortDescription}
           </p>
 
-          {/* 5-Star Rating Below Product */}
-          <div className="flex items-center gap-1 pt-0.5 text-xs">
-            <div className="flex items-center text-amber-500">
-              <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-            </div>
-            <span className="font-bold text-[11px] text-gray-900">
-              {product.rating || '4.8'}
-            </span>
-            <span className="text-[10px] text-gray-500">
-              ({product.reviewsCount || '97'})
-            </span>
+          {/* Rating or First Review Prompt */}
+          <div className="flex items-center gap-1.5 pt-0.5 text-xs">
+            {product.reviewsCount && product.reviewsCount > 0 && product.rating ? (
+              <>
+                <div className="flex items-center text-amber-500">
+                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                </div>
+                <span className="font-bold text-[11px] text-gray-900">
+                  {Number(product.rating).toFixed(1)}
+                </span>
+                <span className="text-[10px] text-gray-500">
+                  ({product.reviewsCount})
+                </span>
+              </>
+            ) : (
+              <span className="text-[10px] text-gray-400 font-medium flex items-center gap-1">
+                <Star className="w-3 h-3 text-gray-300" />
+                <span>No reviews yet • Be the first to review</span>
+              </span>
+            )}
           </div>
 
           {/* Primary Concern Pill & Stock */}

@@ -145,7 +145,7 @@ export default function Footer({ onNavigate, onOpenTrackOrder }) {
             <ul className="space-y-2 text-brand-sand/70">
               <li>
                 <button onClick={() => onNavigate('login', { defaultRole: 'CUSTOMER' })} className="hover:text-brand-gold transition-colors text-left">
-                  Good Being Club (Patrons)
+                  Customer Portal (Orders & Tracking)
                 </button>
               </li>
               <li>

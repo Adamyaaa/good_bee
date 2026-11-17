@@ -14,8 +14,8 @@ export const INITIAL_PRODUCTS = [
     price: 1450,
     mrp: 1750,
     volume: '15 ml / 0.5 fl. oz.',
-    rating: 4.9,
-    reviewsCount: 86,
+    rating: null,
+    reviewsCount: 0,
     stock: 40,
     lowStockThreshold: 10,
     badge: '100% Natural',
@@ -71,8 +71,8 @@ export const INITIAL_PRODUCTS = [
     price: 1250,
     mrp: 1500,
     volume: '15 ml / 0.5 fl. oz.',
-    rating: 4.8,
-    reviewsCount: 64,
+    rating: null,
+    reviewsCount: 0,
     stock: 35,
     lowStockThreshold: 8,
     badge: 'Bestseller',
@@ -101,8 +101,8 @@ export const INITIAL_PRODUCTS = [
     price: 850,
     mrp: 1050,
     volume: '15 ml / 0.5 fl. oz.',
-    rating: 4.9,
-    reviewsCount: 72,
+    rating: null,
+    reviewsCount: 0,
     stock: 50,
     lowStockThreshold: 12,
     badge: 'Purifying Ritual',
@@ -131,8 +131,8 @@ export const INITIAL_PRODUCTS = [
     price: 950,
     mrp: 1150,
     volume: '15 ml / 0.5 fl. oz.',
-    rating: 4.9,
-    reviewsCount: 92,
+    rating: null,
+    reviewsCount: 0,
     stock: 45,
     lowStockThreshold: 10,
     badge: 'Hair & Scalp Ritual',
@@ -160,8 +160,8 @@ export const INITIAL_PRODUCTS = [
     price: 275,
     mrp: 325,
     volume: '100 g / 3.5 oz.',
-    rating: 4.9,
-    reviewsCount: 215,
+    rating: null,
+    reviewsCount: 0,
     stock: 65,
     lowStockThreshold: 15,
     badge: 'Bestseller',
@@ -197,8 +197,8 @@ export const INITIAL_PRODUCTS = [
     price: 380,
     mrp: 450,
     volume: '100 g / 3.5 oz.',
-    rating: 5.0,
-    reviewsCount: 178,
+    rating: null,
+    reviewsCount: 0,
     stock: 45,
     lowStockThreshold: 10,
     badge: 'Ultra-Luxury Milk',
@@ -237,8 +237,8 @@ export const INITIAL_PRODUCTS = [
     price: 260,
     mrp: 310,
     volume: '100 g / 3.5 oz.',
-    rating: 4.8,
-    reviewsCount: 164,
+    rating: null,
+    reviewsCount: 0,
     stock: 50,
     lowStockThreshold: 12,
     badge: 'Exfoliating Bar',
@@ -274,8 +274,8 @@ export const INITIAL_PRODUCTS = [
     price: 340,
     mrp: 395,
     volume: '100 g / 3.5 oz.',
-    rating: 5.0,
-    reviewsCount: 188,
+    rating: null,
+    reviewsCount: 0,
     stock: 40,
     lowStockThreshold: 10,
     badge: 'Gentle Baby Care',
@@ -311,8 +311,8 @@ export const INITIAL_PRODUCTS = [
     price: 295,
     mrp: 345,
     volume: '100 g / 3.5 oz.',
-    rating: 4.9,
-    reviewsCount: 167,
+    rating: null,
+    reviewsCount: 0,
     stock: 55,
     lowStockThreshold: 15,
     badge: 'Radiance Bar',
@@ -348,8 +348,8 @@ export const INITIAL_PRODUCTS = [
     price: 285,
     mrp: 340,
     volume: '100 g / 3.5 oz.',
-    rating: 4.8,
-    reviewsCount: 139,
+    rating: null,
+    reviewsCount: 0,
     stock: 48,
     lowStockThreshold: 12,
     badge: 'Deep Detox',
@@ -386,8 +386,8 @@ export const INITIAL_PRODUCTS = [
     price: 270,
     mrp: 320,
     volume: '100 g / 3.5 oz.',
-    rating: 4.7,
-    reviewsCount: 95,
+    rating: null,
+    reviewsCount: 0,
     stock: 42,
     lowStockThreshold: 10,
     badge: 'Mineral Clay',
@@ -424,8 +424,8 @@ export const INITIAL_PRODUCTS = [
     price: 290,
     mrp: 350,
     volume: '100 g / 3.5 oz.',
-    rating: 4.9,
-    reviewsCount: 153,
+    rating: null,
+    reviewsCount: 0,
     stock: 52,
     lowStockThreshold: 12,
     badge: 'Traditional Heritage',
@@ -463,8 +463,8 @@ export const INITIAL_PRODUCTS = [
     price: 349,
     mrp: 425,
     volume: '5 g / 0.18 oz.',
-    rating: 4.9,
-    reviewsCount: 142,
+    rating: null,
+    reviewsCount: 0,
     stock: 75,
     lowStockThreshold: 20,
     badge: 'Bestseller',
@@ -497,8 +497,8 @@ export const INITIAL_PRODUCTS = [
     price: 299,
     mrp: 375,
     volume: '5 g / 0.18 oz.',
-    rating: 4.8,
-    reviewsCount: 98,
+    rating: null,
+    reviewsCount: 0,
     stock: 60,
     lowStockThreshold: 15,
     badge: 'Essential Care',
@@ -531,8 +531,8 @@ export const INITIAL_PRODUCTS = [
     price: 699,
     mrp: 850,
     volume: '4 g / 0.14 oz.',
-    rating: 4.9,
-    reviewsCount: 54,
+    rating: null,
+    reviewsCount: 0,
     stock: 35,
     lowStockThreshold: 10,
     badge: 'Pure Pigments',
@@ -565,8 +565,8 @@ export const INITIAL_PRODUCTS = [
     price: 750,
     mrp: 890,
     volume: '100 ml / 3.4 fl. oz.',
-    rating: 4.9,
-    reviewsCount: 118,
+    rating: null,
+    reviewsCount: 0,
     stock: 50,
     lowStockThreshold: 12,
     badge: 'Scalp Vitality',
@@ -600,8 +600,8 @@ export const INITIAL_PRODUCTS = [
     price: 499,
     mrp: 599,
     volume: '100 ml / 3.4 fl. oz.',
-    rating: 4.8,
-    reviewsCount: 83,
+    rating: null,
+    reviewsCount: 0,
     stock: 45,
     lowStockThreshold: 12,
     badge: 'Pore Clarifying',
@@ -630,8 +630,8 @@ export const INITIAL_PRODUCTS = [
     price: 549,
     mrp: 650,
     volume: '100 ml / 3.4 fl. oz.',
-    rating: 4.9,
-    reviewsCount: 127,
+    rating: null,
+    reviewsCount: 0,
     stock: 55,
     lowStockThreshold: 15,
     badge: 'Signature Dew',
@@ -660,8 +660,8 @@ export const INITIAL_PRODUCTS = [
     price: 220,
     mrp: 260,
     volume: '10 ml / 0.34 fl. oz.',
-    rating: 4.8,
-    reviewsCount: 112,
+    rating: null,
+    reviewsCount: 0,
     stock: 60,
     lowStockThreshold: 15,
     badge: 'Targeted Relief',
@@ -763,5 +763,36 @@ export class GoodBeeApi {
       upiIntentString,
       qrDataUrl
     };
+  }
+
+  static async fetchProductReviews(productId) {
+    try {
+      const res = await fetch(`/api/v1/products/${productId}/reviews`);
+      if (res.ok) {
+        const data = await res.json();
+        return data.reviews || [];
+      }
+    } catch (e) {}
+    try {
+      return JSON.parse(localStorage.getItem(`goodbee_reviews_${productId}`) || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  static async submitProductReview(productId, reviewData, token) {
+    const res = await fetch(`/api/v1/products/${productId}/reviews`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(reviewData)
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to submit review');
+    }
+    return data;
   }
 }

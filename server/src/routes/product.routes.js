@@ -117,8 +117,8 @@ router.post('/', requireAuth, requireRole([ROLES.ADMIN]), (req, res) => {
     price: Number(price),
     mrp: Number(mrp) || Math.round(Number(price) * 1.2),
     volume: volume || '50 ml',
-    rating: 5.0,
-    reviewsCount: 1,
+    rating: null,
+    reviewsCount: 0,
     stock: Number(stock),
     lowStockThreshold: 10,
     badge: badge || 'New Release',
@@ -134,6 +134,83 @@ router.post('/', requireAuth, requireRole([ROLES.ADMIN]), (req, res) => {
 
   store.products.unshift(newProduct);
   res.status(201).json({ product: newProduct });
+});
+
+// GET /api/v1/products/:id/reviews - Authentic customer reviews for a formulation
+router.get('/:id/reviews', (req, res) => {
+  const { id } = req.params;
+  const list = (store.reviews && store.reviews[id]) || [];
+  res.json({
+    count: list.length,
+    reviews: list
+  });
+});
+
+// POST /api/v1/products/:id/reviews - Submit review (STRICTLY GATED TO VERIFIED PURCHASERS)
+router.post('/:id/reviews', requireAuth, (req, res) => {
+  const { id } = req.params;
+  const { rating, headline, comment, authorCity } = req.body;
+
+  const product = store.products.find((p) => p.id === id || p.slug === id);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found.' });
+  }
+
+  if (!rating || Number(rating) < 1 || Number(rating) > 5) {
+    return res.status(400).json({ error: 'Valid star rating between 1 and 5 is required.' });
+  }
+
+  if (!headline || !comment) {
+    return res.status(400).json({ error: 'Review title and detailed feedback are required.' });
+  }
+
+  // Check verified purchaser status in store.orders
+  const userEmail = req.user.email?.toLowerCase();
+  const userId = req.user.id;
+  const hasPurchased = store.orders.some((o) => {
+    const isCustomerOrder =
+      (o.customerId && o.customerId === userId) ||
+      (o.customerEmail && o.customerEmail.toLowerCase() === userEmail);
+    if (!isCustomerOrder) return false;
+    return o.items && o.items.some((it) => it.productId === product.id || it.id === product.id || it.title === product.title);
+  });
+
+  if (!hasPurchased) {
+    return res.status(403).json({
+      error: 'Only verified purchasers of this formulation can leave a review. Please order this formulation first.'
+    });
+  }
+
+  const newReview = {
+    id: `rev_${Date.now()}`,
+    productId: product.id,
+    userId,
+    authorName: req.user.name || 'Verified Customer',
+    authorCity: authorCity || 'Verified Buyer',
+    rating: Number(rating),
+    headline: headline.trim(),
+    comment: comment.trim(),
+    verifiedPurchase: true,
+    date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+    createdAt: new Date().toISOString()
+  };
+
+  store.reviews = store.reviews || {};
+  store.reviews[product.id] = store.reviews[product.id] || [];
+  store.reviews[product.id].unshift(newReview);
+
+  // Recalculate authentic rating & count
+  const allProdReviews = store.reviews[product.id];
+  const avg = allProdReviews.reduce((sum, r) => sum + r.rating, 0) / allProdReviews.length;
+  product.rating = Math.round(avg * 10) / 10;
+  product.reviewsCount = allProdReviews.length;
+
+  res.status(201).json({
+    review: newReview,
+    rating: product.rating,
+    reviewsCount: product.reviewsCount,
+    message: 'Authentic review verified and published!'
+  });
 });
 
 export default router;

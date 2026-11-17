@@ -335,7 +335,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
             }}
             className="block w-full text-left text-sm font-bold text-[#5B0868] py-2 border-b border-gray-100"
           >
-            My Patron Account
+            My Customer Account
           </button>
           <button
             onClick={() => {

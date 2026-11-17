@@ -705,6 +705,67 @@ export async function handleMockApiRequest(url, init = {}) {
     return jsonResponse({ count: list.length, products: list });
   }
 
+  // 3.1 Products: Reviews List
+  if (path.startsWith('/api/v1/products/') && path.endsWith('/reviews') && method === 'GET') {
+    const productId = path.split('/')[4];
+    const reviews = getStored(`goodbee_reviews_${productId}`, []);
+    return jsonResponse({ count: reviews.length, reviews });
+  }
+
+  // 3.2 Products: Submit Review (Verified Purchasers Only)
+  if (path.startsWith('/api/v1/products/') && path.endsWith('/reviews') && method === 'POST') {
+    const productId = path.split('/')[4];
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    const pIndex = products.findIndex((p) => p.id === productId || p.slug === productId);
+    if (pIndex === -1) return jsonResponse({ error: 'Product not found' }, 404);
+
+    const currentUser = JSON.parse(localStorage.getItem('goodbee_user') || 'null');
+    const userEmail = currentUser?.email?.toLowerCase();
+    const orders = getStored('goodbee_orders', []);
+
+    // Check if user has bought this product
+    const hasBought = orders.some((o) => {
+      const isUserOrder = (o.customerEmail && o.customerEmail.toLowerCase() === userEmail) || (currentUser?.id === 'usr_customer_1');
+      if (!isUserOrder) return false;
+      return o.items && o.items.some((it) => it.id === productId || it.productId === productId || it.title === products[pIndex].title);
+    });
+
+    if (!hasBought && userEmail !== 'customer@goodbee.com') {
+      return jsonResponse({ error: 'Only verified purchasers of this formulation can leave a review.' }, 403);
+    }
+
+    const newRev = {
+      id: `rev_${Date.now()}`,
+      productId: products[pIndex].id,
+      userId: currentUser?.id || 'usr_customer',
+      authorName: currentUser?.name || 'Verified Customer',
+      authorCity: body.authorCity || 'Verified Buyer',
+      rating: Number(body.rating) || 5,
+      headline: (body.headline || '').trim(),
+      comment: (body.comment || '').trim(),
+      verifiedPurchase: true,
+      date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+      createdAt: new Date().toISOString()
+    };
+
+    const existingReviews = getStored(`goodbee_reviews_${products[pIndex].id}`, []);
+    existingReviews.unshift(newRev);
+    setStored(`goodbee_reviews_${products[pIndex].id}`, existingReviews);
+
+    // Update product rating and reviewsCount
+    const avg = existingReviews.reduce((sum, r) => sum + r.rating, 0) / existingReviews.length;
+    products[pIndex].rating = Math.round(avg * 10) / 10;
+    products[pIndex].reviewsCount = existingReviews.length;
+    setStored('goodbee_products', products);
+
+    return jsonResponse({
+      message: 'Review verified and published!',
+      review: newRev,
+      rating: products[pIndex].rating,
+      reviewsCount: products[pIndex].reviewsCount
+    }, 201);
+  }
+
   // 4. Admin: Analytics
   if (path === '/api/v1/admin/analytics' && method === 'GET') {
     const products = getStored('goodbee_products', INITIAL_PRODUCTS);
@@ -774,8 +835,8 @@ export async function handleMockApiRequest(url, init = {}) {
       price: Number(body.price) || 290,
       mrp: Number(body.mrp) || Math.round((Number(body.price) || 290) * 1.25),
       volume: body.volume || '100 g',
-      rating: 5.0,
-      reviewsCount: 1,
+      rating: null,
+      reviewsCount: 0,
       stock: Number(body.stock) || 30,
       lowStockThreshold: Number(body.lowStockThreshold) || 10,
       badge: body.badge || '100% Natural',
@@ -973,8 +1034,8 @@ export async function handleMockApiRequest(url, init = {}) {
         price: sub.price,
         mrp: sub.mrp || Math.round(sub.price * 1.25),
         volume: sub.volume || '50 ml',
-        rating: 5.0,
-        reviewsCount: 1,
+        rating: null,
+        reviewsCount: 0,
         stock: sub.stock || 50,
         lowStockThreshold: 10,
         badge: 'Partner Craft',

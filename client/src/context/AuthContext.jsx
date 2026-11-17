@@ -168,7 +168,7 @@ export const AuthProvider = ({ children }) => {
       gstNumber: gstNumber || '',
       dealerCode: role.toUpperCase() === 'DEALER' ? `DLR-${Date.now().toString().slice(-4)}` : undefined,
       referralCode: role.toUpperCase() === 'PROMOTER' ? `${name.replace(/\s+/g, '').toUpperCase()}10` : undefined,
-      loyaltyPoints: role.toUpperCase() === 'CUSTOMER' ? 150 : 0
+      loyaltyPoints: 0
     };
 
     try {

@@ -93,13 +93,22 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy, 
               <p className="text-xs text-brand-muted italic font-sans">{product.subtitle}</p>
 
               <div className="flex items-center gap-2 text-xs">
-                <div className="flex text-amber-600">
-                  {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  ))}
-                </div>
-                <span className="font-bold text-brand-charcoal">{product.rating || '4.9'}</span>
-                <span className="text-[11px] text-brand-muted">({product.reviewsCount || 100}+ reviews)</span>
+                {product.reviewsCount && product.reviewsCount > 0 && product.rating ? (
+                  <>
+                    <div className="flex text-amber-600">
+                      {[...Array(5)].map((_, idx) => (
+                        <Star key={idx} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                      ))}
+                    </div>
+                    <span className="font-bold text-brand-charcoal">{Number(product.rating).toFixed(1)}</span>
+                    <span className="text-[11px] text-brand-muted">({product.reviewsCount} {product.reviewsCount === 1 ? 'review' : 'reviews'})</span>
+                  </>
+                ) : (
+                  <span className="text-[11px] text-brand-muted font-medium flex items-center gap-1.5">
+                    <Star className="w-3.5 h-3.5 text-gray-300" />
+                    <span>No reviews yet • Be the first to leave a rating</span>
+                  </span>
+                )}
               </div>
 
               {/* Price Row */}

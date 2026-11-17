@@ -136,7 +136,7 @@ export default function RoleAccessManager({ token }) {
         };
       default:
         return {
-          label: 'Good Being Club Member (Customer)',
+          label: 'Customer Account',
           color: 'bg-amber-100 text-amber-900 border-amber-200',
           icon: User
         };
@@ -160,7 +160,7 @@ export default function RoleAccessManager({ token }) {
             </div>
             <p className="text-xs text-gray-500 mt-1">
               Live role management powered by PostgreSQL. All new registrations default to{' '}
-              <strong className="text-amber-800">Good Being Club Member (Customer)</strong>. Only Admins can promote users to Vendors or Wholesalers.
+              <strong className="text-amber-800">Customer Account</strong>. Only Admins can promote users to Vendors or Wholesalers.
             </p>
           </div>
 
@@ -207,7 +207,7 @@ export default function RoleAccessManager({ token }) {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {rf === 'ALL' ? 'All Roles' : rf === 'CUSTOMER' ? 'Club Members' : rf === 'DEALER' ? 'Wholesalers' : rf === 'PRODUCER' ? 'Vendors' : 'Admins'}
+              {rf === 'ALL' ? 'All Roles' : rf === 'CUSTOMER' ? 'Customers' : rf === 'DEALER' ? 'Wholesalers' : rf === 'PRODUCER' ? 'Vendors' : 'Admins'}
             </button>
           ))}
         </div>
@@ -219,7 +219,7 @@ export default function RoleAccessManager({ token }) {
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200 text-gray-600 font-bold uppercase tracking-wider">
-                <th className="py-3 px-4">Patron / User</th>
+                <th className="py-3 px-4">Customer / User</th>
                 <th className="py-3 px-4">Current Role</th>
                 <th className="py-3 px-4">Organization / Tier</th>
                 <th className="py-3 px-4">Contact</th>
@@ -315,7 +315,7 @@ export default function RoleAccessManager({ token }) {
                   onChange={(e) => setNewRole(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                 >
-                  <option value="CUSTOMER">Good Being Club Member (Customer / Default)</option>
+                  <option value="CUSTOMER">Customer Account (Default)</option>
                   <option value="DEALER">Wholesaler / Stockist (B2B Bulk Desk)</option>
                   <option value="PRODUCER">Vendor / Supplier (Botanical Apiaries & Labs)</option>
                 </select>

@@ -64,7 +64,7 @@ export default function TrackOrderModal({ isOpen, onClose }) {
         setTrackedOrder({
           ...DEMO_ORDER,
           id: found.id,
-          customerName: found.customerName || 'Good Bee Patron',
+          customerName: found.customerName || 'Customer',
           customerPhone: found.customerPhone || query,
           total: found.total || 1450,
           items: found.items || DEMO_ORDER.items,

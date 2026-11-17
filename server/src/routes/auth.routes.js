@@ -114,7 +114,7 @@ router.post('/register', async (req, res) => {
     role: assignedRole,
     companyName: '',
     gstNumber: '',
-    loyaltyPoints: 100, // Welcome loyalty bonus for new patrons
+    loyaltyPoints: 0, // Starts at 0, earned on purchases (1 point per ₹20 spent)
     status: 'ACTIVE',
     createdAt: new Date().toISOString()
   };
