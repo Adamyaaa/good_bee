@@ -11,6 +11,8 @@ import promoterRoutes from './routes/promoter.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import configRoutes from './routes/config.routes.js';
+import mediaRoutes from './routes/media.routes.js';
+import deliveryRoutes from './routes/delivery.routes.js';
 import { initPostgres, isConnected } from './db/pg.js';
 
 dotenv.config();
@@ -36,6 +38,8 @@ app.use('/api/v1/dealer', dealerRoutes);
 app.use('/api/v1/promoter', promoterRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/media', mediaRoutes);
+app.use('/api/v1/delivery', deliveryRoutes);
 app.use('/api/v1/config', configRoutes);
 
 // Health check

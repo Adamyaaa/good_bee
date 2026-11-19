@@ -335,6 +335,33 @@ class DataStore {
           }
         ],
         createdAt: new Date().toISOString()
+      },
+      {
+        id: 'usr_media_1',
+        name: 'Aanya Sen (Media & Creative Lead)',
+        email: 'media@goodbee.com',
+        password: 'MediaGoodBee#2026',
+        passwordSecondary: 'media',
+        role: ROLES.MEDIA_MANAGER,
+        phone: '+919963075005',
+        title: 'Media Manager & Visual Operations',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 'usr_delivery_1',
+        name: 'Kabir Verma (Fleet Partner)',
+        email: 'delivery@goodbee.com',
+        password: 'DeliveryGoodBee#2026',
+        passwordSecondary: 'delivery',
+        role: ROLES.DELIVERY_PARTNER,
+        phone: '+919963075006',
+        partnerCode: 'DEL-2026-001',
+        vehicleType: 'Electric Scooter (Ather 450X)',
+        vehicleNumber: 'MH-02-EE-4921',
+        deliveryZone: 'South Mumbai Central Hub',
+        dutyStatus: 'ON_DUTY',
+        title: 'Delivery Partner & Fleet Logistics',
+        createdAt: new Date().toISOString()
       }
     ];
 
@@ -1130,6 +1157,280 @@ class DataStore {
     ];
 
     this.reviews = {};
+
+    // Seed In-House Delivery Assignments (Assigned to usr_delivery_1)
+    this.deliveryAssignments = [
+      {
+        id: 'DEL-ASG-101',
+        orderId: 'GB-ORD-90214',
+        deliveryPartnerId: 'usr_delivery_1',
+        deliveryPartnerName: 'Kabir Verma',
+        providerType: 'IN_HOUSE',
+        orderPreparationStatus: 'READY_FOR_PICKUP',
+        deliveryStatus: 'READY_FOR_PICKUP',
+        customerName: 'Customer',
+        customerPhone: '+919876543204',
+        shippingAddress: {
+          street: '402, Lotus Greens, Bandra West',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400050'
+        },
+        pickupLocation: {
+          name: 'Good Bee Central Laboratory & Dispensary',
+          address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+          contactPhone: '+91-9963075000',
+          instructions: 'Present Delivery Partner ID badge at Bay 2 dispatch desk.'
+        },
+        items: [
+          {
+            title: 'Frankincense & Myrrh Cold Processed Soap',
+            quantity: 2,
+            price: 290,
+            image: '/images_ref/Frankin-300x300.webp'
+          },
+          {
+            title: 'Steam-Distilled Pure Rose Hydrosol Mist',
+            quantity: 1,
+            price: 490,
+            image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.54-300x300.webp'
+          }
+        ],
+        totalAmount: 1070,
+        assignedAt: new Date(Date.now() - 3600000 * 3).toISOString(),
+        readyForPickupAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+        pickedUpAt: null,
+        outForDeliveryAt: null,
+        deliveredAt: null,
+        failedAt: null,
+        failureReason: null,
+        failureRemarks: null,
+        flaggedForAdminReview: false,
+        createdAt: new Date(Date.now() - 3600000 * 3).toISOString()
+      },
+      {
+        id: 'DEL-ASG-102',
+        orderId: 'GB-ORD-90821',
+        deliveryPartnerId: 'usr_delivery_1',
+        deliveryPartnerName: 'Kabir Verma',
+        providerType: 'IN_HOUSE',
+        orderPreparationStatus: 'READY_FOR_PICKUP',
+        deliveryStatus: 'OUT_FOR_DELIVERY',
+        customerName: 'Priya Sharma',
+        customerPhone: '+919820144521',
+        shippingAddress: {
+          street: 'Flat 12B, Sea View Apts, Worli Sea Face',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400018'
+        },
+        pickupLocation: {
+          name: 'Good Bee Central Laboratory & Dispensary',
+          address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+          contactPhone: '+91-9963075000',
+          instructions: 'Temperature-sensitive royal propolis package. Keep upright.'
+        },
+        items: [
+          {
+            title: 'Golden Royal Propolis Restorative Nectar',
+            quantity: 1,
+            price: 1890,
+            image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.56-300x300.webp'
+          }
+        ],
+        totalAmount: 1890,
+        assignedAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+        readyForPickupAt: new Date(Date.now() - 3600000 * 3).toISOString(),
+        pickedUpAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+        outForDeliveryAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+        deliveredAt: null,
+        failedAt: null,
+        failureReason: null,
+        failureRemarks: null,
+        flaggedForAdminReview: false,
+        createdAt: new Date(Date.now() - 3600000 * 5).toISOString()
+      },
+      {
+        id: 'DEL-ASG-103',
+        orderId: 'GB-ORD-90210',
+        deliveryPartnerId: 'usr_delivery_1',
+        deliveryPartnerName: 'Kabir Verma',
+        providerType: 'IN_HOUSE',
+        orderPreparationStatus: 'PREPARING',
+        deliveryStatus: 'WAITING_FOR_PICKUP',
+        customerName: 'Ananya Desai',
+        customerPhone: '+919811234567',
+        shippingAddress: {
+          street: 'Penthouse 4, Oberoi Sky Heights, Andheri West',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400053'
+        },
+        pickupLocation: {
+          name: 'Good Bee Central Laboratory & Dispensary',
+          address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+          contactPhone: '+91-9963075000',
+          instructions: 'Awaiting lab batch seal verification before dispatch.'
+        },
+        items: [
+          {
+            title: 'Donkey Milk & Saffron Soap',
+            quantity: 1,
+            price: 350,
+            image: '/images_ref/Donkey-Milk-Soap-300x300.webp'
+          },
+          {
+            title: 'Pink Lotus Lip Butter',
+            quantity: 2,
+            price: 260,
+            image: '/images_ref/Pink-Lotus-300x300.webp'
+          }
+        ],
+        totalAmount: 870,
+        assignedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+        readyForPickupAt: null,
+        pickedUpAt: null,
+        outForDeliveryAt: null,
+        deliveredAt: null,
+        failedAt: null,
+        failureReason: null,
+        failureRemarks: null,
+        flaggedForAdminReview: false,
+        createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+      },
+      {
+        id: 'DEL-ASG-104',
+        orderId: 'GB-ORD-89412',
+        deliveryPartnerId: 'usr_delivery_1',
+        deliveryPartnerName: 'Kabir Verma',
+        providerType: 'IN_HOUSE',
+        orderPreparationStatus: 'READY_FOR_PICKUP',
+        deliveryStatus: 'DELIVERED',
+        customerName: 'Rohan Mehra',
+        customerPhone: '+919833011223',
+        shippingAddress: {
+          street: 'Tower C, Godrej Woods, BKC',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400051'
+        },
+        pickupLocation: {
+          name: 'Good Bee Central Laboratory & Dispensary',
+          address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+          contactPhone: '+91-9963075000'
+        },
+        items: [
+          {
+            title: 'Wild Turmeric Glow Soap',
+            quantity: 2,
+            price: 320,
+            image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-1-300x300.webp'
+          }
+        ],
+        totalAmount: 640,
+        assignedAt: new Date(Date.now() - 86400000).toISOString(),
+        readyForPickupAt: new Date(Date.now() - 86400000 + 3600000).toISOString(),
+        pickedUpAt: new Date(Date.now() - 86400000 + 7200000).toISOString(),
+        outForDeliveryAt: new Date(Date.now() - 86400000 + 10800000).toISOString(),
+        deliveredAt: new Date(Date.now() - 86400000 + 14400000).toISOString(),
+        failedAt: null,
+        failureReason: null,
+        failureRemarks: null,
+        flaggedForAdminReview: false,
+        createdAt: new Date(Date.now() - 86400000).toISOString()
+      },
+      {
+        id: 'DEL-ASG-105',
+        orderId: 'GB-ORD-88910',
+        deliveryPartnerId: 'usr_delivery_1',
+        deliveryPartnerName: 'Kabir Verma',
+        providerType: 'IN_HOUSE',
+        orderPreparationStatus: 'READY_FOR_PICKUP',
+        deliveryStatus: 'FAILED',
+        customerName: 'Kavita Nair',
+        customerPhone: '+919877088991',
+        shippingAddress: {
+          street: 'Villa 9, Palm Meadows, Juhu Scheme',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400049'
+        },
+        pickupLocation: {
+          name: 'Good Bee Central Laboratory & Dispensary',
+          address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+          contactPhone: '+91-9963075000'
+        },
+        items: [
+          {
+            title: 'Rosemary Hydrosol Balancing Mist',
+            quantity: 1,
+            price: 550,
+            image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.23-300x300.webp'
+          }
+        ],
+        totalAmount: 550,
+        assignedAt: new Date(Date.now() - 172800000).toISOString(),
+        readyForPickupAt: new Date(Date.now() - 172800000 + 3600000).toISOString(),
+        pickedUpAt: new Date(Date.now() - 172800000 + 7200000).toISOString(),
+        outForDeliveryAt: new Date(Date.now() - 172800000 + 10800000).toISOString(),
+        deliveredAt: null,
+        failedAt: new Date(Date.now() - 172800000 + 18000000).toISOString(),
+        failureReason: 'Customer Unavailable',
+        failureRemarks: 'Resident out of city for 2 days per building security desk. Flagged for admin reschedule.',
+        flaggedForAdminReview: true,
+        createdAt: new Date(Date.now() - 172800000).toISOString()
+      }
+    ];
+
+    this.deliveryStatusHistory = [
+      {
+        id: 'hist_101',
+        assignmentId: 'DEL-ASG-102',
+        previousStatus: 'PICKED_UP',
+        newStatus: 'OUT_FOR_DELIVERY',
+        changedByUserId: 'usr_delivery_1',
+        changedByName: 'Kabir Verma',
+        timestamp: new Date(Date.now() - 3600000 * 1).toISOString(),
+        remarks: 'Package securely loaded onto electric vehicle; in transit toward Worli.'
+      }
+    ];
+
+    this.deliveryNotifications = [
+      {
+        id: 'notif_1',
+        deliveryPartnerId: 'usr_delivery_1',
+        assignmentId: 'DEL-ASG-101',
+        orderId: 'GB-ORD-90214',
+        title: 'Order Ready for Pickup',
+        message: 'Order #GB-ORD-90214 is packed and ready for pickup at Central Dispensary.',
+        type: 'READY_FOR_PICKUP',
+        isRead: false,
+        createdAt: new Date(Date.now() - 3600000 * 1).toISOString()
+      },
+      {
+        id: 'notif_2',
+        deliveryPartnerId: 'usr_delivery_1',
+        assignmentId: 'DEL-ASG-103',
+        orderId: 'GB-ORD-90210',
+        title: 'New Delivery Assigned',
+        message: 'New order #GB-ORD-90210 assigned for delivery to Andheri West.',
+        type: 'NEW_ASSIGNMENT',
+        isRead: false,
+        createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+      },
+      {
+        id: 'notif_3',
+        deliveryPartnerId: 'usr_delivery_1',
+        assignmentId: 'DEL-ASG-102',
+        orderId: 'GB-ORD-90821',
+        title: 'Dispatch Confirmed',
+        message: 'Dispatch authorized for Order #GB-ORD-90821 (Worli Sea Face).',
+        type: 'STATUS_CHANGE',
+        isRead: true,
+        createdAt: new Date(Date.now() - 3600000 * 1.5).toISOString()
+      }
+    ];
+
     this.initialized = true;
   }
 }

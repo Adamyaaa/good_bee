@@ -134,6 +134,18 @@ export default function RoleAccessManager({ token }) {
           color: 'bg-blue-100 text-blue-900 border-blue-200',
           icon: Package
         };
+      case 'MEDIA_MANAGER':
+        return {
+          label: 'Media & Stock Lead',
+          color: 'bg-violet-100 text-violet-900 border-violet-200',
+          icon: Sparkles
+        };
+      case 'DELIVERY_PARTNER':
+        return {
+          label: 'Delivery Partner',
+          color: 'bg-sky-100 text-sky-900 border-sky-200',
+          icon: Package
+        };
       default:
         return {
           label: 'Customer Account',
@@ -196,7 +208,7 @@ export default function RoleAccessManager({ token }) {
 
         <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto">
           <Filter className="w-4 h-4 text-gray-400 shrink-0" />
-          {['ALL', 'CUSTOMER', 'DEALER', 'PRODUCER', 'ADMIN'].map((rf) => (
+          {['ALL', 'CUSTOMER', 'DEALER', 'PRODUCER', 'MEDIA_MANAGER', 'ADMIN'].map((rf) => (
             <button
               key={rf}
               type="button"
@@ -207,7 +219,7 @@ export default function RoleAccessManager({ token }) {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {rf === 'ALL' ? 'All Roles' : rf === 'CUSTOMER' ? 'Customers' : rf === 'DEALER' ? 'Wholesalers' : rf === 'PRODUCER' ? 'Vendors' : 'Admins'}
+              {rf === 'ALL' ? 'All Roles' : rf === 'CUSTOMER' ? 'Customers' : rf === 'DEALER' ? 'Wholesalers' : rf === 'PRODUCER' ? 'Vendors' : rf === 'MEDIA_MANAGER' ? 'Media Leads' : 'Admins'}
             </button>
           ))}
         </div>
@@ -318,6 +330,8 @@ export default function RoleAccessManager({ token }) {
                   <option value="CUSTOMER">Customer Account (Default)</option>
                   <option value="DEALER">Wholesaler / Stockist (B2B Bulk Desk)</option>
                   <option value="PRODUCER">Vendor / Supplier (Botanical Apiaries & Labs)</option>
+                  <option value="MEDIA_MANAGER">Media Manager (Stock, Photos & Storefront CMS)</option>
+                  <option value="DELIVERY_PARTNER">Delivery Partner (Order Logistics & Fleet)</option>
                 </select>
               </div>
 

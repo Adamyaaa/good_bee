@@ -309,6 +309,292 @@ const DEFAULT_USERS = [
     phone: '+919876543204',
     loyaltyPoints: 340,
     createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_media_1',
+    name: 'Aanya Sen (Media Lead)',
+    email: 'media@goodbee.com',
+    password: 'MediaGoodBee#2026',
+    passwordSecondary: 'media',
+    role: 'MEDIA_MANAGER',
+    phone: '+91 99630 75005',
+    title: 'Media & Inventory Studio',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 'usr_delivery_1',
+    name: 'Kabir Verma (Fleet Partner)',
+    email: 'delivery@goodbee.com',
+    password: 'DeliveryGoodBee#2026',
+    passwordSecondary: 'delivery',
+    role: 'DELIVERY_PARTNER',
+    phone: '+91 99630 75006',
+    partnerCode: 'DEL-2026-001',
+    vehicleType: 'Electric Scooter (Ather 450X)',
+    vehicleNumber: 'MH-02-EE-4921',
+    deliveryZone: 'South Mumbai Central Hub',
+    dutyStatus: 'ON_DUTY',
+    title: 'Delivery Partner & Fleet',
+    createdAt: new Date().toISOString()
+  }
+];
+
+const DEFAULT_DELIVERY_ASSIGNMENTS = [
+  {
+    id: 'DEL-ASG-101',
+    orderId: 'GB-ORD-90214',
+    deliveryPartnerId: 'usr_delivery_1',
+    deliveryPartnerName: 'Kabir Verma',
+    providerType: 'IN_HOUSE',
+    orderPreparationStatus: 'READY_FOR_PICKUP',
+    deliveryStatus: 'READY_FOR_PICKUP',
+    customerName: 'Customer',
+    customerPhone: '+919876543204',
+    shippingAddress: {
+      street: '402, Lotus Greens, Bandra West',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400050'
+    },
+    pickupLocation: {
+      name: 'Good Bee Central Laboratory & Dispensary',
+      address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+      contactPhone: '+91-9963075000',
+      instructions: 'Present Delivery Partner ID badge at Bay 2 dispatch desk.'
+    },
+    items: [
+      {
+        title: 'Frankincense & Myrrh Cold Processed Soap',
+        quantity: 2,
+        price: 290,
+        image: '/images_ref/Frankin-300x300.webp'
+      },
+      {
+        title: 'Steam-Distilled Pure Rose Hydrosol Mist',
+        quantity: 1,
+        price: 490,
+        image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.54-300x300.webp'
+      }
+    ],
+    totalAmount: 1070,
+    assignedAt: new Date(Date.now() - 3600000 * 3).toISOString(),
+    readyForPickupAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+    pickedUpAt: null,
+    outForDeliveryAt: null,
+    deliveredAt: null,
+    failedAt: null,
+    failureReason: null,
+    failureRemarks: null,
+    flaggedForAdminReview: false,
+    createdAt: new Date(Date.now() - 3600000 * 3).toISOString()
+  },
+  {
+    id: 'DEL-ASG-102',
+    orderId: 'GB-ORD-90821',
+    deliveryPartnerId: 'usr_delivery_1',
+    deliveryPartnerName: 'Kabir Verma',
+    providerType: 'IN_HOUSE',
+    orderPreparationStatus: 'READY_FOR_PICKUP',
+    deliveryStatus: 'OUT_FOR_DELIVERY',
+    customerName: 'Priya Sharma',
+    customerPhone: '+919820144521',
+    shippingAddress: {
+      street: 'Flat 12B, Sea View Apts, Worli Sea Face',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400018'
+    },
+    pickupLocation: {
+      name: 'Good Bee Central Laboratory & Dispensary',
+      address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+      contactPhone: '+91-9963075000',
+      instructions: 'Temperature-sensitive royal propolis package. Keep upright.'
+    },
+    items: [
+      {
+        title: 'Golden Royal Propolis Restorative Nectar',
+        quantity: 1,
+        price: 1890,
+        image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.45.56-300x300.webp'
+      }
+    ],
+    totalAmount: 1890,
+    assignedAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+    readyForPickupAt: new Date(Date.now() - 3600000 * 3).toISOString(),
+    pickedUpAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    outForDeliveryAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+    deliveredAt: null,
+    failedAt: null,
+    failureReason: null,
+    failureRemarks: null,
+    flaggedForAdminReview: false,
+    createdAt: new Date(Date.now() - 3600000 * 5).toISOString()
+  },
+  {
+    id: 'DEL-ASG-103',
+    orderId: 'GB-ORD-90210',
+    deliveryPartnerId: 'usr_delivery_1',
+    deliveryPartnerName: 'Kabir Verma',
+    providerType: 'IN_HOUSE',
+    orderPreparationStatus: 'PREPARING',
+    deliveryStatus: 'WAITING_FOR_PICKUP',
+    customerName: 'Ananya Desai',
+    customerPhone: '+919811234567',
+    shippingAddress: {
+      street: 'Penthouse 4, Oberoi Sky Heights, Andheri West',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400053'
+    },
+    pickupLocation: {
+      name: 'Good Bee Central Laboratory & Dispensary',
+      address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+      contactPhone: '+91-9963075000',
+      instructions: 'Awaiting lab batch seal verification before dispatch.'
+    },
+    items: [
+      {
+        title: 'Donkey Milk & Saffron Soap',
+        quantity: 1,
+        price: 350,
+        image: '/images_ref/Donkey-Milk-Soap-300x300.webp'
+      },
+      {
+        title: 'Pink Lotus Lip Butter',
+        quantity: 2,
+        price: 260,
+        image: '/images_ref/Pink-Lotus-300x300.webp'
+      }
+    ],
+    totalAmount: 870,
+    assignedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    readyForPickupAt: null,
+    pickedUpAt: null,
+    outForDeliveryAt: null,
+    deliveredAt: null,
+    failedAt: null,
+    failureReason: null,
+    failureRemarks: null,
+    flaggedForAdminReview: false,
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+  },
+  {
+    id: 'DEL-ASG-104',
+    orderId: 'GB-ORD-89412',
+    deliveryPartnerId: 'usr_delivery_1',
+    deliveryPartnerName: 'Kabir Verma',
+    providerType: 'IN_HOUSE',
+    orderPreparationStatus: 'READY_FOR_PICKUP',
+    deliveryStatus: 'DELIVERED',
+    customerName: 'Rohan Mehra',
+    customerPhone: '+919833011223',
+    shippingAddress: {
+      street: 'Tower C, Godrej Woods, BKC',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400051'
+    },
+    pickupLocation: {
+      name: 'Good Bee Central Laboratory & Dispensary',
+      address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+      contactPhone: '+91-9963075000'
+    },
+    items: [
+      {
+        title: 'Wild Turmeric Glow Soap',
+        quantity: 2,
+        price: 320,
+        image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-1-300x300.webp'
+      }
+    ],
+    totalAmount: 640,
+    assignedAt: new Date(Date.now() - 86400000).toISOString(),
+    readyForPickupAt: new Date(Date.now() - 86400000 + 3600000).toISOString(),
+    pickedUpAt: new Date(Date.now() - 86400000 + 7200000).toISOString(),
+    outForDeliveryAt: new Date(Date.now() - 86400000 + 10800000).toISOString(),
+    deliveredAt: new Date(Date.now() - 86400000 + 14400000).toISOString(),
+    failedAt: null,
+    failureReason: null,
+    failureRemarks: null,
+    flaggedForAdminReview: false,
+    createdAt: new Date(Date.now() - 86400000).toISOString()
+  },
+  {
+    id: 'DEL-ASG-105',
+    orderId: 'GB-ORD-88910',
+    deliveryPartnerId: 'usr_delivery_1',
+    deliveryPartnerName: 'Kabir Verma',
+    providerType: 'IN_HOUSE',
+    orderPreparationStatus: 'READY_FOR_PICKUP',
+    deliveryStatus: 'FAILED',
+    customerName: 'Kavita Nair',
+    customerPhone: '+919877088991',
+    shippingAddress: {
+      street: 'Villa 9, Palm Meadows, Juhu Scheme',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400049'
+    },
+    pickupLocation: {
+      name: 'Good Bee Central Laboratory & Dispensary',
+      address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+      contactPhone: '+91-9963075000'
+    },
+    items: [
+      {
+        title: 'Rosemary Hydrosol Balancing Mist',
+        quantity: 1,
+        price: 550,
+        image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.23-300x300.webp'
+      }
+    ],
+    totalAmount: 550,
+    assignedAt: new Date(Date.now() - 172800000).toISOString(),
+    readyForPickupAt: new Date(Date.now() - 172800000 + 3600000).toISOString(),
+    pickedUpAt: new Date(Date.now() - 172800000 + 7200000).toISOString(),
+    outForDeliveryAt: new Date(Date.now() - 172800000 + 10800000).toISOString(),
+    deliveredAt: null,
+    failedAt: new Date(Date.now() - 172800000 + 18000000).toISOString(),
+    failureReason: 'Customer Unavailable',
+    failureRemarks: 'Resident out of city for 2 days per building security desk. Flagged for admin reschedule.',
+    flaggedForAdminReview: true,
+    createdAt: new Date(Date.now() - 172800000).toISOString()
+  }
+];
+
+const DEFAULT_DELIVERY_NOTIFICATIONS = [
+  {
+    id: 'notif_1',
+    deliveryPartnerId: 'usr_delivery_1',
+    assignmentId: 'DEL-ASG-101',
+    orderId: 'GB-ORD-90214',
+    title: 'Order Ready for Pickup',
+    message: 'Order #GB-ORD-90214 is packed and ready for pickup at Central Dispensary.',
+    type: 'READY_FOR_PICKUP',
+    isRead: false,
+    createdAt: new Date(Date.now() - 3600000 * 1).toISOString()
+  },
+  {
+    id: 'notif_2',
+    deliveryPartnerId: 'usr_delivery_1',
+    assignmentId: 'DEL-ASG-103',
+    orderId: 'GB-ORD-90210',
+    title: 'New Delivery Assigned',
+    message: 'New order #GB-ORD-90210 assigned for delivery to Andheri West.',
+    type: 'NEW_ASSIGNMENT',
+    isRead: false,
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+  },
+  {
+    id: 'notif_3',
+    deliveryPartnerId: 'usr_delivery_1',
+    assignmentId: 'DEL-ASG-102',
+    orderId: 'GB-ORD-90821',
+    title: 'Dispatch Confirmed',
+    message: 'Dispatch authorized for Order #GB-ORD-90821 (Worli Sea Face).',
+    type: 'STATUS_CHANGE',
+    isRead: true,
+    createdAt: new Date(Date.now() - 3600000 * 1.5).toISOString()
   }
 ];
 
@@ -1188,6 +1474,267 @@ export async function handleMockApiRequest(url, init = {}) {
         `Hello Good Bee Support, I have placed order #${orderId} (₹${total}).`
       )}`
     }, 201);
+  }
+
+  // 15. Admin Users & Role Elevation
+  if (path === '/api/v1/admin/users' && method === 'GET') {
+    const users = getStored('goodbee_users', DEFAULT_USERS);
+    return jsonResponse({ count: users.length, users });
+  }
+
+  if (path.startsWith('/api/v1/admin/users/') && path.endsWith('/role') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const users = getStored('goodbee_users', DEFAULT_USERS);
+    const uIndex = users.findIndex((u) => u.id === id);
+    if (uIndex !== -1) {
+      users[uIndex].role = body.role || users[uIndex].role;
+      if (body.companyName !== undefined) users[uIndex].companyName = body.companyName;
+      if (body.tier !== undefined) users[uIndex].tier = body.tier;
+      setStored('goodbee_users', users);
+      return jsonResponse({
+        message: `User elevated to ${users[uIndex].role} successfully.`,
+        user: users[uIndex]
+      });
+    }
+    return jsonResponse({ error: 'User not found' }, 404);
+  }
+
+  // 16. Media Manager & Stock Operations API
+  if (path === '/api/v1/media/products' && method === 'GET') {
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    const totalStockUnits = products.reduce((sum, p) => sum + (p.stock || 0), 0);
+    const lowStockCount = products.filter((p) => (p.stock || 0) <= (p.lowStockThreshold || 10)).length;
+    return jsonResponse({
+      count: products.length,
+      products,
+      totalStockUnits,
+      lowStockCount
+    });
+  }
+
+  if (path.startsWith('/api/v1/media/products/') && path.endsWith('/stock') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    const pIndex = products.findIndex((p) => p.id === id || p.slug === id);
+    if (pIndex !== -1) {
+      if (body.stock !== undefined) products[pIndex].stock = Math.max(0, parseInt(body.stock, 10));
+      if (body.lowStockThreshold !== undefined) products[pIndex].lowStockThreshold = Math.max(0, parseInt(body.lowStockThreshold, 10));
+      setStored('goodbee_products', products);
+      return jsonResponse({
+        message: `Updated stock for "${products[pIndex].title}" to ${products[pIndex].stock} units.`,
+        product: products[pIndex]
+      });
+    }
+    return jsonResponse({ error: 'Product not found' }, 404);
+  }
+
+  if (path.startsWith('/api/v1/media/products/') && path.endsWith('/media') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    const pIndex = products.findIndex((p) => p.id === id || p.slug === id);
+    if (pIndex !== -1) {
+      if (body.image) products[pIndex].image = body.image.trim();
+      if (Array.isArray(body.gallery)) products[pIndex].gallery = body.gallery.filter(Boolean);
+      setStored('goodbee_products', products);
+      return jsonResponse({
+        message: `Photos and media updated for "${products[pIndex].title}".`,
+        product: products[pIndex]
+      });
+    }
+    return jsonResponse({ error: 'Product not found' }, 404);
+  }
+
+  if (path.startsWith('/api/v1/media/products/') && path.endsWith('/content') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const products = getStored('goodbee_products', INITIAL_PRODUCTS);
+    const pIndex = products.findIndex((p) => p.id === id || p.slug === id);
+    if (pIndex !== -1) {
+      const allowed = ['title', 'subtitle', 'badge', 'volume', 'category', 'shortDescription', 'description', 'ritual', 'ingredients', 'concerns'];
+      allowed.forEach((k) => {
+        if (body[k] !== undefined) products[pIndex][k] = body[k];
+      });
+      setStored('goodbee_products', products);
+      return jsonResponse({
+        message: `Editorial copy updated for "${products[pIndex].title}".`,
+        product: products[pIndex]
+      });
+    }
+    return jsonResponse({ error: 'Product not found' }, 404);
+  }
+
+  if (path === '/api/v1/media/site-content') {
+    if (method === 'GET') {
+      const content = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
+      return jsonResponse({ siteContent: content });
+    }
+    if (method === 'PUT') {
+      const current = getStored('goodbee_site_content', DEFAULT_SITE_CONTENT);
+      const updated = { ...current, ...body, updatedAt: new Date().toISOString() };
+      setStored('goodbee_site_content', updated);
+      return jsonResponse({ message: 'Storefront CMS updated successfully.', siteContent: updated });
+    }
+  }
+
+  // 17. Delivery Partner & Fleet Logistics API
+  if (path === '/api/v1/delivery/profile') {
+    const users = getStored('goodbee_users', DEFAULT_USERS);
+    const partner = users.find((u) => u.role === 'DELIVERY_PARTNER') || users[users.length - 1];
+    if (method === 'GET') {
+      return jsonResponse({
+        profile: {
+          id: partner.id,
+          name: partner.name,
+          email: partner.email,
+          phone: partner.phone || '+91 99630 75006',
+          role: partner.role,
+          partnerCode: partner.partnerCode || 'DEL-2026-001',
+          vehicleType: partner.vehicleType || 'Electric Scooter (Ather 450X)',
+          vehicleNumber: partner.vehicleNumber || 'MH-02-EE-4921',
+          deliveryZone: partner.deliveryZone || 'South Mumbai Central Hub',
+          dutyStatus: partner.dutyStatus || 'ON_DUTY',
+          accountStatus: 'ACTIVE'
+        }
+      });
+    }
+    if (method === 'PUT') {
+      if (body.phone) partner.phone = body.phone;
+      if (body.dutyStatus) partner.dutyStatus = body.dutyStatus;
+      if (body.vehicleNumber) partner.vehicleNumber = body.vehicleNumber;
+      if (body.vehicleType) partner.vehicleType = body.vehicleType;
+      setStored('goodbee_users', users);
+      return jsonResponse({ message: 'Profile updated successfully.', profile: partner });
+    }
+  }
+
+  if (path === '/api/v1/delivery/dashboard' && method === 'GET') {
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const notifications = getStored('goodbee_delivery_notifications', DEFAULT_DELIVERY_NOTIFICATIONS);
+    const totalAssigned = assignments.length;
+    const readyForPickup = assignments.filter((a) => a.deliveryStatus === 'READY_FOR_PICKUP').length;
+    const inTransit = assignments.filter((a) => a.deliveryStatus === 'PICKED_UP' || a.deliveryStatus === 'OUT_FOR_DELIVERY').length;
+    const delivered = assignments.filter((a) => a.deliveryStatus === 'DELIVERED').length;
+    const failed = assignments.filter((a) => a.deliveryStatus === 'FAILED').length;
+    const unreadNotifsCount = notifications.filter((n) => !n.isRead).length;
+
+    return jsonResponse({
+      stats: {
+        totalAssigned,
+        readyForPickup,
+        inTransit,
+        delivered,
+        failed,
+        unreadNotifsCount
+      },
+      recentDeliveries: assignments.filter((a) => a.deliveryStatus !== 'DELIVERED').slice(0, 5),
+      recentActivity: [
+        {
+          id: 'act_1',
+          remarks: 'Package picked up from dispensary.',
+          newStatus: 'PICKED_UP',
+          timestamp: new Date().toISOString()
+        }
+      ],
+      recentNotifications: notifications.slice(0, 3)
+    });
+  }
+
+  if (path === '/api/v1/delivery/deliveries' && method === 'GET') {
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    return jsonResponse({ count: assignments.length, deliveries: assignments });
+  }
+
+  if (path.startsWith('/api/v1/delivery/deliveries/') && path.endsWith('/pickup') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const aIndex = assignments.findIndex((a) => a.id === id || a.orderId === id);
+    if (aIndex !== -1) {
+      assignments[aIndex].deliveryStatus = 'PICKED_UP';
+      assignments[aIndex].pickedUpAt = new Date().toISOString();
+      setStored('goodbee_delivery_assignments', assignments);
+      return jsonResponse({ message: `Package #${assignments[aIndex].orderId} picked up.`, delivery: assignments[aIndex] });
+    }
+    return jsonResponse({ error: 'Delivery assignment not found' }, 404);
+  }
+
+  if (path.startsWith('/api/v1/delivery/deliveries/') && path.endsWith('/dispatch') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const aIndex = assignments.findIndex((a) => a.id === id || a.orderId === id);
+    if (aIndex !== -1) {
+      assignments[aIndex].deliveryStatus = 'OUT_FOR_DELIVERY';
+      assignments[aIndex].outForDeliveryAt = new Date().toISOString();
+      setStored('goodbee_delivery_assignments', assignments);
+      return jsonResponse({ message: `Order #${assignments[aIndex].orderId} is now Out for Delivery!`, delivery: assignments[aIndex] });
+    }
+    return jsonResponse({ error: 'Delivery assignment not found' }, 404);
+  }
+
+  if (path.startsWith('/api/v1/delivery/deliveries/') && path.endsWith('/delivered') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const aIndex = assignments.findIndex((a) => a.id === id || a.orderId === id);
+    if (aIndex !== -1) {
+      assignments[aIndex].deliveryStatus = 'DELIVERED';
+      assignments[aIndex].deliveredAt = new Date().toISOString();
+      setStored('goodbee_delivery_assignments', assignments);
+      return jsonResponse({ message: `Order #${assignments[aIndex].orderId} delivered successfully!`, delivery: assignments[aIndex] });
+    }
+    return jsonResponse({ error: 'Delivery assignment not found' }, 404);
+  }
+
+  if (path.startsWith('/api/v1/delivery/deliveries/') && path.endsWith('/fail') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const aIndex = assignments.findIndex((a) => a.id === id || a.orderId === id);
+    if (aIndex !== -1) {
+      assignments[aIndex].deliveryStatus = 'FAILED';
+      assignments[aIndex].failedAt = new Date().toISOString();
+      assignments[aIndex].failureReason = body.failureReason || 'Failed';
+      assignments[aIndex].failureRemarks = body.failureRemarks || '';
+      assignments[aIndex].flaggedForAdminReview = true;
+      setStored('goodbee_delivery_assignments', assignments);
+      return jsonResponse({ message: 'Delivery recorded as unsuccessful and flagged for review.', delivery: assignments[aIndex] });
+    }
+    return jsonResponse({ error: 'Delivery assignment not found' }, 404);
+  }
+
+  if (path.startsWith('/api/v1/delivery/deliveries/') && method === 'GET') {
+    const id = path.split('/')[5];
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const item = assignments.find((a) => a.id === id || a.orderId === id);
+    if (item) return jsonResponse({ delivery: item, history: [] });
+    return jsonResponse({ error: 'Delivery assignment not found' }, 404);
+  }
+
+  if (path === '/api/v1/delivery/history' && method === 'GET') {
+    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const history = assignments.filter((a) => a.deliveryStatus === 'DELIVERED' || a.deliveryStatus === 'FAILED');
+    return jsonResponse({ count: history.length, history });
+  }
+
+  if (path === '/api/v1/delivery/notifications' && method === 'GET') {
+    const notifications = getStored('goodbee_delivery_notifications', DEFAULT_DELIVERY_NOTIFICATIONS);
+    return jsonResponse({
+      count: notifications.length,
+      unreadCount: notifications.filter((n) => !n.isRead).length,
+      notifications
+    });
+  }
+
+  if (path.startsWith('/api/v1/delivery/notifications/') && path.endsWith('/read') && method === 'PUT') {
+    const id = path.split('/')[5];
+    const notifications = getStored('goodbee_delivery_notifications', DEFAULT_DELIVERY_NOTIFICATIONS);
+    const notif = notifications.find((n) => n.id === id);
+    if (notif) notif.isRead = true;
+    setStored('goodbee_delivery_notifications', notifications);
+    return jsonResponse({ message: 'Marked as read.', notification: notif });
+  }
+
+  if (path === '/api/v1/delivery/notifications/mark-all-read' && method === 'PUT') {
+    const notifications = getStored('goodbee_delivery_notifications', DEFAULT_DELIVERY_NOTIFICATIONS);
+    notifications.forEach((n) => (n.isRead = true));
+    setStored('goodbee_delivery_notifications', notifications);
+    return jsonResponse({ message: 'All notifications marked as read.' });
   }
 
   // Fallback 404

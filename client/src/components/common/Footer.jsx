@@ -161,6 +161,18 @@ export default function Footer({ onNavigate, onOpenTrackOrder }) {
                 </button>
               </li>
               <li>
+                <button onClick={() => onNavigate('login', { defaultRole: 'MEDIA_MANAGER' })} className="hover:text-brand-gold transition-colors text-left flex items-center gap-1.5">
+                  <span>Media & Stock Operations</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-900/60 text-purple-300">CMS</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('login', { defaultRole: 'DELIVERY_PARTNER' })} className="hover:text-brand-gold transition-colors text-left flex items-center gap-1.5">
+                  <span>Delivery Partner Fleet</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-sky-900/60 text-sky-300 font-mono">DISPATCH</span>
+                </button>
+              </li>
+              <li>
                 <button
                   onClick={() => onOpenTrackOrder?.()}
                   className="hover:text-brand-gold transition-colors text-left"

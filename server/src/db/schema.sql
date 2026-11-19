@@ -131,3 +131,55 @@ CREATE TABLE IF NOT EXISTS site_content (
     config_data JSONB NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 8. Delivery Partner Assignments Table
+CREATE TABLE IF NOT EXISTS delivery_assignments (
+    id VARCHAR(64) PRIMARY KEY,
+    order_id VARCHAR(64) NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    delivery_partner_id VARCHAR(64) NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    provider_type VARCHAR(32) DEFAULT 'IN_HOUSE',
+    order_preparation_status VARCHAR(32) DEFAULT 'PREPARING',
+    delivery_status VARCHAR(32) DEFAULT 'ASSIGNED',
+    pickup_location JSONB NOT NULL,
+    assigned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    ready_for_pickup_at TIMESTAMP WITH TIME ZONE,
+    picked_up_at TIMESTAMP WITH TIME ZONE,
+    out_for_delivery_at TIMESTAMP WITH TIME ZONE,
+    delivered_at TIMESTAMP WITH TIME ZONE,
+    failed_at TIMESTAMP WITH TIME ZONE,
+    failure_reason VARCHAR(128),
+    failure_remarks TEXT,
+    flagged_for_admin_review BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_delivery_partner ON delivery_assignments(delivery_partner_id);
+CREATE INDEX IF NOT EXISTS idx_delivery_order ON delivery_assignments(order_id);
+CREATE INDEX IF NOT EXISTS idx_delivery_status ON delivery_assignments(delivery_status);
+
+-- 9. Delivery Status History Audit Log Table
+CREATE TABLE IF NOT EXISTS delivery_status_history (
+    id VARCHAR(64) PRIMARY KEY,
+    assignment_id VARCHAR(64) NOT NULL REFERENCES delivery_assignments(id) ON DELETE CASCADE,
+    previous_status VARCHAR(32),
+    new_status VARCHAR(32) NOT NULL,
+    changed_by_user_id VARCHAR(64) NOT NULL REFERENCES users(id),
+    changed_by_name VARCHAR(255),
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    remarks TEXT
+);
+
+-- 10. In-App Delivery Notifications Table
+CREATE TABLE IF NOT EXISTS delivery_notifications (
+    id VARCHAR(64) PRIMARY KEY,
+    delivery_partner_id VARCHAR(64) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    assignment_id VARCHAR(64) REFERENCES delivery_assignments(id) ON DELETE SET NULL,
+    order_id VARCHAR(64),
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    type VARCHAR(32) NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+

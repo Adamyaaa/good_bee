@@ -362,12 +362,12 @@ router.get('/users', async (req, res) => {
 });
 
 // PUT /api/v1/admin/users/:id/role - Admin-only endpoint to elevate or reassign roles
-// Valid target roles: CUSTOMER (Good Being Club), PRODUCER (Vendor/Labs), DEALER (Wholesaler)
+// Valid target roles: CUSTOMER, PRODUCER, DEALER, MEDIA_MANAGER, DELIVERY_PARTNER
 router.put('/users/:id/role', async (req, res) => {
   const { id } = req.params;
   const { role, companyName, tier, commissionMarginPct } = req.body;
 
-  const validRoles = [ROLES.CUSTOMER, ROLES.PRODUCER, ROLES.DEALER];
+  const validRoles = [ROLES.CUSTOMER, ROLES.PRODUCER, ROLES.DEALER, ROLES.MEDIA_MANAGER, ROLES.DELIVERY_PARTNER];
   if (!validRoles.includes(role)) {
     return res.status(400).json({ error: `Invalid role. Allowed roles are: ${validRoles.join(', ')}` });
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Shield, FlaskConical, Package, User, LogOut, ArrowLeft, Lock, AlertTriangle } from 'lucide-react';
+import { X, Shield, FlaskConical, Package, User, LogOut, ArrowLeft, Lock, AlertTriangle, Sparkles, Truck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 // Portals
@@ -8,6 +8,8 @@ import DealerPortal from '../../pages/DealerPortal';
 import PromoterPortal from '../../pages/PromoterPortal';
 import CustomerPortal from '../../pages/CustomerPortal';
 import AdminDashboard from '../../pages/AdminDashboard';
+import MediaManagerPortal from '../../pages/MediaManagerPortal';
+import DeliveryPartnerPortal from '../../pages/DeliveryPartnerPortal';
 import Login from '../../pages/Login';
 
 export default function PortalModal({ initialRole = null, isOpen, onClose }) {
@@ -27,6 +29,8 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
   // Real Roles Configuration
   const ROLES = [
     { id: 'ADMIN', label: 'Admin Suite', badge: 'Control Tower', icon: Shield },
+    { id: 'MEDIA_MANAGER', label: 'Media & Stock', badge: 'Creative Studio', icon: Sparkles },
+    { id: 'DELIVERY_PARTNER', label: 'Delivery Partner', badge: 'Logistics Fleet', icon: Truck },
     { id: 'PRODUCER', label: 'Vendor & Labs', badge: 'Supplier', icon: FlaskConical },
     { id: 'DEALER', label: 'Wholesale Desk', badge: 'B2B Bulk', icon: Package },
     { id: 'CUSTOMER', label: 'My Account', badge: 'Customer Account', icon: User }
@@ -55,6 +59,10 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
     ? 'Vendor Portal' 
     : user?.role === 'DEALER' 
     ? 'Wholesale Portal' 
+    : user?.role === 'MEDIA_MANAGER'
+    ? 'Media & Stock Studio'
+    : user?.role === 'DELIVERY_PARTNER'
+    ? 'Fleet Logistics Console'
     : 'Admin Console';
 
   return (
@@ -128,7 +136,7 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
                     {user.companyName || user.name || user.email}
                   </span>
                   <span className="text-[10px] text-purple-700 font-bold font-mono">
-                    {user.role === 'CUSTOMER' ? 'Customer Account' : user.role === 'DEALER' ? 'Wholesaler' : user.role === 'PRODUCER' ? 'Botanical Vendor' : 'Admin'}
+                    {user.role === 'CUSTOMER' ? 'Customer Account' : user.role === 'DEALER' ? 'Wholesaler' : user.role === 'PRODUCER' ? 'Botanical Vendor' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Lead' : user.role === 'DELIVERY_PARTNER' ? 'Delivery Partner' : 'Admin'}
                   </span>
                 </div>
               )}
@@ -230,6 +238,10 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
           </div>
         ) : requestedPortal === 'ADMIN' ? (
           <AdminDashboard onNavigateHome={onClose} />
+        ) : requestedPortal === 'MEDIA_MANAGER' ? (
+          <MediaManagerPortal onNavigateHome={onClose} />
+        ) : requestedPortal === 'DELIVERY_PARTNER' ? (
+          <DeliveryPartnerPortal onNavigateHome={onClose} />
         ) : requestedPortal === 'PRODUCER' ? (
           <ProducerPortal onNavigateHome={onClose} />
         ) : requestedPortal === 'DEALER' ? (

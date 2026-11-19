@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, DEMO_ACCOUNTS } from '../context/AuthContext';
-import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key } from 'lucide-react';
+import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key, Sparkles, Truck } from 'lucide-react';
 
 const ROLE_TABS = [
   { id: 'CUSTOMER', label: 'Customer Account', sublabel: 'Orders & Tracking', icon: User, demoKey: 'CUSTOMER', color: 'text-amber-800' },
   { id: 'DEALER', label: 'Wholesaler / Stockist', sublabel: 'B2B Bulk Rates', icon: Package, demoKey: 'DEALER', color: 'text-blue-800' },
   { id: 'PRODUCER', label: 'Vendor / Supplier', sublabel: 'Botanical Apiaries', icon: FlaskConical, demoKey: 'PRODUCER', color: 'text-emerald-800' },
+  { id: 'MEDIA_MANAGER', label: 'Media Manager', sublabel: 'Stock, Photos & CMS', icon: Sparkles, demoKey: 'MEDIA_MANAGER', color: 'text-violet-800' },
+  { id: 'DELIVERY_PARTNER', label: 'Delivery Partner', sublabel: 'Fleet & Dispatches', icon: Truck, demoKey: 'DELIVERY_PARTNER', color: 'text-sky-800' },
   { id: 'ADMIN', label: 'Store Admin', sublabel: 'Control Tower', icon: Shield, demoKey: 'ADMIN', color: 'text-slate-800' }
 ];
 
@@ -97,8 +99,8 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
           </p>
         </div>
 
-        {/* 4-Role Horizontal Selector Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-brand-cream/80 p-2 rounded-2xl border border-brand-gold/30 shadow-sm">
+        {/* Multi-Role Horizontal Selector Tabs */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 bg-brand-cream/80 p-2 rounded-2xl border border-brand-gold/30 shadow-sm">
           {ROLE_TABS.map((tab) => {
             const Icon = tab.icon;
             const isSelected = selectedRole === tab.id;

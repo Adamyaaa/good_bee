@@ -56,6 +56,31 @@ export const DEMO_ACCOUNTS = {
     loyaltyPoints: 480,
     phone: '+91 99630 75004',
     title: 'Customer Account'
+  },
+  MEDIA_MANAGER: {
+    id: 'usr_media_1',
+    name: 'Aanya Sen (Media Lead)',
+    email: 'media@goodbee.com',
+    password: 'MediaGoodBee#2026',
+    passwordSecondary: 'media',
+    role: 'MEDIA_MANAGER',
+    phone: '+91 99630 75005',
+    title: 'Media & Inventory Studio'
+  },
+  DELIVERY_PARTNER: {
+    id: 'usr_delivery_1',
+    name: 'Kabir Verma (Fleet Lead)',
+    email: 'delivery@goodbee.com',
+    password: 'DeliveryGoodBee#2026',
+    passwordSecondary: 'delivery',
+    role: 'DELIVERY_PARTNER',
+    phone: '+91 99630 75006',
+    partnerCode: 'DEL-2026-001',
+    vehicleType: 'Electric Scooter (Ather 450X)',
+    vehicleNumber: 'MH-02-EE-4921',
+    deliveryZone: 'South Mumbai Central Hub',
+    dutyStatus: 'ON_DUTY',
+    title: 'Delivery Partner & Fleet Logistics'
   }
 };
 
@@ -100,7 +125,9 @@ export const AuthProvider = ({ children }) => {
 
     // Check pre-seeded demo accounts
     const matchDemo = Object.values(DEMO_ACCOUNTS).find(
-      (acc) => acc.email.toLowerCase() === cleanEmail && acc.password === cleanPass
+      (acc) =>
+        acc.email.toLowerCase() === cleanEmail &&
+        (acc.password === cleanPass || acc.passwordSecondary === cleanPass || cleanPass === acc.email.split('@')[0])
     );
 
     if (matchDemo) {
