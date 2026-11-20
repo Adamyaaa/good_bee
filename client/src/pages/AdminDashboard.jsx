@@ -2080,7 +2080,7 @@ export default function AdminDashboard({ onNavigateHome }) {
                         value={siteContent.storeAddress || ''}
                         onChange={(e) => setSiteContent({ ...siteContent, storeAddress: e.target.value })}
                         className="w-full p-2.5 bg-white border border-gray-200 rounded-xl text-gray-900"
-                        placeholder="Survey No. 42, Western Ghats Botanical Reserve, Wayanad / Bengaluru Studio"
+                        placeholder="Good Bee Skincare Studio, Bengaluru, Karnataka, India"
                       />
                     </div>
                     <div>

@@ -139,11 +139,11 @@ const DEFAULT_USERS = [
   },
   {
     id: 'usr_dealer_7',
-    name: 'Western Ghats Apiary Network',
-    email: 'wghats.apiary@goodbee.com',
+    name: 'Botanical Honey & Apiary Network',
+    email: 'apiary.network@goodbee.com',
     password: 'dealer',
     role: 'DEALER',
-    companyName: 'Western Ghats Bee & Botanicals Co',
+    companyName: 'Pure Botanicals & Bee Co',
     dealerCode: 'DLR-PUN-07',
     gstNumber: '27AABCG2345L1ZT',
     tier: 'Platinum Apex Partner',
@@ -817,7 +817,7 @@ export const DEFAULT_SITE_CONTENT = {
   supportEmail: 'care@goodbee.in',
   upiVpa: 'goodbee.official@okaxis',
   payeeName: 'GOOD BEE Skincare Laboratory',
-  storeAddress: 'Survey No. 42, Western Ghats Botanical Reserve, Wayanad / Bengaluru Studio',
+  storeAddress: 'Good Bee Skincare Studio, Bengaluru, Karnataka, India',
   operatingHours: 'Mon – Sat: 9:30 AM – 7:00 PM IST'
 };
 
@@ -827,9 +827,19 @@ function getStored(key, defaultVal) {
     const val = localStorage.getItem(key);
     if (!val) return defaultVal;
     const parsed = JSON.parse(val);
-    if (key === 'goodbee_site_content' && parsed && (parsed.whatsappNumber?.includes('987654') || !parsed.whatsappNumber)) {
-      parsed.whatsappNumber = '+91-9963075000';
-      localStorage.setItem(key, JSON.stringify(parsed));
+    if (key === 'goodbee_site_content' && parsed) {
+      let updated = false;
+      if (parsed.whatsappNumber?.includes('987654') || !parsed.whatsappNumber) {
+        parsed.whatsappNumber = '+91-9963075000';
+        updated = true;
+      }
+      if (parsed.storeAddress && parsed.storeAddress.includes('Western Ghats')) {
+        parsed.storeAddress = 'Good Bee Skincare Studio, Bengaluru, Karnataka, India';
+        updated = true;
+      }
+      if (updated) {
+        localStorage.setItem(key, JSON.stringify(parsed));
+      }
     }
     if (key === 'goodbee_products' && Array.isArray(parsed)) {
       let changed = false;

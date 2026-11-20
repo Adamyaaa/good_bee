@@ -337,7 +337,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
 
       {/* Footer Branding */}
       <footer className="p-4 text-center text-[11px] text-gray-400">
-        &copy; {new Date().getFullYear()} Good Bee Skincare Platform &bull; Western Ghats Botanical Extraction Laboratory
+        &copy; {new Date().getFullYear()} Good Bee Skincare Platform. All rights reserved.
       </footer>
 
     </div>
