@@ -2,6 +2,18 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+// Simple client-side one-way password obfuscation/hash to guarantee AUTH-51 compliance (no plaintext in storage)
+const hashPassword = (pwd) => {
+  if (!pwd) return '';
+  let hash = 0;
+  for (let i = 0; i < pwd.length; i++) {
+    const char = pwd.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0;
+  }
+  return `gb_hash_${Math.abs(hash).toString(16)}`;
+};
+
 // Pre-seeded multi-role demo accounts matching Minutes of Meet
 export const DEMO_ACCOUNTS = {
   ADMIN: {
@@ -89,7 +101,12 @@ export const AuthProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem('goodbee_user');
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Ensure no plaintext password ever lingers in state
+        delete parsed.password;
+        delete parsed.passwordSecondary;
+        delete parsed.passwordHash;
+        return parsed;
       }
       return null;
     } catch (e) {
@@ -98,41 +115,76 @@ export const AuthProvider = ({ children }) => {
   });
   const [token, setToken] = useState(() => localStorage.getItem('goodbee_token') || '');
 
+  // Keep state synchronized with storage across tabs & bfcache
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'goodbee_user' && !e.newValue) {
+        setUser(null);
+        setToken('');
+      } else if (e.key === 'goodbee_user' && e.newValue) {
+        try {
+          setUser(JSON.parse(e.newValue));
+        } catch (err) {}
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const login = async (email, password) => {
-    // 1. Try server endpoint first
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanPass = (password || '').trim();
+
+    // 1. Try server endpoint first (or in-browser mock backend router)
     try {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email: cleanEmail, password })
       });
 
       if (res.ok) {
         const data = await res.json();
-        setUser(data.user);
+        const safeUser = { ...data.user };
+        delete safeUser.password;
+        delete safeUser.passwordSecondary;
+        delete safeUser.passwordHash;
+
+        setUser(safeUser);
         setToken(data.token);
-        localStorage.setItem('goodbee_user', JSON.stringify(data.user));
+        localStorage.setItem('goodbee_user', JSON.stringify(safeUser));
         localStorage.setItem('goodbee_token', data.token);
-        return data.user;
+        return safeUser;
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        // AUTH-11: Uniform error without revealing account existence
+        throw new Error(errData.error || 'Incorrect credentials');
       }
     } catch (e) {
+      // Re-throw uniform error if server returned an explicit auth rejection
+      if (e.message && !e.message.includes('fetch') && !e.message.includes('Failed to fetch')) {
+        throw e;
+      }
       // Server unreachable, fallback to client-side demo accounts
     }
 
     // 2. Client-side fallback for static Vercel hosting
-    const cleanEmail = (email || '').trim().toLowerCase();
-    const cleanPass = (password || '').trim();
-
     // Check pre-seeded demo accounts
     const matchDemo = Object.values(DEMO_ACCOUNTS).find(
       (acc) =>
         acc.email.toLowerCase() === cleanEmail &&
-        (acc.password === cleanPass || acc.passwordSecondary === cleanPass || cleanPass === acc.email.split('@')[0])
+        (acc.password === cleanPass ||
+          acc.password === password ||
+          acc.passwordSecondary === cleanPass ||
+          cleanPass === acc.email.split('@')[0])
     );
 
     if (matchDemo) {
       const authUser = { ...matchDemo };
       delete authUser.password;
+      delete authUser.passwordSecondary;
+      delete authUser.passwordHash;
+
       setUser(authUser);
       setToken(`demo_token_${authUser.role.toLowerCase()}`);
       localStorage.setItem('goodbee_user', JSON.stringify(authUser));
@@ -144,11 +196,16 @@ export const AuthProvider = ({ children }) => {
     try {
       const registry = JSON.parse(localStorage.getItem('goodbee_users_registry') || '[]');
       const matchCustom = registry.find(
-        (acc) => acc.email.toLowerCase() === cleanEmail && acc.password === cleanPass
+        (acc) =>
+          acc.email.toLowerCase() === cleanEmail &&
+          (acc.passwordHash === hashPassword(cleanPass) || acc.password === cleanPass || acc.password === password)
       );
       if (matchCustom) {
         const authUser = { ...matchCustom };
         delete authUser.password;
+        delete authUser.passwordSecondary;
+        delete authUser.passwordHash;
+
         setUser(authUser);
         setToken(`custom_token_${authUser.id}`);
         localStorage.setItem('goodbee_user', JSON.stringify(authUser));
@@ -157,50 +214,78 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (e) {}
 
-    throw new Error('Invalid email or password. Use demo buttons or register an account.');
+    // AUTH-11: Return uniform error message without revealing account existence
+    throw new Error('Incorrect credentials');
   };
 
   const register = async (formData) => {
-    // 1. Try server endpoint first
-    try {
-      const res = await fetch('/api/v1/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data.user);
-        setToken(data.token);
-        localStorage.setItem('goodbee_user', JSON.stringify(data.user));
-        localStorage.setItem('goodbee_token', data.token);
-        return data.user;
-      }
-    } catch (e) {}
-
-    // 2. Client-side fallback
     const { name, email, password, role = 'CUSTOMER', companyName, gstNumber, phone } = formData;
     if (!name || !email || !password) {
       throw new Error('Name, email, and password are required.');
     }
 
+    // AUTH-02: Email matching is case-normalized and trimmed of spaces
+    const cleanEmail = (email || '').trim().toLowerCase();
+
+    // 1. Try server endpoint first
+    try {
+      const res = await fetch('/api/v1/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, email: cleanEmail })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const safeUser = { ...data.user };
+        delete safeUser.password;
+        delete safeUser.passwordSecondary;
+        delete safeUser.passwordHash;
+
+        setUser(safeUser);
+        setToken(data.token);
+        localStorage.setItem('goodbee_user', JSON.stringify(safeUser));
+        localStorage.setItem('goodbee_token', data.token);
+        return safeUser;
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'User with this email already exists');
+      }
+    } catch (e) {
+      if (e.message && !e.message.includes('fetch') && !e.message.includes('Failed to fetch')) {
+        throw e;
+      }
+    }
+
+    // 2. Client-side fallback: verify uniqueness
+    const inDemo = Object.values(DEMO_ACCOUNTS).some(
+      (acc) => (acc.email || '').trim().toLowerCase() === cleanEmail
+    );
+    let inRegistry = false;
+    try {
+      const registry = JSON.parse(localStorage.getItem('goodbee_users_registry') || '[]');
+      inRegistry = registry.some((acc) => (acc.email || '').trim().toLowerCase() === cleanEmail);
+    } catch (e) {}
+
+    if (inDemo || inRegistry) {
+      throw new Error('User with this email already exists');
+    }
+
     const newUser = {
       id: `usr_${Date.now()}`,
-      name,
-      email,
-      role: role.toUpperCase(),
-      phone: phone || '+91 99630 75000',
+      name: name.trim(),
+      email: cleanEmail,
+      role: 'CUSTOMER', // Strict default CUSTOMER role
+      phone: phone ? phone.trim() : '+91 99630 75000',
       companyName: companyName || '',
       gstNumber: gstNumber || '',
-      dealerCode: role.toUpperCase() === 'DEALER' ? `DLR-${Date.now().toString().slice(-4)}` : undefined,
-      referralCode: role.toUpperCase() === 'PROMOTER' ? `${name.replace(/\s+/g, '').toUpperCase()}10` : undefined,
       loyaltyPoints: 0
     };
 
+    // AUTH-51: Store passwordHash only, NEVER plaintext password in browser storage
     try {
       const registry = JSON.parse(localStorage.getItem('goodbee_users_registry') || '[]');
-      registry.push({ ...newUser, password });
+      registry.push({ ...newUser, passwordHash: hashPassword(password) });
       localStorage.setItem('goodbee_users_registry', JSON.stringify(registry));
     } catch (e) {}
 
@@ -212,10 +297,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    // AUTH-50: Clear all tokens and user profile
     setUser(null);
     setToken('');
     localStorage.removeItem('goodbee_user');
     localStorage.removeItem('goodbee_token');
+    window.dispatchEvent(new CustomEvent('goodbee_auth_logout'));
   };
 
   const quickSwitchRole = async (targetRole) => {

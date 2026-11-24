@@ -26,13 +26,14 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
 
   const currentRole = user ? user.role : requestedPortal;
 
-  // Real Roles Configuration
+  // Real Roles Configuration (All 7 Platform Roles)
   const ROLES = [
     { id: 'ADMIN', label: 'Admin Suite', badge: 'Control Tower', icon: Shield },
     { id: 'MEDIA_MANAGER', label: 'Media & Stock', badge: 'Creative Studio', icon: Sparkles },
     { id: 'DELIVERY_PARTNER', label: 'Delivery Partner', badge: 'Logistics Fleet', icon: Truck },
     { id: 'PRODUCER', label: 'Vendor & Labs', badge: 'Supplier', icon: FlaskConical },
     { id: 'DEALER', label: 'Wholesale Desk', badge: 'B2B Bulk', icon: Package },
+    { id: 'PROMOTER', label: 'Promoter Suite', badge: 'Affiliate Desk', icon: Sparkles },
     { id: 'CUSTOMER', label: 'My Account', badge: 'Customer Account', icon: User }
   ];
 
@@ -42,11 +43,13 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
   //   * ADMIN can view Admin Suite or inspect portals.
   //   * PRODUCER can ONLY access Vendor & Labs (PRODUCER).
   //   * DEALER can ONLY access Wholesale Desk (DEALER).
+  //   * PROMOTER can ONLY access Promoter Suite (PROMOTER).
+  //   * MEDIA_MANAGER can ONLY access Media Studio (MEDIA_MANAGER).
+  //   * DELIVERY_PARTNER can ONLY access Fleet Logistics (DELIVERY_PARTNER).
   //   * CUSTOMER can ONLY access My Account (CUSTOMER).
   const isAuthorized = user && (user.role === 'ADMIN' || user.role === requestedPortal);
 
   // Role Isolation: Only show roles that belong to the user's account!
-  // A customer will ONLY see "My Account". They will NEVER see Admin, Vendor, or Wholesale Desk.
   const visibleRoles = user
     ? user.role === 'ADMIN'
       ? ROLES
@@ -63,7 +66,17 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
     ? 'Media & Stock Studio'
     : user?.role === 'DELIVERY_PARTNER'
     ? 'Fleet Logistics Console'
+    : user?.role === 'PROMOTER'
+    ? 'Promoter Affiliate Hub'
     : 'Admin Console';
+
+  const handleLogout = () => {
+    logout();
+    onClose();
+    if (window.location.hash.startsWith('#portal=')) {
+      window.history.pushState(null, '', window.location.pathname);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-[#FAF7F2] flex flex-col overflow-hidden animate-in fade-in duration-200">
@@ -136,14 +149,14 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
                     {user.companyName || user.name || user.email}
                   </span>
                   <span className="text-[10px] text-purple-700 font-bold font-mono">
-                    {user.role === 'CUSTOMER' ? 'Customer Account' : user.role === 'DEALER' ? 'Wholesaler' : user.role === 'PRODUCER' ? 'Botanical Vendor' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Lead' : user.role === 'DELIVERY_PARTNER' ? 'Delivery Partner' : 'Admin'}
+                    {user.role === 'CUSTOMER' ? 'Customer Account' : user.role === 'DEALER' ? 'Wholesaler' : user.role === 'PRODUCER' ? 'Botanical Vendor' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Lead' : user.role === 'DELIVERY_PARTNER' ? 'Delivery Partner' : user.role === 'PROMOTER' ? 'Affiliate Partner' : 'Admin'}
                   </span>
                 </div>
               )}
 
               {user && (
                 <button
-                  onClick={() => logout()}
+                  onClick={handleLogout}
                   className="p-2 text-gray-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                   title="Sign Out"
                 >
@@ -195,7 +208,11 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
           <div className="max-w-md mx-auto py-12 px-4">
             <Login
               defaultRole={requestedPortal}
-              onLoggedIn={() => {}}
+              onLoggedIn={(u) => {
+                if (u && u.role) {
+                  setRequestedPortal(u.role);
+                }
+              }}
               onBack={onClose}
             />
           </div>

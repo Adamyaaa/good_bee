@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, DEMO_ACCOUNTS } from '../context/AuthContext';
-import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key, Sparkles, Truck } from 'lucide-react';
+import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key, Sparkles, Truck, Eye, EyeOff } from 'lucide-react';
 
 const ROLE_TABS = [
   { id: 'CUSTOMER', label: 'Customer Account', sublabel: 'Orders & Tracking', icon: User, demoKey: 'CUSTOMER', color: 'text-amber-800' },
   { id: 'DEALER', label: 'Wholesaler / Stockist', sublabel: 'B2B Bulk Rates', icon: Package, demoKey: 'DEALER', color: 'text-blue-800' },
   { id: 'PRODUCER', label: 'Vendor / Supplier', sublabel: 'Botanical Apiaries', icon: FlaskConical, demoKey: 'PRODUCER', color: 'text-emerald-800' },
+  { id: 'PROMOTER', label: 'Promoter & Affiliate', sublabel: 'Referrals & Earnings', icon: Sparkles, demoKey: 'PROMOTER', color: 'text-purple-800' },
   { id: 'MEDIA_MANAGER', label: 'Media Manager', sublabel: 'Stock, Photos & CMS', icon: Sparkles, demoKey: 'MEDIA_MANAGER', color: 'text-violet-800' },
   { id: 'DELIVERY_PARTNER', label: 'Delivery Partner', sublabel: 'Fleet & Dispatches', icon: Truck, demoKey: 'DELIVERY_PARTNER', color: 'text-sky-800' },
   { id: 'ADMIN', label: 'Store Admin', sublabel: 'Control Tower', icon: Shield, demoKey: 'ADMIN', color: 'text-slate-800' }
@@ -18,6 +19,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -100,7 +102,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
         </div>
 
         {/* Multi-Role Horizontal Selector Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 bg-brand-cream/80 p-2 rounded-2xl border border-brand-gold/30 shadow-sm">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 bg-brand-cream/80 p-2 rounded-2xl border border-brand-gold/30 shadow-sm">
           {ROLE_TABS.map((tab) => {
             const Icon = tab.icon;
             const isSelected = selectedRole === tab.id;
@@ -263,15 +265,29 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
             </div>
 
             <div>
-              <label className="block mb-1 font-medium text-brand-charcoal">Password</label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
-                placeholder="••••••••"
-              />
+              <div className="flex items-center justify-between mb-1">
+                <label className="font-medium text-brand-charcoal">Password</label>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full p-2.5 pr-10 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                  placeholder="••••••••"
+                  data-testid="login-password-input"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  aria-label="Toggle password visibility"
+                  data-testid="toggle-password-btn"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             <button

@@ -243,7 +243,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
                         <p className="text-xs text-gray-500">Signed in as</p>
                         <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
                         <span className="inline-block mt-1 text-[10px] tracking-wider uppercase px-2 py-0.5 bg-gray-100 text-gray-700 font-bold rounded">
-                          {user.role === 'ADMIN' ? 'Store Administrator' : user.role === 'DEALER' ? 'Wholesaler Partner' : user.role === 'PRODUCER' ? 'Botanical Vendor' : 'Customer Account'}
+                          {user.role === 'ADMIN' ? 'Store Administrator' : user.role === 'DEALER' ? 'Wholesaler Partner' : user.role === 'PRODUCER' ? 'Botanical Vendor' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Lead' : user.role === 'DELIVERY_PARTNER' ? 'Delivery Fleet Partner' : user.role === 'PROMOTER' ? 'Affiliate Partner' : 'Customer Account'}
                         </span>
                       </div>
                       <button
@@ -254,7 +254,9 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
                         className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2 font-medium cursor-pointer"
                       >
                         <Shield className="w-4 h-4 text-[#5B0868]" />
-                        <span>{user.role === 'ADMIN' ? 'Store Control Tower' : 'My Orders & Account'}</span>
+                        <span>
+                          {user.role === 'ADMIN' ? 'Store Control Tower' : user.role === 'DEALER' ? 'Wholesale Desk' : user.role === 'PRODUCER' ? 'Vendor & Lab Desk' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Studio' : user.role === 'DELIVERY_PARTNER' ? 'Fleet Logistics Console' : user.role === 'PROMOTER' ? 'Promoter & Affiliate Desk' : 'My Orders & Account'}
+                        </span>
                       </button>
                       <button
                         onClick={() => {

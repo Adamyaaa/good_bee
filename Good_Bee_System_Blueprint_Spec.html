@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Good Bee Skincare Ecosystem - Technical Specification, User Journey Map & System Blueprint</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  @page {
+    size: A4;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #0f172a;
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+    line-height: 1.35;
+    font-size: 8.5pt;
+  }
+
+  .sheet {
+    page-break-after: always;
+    break-after: page;
+    height: 275mm;
+    max-height: 275mm;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 4mm;
+  }
+
+  .sheet:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .sheet-content {
+    flex-grow: 1;
+  }
+
+  .sheet-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 6px;
+    margin-top: 8px;
+    font-size: 7pt;
+    color: #64748b;
+    font-family: 'JetBrains+Mono', monospace;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 15pt;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    margin: 0 0 2px 0;
+  }
+
+  h2 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 10px 0 4px 0;
+    border-bottom: 1.5px solid #0f172a;
+    padding-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  h3 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 6px 0 3px 0;
+  }
+
+  p {
+    margin: 0 0 5px 0;
+    color: #334155;
+  }
+
+  /* Document Meta Header */
+  .doc-header {
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .doc-meta {
+    text-align: right;
+    font-size: 7.5pt;
+    color: #475569;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.3;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 7pt;
+    font-weight: 600;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .badge-slate { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+  .badge-blue { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+  .badge-green { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+  .badge-purple { background: #faf5ff; color: #581c87; border: 1px solid #e9d5ff; }
+
+  /* Structured Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0 8px 0;
+    font-size: 7.5pt;
+  }
+
+  th {
+    background: #f8fafc;
+    color: #0f172a;
+    font-weight: 700;
+    text-align: left;
+    padding: 4px 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 7pt;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  td {
+    padding: 4px 6px;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background: #fbfcfe;
+  }
+
+  /* Section Containers & Grids */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .box {
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 6px 8px;
+    background: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  .box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 8pt;
+    color: #0f172a;
+    margin-bottom: 3px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 2px;
+  }
+
+  .box-desc {
+    font-size: 7.5pt;
+    color: #475569;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  /* Steps & Workflows */
+  .step-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 4px 0 6px 0;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    padding: 3px 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 3px;
+    background: #ffffff;
+    font-size: 7.5pt;
+  }
+
+  .step-num {
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: #0f172a;
+    background: #f1f5f9;
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-size: 7pt;
+    flex-shrink: 0;
+  }
+
+  .step-content {
+    flex-grow: 1;
+    color: #334155;
+    line-height: 1.3;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7pt;
+    background: #f1f5f9;
+    padding: 1px 3px;
+    border-radius: 2px;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+  }
+
+  .checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 4px 0;
+  }
+
+  .checklist li {
+    position: relative;
+    padding-left: 14px;
+    margin-bottom: 3px;
+    font-size: 7.5pt;
+    color: #334155;
+    line-height: 1.35;
+  }
+
+  .checklist li::before {
+    content: "■";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 6pt;
+    color: #0f172a;
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1 ================= -->
+  <div class="sheet">
+    <div class="sheet-content">
+      
+      <div class="doc-header">
+        <div>
+          <h1>GOOD BEE SKINCARE ECOSYSTEM</h1>
+          <p style="margin: 0; font-size: 9pt; font-weight: 600; color: #475569;">
+            System Specification, User Journey Maps & Reusable Architecture Blueprint
+          </p>
+        </div>
+        <div class="doc-meta">
+          <div>DOC REF: GB-SPEC-2026-V2</div>
+          <div>TARGET: TECHNICAL & PRODUCT TEAMS</div>
+          <div>STACK: REACT / VITE / NODE / TAILWIND</div>
+        </div>
+      </div>
+
+      <h2>1. Executive Summary & Platform Purpose</h2>
+      <p>
+        <strong>Good Bee</strong> is an end-to-end, multi-stakeholder D2C and B2B botanical skincare commerce ecosystem. It combines a high-speed consumer storefront with specialized operational portals for wholesale dealers, formulation laboratories, and administrative control. This document provides a complete technical and functional blueprint so that any development team can replicate or adapt this architecture for similar multi-tiered e-commerce applications.
+      </p>
+
+      <div class="grid-3" style="margin-top: 6px;">
+        <div class="box">
+          <div class="box-header"><span>D2C Public Storefront</span><span class="badge badge-slate">Consumer</span></div>
+          <p class="box-desc">1:1 square media presentation, concern-based skin filters, real-time inventory checks, instant dynamic UPI QR checkout, and order timeline tracking.</p>
+        </div>
+        <div class="box">
+          <div class="box-header"><span>B2B Wholesaler Desk</span><span class="badge badge-blue">Wholesale</span></div>
+          <p class="box-desc">Minimum Order Quantity (MOQ = 20) rules, automated volume tier discounting (30% to 50% off), instant margin calculators, and PO generation.</p>
+        </div>
+        <div class="box">
+          <div class="box-header"><span>Vendor & Lab Portal</span><span class="badge badge-green">Supply</span></div>
+          <p class="box-desc">Producer R&D portal for formulation submissions, batch volume declarations, Certificate of Analysis (CoA) verifications, and pricing proposals.</p>
+        </div>
+      </div>
+
+      <h2>2. Stakeholder Persona & Permissions Matrix</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 15%;">Persona / Role</th>
+            <th style="width: 18%;">Access Point</th>
+            <th style="width: 32%;">Primary Capabilities</th>
+            <th style="width: 35%;">Key Workflows & Data Produced</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Retail Patron</strong><br><span class="badge badge-slate">GUEST / USER</span></td>
+            <td>Public URL (Desktop / Mobile Storefront)</td>
+            <td>Browse catalog, filter by skin concerns, inspect INCI ingredients, add to bag, instant UPI buy, track orders.</td>
+            <td>Creates customer orders (<code>GB-ORD-XXXX</code>), submits delivery address, executes UPI QR payment or COD, polls order tracking status.</td>
+          </tr>
+          <tr>
+            <td><strong>Wholesale Dealer</strong><br><span class="badge badge-blue">B2B PARTNER</span></td>
+            <td>Partner Modal &rarr; Wholesale Desk</td>
+            <td>View wholesale catalog, select volume tiers (20-100+ units), compute dealer margins, view GST breakdown, request quote.</td>
+            <td>Generates B2B purchase orders (<code>GB-WHL-XXXX</code>), provides GSTIN & company details, submits consignment orders for admin approval.</td>
+          </tr>
+          <tr>
+            <td><strong>Supplier / Lab</strong><br><span class="badge badge-green">PRODUCER</span></td>
+            <td>Partner Modal &rarr; Vendor & Labs</td>
+            <td>Submit new botanical formulations, upload Certificate of Analysis (CoA), declare purity %, set proposed supply pricing.</td>
+            <td>Creates supplier proposals (<code>GB-PROP-XXXX</code>), specifies batch production volumes, technical parameters (pH, viscosity, extraction).</td>
+          </tr>
+          <tr>
+            <td><strong>Store Administrator</strong><br><span class="badge badge-purple">MASTER ADMIN</span></td>
+            <td>Partner Modal &rarr; Admin Suite</td>
+            <td>Live sales telemetry, order fulfillment lifecycle, wholesale quote approval, supplier proposal onboarding, catalog CMS.</td>
+            <td>Updates order status (PROCESSING &rarr; DISPATCHED &rarr; DELIVERED), edits product prices/stock in real time, approves B2B dealer rates.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Global System Topology & High-Level Architecture</h2>
+      <div class="box" style="margin-top: 4px;">
+        <div class="box-header"><span>Core Architectural Principles</span><span class="badge badge-slate">Architectural Pattern</span></div>
+        <p class="box-desc" style="margin-bottom: 6px;">
+          Good Bee uses a decoupled, event-driven Single Page Application (SPA) architecture designed for zero cold-start latency, seamless offline recovery, and deterministic role separation.
+        </p>
+        <div class="grid-2">
+          <div>
+            <strong style="font-size: 7.5pt; color: #0f172a;">Frontend Layer (Vite + React 18):</strong>
+            <ul class="checklist">
+              <li><strong>Atomic Component Isolation:</strong> Storefront, Portals, Modals, and Checkout are decoupled modules.</li>
+              <li><strong>CartContext & Global State:</strong> Reactive React Context managing cart count, totals, coupons, and local persistence.</li>
+              <li><strong>Hash-Based Direct Deep Linking:</strong> Supports <code>#product=ID</code> and <code>#concern=ID</code> for direct landing and sharing without full page refreshes.</li>
+            </ul>
+          </div>
+          <div>
+            <strong style="font-size: 7.5pt; color: #0f172a;">Dual-Sync Resilience Engine:</strong>
+            <ul class="checklist">
+              <li><strong>Mock-First Storage Fallback:</strong> LocalStorage seeds provide a 100% operational experience immediately.</li>
+              <li><strong>REST API Abstraction Layer:</strong> <code>api.js</code> routes requests to live Express backend if online, seamlessly falling back to local storage if offline or during server cold-starts.</li>
+              <li><strong>State Consistency:</strong> Catalog updates in Admin CMS reflect instantly across the active storefront session.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem Specification &bull; Reusable Project Blueprint</span>
+      <span>Page 1 of 6</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2 ================= -->
+  <div class="sheet">
+    <div class="sheet-content">
+
+      <h2>4. Customer Storefront & E-Commerce Purchase Engine</h2>
+      <p>
+        The customer-facing application is engineered for maximum speed, editorial clarity, and frictionless checkout. It eliminates visual clutter and ensures all critical information is visible without scrolling.
+      </p>
+
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-header"><span>1:1 Square Catalog Grid</span><span class="badge badge-slate">Storefront Core</span></div>
+          <p class="box-desc">
+            <strong>Layout:</strong> Responsive 4-column desktop layout (<code>grid-cols-2 md:grid-cols-3 lg:grid-cols-4</code>), preventing image distortion.<br>
+            <strong>Native Resolution:</strong> Enforces <code>aspect-square</code> containers matching native 300x300 or 600x600 assets, preventing pixel stretching.<br>
+            <strong>Editorial Badges:</strong> Dark pill badges (<code>BEST SELLER</code>, <code>FREQUENTLY BOUGHT</code>, <code>MOST LOVED</code>).<br>
+            <strong>Actions:</strong> One-click "Add" button with instant green confirmation feedback; card click opens product view.
+          </p>
+        </div>
+
+        <div class="box">
+          <div class="box-header"><span>Targeted Concern Filtering</span><span class="badge badge-blue">Navigation</span></div>
+          <p class="box-desc">
+            <strong>Taxonomy:</strong> Categorizes formulations by skin realities: Hair Fall & Scalp, Acne & Blemishes, Youth & Radiance, Pigmentation, Deep Hydration.<br>
+            <strong>Interactive Spa Filter:</strong> Patrons select concerns to instantly filter matching botanical formulations without full page reload.<br>
+            <strong>Quick View Modal:</strong> Lightbox overlay for instant inspection of ingredients, pricing, and fast cart addition.
+          </p>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="box-header"><span>Product Detail Page (PDP) Architecture</span><span class="badge badge-green">Above-The-Fold Standard</span></div>
+        <div class="grid-2">
+          <div>
+            <p class="box-desc">
+              <strong>Above-The-Fold 5/7 Column Split:</strong><br>
+              &bull; <strong>Left (Col 5):</strong> High-resolution 1:1 square image stage with <code>object-contain</code> and <code>max-h-[min(440px,calc(100vh-170px))]</code>. The entire bottle is 100% visible immediately upon landing without any scrolling.<br>
+              &bull; <strong>Right (Col 7):</strong> Brand typography, title, volume/SKU, star ratings, price savings block, quantity selector, and instant purchase buttons.<br>
+              &bull; <strong>Zero Wasted Space:</strong> Top padding compacted (<code>pt-[74px] sm:pt-[78px]</code>) aligning cleanly below the fixed navbar.
+            </p>
+          </div>
+          <div>
+            <p class="box-desc">
+              <strong>Deep-Dive Information Tabs:</strong><br>
+              &bull; <strong>100% Natural Ingredients:</strong> Full INCI active ingredient disclosure with purity assurances.<br>
+              &bull; <strong>Artisanal Process:</strong> Nitrogen-stabilized cold-press extraction methodology.<br>
+              &bull; <strong>How to Apply:</strong> Step-by-step skincare ritual with application tips.<br>
+              &bull; <strong>Patron Reviews:</strong> Verified customer rating distribution and textual reviews.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h2>5. Cart & Dynamic UPI Payment Engine</h2>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-header"><span>Shopping Bag & Cart Logic</span><span class="badge badge-slate">Client State</span></div>
+          <ul class="checklist">
+            <li><strong>Reactive Item Management:</strong> Dynamic addition, quantity increments, decrements, and removals.</li>
+            <li><strong>Free Shipping Threshold:</strong> Automatically applies free express courier delivery when order subtotal exceeds <code>₹999</code>; otherwise computes standard ₹70 courier fee.</li>
+            <li><strong>Promotional Coupon System:</strong> Validates discount coupon codes (e.g. <code>HONEY15</code> = 15% discount) and updates subtotal in real time.</li>
+            <li><strong>Cart Drawer:</strong> Flyout slide-over cart with thumbnail preview, itemized subtotals, and checkout CTA.</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <div class="box-header"><span>Dynamic UPI & COD Checkout</span><span class="badge badge-blue">Payment Flow</span></div>
+          <ul class="checklist">
+            <li><strong>Dynamic UPI QR Generation:</strong> Synthesizes real-time NPCI-compliant UPI payment intent string: <code>upi://pay?pa=...&pn=Good+Bee&am=...&tr=ORDER_ID</code> rendered as an in-browser QR code via <code>qrcode</code> library.</li>
+            <li><strong>Payment Expiry Timer:</strong> 10-minute visual countdown timer enforcing session expiry for dynamic QR.</li>
+            <li><strong>Direct Intent Deep Linking:</strong> Mobile patrons can tap to open Google Pay, PhonePe, Paytm, or BHIM directly.</li>
+            <li><strong>Cash on Delivery (COD):</strong> Alternate payment route with automated delivery verification.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>6. Real-Time Patron Order Tracking</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 18%;">Tracking Stage</th>
+            <th style="width: 20%;">Internal Status</th>
+            <th style="width: 32%;">Customer Facing Description</th>
+            <th style="width: 30%;">Metadata & Trigger Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Order Placed</strong></td>
+            <td><code>PROCESSING</code></td>
+            <td>Payment verified. Order received by Good Bee apothecary.</td>
+            <td>Triggered on checkout completion. Assigns unique <code>GB-ORD-XXXX</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Formulation & QC</strong></td>
+            <td><code>PROCESSING</code></td>
+            <td>Cold-stabilized batch selected, sealed, and packaged under nitrogen.</td>
+            <td>Admin verified. Batch lot number linked to invoice.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Dispatched</strong></td>
+            <td><code>DISPATCHED</code></td>
+            <td>Handed over to express courier partner (BlueDart / Delhivery).</td>
+            <td>Triggered by Admin Suite. Generates courier AWB and tracking link.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Delivered</strong></td>
+            <td><code>DELIVERED</code></td>
+            <td>Successfully delivered to customer shipping address.</td>
+            <td>Final state. Triggers post-purchase feedback and patron loyalty points.</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem Specification &bull; Reusable Project Blueprint</span>
+      <span>Page 2 of 6</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3 ================= -->
+  <div class="sheet">
+    <div class="sheet-content">
+
+      <h2>7. B2B Wholesaler Desk (Bulk Commerce Subsystem)</h2>
+      <p>
+        The Wholesaler Desk provides authorized commercial distributors, spas, and boutique retail stockists with a dedicated high-volume procurement interface. It replaces manual quotation emails with programmatic volume pricing.
+      </p>
+
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-header"><span>Distributor Qualification & Access</span><span class="badge badge-blue">B2B Auth</span></div>
+          <p class="box-desc">
+            <strong>Partner Modal Gate:</strong> Wholesalers access via navigation header modal &rarr; Wholesale Desk.<br>
+            <strong>Dealer Identification:</strong> Authenticated by GST Number, Dealer Code (e.g. <code>DLR-MUM-01</code>), Company Name, and Registered City.<br>
+            <strong>Credit Terms:</strong> Displays dealer margin tier, payment terms (Net-30 / Advance), and lifetime spend history.
+          </p>
+        </div>
+
+        <div class="box">
+          <div class="box-header"><span>Tiered Volume Pricing Engine</span><span class="badge badge-green">Pricing Rules</span></div>
+          <p class="box-desc">
+            <strong>Minimum Order Quantity (MOQ):</strong> Enforces strict minimum order threshold of 20 units total.<br>
+            <strong>Automated Tier Discounting:</strong><br>
+            &bull; <strong>Tier 1 (20 – 49 units):</strong> 30% Wholesale Discount off retail MRP.<br>
+            &bull; <strong>Tier 2 (50 – 99 units):</strong> 40% Wholesale Discount off retail MRP.<br>
+            &bull; <strong>Tier 3 (100+ units):</strong> 50% Bulk Master Distributor Discount.<br>
+            <strong>Taxation:</strong> Programmatically applies 18% GST with full B2B tax invoice credit.
+          </p>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="box-header"><span>Wholesale Purchase Order Lifecycle</span><span class="badge badge-slate">Data Lifecycle</span></div>
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">01</span>
+            <div class="step-content"><strong>Catalog Selection:</strong> Dealer inputs unit quantities across individual SKUs in the catalog. Real-time counter validates whether total units satisfy the 20-unit MOQ threshold.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">02</span>
+            <div class="step-content"><strong>Live Margin Computation:</strong> System dynamically calculates: (a) Retail MRP Total, (b) Wholesale Discounted Subtotal, (c) 18% GST, (d) Estimated Reseller Margin (in ₹ and %).</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">03</span>
+            <div class="step-content"><strong>Quote Generation & Submission:</strong> Dealer clicks "Generate Wholesale PO". The order is assigned an ID (e.g. <code>GB-WHL-8821</code>) and dispatched to the Master Admin approval matrix.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">04</span>
+            <div class="step-content"><strong>Consignment Release:</strong> Admin reviews the wholesale order, verifies logistics freight, and marks it approved for warehouse pallet dispatch.</div>
+          </div>
+        </div>
+      </div>
+
+      <h2>8. Vendor & Formulation Lab Partner Portal</h2>
+      <p>
+        The Supplier Portal connects raw botanical producers, extraction laboratories, and organic apiaries with Good Bee's procurement pipeline. It standardizes formulation proposals and regulatory compliance.
+      </p>
+
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-header"><span>Lab Accreditation & Verification</span><span class="badge badge-green">Compliance</span></div>
+          <ul class="checklist">
+            <li><strong>Producer Identity:</strong> Company Name, Registered Facility, ISO/GMP Lab Certification ID (e.g. <code>LAB-ISO-9001-GB</code>).</li>
+            <li><strong>Technical Contact:</strong> Lead Cosmetic Chemist / Bio-Technologist credentials.</li>
+            <li><strong>Supplier Ledger:</strong> History of previously accepted botanical batches and active delivery contracts.</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <div class="box-header"><span>Formulation Submission Engine</span><span class="badge badge-slate">Data Intake</span></div>
+          <ul class="checklist">
+            <li><strong>Active Botanical Name:</strong> INCI standard scientific botanical nomenclature.</li>
+            <li><strong>Extraction Methodology:</strong> Steam distillation, cold-press, supercritical CO2 extraction.</li>
+            <li><strong>Batch Metrics:</strong> Offered batch volume (Liters/Kg), lead time in days, wholesale supply price per unit.</li>
+            <li><strong>Analytical Parameters:</strong> pH range, viscosity, volatile monoterpene concentration %.</li>
+          </ul>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;">Proposal State</th>
+            <th style="width: 25%;">Workflow Condition</th>
+            <th style="width: 35%;">Action Performed by Platform</th>
+            <th style="width: 20%;">Next Transition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>SUBMITTED</code></td>
+            <td>Supplier completes form & attaches CoA parameters.</td>
+            <td>Proposal registered with <code>GB-PROP-XXXX</code>; queued in Admin Supplier Proposals tab.</td>
+            <td>Admin Review</td>
+          </tr>
+          <tr>
+            <td><code>IN_LAB_AUDIT</code></td>
+            <td>Admin opens proposal & reviews gas chromatography.</td>
+            <td>Sample physical testing flagged; lab dispatched test request.</td>
+            <td>Validation Pass/Fail</td>
+          </tr>
+          <tr>
+            <td><code>APPROVED</code></td>
+            <td>Batch purity meets Good Bee cold-stabilization standards.</td>
+            <td>Proposal approved; product auto-staged for Catalog CMS inclusion.</td>
+            <td>Catalog Staging</td>
+          </tr>
+          <tr>
+            <td><code>REJECTED</code></td>
+            <td>Parameters fail purity threshold or price outside margins.</td>
+            <td>Notification returned to supplier with audit notes.</td>
+            <td>Archived / Resubmit</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem Specification &bull; Reusable Project Blueprint</span>
+      <span>Page 3 of 6</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 4 ================= -->
+  <div class="sheet">
+    <div class="sheet-content">
+
+      <h2>9. Master Admin Operations Suite & Catalog CMS</h2>
+      <p>
+        The Master Admin Suite is the operational control center. It enables store operators to manage sales telemetry, dispatch retail orders, approve B2B contracts, and edit the live product catalog in real time without code deployment.
+      </p>
+
+      <div class="grid-4">
+        <div class="box">
+          <div class="box-header"><span>Gross Sales</span><span class="badge badge-green">Revenue</span></div>
+          <p style="font-size: 11pt; font-weight: 800; color: #0f172a; margin: 2px 0;">₹1,27,860</p>
+          <span style="font-size: 6.5pt; color: #16a34a; font-weight: 600;">+18.4% this month</span>
+        </div>
+        <div class="box">
+          <div class="box-header"><span>Patron Orders</span><span class="badge badge-blue">Fulfillment</span></div>
+          <p style="font-size: 11pt; font-weight: 800; color: #0f172a; margin: 2px 0;">3 Active</p>
+          <span style="font-size: 6.5pt; color: #ea580c; font-weight: 600;">1 requiring dispatch</span>
+        </div>
+        <div class="box">
+          <div class="box-header"><span>Catalog SKUs</span><span class="badge badge-slate">Inventory</span></div>
+          <p style="font-size: 11pt; font-weight: 800; color: #0f172a; margin: 2px 0;">19 Live</p>
+          <span style="font-size: 6.5pt; color: #64748b; font-weight: 600;">100% active stabilized</span>
+        </div>
+        <div class="box">
+          <div class="box-header"><span>Low Stock</span><span class="badge badge-slate">Alert</span></div>
+          <p style="font-size: 11pt; font-weight: 800; color: #dc2626; margin: 2px 0;">1 Warning</p>
+          <span style="font-size: 6.5pt; color: #dc2626; font-weight: 600;">&le; 10 units threshold</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-header"><span>Patron Order Management</span><span class="badge badge-slate">Fulfillment Tab</span></div>
+          <ul class="checklist">
+            <li><strong>Live Order Pipeline:</strong> Real-time table displaying Order ID, Customer Name, Items, Net Total, Payment Method (UPI/COD), and Fulfillment Status.</li>
+            <li><strong>Fulfillment Action Buttons:</strong> Operators can transition orders from <code>PROCESSING</code> &rarr; <code>DISPATCHED</code> with one click, automatically generating simulated tracking numbers.</li>
+            <li><strong>Customer Audit:</strong> Instant view of delivery address, phone number, and special delivery notes.</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <div class="box-header"><span>Wholesaler & Supplier Management</span><span class="badge badge-blue">Partner Tabs</span></div>
+          <ul class="checklist">
+            <li><strong>Wholesale Matrix:</strong> Displays submitted B2B purchase orders, dealer tiers, unit counts, and margin discounts. Operators approve or reject bulk invoices.</li>
+            <li><strong>Supplier Proposals Queue:</strong> Evaluates incoming formulation submissions from bio-labs. Operators review test reports and click "Accept Proposal" to onboard formulations.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>10. Real-Time Catalog Content Management System (CMS)</h2>
+      <p>
+        The Catalog CMS allows administrators to modify product data on the fly. All changes immediately propagate to the live customer storefront through the dual-sync state engine.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;">CMS Field</th>
+            <th style="width: 25%;">Data Type & Validation</th>
+            <th style="width: 30%;">Storefront Impact</th>
+            <th style="width: 25%;">Admin Control Widget</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Retail Price (₹)</strong></td>
+            <td>Number &bull; Positive integer</td>
+            <td>Updates instant buy price, cart subtotal, and wholesale discount base.</td>
+            <td>Direct numeric input with real-time recalculation.</td>
+          </tr>
+          <tr>
+            <td><strong>Original MRP (₹)</strong></td>
+            <td>Number &bull; Must be &ge; Price</td>
+            <td>Computes strikethrough price and "% OFF" savings pill badge.</td>
+            <td>Numeric input; automatically enforces discount logic.</td>
+          </tr>
+          <tr>
+            <td><strong>Stock Units</strong></td>
+            <td>Integer &bull; Non-negative</td>
+            <td>If stock &le; 10, shows "Only X units left" alert. If 0, disables Add to Cart.</td>
+            <td>Real-time inventory decrementer and incrementer.</td>
+          </tr>
+          <tr>
+            <td><strong>Product Image URL</strong></td>
+            <td>String &bull; Valid relative or HTTP path</td>
+            <td>Renders in 1:1 aspect square catalog cards and PDP high-res gallery.</td>
+            <td>URL input with live thumbnail preview.</td>
+          </tr>
+          <tr>
+            <td><strong>Product Badge</strong></td>
+            <td>String &bull; e.g. "Hair & Scalp Ritual"</td>
+            <td>Renders top-left motivation badge on product card and PDP stage.</td>
+            <td>Text selector / customizable badge input.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box" style="margin-top: 4px;">
+        <div class="box-header"><span>Site Headlines & Announcement Gateway Control</span><span class="badge badge-purple">Global CMS</span></div>
+        <p class="box-desc">
+          Operators can edit top marquee ticker text (promotional offers, shipping policies, WhatsApp concierge numbers) directly from the admin panel. Updates are stored in local configuration storage and rendered across all visitor sessions without server redeployments.
+        </p>
+      </div>
+
+    </div>
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem Specification &bull; Reusable Project Blueprint</span>
+      <span>Page 4 of 6</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 5 ================= -->
+  <div class="sheet">
+    <div class="sheet-content">
+
+      <h2>11. End-to-End User Journey Maps (Step-by-Step Manual)</h2>
+      <p>
+        The following workflows illustrate the step-by-step path, system state changes, and completion conditions for each primary actor interacting with the Good Bee platform.
+      </p>
+
+      <h3>Journey 1: Retail Customer (Discovery to Verified Delivery)</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <span class="step-num">Step 1</span>
+          <div class="step-content"><strong>Landing & Concern Selection:</strong> Visitor lands on homepage &rarr; navigates to "Interactive Spa Catalog" &rarr; clicks "Hair Fall & Scalp" concern tag &rarr; catalog instantly filters to Rosemary Pure Essential Oil & related formulations.</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 2</span>
+          <div class="step-content"><strong>Product Inspection (PDP):</strong> Visitor clicks product card &rarr; PDP loads with image 100% visible above the fold &rarr; inspects price (₹950, Save 17%), INCI ingredients, and application ritual tabs &rarr; selects Quantity: 1.</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 3</span>
+          <div class="step-content"><strong>Instant UPI Checkout:</strong> Clicks "Instant Buy Now with Dynamic UPI" &rarr; Checkout drawer opens &rarr; fills Name, Phone, Delivery Address, PIN &rarr; chooses "UPI QR Code" &rarr; dynamic QR code generates on screen with 10-min timer.</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 4</span>
+          <div class="step-content"><strong>Payment Execution & Order ID:</strong> Customer scans QR with mobile banking app &rarr; confirms payment &rarr; platform generates Order ID <code>GB-ORD-90214</code> and updates status to <code>PROCESSING</code>.</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 5</span>
+          <div class="step-content"><strong>Self-Service Order Tracking:</strong> Customer clicks "Track Order" in header &rarr; inputs <code>GB-ORD-90214</code> &rarr; views real-time progress timeline from Formulation &rarr; Dispatched &rarr; Express Courier Transit &rarr; Delivered.</div>
+        </div>
+      </div>
+
+      <h3>Journey 2: B2B Wholesaler (Bulk Order Procurement)</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <span class="step-num">Step 1</span>
+          <div class="step-content"><strong>Portal Authentication:</strong> Commercial partner clicks "Partner Console" &rarr; selects "Wholesale Desk" &rarr; enters registered Dealer Code (<code>DLR-MUM-01</code>) & GSTIN &rarr; enters wholesale procurement suite.</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 2</span>
+          <div class="step-content"><strong>Volume Selection & MOQ Validation:</strong> Dealer selects 25 units of Rosemary Oil and 30 units of Clear Skin Soap (Total: 55 units &ge; MOQ 20) &rarr; system automatically unlocks Tier 2 Pricing (40% discount off retail MRP).</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 3</span>
+          <div class="step-content"><strong>Margin Audit & PO Submission:</strong> Dealer reviews invoice summary: Subtotal, 40% Volume Rebate, 18% GST, and Projected Retail Margin &rarr; clicks "Submit Purchase Order" &rarr; PO <code>GB-WHL-8821</code> dispatched to Admin.</div>
+        </div>
+      </div>
+
+      <h3>Journey 3: Formulation Laboratory (R&D Proposal Submission)</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <span class="step-num">Step 1</span>
+          <div class="step-content"><strong>Lab Portal Access:</strong> Research scientist navigates to "Vendor & Labs" &rarr; enters facility details (Aura Botanica Bio-Labs, Lab Cert <code>LAB-ISO-9001-GB</code>).</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 2</span>
+          <div class="step-content"><strong>Specification Declaration:</strong> Enters formulation name, botanical extraction technique, batch volume (500 Liters), analytical pH (5.4), and proposed supply price per unit (₹320/unit).</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 3</span>
+          <div class="step-content"><strong>Submission & Queuing:</strong> Submits proposal &rarr; system registers Proposal ID <code>GB-PROP-4412</code> &rarr; queues in Admin review board for chemistry audit and commercial onboarding.</div>
+        </div>
+      </div>
+
+      <h3>Journey 4: Store Administrator (Daily Operations & Telemetry)</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <span class="step-num">Step 1</span>
+          <div class="step-content"><strong>Daily Telemetry Check:</strong> Superuser logs into Admin Suite &rarr; reviews Gross Sales (₹1,27,860) and Low Stock Alerts (1 product under 10 units).</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 2</span>
+          <div class="step-content"><strong>Fulfillment Dispatch:</strong> Navigates to "Patron Orders" tab &rarr; reviews pending order <code>GB-ORD-90214</code> &rarr; clicks "Mark Dispatched" &rarr; order tracking automatically updates for customer.</div>
+        </div>
+        <div class="step-item">
+          <span class="step-num">Step 3</span>
+          <div class="step-content"><strong>Catalog Update:</strong> Opens "Catalog CMS" &rarr; adjusts stock for depleted SKU &rarr; clicks save &rarr; live customer storefront reflects updated inventory instantly.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem Specification &bull; Reusable Project Blueprint</span>
+      <span>Page 5 of 6</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 6 ================= -->
+  <div class="sheet">
+    <div class="sheet-content">
+
+      <h2>12. Technical Blueprint & Reusability Guide for Similar Projects</h2>
+      <p>
+        Any engineering team building a modern D2C or multi-tier commerce application can reuse Good Bee's core design patterns, data contracts, and architectural strategies.
+      </p>
+
+      <h3>1. Core Data Schemas (JSON Entity Contracts)</h3>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-header"><span>Product Entity Schema</span><span class="badge badge-slate">Data Model</span></div>
+          <p class="box-desc" style="font-family: 'JetBrains Mono', monospace; font-size: 6.8pt; line-height: 1.35;">
+            {<br>
+            &nbsp;&nbsp;"id": "gb_prod_rosemary_oil",<br>
+            &nbsp;&nbsp;"title": "Good Bee Rosemary Pure Essential Oil",<br>
+            &nbsp;&nbsp;"sku": "GB-OIL-RSM-15",<br>
+            &nbsp;&nbsp;"category": "Pure Essential Oils",<br>
+            &nbsp;&nbsp;"concerns": ["Hair Fall & Scalp", "Acne & Blemishes"],<br>
+            &nbsp;&nbsp;"price": 950, "mrp": 1150,<br>
+            &nbsp;&nbsp;"stock": 45, "lowStockThreshold": 10,<br>
+            &nbsp;&nbsp;"badge": "Hair & Scalp Ritual",<br>
+            &nbsp;&nbsp;"image": "/images_ref/rosemary.webp",<br>
+            &nbsp;&nbsp;"ingredients": ["100% Pure Rosmarinus Officinalis"],<br>
+            &nbsp;&nbsp;"ritual": "Dilute 3-4 drops into carrier oil..."<br>
+            }
+          </p>
+        </div>
+
+        <div class="box">
+          <div class="box-header"><span>Customer Order Schema</span><span class="badge badge-blue">Order Model</span></div>
+          <p class="box-desc" style="font-family: 'JetBrains Mono', monospace; font-size: 6.8pt; line-height: 1.35;">
+            {<br>
+            &nbsp;&nbsp;"id": "GB-ORD-90214",<br>
+            &nbsp;&nbsp;"customer": { "name": "...", "phone": "...", "pin": "..." },<br>
+            &nbsp;&nbsp;"items": [<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;{ "productId": "gb_prod_rosemary_oil", "qty": 1, "price": 950 }<br>
+            &nbsp;&nbsp;],<br>
+            &nbsp;&nbsp;"subtotal": 950, "shipping": 0, "total": 950,<br>
+            &nbsp;&nbsp;"payment": { "method": "UPI", "status": "VERIFIED" },<br>
+            &nbsp;&nbsp;"status": "PROCESSING",<br>
+            &nbsp;&nbsp;"createdAt": "2026-11-02T12:00:00Z"<br>
+            }
+          </p>
+        </div>
+      </div>
+
+      <h3>2. Essential Reusable Engineering Patterns</h3>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-header"><span>Dynamic UPI String Synthesis</span><span class="badge badge-green">Payments</span></div>
+          <p class="box-desc">
+            Construct standard NPCI UPI URI strings client-side: <code>`upi://pay?pa=${vpa}&pn=${brandName}&am=${total}&cu=INR&tr=${orderId}`</code>. Render directly as a QR image via client libraries (<code>qrcode</code>). No payment gateway fee overhead; supports zero-cost instant merchant settlements.
+          </p>
+        </div>
+
+        <div class="box">
+          <div class="box-header"><span>Tiered Wholesale Discount Algorithm</span><span class="badge badge-slate">Pricing Logic</span></div>
+          <p class="box-desc">
+            Calculate discount rates programmatically based on aggregate units: if <code>totalUnits &lt; 20</code>, reject with MOQ error. If <code>20 &le; units &lt; 50</code>, apply 30%. If <code>50 &le; units &lt; 100</code>, apply 40%. If <code>&ge; 100</code>, apply 50%. Compute GST at 18% on post-discount subtotal.
+          </p>
+        </div>
+      </div>
+
+      <h2>13. Step-by-Step Implementation Checklist for Similar Projects</h2>
+      <div class="box">
+        <div class="box-header"><span>10-Step Blueprint to Clone or Adapt this Architecture</span><span class="badge badge-purple">Roadmap</span></div>
+        <div class="grid-2">
+          <ul class="checklist">
+            <li><strong>Step 1: Data Contracts Definition:</strong> Define unified JSON structures for Products, Orders, B2B Quotes, and Lab Proposals.</li>
+            <li><strong>Step 2: Reactive State Container:</strong> Implement <code>CartContext</code> with local storage persistence to retain bag contents across refreshes.</li>
+            <li><strong>Step 3: Responsive Catalog Grid:</strong> Establish 1:1 square media viewport containers with responsive 4-column layout to prevent aspect ratio stretching.</li>
+            <li><strong>Step 4: Above-The-Fold PDP Layout:</strong> Structure product page with a 5/7 column split to guarantee complete image and purchase CTA visibility.</li>
+            <li><strong>Step 5: Checkout & UPI Engine:</strong> Build checkout drawer supporting instant UPI QR generation and cash-on-delivery routing.</li>
+          </ul>
+          <ul class="checklist">
+            <li><strong>Step 6: Order Tracking Pipeline:</strong> Build order lookup component mapping internal states (PROCESSING, DISPATCHED, DELIVERED) to visual timeline steps.</li>
+            <li><strong>Step 7: B2B Wholesaler Module:</strong> Implement dealer qualification, MOQ enforcement (&ge; 20 units), and dynamic tiered bulk discount calculations.</li>
+            <li><strong>Step 8: Vendor Proposal Desk:</strong> Create supplier submission interface capturing batch volume, chemistry parameters, and CoA certificates.</li>
+            <li><strong>Step 9: Master Admin Dashboard:</strong> Build operations control room with telemetry metrics, order fulfillments, and live Catalog CMS.</li>
+            <li><strong>Step 10: Dual-Sync Fallback Engine:</strong> Implement an API service layer that falls back seamlessly to localStorage when the backend is offline.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem Specification &bull; Reusable Project Blueprint</span>
+      <span>Page 6 of 6</span>
+    </div>
+  </div>
+
+</body>
+</html>

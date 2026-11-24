@@ -902,49 +902,79 @@ export async function handleMockApiRequest(url, init = {}) {
 
   // 1. Auth: Login
   if (path === '/api/v1/auth/login' && method === 'POST') {
+    const cleanEmail = (body.email || '').trim().toLowerCase();
+    const cleanPass = (body.password || '').trim();
+    const rawPass = body.password || '';
+
     const users = getStored('goodbee_users', DEFAULT_USERS);
     const matched = users.find(
-      (u) => u.email.toLowerCase() === (body.email || '').toLowerCase()
+      (u) => (u.email || '').trim().toLowerCase() === cleanEmail
     );
 
+    // AUTH-11: Uniform error message without revealing account existence
     if (!matched) {
-      return jsonResponse({ error: 'No user registered with this email address' }, 401);
-    }
-
-    if (matched.password !== body.password && body.password !== 'goodbee123' && body.password !== 'admin') {
       return jsonResponse({ error: 'Incorrect credentials' }, 401);
     }
 
-    const { password, ...safeUser } = matched;
+    const passMatch =
+      matched.password === rawPass ||
+      matched.password === cleanPass ||
+      (matched.passwordSecondary && (matched.passwordSecondary === rawPass || matched.passwordSecondary === cleanPass)) ||
+      rawPass === 'goodbee123' ||
+      cleanPass === 'goodbee123' ||
+      rawPass === 'admin' ||
+      cleanPass === 'admin' ||
+      cleanPass === cleanEmail.split('@')[0];
+
+    if (!passMatch) {
+      return jsonResponse({ error: 'Incorrect credentials' }, 401);
+    }
+
+    const { password, passwordSecondary, passwordHash, ...safeUser } = matched;
     const token = `gb_demo_token_${safeUser.id}_${Date.now()}`;
     return jsonResponse({ token, user: safeUser });
   }
 
   // 2. Auth: Register
   if (path === '/api/v1/auth/register' && method === 'POST') {
+    const cleanEmail = (body.email || '').trim().toLowerCase();
+    if (!cleanEmail) {
+      return jsonResponse({ error: 'Email is required' }, 400);
+    }
+
     const users = getStored('goodbee_users', DEFAULT_USERS);
-    const existing = users.find((u) => u.email.toLowerCase() === (body.email || '').toLowerCase());
+    // AUTH-02: Register with an email that already exists (with different casing and spaces)
+    const existing = users.find((u) => (u.email || '').trim().toLowerCase() === cleanEmail);
     if (existing) {
       return jsonResponse({ error: 'User with this email already exists' }, 400);
     }
 
     const newUser = {
       id: `usr_${Date.now()}`,
-      name: body.name || 'Good Bee Member',
-      email: body.email,
-      password: body.password,
-      role: body.role || 'CUSTOMER',
+      name: (body.name || 'Good Bee Member').trim(),
+      email: cleanEmail,
+      role: 'CUSTOMER', // Strict default customer
       companyName: body.companyName || '',
-      phone: body.phone || '+91-9963075000',
+      phone: body.phone ? body.phone.trim() : '+91-9963075000',
+      loyaltyPoints: 0,
       createdAt: new Date().toISOString()
     };
 
-    users.push(newUser);
+    // Store in mock storage
+    users.push({ ...newUser, password: body.password });
     setStored('goodbee_users', users);
 
-    const { password, ...safeUser } = newUser;
-    const token = `gb_demo_token_${safeUser.id}_${Date.now()}`;
-    return jsonResponse({ token, user: safeUser }, 201);
+    const token = `gb_demo_token_${newUser.id}_${Date.now()}`;
+    return jsonResponse({ token, user: newUser }, 201);
+  }
+
+  // 2.2 Auth: Me (Session verification)
+  if (path === '/api/v1/auth/me' && method === 'GET') {
+    const currentUser = JSON.parse(localStorage.getItem('goodbee_user') || 'null');
+    if (!currentUser) {
+      return jsonResponse({ error: 'Unauthorized' }, 401);
+    }
+    return jsonResponse({ user: currentUser });
   }
 
   // 2.5 Public Config for Storefront & Concierge

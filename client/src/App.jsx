@@ -95,6 +95,31 @@ function SpaLandingContent() {
     } catch (e) {}
   }, []);
 
+  // AUTH-50: Handle auth logout event & bfcache protection so back button never reveals protected portals
+  React.useEffect(() => {
+    const handleAuthLogout = () => {
+      setPortalModalConfig({ isOpen: false, role: 'CUSTOMER' });
+      setIsAuthPageOpen({ isOpen: false, mode: 'login' });
+      if (window.location.hash.startsWith('#portal=')) {
+        window.history.pushState(null, '', window.location.pathname);
+      }
+    };
+    const handlePageShow = (e) => {
+      if (e.persisted) {
+        const storedUser = localStorage.getItem('goodbee_user');
+        if (!storedUser) {
+          setPortalModalConfig({ isOpen: false, role: 'CUSTOMER' });
+        }
+      }
+    };
+    window.addEventListener('goodbee_auth_logout', handleAuthLogout);
+    window.addEventListener('pageshow', handlePageShow);
+    return () => {
+      window.removeEventListener('goodbee_auth_logout', handleAuthLogout);
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, []);
+
   // Dynamic site content loaded from CMS
   const [siteContent, setSiteContent] = useState(() => {
     try {
@@ -186,10 +211,16 @@ function SpaLandingContent() {
                 window.history.pushState(null, '', window.location.pathname);
               }
             }}
-            onAuthSuccess={() => {
+            onAuthSuccess={(u) => {
               setIsAuthPageOpen({ isOpen: false, mode: 'login' });
-              if (window.location.hash === '#login' || window.location.hash === '#register' || window.location.hash === '#auth') {
-                window.history.pushState(null, '', window.location.pathname);
+              if (u && u.role) {
+                // AUTH-10 & AUTH-01: Redirect to respective role portal upon successful authentication
+                setPortalModalConfig({ isOpen: true, role: u.role });
+                window.location.hash = `#portal=${u.role.toLowerCase()}`;
+              } else {
+                if (window.location.hash === '#login' || window.location.hash === '#register' || window.location.hash === '#auth') {
+                  window.history.pushState(null, '', window.location.pathname);
+                }
               }
             }}
           />

@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Good Bee Skincare Platform - End-to-End User & Data Flow Architecture</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  @page {
+    size: A4;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1A1918;
+    background: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    font-size: 8.8pt;
+  }
+
+  .sheet {
+    page-break-after: always;
+    break-after: page;
+    min-height: 275mm;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .sheet:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .sheet-content {
+    flex-grow: 1;
+  }
+
+  .sheet-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #EAE3D6;
+    padding-top: 6px;
+    margin-top: 10px;
+    font-size: 7pt;
+    color: #8C8476;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* Cover & Luxury Header */
+  .cover-header {
+    background: linear-gradient(135deg, #16021B 0%, #2E0537 50%, #5B0868 100%);
+    color: #FAF7F2;
+    padding: 20px 22px;
+    border-radius: 9px;
+    margin-bottom: 14px;
+    border: 1px solid #D4AF37;
+    box-shadow: 0 4px 12px rgba(91, 8, 104, 0.15);
+  }
+
+  .brand-badge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.22);
+    color: #F3E5AB;
+    border: 1px solid rgba(212, 175, 55, 0.6);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 7pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .doc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20pt;
+    font-weight: 700;
+    color: #FAF7F2;
+    margin: 0 0 4px 0;
+    line-height: 1.15;
+    letter-spacing: -0.2px;
+  }
+
+  .doc-subtitle {
+    font-size: 9.5pt;
+    color: #E9D5FF;
+    margin: 0 0 12px 0;
+    font-weight: 400;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 7.5pt;
+  }
+
+  .meta-item strong {
+    display: block;
+    color: #F3E5AB;
+    font-size: 6.8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 1px;
+  }
+
+  .meta-item span {
+    color: #FAF7F2;
+  }
+
+  /* Section Headings */
+  h2.section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 13pt;
+    color: #11100E;
+    border-bottom: 1.5px solid #5B0868;
+    padding-bottom: 4px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  h2.section-heading .pill {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 7pt;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: #FAF5FF;
+    color: #5B0868;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid #D8B4FE;
+  }
+
+  h3.sub-heading {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #2D261E;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  h3.sub-heading::before {
+    content: "■";
+    color: #5B0868;
+    font-size: 7.5pt;
+  }
+
+  p {
+    margin: 0 0 6px 0;
+    color: #38342E;
+    line-height: 1.42;
+  }
+
+  /* Cards & Layout */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+
+  .card {
+    background: #FAF8F5;
+    border: 1px solid #EAE3D6;
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+
+  .card-purple {
+    background: #FAF5FF;
+    border: 1px solid #E9D5FF;
+    border-left: 3.5px solid #5B0868;
+  }
+
+  .card-gold {
+    background: #FDFBF7;
+    border: 1px solid #EAD8B1;
+    border-left: 3.5px solid #C5A059;
+  }
+
+  .card-emerald {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-left: 3.5px solid #16A34A;
+  }
+
+  .card-blue {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-left: 3.5px solid #2563EB;
+  }
+
+  .card-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #1F1C18;
+    margin: 0 0 2px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-desc {
+    font-size: 8pt;
+    color: #575249;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 6.8pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-purple { background: #F3E8FF; color: #5B0868; border: 1px solid #D8B4FE; }
+  .badge-green { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+  .badge-blue { background: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
+  .badge-gold { background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+
+  /* Spec & Data Tables */
+  table.spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 10px 0;
+    font-size: 7.8pt;
+  }
+
+  table.spec-table th {
+    background: #2E0537;
+    color: #FAF5FF;
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 7px;
+    border: 1px solid #480653;
+    letter-spacing: 0.3px;
+    font-size: 7.3pt;
+  }
+
+  table.spec-table td {
+    padding: 4.5px 7px;
+    border: 1px solid #EAE3D6;
+    vertical-align: top;
+  }
+
+  table.spec-table tr:nth-child(even) td {
+    background: #FAF8F5;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.2pt;
+    background: #F3EEF8;
+    color: #5B0868;
+    padding: 1px 4px;
+    border-radius: 3px;
+    border: 1px solid #E4D6ED;
+  }
+
+  /* Diagram Box */
+  .diagram-box {
+    background: #FAF7F2;
+    border: 1px solid #EAE3D6;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 8px 0;
+  }
+
+  .step-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin: 6px 0;
+  }
+
+  .flow-node {
+    flex: 1;
+    background: #FFFFFF;
+    border: 1px solid #D8B4FE;
+    border-radius: 6px;
+    padding: 6px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .flow-node-title {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #5B0868;
+    margin-bottom: 2px;
+  }
+
+  .flow-node-desc {
+    font-size: 6.8pt;
+    color: #6B7280;
+    line-height: 1.25;
+  }
+
+  .flow-arrow {
+    font-size: 10pt;
+    color: #C5A059;
+    font-weight: bold;
+    padding: 0 2px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ==================== SHEET 1 ==================== -->
+  <div class="sheet">
+    <div class="sheet-content">
+      <div class="cover-header">
+        <span class="brand-badge">Enterprise Architectural Blueprint</span>
+        <h1 class="doc-title">Good Bee Skincare Ecosystem</h1>
+        <div class="doc-subtitle">
+          End-to-End User Journeys, Operational Actions & Cross-Persona Data Flow Specification
+        </div>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <strong>Platform Version</strong>
+            <span>v2.4 (Luxury Refined)</span>
+          </div>
+          <div class="meta-item">
+            <strong>Architecture</strong>
+            <span>Vercel Edge SPA + Node.js API</span>
+          </div>
+          <div class="meta-item">
+            <strong>Core Personas</strong>
+            <span>Vendor, Admin, B2B Wholesaler, Patron</span>
+          </div>
+          <div class="meta-item">
+            <strong>System Security</strong>
+            <span>JWT Auth & QC Quarantine</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-heading">
+        1. Architectural Framework: User Flow vs. Data Flow
+        <span class="pill">Dual-Layer Modeling</span>
+      </h2>
+      <p>
+        In enterprise commerce architectures, mapping user journeys requires a dual-layer abstraction. An action taken by one user in an isolated portal triggers cascading state mutations that propagate across other personas:
+      </p>
+
+      <div class="grid-2">
+        <div class="card card-purple">
+          <div class="card-title">
+            <span>User Flow (UX & Intention Layer)</span>
+            <span class="badge badge-purple">Screen Action</span>
+          </div>
+          <p class="card-desc">
+            Defines the human narrative: user objectives, entry views, decision paths, modal inputs, and instant UI feedback. Focuses on <em>what the user perceives and touches</em> across specialized suites.
+          </p>
+        </div>
+
+        <div class="card card-gold">
+          <div class="card-title">
+            <span>Data Flow (System & State Layer)</span>
+            <span class="badge badge-gold">DFD & Mutation</span>
+          </div>
+          <p class="card-desc">
+            Defines the machine reality: JSON payloads, REST API endpoints, validation logic, state machine transitions, and cross-boundary broadcasts that ripple into inventory and financial ledgers.
+          </p>
+        </div>
+      </div>
+
+      <h2 class="section-heading" style="margin-top: 10px;">
+        2. Cross-Persona Ecosystem Flow Diagram
+        <span class="pill">System Lifecycle</span>
+      </h2>
+
+      <div class="diagram-box">
+        <div class="step-flow">
+          <div class="flow-node" style="border-color: #86EFAC;">
+            <div class="flow-node-title" style="color: #166534;">1. Bio-Labs (Vendor)</div>
+            <div class="flow-node-desc">Submits Raw Harvest Lot + GC-MS Purity Cert</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node" style="border-color: #D8B4FE;">
+            <div class="flow-node-title" style="color: #5B0868;">2. Admin Control Tower</div>
+            <div class="flow-node-desc">QC Inspection, Batch Clearance, Catalog Release</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node" style="border-color: #93C5FD;">
+            <div class="flow-node-title" style="color: #1E40AF;">3. Wholesaler (B2B)</div>
+            <div class="flow-node-desc">Discounts Applied, PO Draft, Consignment Dispatch</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node" style="border-color: #FCD34D;">
+            <div class="flow-node-title" style="color: #92400E;">4. Patron Club (Retail)</div>
+            <div class="flow-node-desc">AI Matcher, Instant Buy (UPI/COD), Loyalty Rewards</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Four Primary Platform Personas</h3>
+      <div class="grid-4">
+        <div class="card card-emerald">
+          <div class="card-title"><span style="font-size: 8pt;">Vendor & Labs</span></div>
+          <p class="card-desc">Tribal apiaries, bio-labs, organic botanical extractors.</p>
+        </div>
+        <div class="card card-purple">
+          <div class="card-title"><span style="font-size: 8pt;">Admin Suite</span></div>
+          <p class="card-desc">Operations directors, QC auditors, inventory managers.</p>
+        </div>
+        <div class="card card-blue">
+          <div class="card-title"><span style="font-size: 8pt;">Wholesale Desk</span></div>
+          <p class="card-desc">Regional distributors, luxury spa resorts, retail chains.</p>
+        </div>
+        <div class="card card-gold">
+          <div class="card-title"><span style="font-size: 8pt;">Patron Club</span></div>
+          <p class="card-desc">Skincare enthusiasts, active formula seekers, loyalty members.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem &bull; Proprietary & Confidential</span>
+      <span>Page 1 of 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== SHEET 2 ==================== -->
+  <div class="sheet">
+    <div class="sheet-content">
+      <h2 class="section-heading">
+        3. Vendor & Bio-Labs: User & Data Flow
+        <span class="pill">Supplier & Lab Sourcing</span>
+      </h2>
+      <p>
+        The Vendor portal (<code>ProducerPortal.jsx</code>) provides scientific transparency. Harvesters submit single-origin bio-active raw ingredients along with regulatory Gas Chromatography & Mass Spectrometry (GC-MS) purity test certificates before release into master production batches.
+      </p>
+
+      <h3 class="sub-heading">Vendor User Journey (Action Sequence)</h3>
+      <div class="diagram-box">
+        <div class="step-flow">
+          <div class="flow-node">
+            <div class="flow-node-title">Step 1: Auth & Overview</div>
+            <div class="flow-node-desc">Authenticate with Vendor credentials; monitor lot acceptance KPIs.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">Step 2: Lot Submission</div>
+            <div class="flow-node-desc">Input origin, altitude, harvest season, and bio-active markers.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">Step 3: Cert Upload</div>
+            <div class="flow-node-desc">Upload GC-MS purity certificate & analysis documentation.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">Step 4: Quarantine Status</div>
+            <div class="flow-node-desc">Track batch state from Pending Review to Live Master Production.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Vendor Data Flow & API Schema Specification</h3>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Action ID</th>
+            <th style="width: 20%;">User Action & Screen</th>
+            <th style="width: 24%;">Input Data Payload</th>
+            <th style="width: 22%;">API Endpoint & Verb</th>
+            <th style="width: 22%;">System Mutation & Ripple</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>V-AUTH-01</code></td>
+            <td><strong>Vendor Login</strong><br><code>Login.jsx</code></td>
+            <td><code>{ email, password, role: 'PRODUCER' }</code></td>
+            <td><code>POST /api/v1/auth/login</code></td>
+            <td>Issues scoped JWT. Injects lab credentials & company certificate ID into state.</td>
+          </tr>
+          <tr>
+            <td><code>V-DASH-02</code></td>
+            <td><strong>Load Lab Telemetry</strong><br><code>ProducerPortal.jsx</code></td>
+            <td><code>{ Bearer Token }</code></td>
+            <td><code>GET /api/v1/producer/submissions</code></td>
+            <td>Queries <code>Submissions</code> table filtered by <code>producerId</code>. Computes passed vs quarantined count.</td>
+          </tr>
+          <tr>
+            <td><code>V-SUB-03</code></td>
+            <td><strong>Submit Harvest Lot</strong><br>Modal Form</td>
+            <td><code>{ lotNumber, title, origin, purityIndex, volume, labCertId }</code></td>
+            <td><code>POST /api/v1/producer/submissions</code></td>
+            <td>Creates record with <code>status: 'PENDING_REVIEW'</code>. Increments pending proposal counter on Admin Control Tower.</td>
+          </tr>
+          <tr>
+            <td><code>V-DOC-04</code></td>
+            <td><strong>COA Certificate Upload</strong><br>File Drag & Drop</td>
+            <td><code>{ file: 'coa_analysis_gcms.pdf' }</code></td>
+            <td><code>POST /api/v1/documents/upload</code></td>
+            <td>Stores binary in secure S3 storage. Attaches immutable URI hash to batch submission.</td>
+          </tr>
+          <tr>
+            <td><code>V-SET-05</code></td>
+            <td><strong>Batch Settlement Tracking</strong><br>Financial History Tab</td>
+            <td><code>{ lotId, payoutTier }</code></td>
+            <td><code>GET /api/v1/producer/payouts</code></td>
+            <td>Aggregates cleared volume payouts; triggers automated payment disbursement order upon Admin approval.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">Quality Control & Quarantine State Transitions</h3>
+      <div class="grid-2">
+        <div class="card card-purple">
+          <div class="card-title">
+            <span>State 1: Quarantined & Pending Review</span>
+            <span class="badge badge-gold">Quarantine Lock</span>
+          </div>
+          <p class="card-desc">
+            Raw active is safely locked in the quarantine staging area. Cannot be added to retail or wholesale formulations until audited by certified brand chemists.
+          </p>
+        </div>
+        <div class="card card-purple">
+          <div class="card-title">
+            <span>State 2: Clean Passed & Catalog Active</span>
+            <span class="badge badge-green">Production Ready</span>
+          </div>
+          <p class="card-desc">
+            Batch purity verified (&gt;99% active ester index). Formulation is assigned master SKU and stock is routed directly into live storefront inventory.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem &bull; Proprietary & Confidential</span>
+      <span>Page 2 of 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== SHEET 3 ==================== -->
+  <div class="sheet">
+    <div class="sheet-content">
+      <h2 class="section-heading">
+        4. Store Administration: User & Data Flow
+        <span class="pill">Operations & Control Tower</span>
+      </h2>
+      <p>
+        The Store Admin Dashboard (<code>AdminDashboard.jsx</code>) is the central nerve center for Good Bee operations, governing seven core workflows across sales telemetry, order logistics, partner commissions, quality control, catalog CMS, and live storefront publishing.
+      </p>
+
+      <h3 class="sub-heading">Admin Operational Modules & User Capabilities</h3>
+      <div class="grid-4">
+        <div class="card card-purple">
+          <div class="card-title"><span style="font-size: 8pt;">Overview Telemetry</span></div>
+          <p class="card-desc">Live gross sales, incoming orders, and catalog stock warnings.</p>
+        </div>
+        <div class="card card-purple">
+          <div class="card-title"><span style="font-size: 8pt;">Order Fulfillment</span></div>
+          <p class="card-desc">Audit payments (UPI/COD) & advance status to Dispatched.</p>
+        </div>
+        <div class="card card-purple">
+          <div class="card-title"><span style="font-size: 8pt;">Wholesaler Matrix</span></div>
+          <p class="card-desc">Configure B2B partner commission margins (e.g. 24%).</p>
+        </div>
+        <div class="card card-purple">
+          <div class="card-title"><span style="font-size: 8pt;">Supplier Proposals</span></div>
+          <p class="card-desc">Verify GC-MS purity certs & release batches from quarantine.</p>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Admin Data Flow & State Mutation Specification</h3>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Module ID</th>
+            <th style="width: 20%;">Admin Action & Screen</th>
+            <th style="width: 24%;">Input Data Payload</th>
+            <th style="width: 22%;">API Endpoint & Verb</th>
+            <th style="width: 22%;">System Mutation & Ripple</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>A-TEL-01</code></td>
+            <td><strong>Sync Real-time Metrics</strong><br>Telemetry Tab</td>
+            <td><code>{ timeframe: 'THIS_MONTH' }</code></td>
+            <td><code>GET /api/v1/admin/analytics</code></td>
+            <td>Aggregates orders, computes gross revenue (₹1,27,860) and MoM growth rate (+18.4%).</td>
+          </tr>
+          <tr>
+            <td><code>A-ORD-02</code></td>
+            <td><strong>Dispatch Order & Notify</strong><br>Patron Orders Tab</td>
+            <td><code>{ orderId, status: 'DISPATCHED', trackingNo }</code></td>
+            <td><code>PUT /api/v1/admin/orders/:id/status</code></td>
+            <td>Updates status to <code>DISPATCHED</code>. Generates WhatsApp concierge notification link for customer.</td>
+          </tr>
+          <tr>
+            <td><code>A-B2B-03</code></td>
+            <td><strong>Update Wholesaler Margin</strong><br>Wholesaler Matrix</td>
+            <td><code>{ dealerId: 'usr_dealer_1', marginPct: 24.5 }</code></td>
+            <td><code>PUT /api/v1/admin/wholesalers/:id/commission</code></td>
+            <td>Mutates dealer commission. B2B Wholesale Desk immediately recalibrates all catalog wholesale prices.</td>
+          </tr>
+          <tr>
+            <td><code>A-QC-04</code></td>
+            <td><strong>Approve Supplier Lot</strong><br>Supplier Proposals</td>
+            <td><code>{ submissionId: 'sub_001', adminNotes: 'Verified' }</code></td>
+            <td><code>PUT /api/v1/admin/submissions/:id/approve</code></td>
+            <td>Transfers bio-active lot from Quarantine into live <code>Products</code> catalog. Allocates inventory count.</td>
+          </tr>
+          <tr>
+            <td><code>A-CMS-05</code></td>
+            <td><strong>Product Formulation CRUD</strong><br>Catalog CMS Tab</td>
+            <td><code>{ title, price, mrp, stock, volume, concerns, ritual }</code></td>
+            <td><code>POST /api/v1/admin/products</code><br><code>PUT /api/v1/admin/products/:id</code></td>
+            <td>Mutates Master Catalog. Changes sync instantly across storefront search, reels, and category bars.</td>
+          </tr>
+          <tr>
+            <td><code>A-REP-06</code></td>
+            <td><strong>Product-wise Sales Report</strong><br>Sales Report Tab</td>
+            <td><code>{ timeframe: 'ALL' }</code></td>
+            <td><code>GET /api/v1/admin/sales-report</code></td>
+            <td>Computes SKU units sold, revenue, and burn rate. Categorizes as <em>High Velocity</em> or <em>Re-Stock Alert</em>.</td>
+          </tr>
+          <tr>
+            <td><code>A-PUB-07</code></td>
+            <td><strong>Live Site CMS & Coupons</strong><br>Site Content CMS</td>
+            <td><code>{ coupons, heroHeadline, whatsappPhone }</code></td>
+            <td><code>PUT /api/v1/admin/site-content</code></td>
+            <td>Broadcases <code>goodbee_site_content_updated</code> event; live visitors receive fresh headlines without page refresh.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">Order Fulfillment State Machine</h3>
+      <div class="diagram-box">
+        <div class="step-flow">
+          <div class="flow-node">
+            <div class="flow-node-title">1. PROCESSING</div>
+            <div class="flow-node-desc">Order placed; UPI QR / COD payment verified.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">2. DISPATCHED</div>
+            <div class="flow-node-desc">Formulations packaged; courier AWB assigned.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">3. DELIVERED</div>
+            <div class="flow-node-desc">Transit confirmed; loyalty points unlocked.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem &bull; Proprietary & Confidential</span>
+      <span>Page 3 of 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== SHEET 4 ==================== -->
+  <div class="sheet">
+    <div class="sheet-content">
+      <h2 class="section-heading">
+        5. Wholesale Desk (B2B): User & Data Flow
+        <span class="pill">B2B Commerce & Distribution</span>
+      </h2>
+      <p>
+        The Wholesale Desk (<code>DealerPortal.jsx</code>) automates commercial bulk purchasing for luxury hotels, wellness resorts, and certified dermatological spas, applying contract margins, GST computation, and Net-30 invoicing terms.
+      </p>
+
+      <h3 class="sub-heading">Wholesaler User Journey (Action Sequence)</h3>
+      <div class="diagram-box">
+        <div class="step-flow">
+          <div class="flow-node">
+            <div class="flow-node-title">1. Tier Verification</div>
+            <div class="flow-node-desc">Authenticates GSTIN & assigned margin tier (e.g., Gold 22% Off).</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">2. Bulk Catalog</div>
+            <div class="flow-node-desc">Browse products with automatic MOQ and wholesale unit pricing.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">3. Reactive PO Cart</div>
+            <div class="flow-node-desc">Adjust bulk quantities; auto-calculates 18% GST and margin savings.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">4. Formal PO Submit</div>
+            <div class="flow-node-desc">Generate commercial invoice; choose payment terms (Net-30).</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Wholesale Data Flow & Financial Ledger Specification</h3>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Action ID</th>
+            <th style="width: 20%;">Wholesaler Action & Screen</th>
+            <th style="width: 24%;">Input Data Payload</th>
+            <th style="width: 22%;">API Endpoint & Verb</th>
+            <th style="width: 22%;">System Mutation & Ripple</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>W-AUTH-01</code></td>
+            <td><strong>Wholesaler Authentication</strong><br><code>Login.jsx</code></td>
+            <td><code>{ email, password, role: 'DEALER' }</code></td>
+            <td><code>POST /api/v1/auth/login</code></td>
+            <td>Validates dealer GST number and assigned margin rate (<code>commissionMarginPct</code>).</td>
+          </tr>
+          <tr>
+            <td><code>W-CAT-02</code></td>
+            <td><strong>Load Wholesale Catalog</strong><br><code>DealerPortal.jsx</code></td>
+            <td><code>{ dealerId, marginPct: 22.0 }</code></td>
+            <td><code>GET /api/v1/products</code></td>
+            <td>Multiplies retail price: <code>wholesalePrice = price * (1 - margin/100)</code> dynamically per SKU.</td>
+          </tr>
+          <tr>
+            <td><code>W-PO-03</code></td>
+            <td><strong>PO Cart Builder</strong><br>Draft Cart Strip</td>
+            <td><code>{ items: [{ id, qty: 30, wholesalePrice }] }</code></td>
+            <td>Reactive Client State</td>
+            <td>Computes: <code>subtotal</code>, <code>gstAmount = subtotal * 0.18</code>, and <code>totalAmount</code>.</td>
+          </tr>
+          <tr>
+            <td><code>W-ORD-04</code></td>
+            <td><strong>Place Purchase Order</strong><br>Generate PO Modal</td>
+            <td><code>{ items, subtotal, gst, grandTotal, paymentTerms: 'Net-30' }</code></td>
+            <td><code>POST /api/v1/dealer/purchase-orders</code></td>
+            <td>Inserts into <code>PurchaseOrders</code> table. Decrements warehouse master inventory; notifies Admin.</td>
+          </tr>
+          <tr>
+            <td><code>W-TRK-05</code></td>
+            <td><strong>Consignment Dispatch Tracking</strong><br>Past POs Tab</td>
+            <td><code>{ poId: 'GB-PO-2026-9402' }</code></td>
+            <td><code>GET /api/v1/dealer/purchase-orders/:id</code></td>
+            <td>Fetches BlueDart tracking number and estimated delivery date for bulk pallet shipments.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">B2B Financial Computation Logic</h3>
+      <div class="grid-2">
+        <div class="card card-blue">
+          <div class="card-title">
+            <span>Wholesale Margin Formula</span>
+            <span class="badge badge-blue">Direct Margin</span>
+          </div>
+          <p class="card-desc">
+            <code>Wholesale Price = Retail MRP × (1 - (Commission Margin % ÷ 100))</code><br>
+            Ensures contracted regional distributors receive guaranteed commercial margins on every batch.
+          </p>
+        </div>
+        <div class="card card-blue">
+          <div class="card-title">
+            <span>GST & Commercial Invoicing</span>
+            <span class="badge badge-blue">Tax Compliant</span>
+          </div>
+          <p class="card-desc">
+            <code>Total Payable = Subtotal + (Subtotal × 0.18 GST)</code><br>
+            Generates standardized tax invoices with HSN codes, company GSTIN, and Net-30 credit terms.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem &bull; Proprietary & Confidential</span>
+      <span>Page 4 of 5</span>
+    </div>
+  </div>
+
+  <!-- ==================== SHEET 5 ==================== -->
+  <div class="sheet">
+    <div class="sheet-content">
+      <h2 class="section-heading">
+        6. Patron Club (Retail Customer): User & Data Flow
+        <span class="pill">Retail & Loyalty Club</span>
+      </h2>
+      <p>
+        The Patron experience (Storefront, Cart Drawer, Checkout & <code>CustomerPortal.jsx</code>) emphasizes luxury storytelling, AI-assisted routine curation, instant checkout with Dynamic UPI QR, and lifetime formulation privilege points.
+      </p>
+
+      <h3 class="sub-heading">Patron User Journey (Action Sequence)</h3>
+      <div class="diagram-box">
+        <div class="step-flow">
+          <div class="flow-node">
+            <div class="flow-node-title">1. Discovery & AI Lab</div>
+            <div class="flow-node-desc">Browse by concern (Barrier Repair, Hydration) or take AI skin quiz.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">2. Bag & Instant Buy</div>
+            <div class="flow-node-desc">Add formulations to Cart Drawer or trigger single-click Instant Buy.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">3. Dynamic UPI QR</div>
+            <div class="flow-node-desc">Scan dynamic NPCI-compliant QR via GPay/PhonePe or select COD.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-node">
+            <div class="flow-node-title">4. Privilege Points</div>
+            <div class="flow-node-desc">Earn 10% loyalty points; track delivery progress in real time.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Patron Data Flow & Customer Retention Specification</h3>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Action ID</th>
+            <th style="width: 20%;">Patron Action & Screen</th>
+            <th style="width: 24%;">Input Data Payload</th>
+            <th style="width: 22%;">API Endpoint & Verb</th>
+            <th style="width: 22%;">System Mutation & Ripple</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>P-LAB-01</code></td>
+            <td><strong>AI Formulation Consultation</strong><br><code>AiFormulationLab.jsx</code></td>
+            <td><code>{ skinType, primaryConcern, sensitivity }</code></td>
+            <td>Client-side heuristic engine</td>
+            <td>Filters formulations meeting active criteria. Highlights morning/evening botanical ritual.</td>
+          </tr>
+          <tr>
+            <td><code>P-BAG-02</code></td>
+            <td><strong>Add Formulation to Cart</strong><br><code>CartDrawer.jsx</code></td>
+            <td><code>{ product, quantity: 1 }</code></td>
+            <td><code>CartContext.addToCart()</code></td>
+            <td>Persists active items in <code>localStorage</code>; updates floating cart badge counter.</td>
+          </tr>
+          <tr>
+            <td><code>P-CPN-03</code></td>
+            <td><strong>Apply Promo Discount</strong><br><code>Checkout.jsx</code></td>
+            <td><code>{ code: 'WELCOME15', orderTotal }</code></td>
+            <td>Validates against <code>siteContent.coupons</code></td>
+            <td>Applies percentage reduction if <code>orderTotal >= minOrder</code>. Updates grand total.</td>
+          </tr>
+          <tr>
+            <td><code>P-PAY-04</code></td>
+            <td><strong>Dynamic UPI QR Generation</strong><br>Checkout Gateway</td>
+            <td><code>{ orderId, grandTotal, vpa: 'goodbee@upi' }</code></td>
+            <td><code>QRCode.toDataURL(upiIntent)</code></td>
+            <td>Renders crisp high-resolution QR on canvas. Supports zero-fee instant Indian UPI payments.</td>
+          </tr>
+          <tr>
+            <td><code>P-ORD-05</code></td>
+            <td><strong>Confirm & Place Order</strong><br>Checkout Finalize</td>
+            <td><code>{ customerName, phone, address, items, total, method }</code></td>
+            <td><code>POST /api/v1/orders</code></td>
+            <td>Inserts into <code>Orders</code> table. Decrements product stock count; awards loyalty privilege points.</td>
+          </tr>
+          <tr>
+            <td><code>P-TRK-06</code></td>
+            <td><strong>Live Courier Milestone Track</strong><br><code>TrackOrderModal.jsx</code></td>
+            <td><code>{ orderId: 'GB-ORD-90214' }</code></td>
+            <td><code>GET /api/v1/orders/:id/track</code></td>
+            <td>Displays visual transit progress: <em>Order Placed ➔ Dispatched ➔ In Transit ➔ Delivered</em>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="section-heading" style="margin-top: 10px;">
+        7. Cross-Persona Permissions & Feature Matrix
+        <span class="pill">Governance & Access Control</span>
+      </h2>
+
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>Platform Function / Capability</th>
+            <th style="text-align: center;">Vendor / Bio-Labs</th>
+            <th style="text-align: center;">Store Administrator</th>
+            <th style="text-align: center;">Wholesale Desk (B2B)</th>
+            <th style="text-align: center;">Patron Club (Retail)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Harvest Lot Submission & Cert Upload</strong></td>
+            <td style="text-align: center;"><span class="badge badge-green">Full Create</span></td>
+            <td style="text-align: center;"><span class="badge badge-purple">QC Audit</span></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td><strong>Gross Sales Telemetry & Metrics</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;"><span class="badge badge-purple">Full Access</span></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td><strong>Product Formulation CMS & Pricing</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;"><span class="badge badge-purple">Full CRUD</span></td>
+            <td style="text-align: center;">View Bulk Tiers</td>
+            <td style="text-align: center;">View Retail Price</td>
+          </tr>
+          <tr>
+            <td><strong>Order Fulfillment & State Transitions</strong></td>
+            <td style="text-align: center;">Batch Depletion</td>
+            <td style="text-align: center;"><span class="badge badge-purple">Full Dispatch</span></td>
+            <td style="text-align: center;">View Own B2B POs</td>
+            <td style="text-align: center;">Track Own Orders</td>
+          </tr>
+          <tr>
+            <td><strong>Wholesaler Margin % Configuration</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;"><span class="badge badge-purple">Full Config</span></td>
+            <td style="text-align: center;">View Own Margin</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td><strong>Live Storefront Headline & Content CMS</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;"><span class="badge badge-purple">Live Publish</span></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">Read Storefront</td>
+          </tr>
+          <tr>
+            <td><strong>Bulk Purchase Orders & MOQ Purchasing</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;"><span class="badge badge-purple">Fulfill POs</span></td>
+            <td style="text-align: center;"><span class="badge badge-blue">Create POs</span></td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td><strong>Patron Privilege Club Loyalty Points</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;"><span class="badge badge-purple">Grant / Audit</span></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;"><span class="badge badge-gold">Earn & Redeem</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sheet-footer">
+      <span>Good Bee Skincare Ecosystem &bull; Proprietary & Confidential</span>
+      <span>Page 5 of 5</span>
+    </div>
+  </div>
+
+</body>
+</html>
