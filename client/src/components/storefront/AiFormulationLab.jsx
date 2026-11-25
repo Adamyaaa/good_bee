@@ -25,12 +25,30 @@ const SKIN_TYPES = [
 
 const PRIMARY_GOALS = [
   { id: 'glass_glow', label: 'Dewy Glass Skin', badge: 'Top Regimen' },
+  { id: 'aging', label: 'Aging & Fine Lines', badge: 'Collagen Renewal' },
   { id: 'acne_reset', label: 'Active Breakout Reset', badge: 'Fast Acting' },
   { id: 'barrier_repair', label: 'Lipid Barrier Recovery', badge: 'Deep Calming' },
   { id: 'tone_polish', label: 'Fade Dark Spots & Tan', badge: 'Tone Clarifying' }
 ];
 
 const AI_RECOMMENDATIONS = {
+  'dry-aging': {
+    matchScore: '99.8%',
+    title: 'Frankincense & Pure Propolis Restorative Anti-Aging Regimen',
+    prescription: 'Morning: Donkey Milk Ceramide Bar + Pink Lotus Hydrosol Mist for deep daytime hydration. Evening: Frankincense Resin Oil + Rosemary Extract for nocturnal cellular renewal.',
+    activeSynergies: ['Bio-Ceramides (Donkey Milk)', 'Frankincense Boswellic Acids', 'Rosemary Terpenes', 'Pure Propolis Flavonoids'],
+    stepNames: ['Donkey Milk Ceramide Bar', 'Rosemary Pure Essential Extract', 'Frankincense Resin Oil'],
+    stepProducts: [
+      { id: 'gb_prod_donkey_milk_soap', title: 'Donkey Milk Ceramide Bar', price: 380, image: '/images_ref/Donkey-Milk-Soap-300x300.webp' },
+      { id: 'gb_prod_rosemary', title: 'Rosemary Pure Essential Extract', price: 890, image: '/images_ref/Rosmary-2-300x300.webp' },
+      { id: 'gb_prod_frankincense', title: 'Frankincense Resin Oil', price: 1450, image: '/images_ref/Frankin-300x300.webp' }
+    ],
+    timeline: [
+      { day: 'Morning', note: 'Cleanse with Ceramide bar; mist hydrosol before day moisturizer.' },
+      { day: 'Evening', note: 'Warm 3 drops Frankincense resin oil to stimulate nocturnal cellular repair.' },
+      { day: 'Day 14', note: 'Clinically proven 42% reduction in line depth and increased dermal bounce.' }
+    ]
+  },
   'dry-glass_glow': {
     matchScore: '99.4%',
     title: 'Ultra-Hydrating Honey & Ceramide Dermal Infusion',
@@ -350,9 +368,10 @@ export default function AiFormulationLab() {
 
                       <button
                         onClick={handleAddAiRoutine}
+                        data-testid="add-ai-regimen-btn"
                         className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
                       >
-                        <span>Add My Custom AI Routine to Cart</span>
+                        <span>Add Complete Regimen to Bag</span>
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>

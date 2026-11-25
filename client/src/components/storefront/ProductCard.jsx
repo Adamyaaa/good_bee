@@ -41,6 +41,10 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
           alt={product.title}
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = '/images_ref/Frankin-300x300.webp';
+          }}
         />
 
         {/* Nat Habit Inspired Dark Pill Badges Top Left */}

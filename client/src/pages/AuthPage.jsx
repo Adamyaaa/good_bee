@@ -17,6 +17,8 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
+import { validatePasswordForRegistration } from '../utils/passwordStrength';
 
 export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess }) {
   const { login, register } = useAuth();
@@ -48,6 +50,13 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
           else if (onBack) onBack();
         }, 800);
       } else {
+        const passwordCheck = validatePasswordForRegistration(password);
+        if (!passwordCheck.isValid) {
+          setErrorMsg(passwordCheck.message);
+          setLoading(false);
+          return;
+        }
+
         const u = await register({
           name,
           email,
@@ -216,7 +225,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="e.g. Radhika Deshmukh"
-                        className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                        className="w-full pl-10 pr-3.5 py-2.5 text-[16px] sm:text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                       />
                     </div>
                   </div>
@@ -230,7 +239,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="+91 98765 43210"
-                        className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                        className="w-full pl-10 pr-3.5 py-2.5 text-[16px] sm:text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                       />
                     </div>
                   </div>
@@ -247,7 +256,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="user@example.com"
-                    className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-[16px] sm:text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                   />
                 </div>
               </div>
@@ -264,7 +273,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full pl-10 pr-10 py-2.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                    className="w-full pl-10 pr-10 py-2.5 text-[16px] sm:text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                     data-testid="auth-password-input"
                   />
                   <button
@@ -277,6 +286,9 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                {mode === 'register' && (
+                  <PasswordStrengthMeter password={password} />
+                )}
               </div>
 
               <button

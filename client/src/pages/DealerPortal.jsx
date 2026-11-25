@@ -36,43 +36,20 @@ export default function DealerPortal({ onNavigateHome }) {
   const [orderNotice, setOrderNotice] = useState('');
   const [generatedPo, setGeneratedPo] = useState(null);
 
-  // Past Purchase Orders History
-  const [pastOrders, setPastOrders] = useState([
-    {
-      id: 'GB-PO-2026-9402',
-      date: '24 Oct 2026',
-      totalUnits: 75,
-      subtotal: 32450,
-      gst: 5841,
-      totalAmount: 38291,
-      status: 'DISPATCHED',
-      courier: 'BlueDart Express',
-      trackingNo: 'BD-98234120',
-      paymentTerms: 'Net-30 (Due 24 Nov 2026)',
-      items: [
-        { title: 'Good Bee Donkey Milk & Saffron Soap', qty: 30, wholesalePrice: 380 },
-        { title: 'Good Bee Frankincense Pure Essential Oil', qty: 15, wholesalePrice: 1087 },
-        { title: 'Good Bee Pink Lotus Hydrosol Mist', qty: 30, wholesalePrice: 629 }
-      ]
-    },
-    {
-      id: 'GB-PO-2026-8819',
-      date: '10 Oct 2026',
-      totalUnits: 120,
-      subtotal: 51200,
-      gst: 9216,
-      totalAmount: 60416,
-      status: 'DELIVERED',
-      courier: 'Delhivery Logistics',
-      trackingNo: 'DL-44810294',
-      paymentTerms: 'Net-30 (Settled)',
-      items: [
-        { title: 'Good Bee Rosemary Pure Essential Extract', qty: 40, wholesalePrice: 712 },
-        { title: 'Good Bee Sunnipindi Cold Processed Bar', qty: 50, wholesalePrice: 299 },
-        { title: 'Good Bee Clear Skin Cold Processed Soap', qty: 30, wholesalePrice: 337 }
-      ]
-    }
-  ]);
+  // Past Purchase Orders History (Scoped strictly by dealerCode for SEL-12 data isolation)
+  const [pastOrders, setPastOrders] = useState([]);
+
+  useEffect(() => {
+    const currentCode = user?.dealerCode || 'GB-DLR-MUM-892';
+    fetch(`/api/v1/dealer/orders?dealerCode=${encodeURIComponent(currentCode)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.orders) {
+          setPastOrders(data.orders);
+        }
+      })
+      .catch((err) => console.error('Failed to load scoped dealer orders:', err));
+  }, [user?.dealerCode]);
 
   // Load all 19 products
   useEffect(() => {
@@ -170,6 +147,7 @@ export default function DealerPortal({ onNavigateHome }) {
     const newPoId = `GB-PO-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const newOrder = {
       id: newPoId,
+      dealerCode: user?.dealerCode || 'GB-DLR-MUM-892',
       date: 'Today, Just Now',
       totalUnits: totalUnitsInPo,
       subtotal: subtotalInPo,
@@ -186,7 +164,13 @@ export default function DealerPortal({ onNavigateHome }) {
       }))
     };
 
-    setPastOrders([newOrder, ...pastOrders]);
+    fetch('/api/v1/dealer/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newOrder)
+    }).catch(() => {});
+
+    setPastOrders((prev) => [newOrder, ...prev]);
     setGeneratedPo(newOrder);
     setPoCart([]);
     setActiveTab('ORDERS');

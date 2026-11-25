@@ -198,6 +198,13 @@ test_cases = [
         "Notes": "Password visibility toggle implemented with Lucide Eye / EyeOff icon in AuthPage."
     },
     {
+        "Check ID": "AUTH-05", "Section": "Authentication", "Tier": "P0",
+        "Test Description": "Register with weak password (short or lacking uppercase/numbers/symbols)",
+        "Pass When (Expected)": "Registration rejected with clear complexity guidance; real-time strength meter updates dynamically.",
+        "Result": "Pass", "Bug": "",
+        "Notes": "Enforces minimum 8 chars, uppercase, lowercase, number, and special character. Validated across AuthModal, AuthPage, Login, and server/mock APIs."
+    },
+    {
         "Check ID": "AUTH-10", "Section": "Authentication", "Tier": "P0",
         "Test Description": "Log in with correct credentials for all 7 platform roles",
         "Pass When (Expected)": "User is authenticated and redirected to respective role portal.",

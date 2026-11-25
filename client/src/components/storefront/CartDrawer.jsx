@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Tag, MessageCircle, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export default function CartDrawer({ onCheckout }) {
@@ -14,12 +14,14 @@ export default function CartDrawer({ onCheckout }) {
     shipping,
     total,
     applyPromoCode,
+    removePromoCode,
     promoterCode,
-    isDiscountApplied
+    isDiscountApplied,
+    couponFeedback
   } = useCart();
 
   const [inputCode, setInputCode] = useState('');
-  const [couponError, setCouponError] = useState('');
+  const [localFeedback, setLocalFeedback] = useState({ text: '', isError: false });
 
   if (!isDrawerOpen) return null;
 
@@ -29,14 +31,24 @@ export default function CartDrawer({ onCheckout }) {
 
   const handleApplyCoupon = (e) => {
     e.preventDefault();
-    if (!inputCode) return;
-    const ok = applyPromoCode(inputCode);
-    if (!ok) {
-      setCouponError('Invalid code. Try BEE10 or ELENA10');
-    } else {
-      setCouponError('');
-    }
+    if (!inputCode.trim()) return;
+    const res = applyPromoCode(inputCode);
+    setLocalFeedback({ text: res.message, isError: !res.success });
   };
+
+  // SHOP-44 & SHOP-45: WhatsApp Concierge Order Payload Generator
+  const cleanPhone = '919963075000';
+  const itemsText = items.map((it) => `• ${it.quantity}x ${it.title} (₹${(it.price * it.quantity).toLocaleString('en-IN')})`).join('\n');
+  const waCartMsg = `*Hello Good Bee Concierge, I would like to place an order via WhatsApp:*
+━━━━━━━━━━━━━━━━━━━━
+${itemsText}
+━━━━━━━━━━━━━━━━━━━━
+*Bag Subtotal:* ₹${subtotal.toLocaleString('en-IN')}${discount > 0 ? `\n*Coupon Discount (${promoterCode}):* -₹${discount.toLocaleString('en-IN')}` : ''}
+*Shipping:* ${shipping === 0 ? 'COMPLIMENTARY' : `₹${shipping}`}
+*Final Payable Total:* ₹${total.toLocaleString('en-IN')}
+
+Please confirm order formulation availability and delivery dispatch.`;
+  const whatsappOrderUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(waCartMsg)}`;
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -162,36 +174,56 @@ export default function CartDrawer({ onCheckout }) {
           {items.length > 0 && (
             <div className="p-6 border-t border-brand-gold/20 bg-brand-cream/50 space-y-4">
               
-              {/* Promo Code Input */}
+              {/* Promo Code Input & Feedback (SHOP-20, SHOP-21) */}
               <form onSubmit={handleApplyCoupon} className="flex gap-2">
                 <div className="relative flex-1">
                   <Tag className="w-3.5 h-3.5 text-brand-gold-dark absolute left-3 top-3" />
                   <input
                     type="text"
-                    placeholder="Promoter or Loyalty Code"
+                    placeholder="Coupon (e.g. BOTANICAL10, PUREBEE15)"
                     value={inputCode}
                     onChange={(e) => setInputCode(e.target.value)}
-                    className="w-full pl-8 pr-3 py-2 text-xs uppercase bg-brand-ivory border border-brand-gold/30 rounded-lg focus:outline-none focus:border-brand-gold"
+                    className="w-full pl-8 pr-3 py-2 text-[16px] sm:text-xs uppercase bg-brand-ivory border border-brand-gold/30 rounded-lg focus:outline-none focus:border-brand-gold"
+                    data-testid="coupon-input"
                   />
                 </div>
                 <button
                   type="submit"
                   className="px-4 py-2 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-semibold uppercase tracking-wider rounded-xl transition-colors cursor-pointer"
+                  data-testid="apply-coupon-btn"
                 >
                   Apply
                 </button>
               </form>
 
-              {isDiscountApplied && (
-                <div className="text-[11px] text-emerald-800 font-medium flex items-center justify-between">
-                  <span>Code Applied: {promoterCode}</span>
-                  <span>-₹{discount}</span>
+              {isDiscountApplied ? (
+                <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                    <span>Applied: <strong>{promoterCode}</strong> (-₹{discount.toLocaleString('en-IN')})</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removePromoCode}
+                    className="text-emerald-700 hover:text-emerald-900 underline text-[10px] font-bold cursor-pointer"
+                  >
+                    Remove
+                  </button>
                 </div>
-              )}
-
-              {couponError && (
-                <div className="text-[11px] text-red-700 font-medium">{couponError}</div>
-              )}
+              ) : (localFeedback.text || couponFeedback.message) ? (
+                <div className={`p-2.5 rounded-xl text-[11px] flex items-center gap-1.5 ${
+                  (localFeedback.isError || couponFeedback.isError)
+                    ? 'bg-rose-50 border border-rose-200 text-rose-700'
+                    : 'bg-emerald-50 border border-emerald-200 text-emerald-800'
+                }`}>
+                  {(localFeedback.isError || couponFeedback.isError) ? (
+                    <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 text-rose-500" />
+                  ) : (
+                    <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 text-emerald-600" />
+                  )}
+                  <span>{localFeedback.text || couponFeedback.message}</span>
+                </div>
+              ) : null}
 
               {/* Price Breakdown */}
               <div className="space-y-1.5 text-xs text-brand-charcoal/80 border-t border-brand-gold/15 pt-3">
@@ -200,8 +232,8 @@ export default function CartDrawer({ onCheckout }) {
                   <span className="font-semibold text-brand-charcoal">₹{subtotal.toLocaleString('en-IN')}</span>
                 </div>
                 {discount > 0 && (
-                  <div className="flex justify-between text-emerald-800">
-                    <span>Privilege Discount</span>
+                  <div className="flex justify-between text-emerald-800 font-medium">
+                    <span>Coupon Discount</span>
                     <span>-₹{discount.toLocaleString('en-IN')}</span>
                   </div>
                 )}
@@ -221,17 +253,32 @@ export default function CartDrawer({ onCheckout }) {
                 <span>Dynamic Bill-to-QR enabled. Instant zero-fee checkout via any UPI app.</span>
               </div>
 
-              {/* Checkout Action Button */}
-              <button
-                onClick={() => {
-                  setIsDrawerOpen(false);
-                  onCheckout();
-                }}
-                className="w-full py-4 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2 group cursor-pointer"
-              >
-                <span>Proceed to Checkout</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              {/* Dual Action: Proceed to Checkout & Order on WhatsApp (SHOP-44, SHOP-45) */}
+              <div className="space-y-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDrawerOpen(false);
+                    onCheckout();
+                  }}
+                  className="w-full py-3.5 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2 group cursor-pointer"
+                  data-testid="proceed-to-checkout-btn"
+                >
+                  <span>Proceed to Secure Checkout</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+
+                <a
+                  href={whatsappOrderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold tracking-wider uppercase rounded-xl transition-all duration-300 shadow-sm flex items-center justify-center gap-2 group cursor-pointer"
+                  data-testid="order-on-whatsapp-btn"
+                >
+                  <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span>Order on WhatsApp Concierge</span>
+                </a>
+              </div>
 
             </div>
           )}

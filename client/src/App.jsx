@@ -12,7 +12,7 @@ import CartDrawer from './components/storefront/CartDrawer';
 // SPA Sections
 import Hero from './components/storefront/Hero';
 import SkincareRoutineGuide from './components/storefront/SkincareRoutineGuide';
-// Kept for future AI integration review: import AiFormulationLab from './components/storefront/AiFormulationLab';
+import AiFormulationLab from './components/storefront/AiFormulationLab';
 import ShopByConcern from './components/storefront/ShopByConcern';
 import InteractiveSpaCatalog from './components/storefront/InteractiveSpaCatalog';
 import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
@@ -44,8 +44,14 @@ function SpaLandingContent() {
   const [activePdpProduct, setActivePdpProduct] = useState(null);
   const [activeConcernPage, setActiveConcernPage] = useState(null);
   const [catalogSearch, setCatalogSearch] = useState('');
+  const [isAuthPageOpen, setIsAuthPageOpen] = useState({ isOpen: false, mode: 'login' });
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [portalModalConfig, setPortalModalConfig] = useState({ isOpen: false, role: 'CUSTOMER' });
+  const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
+  const [isSurpriseOpen, setIsSurpriseOpen] = useState(false);
+  const [isSurpriseDragging, setIsSurpriseDragging] = useState(false);
 
-  // Handle deep-link hashtag #product=<id_or_slug>
+  // Handle deep-link hashtag #product=<id_or_slug> & browser history (#checkout for BUG-UI-01)
   React.useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash;
@@ -69,18 +75,23 @@ function SpaLandingContent() {
         setPortalModalConfig({ isOpen: true, role: targetRole });
       } else if (hash === '#login' || hash === '#auth' || hash === '#register') {
         setIsAuthPageOpen({ isOpen: true, mode: hash === '#register' ? 'register' : 'login' });
+      } else if (hash === '#checkout') {
+        setIsCheckoutOpen(true);
+        setActivePdpProduct(null);
+        setActiveConcernPage(null);
+      } else {
+        // Any hash other than #checkout or empty hash closes checkout cleanly (BUG-UI-01)
+        setIsCheckoutOpen(false);
       }
     };
     handleHash();
     window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    window.addEventListener('popstate', handleHash);
+    return () => {
+      window.removeEventListener('hashchange', handleHash);
+      window.removeEventListener('popstate', handleHash);
+    };
   }, []);
-  const [isAuthPageOpen, setIsAuthPageOpen] = useState({ isOpen: false, mode: 'login' });
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [portalModalConfig, setPortalModalConfig] = useState({ isOpen: false, role: 'CUSTOMER' });
-  const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
-  const [isSurpriseOpen, setIsSurpriseOpen] = useState(false);
-  const [isSurpriseDragging, setIsSurpriseDragging] = useState(false);
 
   // Auto-open surprise gift lead capture after delay if not already claimed
   React.useEffect(() => {
@@ -173,9 +184,27 @@ function SpaLandingContent() {
     setPortalModalConfig({ isOpen: true, role });
   };
 
+  const handleOpenCheckout = () => {
+    setIsCheckoutOpen(true);
+    if (window.location.hash !== '#checkout') {
+      window.history.pushState({ modal: 'checkout' }, '', '#checkout');
+    }
+  };
+
+  const handleCloseCheckout = () => {
+    setIsCheckoutOpen(false);
+    if (window.location.hash === '#checkout') {
+      if (window.history.length > 1 && window.history.state?.modal === 'checkout') {
+        window.history.back();
+      } else {
+        window.history.pushState(null, '', window.location.pathname);
+      }
+    }
+  };
+
   const handleInstantBuy = (product, quantity = 1) => {
     addToCart(product, quantity);
-    setIsCheckoutOpen(true);
+    handleOpenCheckout();
   };
 
   return (
@@ -228,8 +257,8 @@ function SpaLandingContent() {
       ) : isCheckoutOpen ? (
         <main className="flex-grow">
           <Checkout
-            onBack={() => setIsCheckoutOpen(false)}
-            onNavigateHome={() => setIsCheckoutOpen(false)}
+            onBack={handleCloseCheckout}
+            onNavigateHome={handleCloseCheckout}
           />
         </main>
       ) : activePdpProduct ? (
@@ -289,7 +318,10 @@ function SpaLandingContent() {
             onSelectProduct={(prod) => setQuickViewProduct(prod)}
           />
 
-          {/* 3. Interactive Botanical Skin Concerns */}
+          {/* 3. Personalized Bio-Active Routine Diagnostic Finder (AI-10, AI-20) */}
+          <AiFormulationLab />
+
+          {/* 4. Interactive Botanical Skin Concerns */}
           <div id="shop-by-concern" className="scroll-mt-28">
             <ShopByConcern
               onSelectConcern={(concern) => {
@@ -501,7 +533,7 @@ function SpaLandingContent() {
       />
 
       {/* Global Slide-Over Shopping Bag */}
-      <CartDrawer onCheckout={() => setIsCheckoutOpen(true)} />
+      <CartDrawer onCheckout={handleOpenCheckout} />
 
       {/* Floating WhatsApp Concierge */}
       <WhatsAppConcierge />

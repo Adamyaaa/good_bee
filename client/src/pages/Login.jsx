@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, DEMO_ACCOUNTS } from '../context/AuthContext';
+import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
+import { validatePasswordForRegistration } from '../utils/passwordStrength';
 import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key, Sparkles, Truck, Eye, EyeOff } from 'lucide-react';
 
 const ROLE_TABS = [
@@ -55,6 +57,13 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
         const u = await login(email, password);
         onLoggedIn?.(u);
       } else {
+        const passwordCheck = validatePasswordForRegistration(password);
+        if (!passwordCheck.isValid) {
+          setErrorMsg(passwordCheck.message);
+          setLoading(false);
+          return;
+        }
+
         // Enforce default CUSTOMER role on signup
         const u = await register({
           name,
@@ -203,7 +212,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                       placeholder="e.g. Aaditya Sharma"
                     />
                   </div>
@@ -213,7 +222,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                       placeholder="+91-9963075000"
                     />
                   </div>
@@ -231,7 +240,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
                         required
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
-                        className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                        className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                         placeholder={selectedRole === 'DEALER' ? 'e.g. Apex Skincare LLP' : 'e.g. Nilgiri Botanical Labs'}
                       />
                     </div>
@@ -243,7 +252,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
                         type="text"
                         value={gstNumber}
                         onChange={(e) => setGstNumber(e.target.value)}
-                        className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                        className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                         placeholder={selectedRole === 'DEALER' ? '27AABCU9603R1ZM' : 'LAB-ISO-9001-GB'}
                       />
                     </div>
@@ -259,7 +268,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                 placeholder={DEMO_ACCOUNTS[selectedRole]?.email || 'name@example.com'}
               />
             </div>
@@ -274,7 +283,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-2.5 pr-10 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                  className="w-full p-2.5 pr-10 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                   placeholder="••••••••"
                   data-testid="login-password-input"
                 />
@@ -288,6 +297,9 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              {mode === 'register' && (
+                <PasswordStrengthMeter password={password} />
+              )}
             </div>
 
             <button

@@ -196,6 +196,10 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                 src={gallery[selectedImageIndex]?.url || product.image}
                 alt={product.title}
                 className="w-full h-full object-contain p-2 sm:p-3 transition-transform duration-500 group-hover:scale-105"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images_ref/Frankin-300x300.webp';
+                }}
               />
 
               {/* Tag Badges */}

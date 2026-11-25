@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { validatePasswordForRegistration } from '../utils/passwordStrength';
 
 const AuthContext = createContext();
 
@@ -222,6 +223,11 @@ export const AuthProvider = ({ children }) => {
     const { name, email, password, role = 'CUSTOMER', companyName, gstNumber, phone } = formData;
     if (!name || !email || !password) {
       throw new Error('Name, email, and password are required.');
+    }
+
+    const passwordValidation = validatePasswordForRegistration(password);
+    if (!passwordValidation.isValid) {
+      throw new Error(passwordValidation.message);
     }
 
     // AUTH-02: Email matching is case-normalized and trimmed of spaces

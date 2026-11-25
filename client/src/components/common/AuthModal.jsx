@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, LogIn, UserPlus, Sparkles, CheckCircle2, AlertCircle, ShoppingBag, Eye, EyeOff } from 'lucide-react';
 import { useAuth, DEMO_ACCOUNTS } from '../../context/AuthContext';
+import PasswordStrengthMeter from './PasswordStrengthMeter';
+import { validatePasswordForRegistration } from '../../utils/passwordStrength';
 
 export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'login', pendingProduct = null }) {
   const { user, login, register } = useAuth();
@@ -26,6 +28,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
         if (onSuccess) onSuccess(loggedInUser);
         onClose();
       } else {
+        const passwordCheck = validatePasswordForRegistration(password);
+        if (!passwordCheck.isValid) {
+          setErrorMsg(passwordCheck.message);
+          setLoading(false);
+          return;
+        }
+
         const newUser = await register({
           name,
           email,
@@ -162,6 +171,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              {mode === 'register' && (
+                <PasswordStrengthMeter password={password} />
+              )}
             </div>
 
             <button

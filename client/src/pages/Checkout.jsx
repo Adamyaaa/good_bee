@@ -483,7 +483,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="Enter full name"
                   />
                 </div>
@@ -494,7 +494,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="+91 9876543210"
                   />
                 </div>
@@ -505,7 +505,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="customer@example.com"
                   />
                 </div>
@@ -568,7 +568,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.street}
                     onChange={(e) => setForm({ ...form, street: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="Flat / Floor, Society, Street"
                   />
                 </div>
@@ -590,7 +590,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                       setIsCustomCity(citiesForState[0] === 'Other City...');
                       setSelectedAddressPreset(null);
                     }}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer"
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer text-[16px] sm:text-xs"
                   >
                     {Object.keys(STATE_CITIES).map((st) => (
                       <option key={st} value={st}>
@@ -616,7 +616,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                       }
                       setSelectedAddressPreset(null);
                     }}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer"
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer text-[16px] sm:text-xs"
                   >
                     {(STATE_CITIES[form.state] || ['Other City...']).map((ct) => (
                       <option key={ct} value={ct}>
@@ -639,7 +639,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                         setCustomCity(e.target.value);
                       }}
                       placeholder="Enter city or district"
-                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal"
+                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
                     />
                   </div>
                 )}
@@ -666,7 +666,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     pattern="^[1-9][0-9]{5}$"
                     value={form.pincode}
                     onChange={(e) => handlePincodeChange(e.target.value)}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-mono font-bold tracking-wider"
+                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-mono font-bold tracking-wider text-[16px] sm:text-xs"
                     placeholder="e.g. 560001 (auto-fills Bengaluru, Karnataka)"
                   />
                   <p className="text-[10px] text-brand-muted mt-1">
@@ -729,20 +729,39 @@ Action: Please print lot batch certificate and initiate packaging.`;
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={placingOrder || items.length === 0}
-              className="w-full py-4 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-2 disabled:opacity-50"
-            >
-              {placingOrder ? (
-                <span>Generating Dynamic Invoice QR...</span>
-              ) : (
-                <>
-                  <span>Place Order & Pay ₹{total.toLocaleString('en-IN')}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
+            <div className="space-y-3">
+              <button
+                type="submit"
+                disabled={placingOrder || items.length === 0}
+                className="w-full py-4 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                data-testid="place-order-submit-btn"
+              >
+                {placingOrder ? (
+                  <span>Generating Dynamic Invoice QR...</span>
+                ) : (
+                  <>
+                    <span>Place Order & Pay ₹{total.toLocaleString('en-IN')}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+
+              {/* SHOP-44 & SHOP-45: Direct WhatsApp Order Alternative */}
+              {items.length > 0 && (
+                <a
+                  href={`https://wa.me/919963075000?text=${encodeURIComponent(
+                    `*NEW ORDER INQUIRY VIA WHATSAPP — GoodBEE*\n━━━━━━━━━━━━━━━━━━━━\n*Customer:* ${form.name || 'Valued Customer'} (${form.phone || 'Phone pending'})\n*Destination:* ${form.street}, ${form.city}, ${form.state} - ${form.pincode}\n\n*ITEMS IN BAG:*\n${items.map((it) => `• ${it.quantity}x ${it.title} (₹${(it.price * it.quantity).toLocaleString('en-IN')})`).join('\n')}\n━━━━━━━━━━━━━━━━━━━━\n*Subtotal:* ₹${subtotal.toLocaleString('en-IN')}${discount > 0 ? `\n*Coupon (${promoterCode}):* -₹${discount.toLocaleString('en-IN')}` : ''}\n*Shipping:* ${shipping === 0 ? 'COMPLIMENTARY' : `₹${shipping}`}\n*Final Payable Total:* ₹${total.toLocaleString('en-IN')}\n\nPlease share UPI payment details and dispatch confirmation.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full transition-all duration-300 shadow-sm flex items-center justify-center gap-2 group cursor-pointer"
+                  data-testid="checkout-whatsapp-btn"
+                >
+                  <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span>Or Order Directly on WhatsApp (+91-9963075000)</span>
+                </a>
               )}
-            </button>
+            </div>
 
           </form>
 

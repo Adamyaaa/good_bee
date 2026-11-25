@@ -8,27 +8,48 @@ export const CartProvider = ({ children }) => {
   const { user } = useAuth();
 
   const [items, setItems] = useState(() => {
-    const saved = localStorage.getItem('goodbee_cart');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('goodbee_cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [promoterCode, setPromoterCode] = useState('');
-  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [promoterCode, setPromoterCode] = useState(() => localStorage.getItem('goodbee_coupon') || '');
+  const [isDiscountApplied, setIsDiscountApplied] = useState(() => Boolean(localStorage.getItem('goodbee_coupon')));
+  const [couponFeedback, setCouponFeedback] = useState({ message: '', isError: false });
 
   // Authentication gating modal state
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [pendingCartAction, setPendingCartAction] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem('goodbee_cart', JSON.stringify(items));
+    try {
+      localStorage.setItem('goodbee_cart', JSON.stringify(items));
+    } catch (e) {}
   }, [items]);
 
+  // Valid Coupons & Rules Matrix (SHOP-20, SHOP-21)
+  const VALID_COUPONS = {
+    'BOTANICAL10': { discountPct: 10, minSubtotal: 0, description: '10% Off Sitewide' },
+    'BEE10': { discountPct: 10, minSubtotal: 0, description: '10% Welcome Privilege' },
+    'ELENA10': { discountPct: 10, minSubtotal: 0, description: '10% Brand Ambassador Discount' },
+    'HONEY15': { discountPct: 15, minSubtotal: 0, description: '15% First Order Surprise' },
+    'PUREBEE15': { discountPct: 15, minSubtotal: 1500, description: '15% Off Orders Above ₹1,500' }
+  };
+
+  /**
+   * SHOP-11: Clamped Add to Cart
+   * Never accepts 0, negative values, or NaN. Always enforces clean positive quantity.
+   */
   const executeAddToCart = (product, quantity = 1) => {
+    const cleanQty = Math.max(1, parseInt(quantity, 10) || 1);
     setItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+          item.id === product.id ? { ...item, quantity: Math.min(99, item.quantity + cleanQty) } : item
         );
       }
       return [
@@ -42,7 +63,7 @@ export const CartProvider = ({ children }) => {
           image: product.image,
           sku: product.sku,
           volume: product.volume,
-          quantity
+          quantity: cleanQty
         }
       ];
     });
@@ -50,9 +71,7 @@ export const CartProvider = ({ children }) => {
   };
 
   /**
-   * Add to Cart with Authentication Check:
-   * If user is not logged in, trigger the seamless AuthModal and preserve the target item.
-   * After login/registration succeeds, the item is instantly added to the cart!
+   * Add to Cart with Authentication Check
    */
   const addToCart = (product, quantity = 1) => {
     if (!user) {
@@ -72,12 +91,18 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  /**
+   * SHOP-11: Update Quantity Guard
+   * If newQty <= 0 or invalid, removes item completely. Upper bound clamped at 99.
+   */
   const updateQuantity = (id, newQty) => {
-    if (newQty <= 0) {
+    const qty = parseInt(newQty, 10);
+    if (isNaN(qty) || qty <= 0) {
       removeFromCart(id);
       return;
     }
-    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity: newQty } : item)));
+    const clampedQty = Math.min(99, qty);
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity: clampedQty } : item)));
   };
 
   const removeFromCart = (id) => {
@@ -88,24 +113,75 @@ export const CartProvider = ({ children }) => {
     setItems([]);
     setPromoterCode('');
     setIsDiscountApplied(false);
+    localStorage.removeItem('goodbee_coupon');
+    setCouponFeedback({ message: '', isError: false });
   };
 
+  /**
+   * SHOP-20 & SHOP-21: Coupon Validation Engine
+   * Validates code existence, minimum cart value threshold, and returns clear feedback.
+   */
   const applyPromoCode = (code) => {
-    if (!code) return false;
-    const clean = code.trim().toUpperCase();
-    if (clean.includes('BEE') || clean.includes('ELENA') || clean.includes('10')) {
-      setPromoterCode(clean);
-      setIsDiscountApplied(true);
-      return true;
+    if (!code || !code.trim()) {
+      const res = { success: false, message: 'Please enter a coupon code.' };
+      setCouponFeedback({ message: res.message, isError: true });
+      return res;
     }
-    return false;
+
+    const clean = code.trim().toUpperCase();
+    const coupon = VALID_COUPONS[clean];
+
+    if (!coupon) {
+      const res = { success: false, message: 'Invalid coupon code. Try BOTANICAL10 or PUREBEE15.' };
+      setCouponFeedback({ message: res.message, isError: true });
+      return res;
+    }
+
+    if (coupon.minSubtotal > 0 && subtotal < coupon.minSubtotal) {
+      const res = {
+        success: false,
+        message: `${clean} requires a minimum cart value of ₹${coupon.minSubtotal.toLocaleString('en-IN')}. Current subtotal: ₹${subtotal.toLocaleString('en-IN')}.`
+      };
+      setCouponFeedback({ message: res.message, isError: true });
+      return res;
+    }
+
+    setPromoterCode(clean);
+    setIsDiscountApplied(true);
+    localStorage.setItem('goodbee_coupon', clean);
+    const res = {
+      success: true,
+      message: `Coupon ${clean} applied! (${coupon.discountPct}% off)`
+    };
+    setCouponFeedback({ message: res.message, isError: false });
+    return res;
   };
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const discount = isDiscountApplied ? Math.round(subtotal * 0.1) : 0;
+  const removePromoCode = () => {
+    setPromoterCode('');
+    setIsDiscountApplied(false);
+    localStorage.removeItem('goodbee_coupon');
+    setCouponFeedback({ message: 'Coupon removed.', isError: false });
+  };
+
+  // Safe Math Calculations (SHOP-10, SHOP-20, SHOP-23)
+  const subtotal = items.reduce((sum, item) => sum + Math.max(0, item.price) * Math.max(1, item.quantity), 0);
+  
+  // Re-verify coupon minimum threshold against current subtotal
+  const activeCoupon = VALID_COUPONS[promoterCode];
+  const isCouponThresholdMet = Boolean(
+    isDiscountApplied &&
+    activeCoupon &&
+    (activeCoupon.minSubtotal === 0 || subtotal >= activeCoupon.minSubtotal)
+  );
+  
+  const discountPct = isCouponThresholdMet ? activeCoupon.discountPct : 0;
+  const discount = Math.round(subtotal * (discountPct / 100));
+  
+  // SHOP-23: Free shipping threshold (₹999 rule)
   const shipping = subtotal === 0 || subtotal >= 999 ? 0 : 99;
-  const total = subtotal - discount + shipping;
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const total = Math.max(0, subtotal - discount + shipping);
+  const itemCount = items.reduce((sum, item) => sum + Math.max(1, item.quantity), 0);
 
   return (
     <CartContext.Provider
@@ -119,12 +195,15 @@ export const CartProvider = ({ children }) => {
         setIsDrawerOpen,
         promoterCode,
         applyPromoCode,
-        isDiscountApplied,
+        removePromoCode,
+        isDiscountApplied: isCouponThresholdMet,
+        couponFeedback,
         subtotal,
         discount,
         shipping,
         total,
-        itemCount
+        itemCount,
+        VALID_COUPONS
       }}
     >
       {children}

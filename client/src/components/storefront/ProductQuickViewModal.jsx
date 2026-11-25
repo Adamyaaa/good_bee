@@ -51,6 +51,10 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy, 
                 src={selectedImage || product.image}
                 alt={product.title}
                 className="w-full h-full object-cover object-center"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images_ref/Frankin-300x300.webp';
+                }}
               />
               {product.badge && (
                 <span className="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-brand-charcoal text-brand-ivory rounded-md">

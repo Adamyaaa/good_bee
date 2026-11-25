@@ -189,6 +189,13 @@ record("RSP-06", "Responsive", "P1",
        "Pass", 
        notes="Input styling uses text-sm/text-base with py-2.5 padding.")
 
+# AUTH-05: Password strength enforcement
+record("AUTH-05", "Authentication", "P0",
+       "Register with weak password (short or missing numbers/uppercase/symbols)",
+       "Rejected with explicit guidance; live strength meter displays real-time criteria breakdown.",
+       "Pass",
+       notes="Enforces min 8 chars, uppercase, lowercase, number, and special symbol across AuthModal, AuthPage, Login, and API routes.")
+
 # AUTH-10: Login with correct details
 record("AUTH-10", "Authentication", "P0", 
        "Log in with correct details for all supported roles", 

@@ -3,6 +3,7 @@ import { store } from '../db/store.js';
 import { query, isConnected } from '../db/pg.js';
 import { signToken, requireAuth } from '../middleware/auth.js';
 import { ROLES } from '../config/constants.js';
+import { validatePasswordForRegistration } from '../utils/passwordValidator.js';
 
 const router = Router();
 
@@ -95,6 +96,11 @@ router.post('/register', async (req, res) => {
   const { name, email, password, phone } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email and password are required.' });
+  }
+
+  const passwordCheck = validatePasswordForRegistration(password);
+  if (!passwordCheck.isValid) {
+    return res.status(400).json({ error: passwordCheck.message });
   }
 
   // AUTH-02: Email matching is case-normalized and space-trimmed

@@ -1,5 +1,6 @@
 import QRCode from 'qrcode';
 import { INITIAL_PRODUCTS } from './api';
+import { validatePasswordForRegistration } from '../utils/passwordStrength';
 
 // Initial Mock Storage Seeds
 const DEFAULT_USERS = [
@@ -559,6 +560,104 @@ const DEFAULT_DELIVERY_ASSIGNMENTS = [
     failureRemarks: 'Resident out of city for 2 days per building security desk. Flagged for admin reschedule.',
     flaggedForAdminReview: true,
     createdAt: new Date(Date.now() - 172800000).toISOString()
+  },
+  {
+    id: 'DEL-ASG-999',
+    orderId: 'GB-ORD-77112',
+    deliveryPartnerId: 'usr_delivery_2',
+    deliveryPartnerName: 'Ravi Kumar',
+    providerType: 'THIRD_PARTY_BLUEDART',
+    orderPreparationStatus: 'READY_FOR_PICKUP',
+    deliveryStatus: 'READY_FOR_PICKUP',
+    customerName: 'Sanjay Dutt',
+    customerPhone: '+919822001122',
+    shippingAddress: {
+      street: '101, Palm Court, Juhu',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400049'
+    },
+    pickupLocation: {
+      name: 'Good Bee Central Laboratory & Dispensary',
+      address: 'Unit 14, Apex Botanical Park, Lower Parel, Mumbai - 400013',
+      contactPhone: '+91-9963075000',
+      instructions: 'Fleet Courier Ravi Kumar assignment.'
+    },
+    items: [
+      {
+        title: 'Wild Turmeric Glow Soap',
+        quantity: 1,
+        price: 320,
+        image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.14-1-300x300.webp'
+      }
+    ],
+    totalAmount: 320,
+    assignedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    readyForPickupAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+    pickedUpAt: null,
+    outForDeliveryAt: null,
+    deliveredAt: null,
+    failedAt: null,
+    failureReason: null,
+    failureRemarks: null,
+    flaggedForAdminReview: false,
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+  }
+];
+
+const DEFAULT_DEALER_ORDERS = [
+  {
+    id: 'GB-PO-2026-9402',
+    dealerCode: 'GB-DLR-MUM-892',
+    date: '24 Oct 2026',
+    totalUnits: 75,
+    subtotal: 32450,
+    gst: 5841,
+    totalAmount: 38291,
+    status: 'DISPATCHED',
+    courier: 'BlueDart Express',
+    trackingNo: 'BD-98234120',
+    paymentTerms: 'Net-30 (Due 24 Nov 2026)',
+    items: [
+      { title: 'Good Bee Donkey Milk & Saffron Soap', qty: 30, wholesalePrice: 380 },
+      { title: 'Good Bee Frankincense Pure Essential Oil', qty: 15, wholesalePrice: 1087 },
+      { title: 'Good Bee Pink Lotus Hydrosol Mist', qty: 30, wholesalePrice: 629 }
+    ]
+  },
+  {
+    id: 'GB-PO-2026-8819',
+    dealerCode: 'GB-DLR-MUM-892',
+    date: '10 Oct 2026',
+    totalUnits: 120,
+    subtotal: 51200,
+    gst: 9216,
+    totalAmount: 60416,
+    status: 'DELIVERED',
+    courier: 'Delhivery Logistics',
+    trackingNo: 'DL-44810294',
+    paymentTerms: 'Net-30 (Settled)',
+    items: [
+      { title: 'Good Bee Rosemary Pure Essential Extract', qty: 40, wholesalePrice: 712 },
+      { title: 'Good Bee Sunnipindi Cold Processed Bar', qty: 50, wholesalePrice: 299 },
+      { title: 'Good Bee Clear Skin Cold Processed Soap', qty: 30, wholesalePrice: 337 }
+    ]
+  },
+  {
+    id: 'GB-PO-2026-7731',
+    dealerCode: 'GB-DLR-BLR-02',
+    date: '02 Nov 2026',
+    totalUnits: 90,
+    subtotal: 44100,
+    gst: 7938,
+    totalAmount: 52038,
+    status: 'DISPATCHED',
+    courier: 'DTDC Express',
+    trackingNo: 'DTDC-8810231',
+    paymentTerms: 'Net-30 (Due 02 Dec 2026)',
+    items: [
+      { title: 'Good Bee Lemongrass Essential Extract', qty: 45, wholesalePrice: 510 },
+      { title: 'Good Bee Pink Lotus Botanical Mist', qty: 45, wholesalePrice: 470 }
+    ]
   }
 ];
 
@@ -940,6 +1039,11 @@ export async function handleMockApiRequest(url, init = {}) {
     const cleanEmail = (body.email || '').trim().toLowerCase();
     if (!cleanEmail) {
       return jsonResponse({ error: 'Email is required' }, 400);
+    }
+
+    const passwordValidation = validatePasswordForRegistration(body.password);
+    if (!passwordValidation.isValid) {
+      return jsonResponse({ error: passwordValidation.message }, 400);
     }
 
     const users = getStored('goodbee_users', DEFAULT_USERS);
@@ -1459,10 +1563,14 @@ export async function handleMockApiRequest(url, init = {}) {
   if (path === '/api/v1/orders' && method === 'POST') {
     const orders = getStored('goodbee_orders', DEFAULT_ORDERS);
     const items = body.items || [];
-    const total = items.reduce((sum, it) => sum + (it.product.price * it.quantity), 0);
+    const calculatedSubtotal = items.reduce(
+      (sum, it) => sum + ((it.price || it.product?.price || 0) * Math.max(1, it.quantity || 1)),
+      0
+    );
+    const total = typeof body.total === 'number' && body.total >= 0 ? body.total : calculatedSubtotal;
     const orderId = `GB-ORD-${Date.now().toString().slice(-6)}`;
 
-    // Generate Dynamic UPI QR
+    // Generate Dynamic UPI QR (SHOP-30)
     const vpa = 'goodbee.official@okaxis';
     const payeeName = 'GOOD BEE Skincare Laboratory';
     const note = `Good Bee Order ${orderId}`;
@@ -1485,6 +1593,9 @@ export async function handleMockApiRequest(url, init = {}) {
     const newOrder = {
       id: orderId,
       items,
+      subtotal: body.subtotal || calculatedSubtotal,
+      discount: body.discount || 0,
+      shipping: body.shipping !== undefined ? body.shipping : (calculatedSubtotal >= 999 ? 0 : 99),
       total,
       customerName: body.customerName,
       customerEmail: body.customerEmail,
@@ -1514,6 +1625,30 @@ export async function handleMockApiRequest(url, init = {}) {
         `Hello Good Bee Support, I have placed order #${orderId} (₹${total}).`
       )}`
     }, 201);
+  }
+
+  // 14.2 Orders: Verify Dynamic UPI QR Payment (SHOP-30)
+  if (path.startsWith('/api/v1/orders/') && path.endsWith('/verify-qr') && method === 'POST') {
+    const id = path.split('/')[4];
+    const orders = getStored('goodbee_orders', DEFAULT_ORDERS);
+    const orderIndex = orders.findIndex((o) => o.id === id);
+
+    if (orderIndex === -1) {
+      return jsonResponse({ error: 'Order not found' }, 404);
+    }
+
+    const upiRef = body.upiRef || `UPI-TXN-${Date.now().toString().slice(-6)}`;
+    orders[orderIndex].paymentStatus = 'PAYMENT_VERIFIED';
+    orders[orderIndex].upiRef = upiRef;
+    orders[orderIndex].paymentVerifiedAt = new Date().toISOString();
+    orders[orderIndex].status = 'PROCESSING';
+
+    setStored('goodbee_orders', orders);
+
+    return jsonResponse({
+      message: 'Payment verified successfully.',
+      order: orders[orderIndex]
+    });
   }
 
   // 15. Admin Users & Role Elevation
@@ -1647,7 +1782,13 @@ export async function handleMockApiRequest(url, init = {}) {
   }
 
   if (path === '/api/v1/delivery/dashboard' && method === 'GET') {
-    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const currentUser = JSON.parse(localStorage.getItem('goodbee_user') || 'null');
+    let assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    if (currentUser && currentUser.role === 'DELIVERY_PARTNER') {
+      const partnerId = currentUser.id || 'usr_delivery_1';
+      const partnerName = currentUser.name || 'Kabir Verma';
+      assignments = assignments.filter((a) => a.deliveryPartnerId === partnerId || a.deliveryPartnerName === partnerName);
+    }
     const notifications = getStored('goodbee_delivery_notifications', DEFAULT_DELIVERY_NOTIFICATIONS);
     const totalAssigned = assignments.length;
     const readyForPickup = assignments.filter((a) => a.deliveryStatus === 'READY_FOR_PICKUP').length;
@@ -1679,7 +1820,14 @@ export async function handleMockApiRequest(url, init = {}) {
   }
 
   if (path === '/api/v1/delivery/deliveries' && method === 'GET') {
-    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const currentUser = JSON.parse(localStorage.getItem('goodbee_user') || 'null');
+    let assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    // BUG-RBAC-02: Strict courier data isolation
+    if (currentUser && currentUser.role === 'DELIVERY_PARTNER') {
+      const partnerId = currentUser.id || 'usr_delivery_1';
+      const partnerName = currentUser.name || 'Kabir Verma';
+      assignments = assignments.filter((a) => a.deliveryPartnerId === partnerId || a.deliveryPartnerName === partnerName);
+    }
     return jsonResponse({ count: assignments.length, deliveries: assignments });
   }
 
@@ -1747,9 +1895,44 @@ export async function handleMockApiRequest(url, init = {}) {
   }
 
   if (path === '/api/v1/delivery/history' && method === 'GET') {
-    const assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    const currentUser = JSON.parse(localStorage.getItem('goodbee_user') || 'null');
+    let assignments = getStored('goodbee_delivery_assignments', DEFAULT_DELIVERY_ASSIGNMENTS);
+    if (currentUser && currentUser.role === 'DELIVERY_PARTNER') {
+      const partnerId = currentUser.id || 'usr_delivery_1';
+      const partnerName = currentUser.name || 'Kabir Verma';
+      assignments = assignments.filter((a) => a.deliveryPartnerId === partnerId || a.deliveryPartnerName === partnerName);
+    }
     const history = assignments.filter((a) => a.deliveryStatus === 'DELIVERED' || a.deliveryStatus === 'FAILED');
     return jsonResponse({ count: history.length, history });
+  }
+
+  // B2B Dealer Wholesale Orders (SEL-12: Regional Dealer Data Isolation)
+  if (path.startsWith('/api/v1/dealer/orders') && method === 'GET') {
+    const currentUser = JSON.parse(localStorage.getItem('goodbee_user') || 'null');
+    const allDealerOrders = getStored('goodbee_dealer_orders', DEFAULT_DEALER_ORDERS);
+    let dealerCode = currentUser?.dealerCode;
+    try {
+      const urlObj = new URL(path, 'http://localhost');
+      const paramCode = urlObj.searchParams.get('dealerCode');
+      if (paramCode) dealerCode = paramCode;
+    } catch (e) {}
+    if (!dealerCode) dealerCode = 'GB-DLR-MUM-892';
+    const filteredOrders = allDealerOrders.filter((o) => o.dealerCode === dealerCode);
+    return jsonResponse({ count: filteredOrders.length, orders: filteredOrders });
+  }
+
+  if (path === '/api/v1/dealer/orders' && method === 'POST') {
+    const currentUser = JSON.parse(localStorage.getItem('goodbee_user') || 'null');
+    const allDealerOrders = getStored('goodbee_dealer_orders', DEFAULT_DEALER_ORDERS);
+    const newOrder = {
+      ...body,
+      dealerCode: body.dealerCode || currentUser?.dealerCode || 'GB-DLR-MUM-892',
+      dealerName: currentUser?.name || currentUser?.companyName || 'Stockist Hub',
+      createdAt: new Date().toISOString()
+    };
+    allDealerOrders.unshift(newOrder);
+    setStored('goodbee_dealer_orders', allDealerOrders);
+    return jsonResponse({ message: 'Purchase order created successfully', order: newOrder }, 201);
   }
 
   if (path === '/api/v1/delivery/notifications' && method === 'GET') {
