@@ -14,13 +14,13 @@
     background-color: #FAF7F2;
     color: #1A1918;
     overflow-x: clip;
-    font-family: "Tenor Sans", "Plus Jakarta Sans", sans-serif;
-    letter-spacing: 0.005em;
+    font-family: "Plus Jakarta Sans", "Outfit", system-ui, sans-serif;
+    letter-spacing: -0.005em;
   }
 
   h1, h2, h3, h4 {
-    font-family: "Marcellus", "Bodoni Moda", serif;
-    letter-spacing: -0.02em;
+    font-family: "Outfit", "Plus Jakarta Sans", system-ui, sans-serif;
+    letter-spacing: -0.025em;
   }
 }
 
@@ -95,9 +95,9 @@ a:active {
   border-color: rgba(197, 168, 128, 0.3);
 }
 
-/* High Fashion Editorial Italic Accents */
+/* Editorial Emphasis Accents */
 .font-haute {
-  font-family: "Bodoni Moda", "Marcellus", serif;
+  font-family: "Outfit", "Plus Jakarta Sans", system-ui, sans-serif;
   font-style: italic;
 }
 

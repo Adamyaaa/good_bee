@@ -27,9 +27,9 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Marcellus"', '"Bodoni Moda"', 'Georgia', 'serif'],
-        editorial: ['"Bodoni Moda"', '"Marcellus"', 'serif'],
-        sans: ['"Tenor Sans"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+        serif: ['"Outfit"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        editorial: ['"Outfit"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', '"Outfit"', 'system-ui', 'sans-serif']
       },
       letterSpacing: {
         'luxury': '0.22em',
