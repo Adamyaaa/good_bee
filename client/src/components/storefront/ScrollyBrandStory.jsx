@@ -35,7 +35,7 @@ const STORY_STEPS = [
     shortLabel: 'Skin Ritual',
     title: 'Daily Barrier Radiance',
     icon: Sun,
-    image: '/assets/goodbee-hero-model.jpg',
+    image: '/assets/goodbee-craft-lifestyle.jpg',
     description:
       'Weightless absorption that restores barrier bounce AM and PM.'
   }
