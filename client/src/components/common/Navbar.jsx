@@ -44,22 +44,22 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
   };
 
   return (
-    <header className="fixed top-0 inset-x-0 z-40 w-full transition-all duration-300 bg-white shadow-sm border-b border-gray-100">
+    <header className="fixed top-0 inset-x-0 z-40 w-full max-w-[100vw] overflow-x-clip transition-all duration-300 apple-glass-chrome shadow-xs border-b border-brand-gold/20">
       
-      {/* 1. Plum-Style Berry-Purple Top Announcement Bar */}
-      <div className="bg-[#5B0868] text-white py-1 text-[10px] sm:text-[11px] font-medium tracking-normal overflow-hidden select-none">
+      {/* 1. Berry-Purple Top Announcement Bar */}
+      <div className="bg-[#5B0868] text-white py-1.5 text-[10px] sm:text-[11px] font-medium tracking-normal overflow-hidden select-none">
         <div className="animate-marquee-right flex items-center">
           {[
-            { text: 'Buy any 3 Good Bee formulations @ flat 30% off + free botanical gift', isOffer: true },
-            { text: siteContent.announcement || 'Complimentary Delivery Across India on Orders Above ₹999' },
-            { text: 'Chemistry with heart • 100% Vegan & Cold-Stabilized Actives' },
-            { text: `WhatsApp Concierge for Skincare Guidance: ${phoneNumber}`, isWhatsapp: true },
-            { text: 'Claim 15% Off Your First Order • Use Code HONEY15', isGift: true },
-            { text: 'Buy any 3 Good Bee formulations @ flat 30% off + free botanical gift', isOffer: true },
-            { text: siteContent.announcement || 'Complimentary Delivery Across India on Orders Above ₹999' },
-            { text: 'Chemistry with heart • 100% Vegan & Cold-Stabilized Actives' },
-            { text: `WhatsApp Concierge for Skincare Guidance: ${phoneNumber}`, isWhatsapp: true },
-            { text: 'Claim 15% Off Your First Order • Use Code HONEY15', isGift: true }
+            { text: 'Build Any 4-Step Routine @ 20% OFF + Complimentary Sample Gift', isOffer: true },
+            { text: siteContent.announcement || 'Complimentary Pan-India Shipping on Orders Above ₹999' },
+            { text: '6-Week Cold-Cured Beeswax Soaps & Steam-Distilled Botanicals' },
+            { text: `WhatsApp Skincare Concierge: ${phoneNumber}`, isWhatsapp: true },
+            { text: 'Unlock 15% OFF Your First Order • Use Code HONEY15', isGift: true },
+            { text: 'Build Any 4-Step Routine @ 20% OFF + Complimentary Sample Gift', isOffer: true },
+            { text: siteContent.announcement || 'Complimentary Pan-India Shipping on Orders Above ₹999' },
+            { text: '6-Week Cold-Cured Beeswax Soaps & Steam-Distilled Botanicals' },
+            { text: `WhatsApp Skincare Concierge: ${phoneNumber}`, isWhatsapp: true },
+            { text: 'Unlock 15% OFF Your First Order • Use Code HONEY15', isGift: true }
           ].map((item, idx) => (
             <div key={idx} className="flex items-center whitespace-nowrap px-6 gap-2.5">
               <span className="font-sans font-medium text-white">{item.text}</span>
@@ -67,7 +67,7 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
                 <button
                   type="button"
                   onClick={onOpenSurprise}
-                  className="px-2 py-0.5 rounded-full bg-white hover:bg-amber-100 text-[#5B0868] text-[8px] font-bold tracking-wider uppercase transition-colors shadow-xs cursor-pointer"
+                  className="px-2 py-0.5 rounded-full bg-white hover:bg-amber-100 text-[#5B0868] text-[9px] font-bold tracking-wider uppercase transition-colors shadow-xs cursor-pointer"
                 >
                   Claim 15%
                 </button>
@@ -88,9 +88,9 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
         </div>
       </div>
 
-      {/* 2. Main Pure White Navbar (Sleek Compact Proportions) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12 sm:h-14">
+      {/* 2. Main Pure White Navbar (Single-Line Sleek Proportions) */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-2 h-12 sm:h-14">
           
           {/* Mobile menu toggle */}
           <div className="flex items-center lg:hidden">
@@ -103,11 +103,11 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
             </button>
           </div>
 
-          {/* Left Brand Logo & Plum-Style "Shop" Pill */}
-          <div className="flex items-center gap-3 sm:gap-5">
+          {/* Left Brand Logo & Signature "Shop" Pill */}
+          <div className="flex items-center gap-2.5 sm:gap-4 flex-shrink-0">
             <button
               onClick={() => onScrollTo('hero')}
-              className="flex items-center gap-2 group text-left focus:outline-none cursor-pointer"
+              className="flex items-center gap-2 group text-left focus:outline-none cursor-pointer flex-shrink-0"
             >
               <div className="h-7 sm:h-8 w-auto flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                 <img
@@ -119,198 +119,217 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
                   }}
                 />
               </div>
-              <div className="flex items-center">
-                <span className="font-serif text-lg sm:text-2xl tracking-[0.14em] font-medium text-[#1e1e1e] block leading-none">
-                  GOOD BEE
-                </span>
-              </div>
+              <span className="font-serif text-base sm:text-xl tracking-[0.15em] font-medium text-[#1e1e1e] whitespace-nowrap leading-none">
+                GOOD BEE
+              </span>
             </button>
 
-            {/* Plum Signature Purple "Shop" Button */}
             <button
-              onClick={() => onScrollTo('formulations')}
-              className="hidden sm:inline-flex items-center justify-center px-3 py-1 rounded-md bg-[#5B0868] hover:bg-[#480653] text-white text-[11px] font-bold tracking-wider uppercase transition-all duration-200 shadow-xs hover:scale-105 active:scale-95 cursor-pointer"
+              onClick={() => onScrollTo('bestsellers')}
+              className="hidden sm:inline-flex items-center justify-center px-3 py-1 rounded-md bg-[#5B0868] hover:bg-[#480653] text-white text-[11px] font-bold tracking-wider uppercase transition-all duration-200 shadow-xs hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
             >
               Shop
             </button>
           </div>
 
-          {/* Center Nav Links in Crisp Charcoal */}
-          <nav className="hidden lg:flex items-center space-x-5 text-[11px] font-medium tracking-wide text-gray-700">
+          {/* Center Single-Line Nav Links */}
+          <nav className="hidden lg:flex items-center space-x-4 xl:space-x-5 text-[11px] xl:text-xs font-medium tracking-wide text-gray-700">
             <button
-              onClick={() => onScrollTo('how-to-apply')}
-              className="hover:text-[#5B0868] transition-colors py-0.5 font-semibold text-[#5B0868] cursor-pointer"
+              onClick={() => onScrollTo('bestsellers')}
+              className="hover:text-[#5B0868] transition-colors py-1 font-semibold text-[#5B0868] cursor-pointer whitespace-nowrap"
             >
-              How To Apply
+              Bestsellers
             </button>
 
             <button
               onClick={() => onScrollTo('shop-by-concern')}
-              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer whitespace-nowrap"
             >
               By Concern
             </button>
 
             <button
-              onClick={() => onScrollTo('formulations')}
-              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
+              onClick={() => onScrollTo('ingredients')}
+              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer whitespace-nowrap"
             >
-              Categories
+              Botanicals
+            </button>
+
+            <button
+              onClick={() => onScrollTo('formulations')}
+              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer whitespace-nowrap"
+            >
+              All Products
+            </button>
+
+            <button
+              onClick={() => onScrollTo('how-to-apply')}
+              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer whitespace-nowrap"
+            >
+              Rituals
             </button>
 
             <button
               onClick={() => onScrollTo('scrolly-story')}
-              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
+              className="hover:text-[#5B0868] transition-colors py-1 cursor-pointer whitespace-nowrap"
             >
-              The Pure Cycle
-            </button>
-
-            <button
-              onClick={() => onScrollTo('research-story')}
-              className="hover:text-[#5B0868] transition-colors py-0.5 cursor-pointer"
-            >
-              About Us
+              Our Craft
             </button>
           </nav>
 
-          {/* Right Action Utilities (Search Bar, Account, Cart) */}
-          <div className="flex items-center space-x-2.5 sm:space-x-4">
+          {/* Right Action Utilities (Search, Auth, Always-Visible Bag) */}
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
             
-            {/* Plum-Style Inline Search Pill (Desktop) */}
+            {/* Inline Search Pill (Desktop) */}
             <form onSubmit={handleSearchSubmit} className="hidden xl:flex items-center relative">
               <input
                 type="text"
-                placeholder="Search formulations, soaps, oils..."
+                placeholder="Search soaps, oils, mists..."
                 value={searchVal}
                 onChange={(e) => {
                   setSearchVal(e.target.value);
                   onSearch?.(e.target.value);
                 }}
-                className="w-44 2xl:w-56 pl-8 pr-3 py-1 rounded-md bg-gray-50 border border-gray-200 text-[11px] text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white transition-all"
+                className="w-44 2xl:w-52 pl-8 pr-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white transition-all"
               />
               <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 pointer-events-none" />
             </form>
 
-            {/* Mobile / Compact Search Toggle */}
+            {/* Mobile / Tablet Search Toggle */}
             <button
-              onClick={() => onScrollTo('formulations')}
+              onClick={() => setSearchOpen((prev) => !prev)}
               className="xl:hidden p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer"
+              aria-label="Toggle search"
               title="Search"
             >
               <Search className="w-4 h-4" />
             </button>
 
-            {/* CONDITIONAL AUTH CONTROLS:
-                - LOGGED OUT: Show clean "Log In" & "Sign Up" buttons in place of Cart & Profile icons.
-                - LOGGED IN: Show Profile Icon (with user initial badge/dropdown) and Shopping Bag. */}
+            {/* Auth Controls */}
             {!user ? (
-              <div className="flex items-center gap-1 sm:gap-2 ml-1">
+              <div className="flex items-center gap-1 sm:gap-1.5">
                 <button
                   type="button"
                   onClick={() => onOpenAuth ? onOpenAuth('login') : onOpenPortal('CUSTOMER')}
-                  className="px-3 py-1.5 text-xs font-bold text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 rounded-xl transition-all cursor-pointer"
+                  className="px-2 sm:px-2.5 py-1.5 text-[11px] sm:text-xs font-bold text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 rounded-xl transition-all cursor-pointer whitespace-nowrap"
                 >
                   Log In
                 </button>
                 <button
                   type="button"
                   onClick={() => onOpenAuth ? onOpenAuth('register') : onOpenPortal('CUSTOMER')}
-                  className="px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 rounded-xl shadow-xs transition-all cursor-pointer hover:scale-105 active:scale-95"
+                  className="hidden sm:inline-flex px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 rounded-xl shadow-xs transition-all cursor-pointer hover:scale-105 active:scale-95 whitespace-nowrap"
                 >
                   Sign Up
                 </button>
               </div>
             ) : (
-              <>
-                {/* Account / Portal Dropdown (Logged in only) */}
-                <div className="relative">
-                  <button
-                    onClick={() => setPortalDropdownOpen(!portalDropdownOpen)}
-                    className="p-1 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer flex items-center gap-1 rounded-xl hover:bg-gray-50"
-                    title="Account"
-                  >
-                    <div className="w-7 h-7 rounded-full bg-purple-100 text-[#5B0868] font-bold text-xs flex items-center justify-center border border-purple-200 shadow-2xs">
-                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                    </div>
-                  </button>
-
-                  {portalDropdownOpen && (
-                    <div
-                      className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2"
-                      onMouseLeave={() => setPortalDropdownOpen(false)}
-                    >
-                      <div className="px-4 py-2 border-b border-gray-100">
-                        <p className="text-xs text-gray-500">Signed in as</p>
-                        <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
-                        <span className="inline-block mt-1 text-[10px] tracking-wider uppercase px-2 py-0.5 bg-gray-100 text-gray-700 font-bold rounded">
-                          {user.role === 'ADMIN' ? 'Store Administrator' : user.role === 'DEALER' ? 'Wholesaler Partner' : user.role === 'PRODUCER' ? 'Botanical Vendor' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Lead' : user.role === 'DELIVERY_PARTNER' ? 'Delivery Fleet Partner' : user.role === 'PROMOTER' ? 'Affiliate Partner' : 'Customer Account'}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          onOpenPortal(user.role);
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2 font-medium cursor-pointer"
-                      >
-                        <Shield className="w-4 h-4 text-[#5B0868]" />
-                        <span>
-                          {user.role === 'ADMIN' ? 'Store Control Tower' : user.role === 'DEALER' ? 'Wholesale Desk' : user.role === 'PRODUCER' ? 'Vendor & Lab Desk' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Studio' : user.role === 'DELIVERY_PARTNER' ? 'Fleet Logistics Console' : user.role === 'PROMOTER' ? 'Promoter & Affiliate Desk' : 'My Orders & Account'}
-                        </span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setPortalDropdownOpen(false);
-                          logout();
-                        }}
-                        className="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 cursor-pointer"
-                      >
-                        Sign Out
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                {/* Shopping Bag Trigger with Plum Purple Accent (Logged in only) */}
+              <div className="relative">
                 <button
-                  onClick={() => setIsDrawerOpen(true)}
-                  className="relative p-1.5 text-gray-700 hover:text-[#5B0868] transition-colors group cursor-pointer"
-                  aria-label="View Shopping Bag"
+                  onClick={() => setPortalDropdownOpen(!portalDropdownOpen)}
+                  className="p-1 text-gray-700 hover:text-[#5B0868] transition-colors cursor-pointer flex items-center gap-1 rounded-xl hover:bg-gray-50"
+                  title="Account"
                 >
-                  <ShoppingBag className="w-4 h-4 group-hover:scale-105 transition-transform" />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-[#5B0868] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-xs animate-pulse">
-                      {itemCount}
-                    </span>
-                  )}
+                  <div className="w-7 h-7 rounded-full bg-purple-100 text-[#5B0868] font-bold text-xs flex items-center justify-center border border-purple-200 shadow-2xs">
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
                 </button>
-              </>
+
+                {portalDropdownOpen && (
+                  <div
+                    className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2"
+                    onMouseLeave={() => setPortalDropdownOpen(false)}
+                  >
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-xs text-gray-500">Signed in as</p>
+                      <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
+                      <span className="inline-block mt-1 text-[10px] tracking-wider uppercase px-2 py-0.5 bg-gray-100 text-gray-700 font-bold rounded">
+                        {user.role === 'ADMIN' ? 'Store Administrator' : user.role === 'DEALER' ? 'Wholesaler Partner' : user.role === 'PRODUCER' ? 'Botanical Vendor' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Lead' : user.role === 'DELIVERY_PARTNER' ? 'Delivery Fleet Partner' : user.role === 'PROMOTER' ? 'Affiliate Partner' : 'Customer Account'}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setPortalDropdownOpen(false);
+                        onOpenPortal(user.role);
+                      }}
+                      className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2 font-medium cursor-pointer"
+                    >
+                      <Shield className="w-4 h-4 text-[#5B0868]" />
+                      <span>
+                        {user.role === 'ADMIN' ? 'Store Control Tower' : user.role === 'DEALER' ? 'Wholesale Desk' : user.role === 'PRODUCER' ? 'Vendor & Lab Desk' : user.role === 'MEDIA_MANAGER' ? 'Media & Stock Studio' : user.role === 'DELIVERY_PARTNER' ? 'Fleet Logistics Console' : user.role === 'PROMOTER' ? 'Promoter & Affiliate Desk' : 'My Orders & Account'}
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setPortalDropdownOpen(false);
+                        logout();
+                      }}
+                      className="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 cursor-pointer"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
+
+            {/* Always-Visible Shopping Bag Trigger */}
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="relative p-1.5 rounded-xl text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 transition-colors group cursor-pointer"
+              aria-label="View Shopping Bag"
+              title="Shopping Bag"
+            >
+              <ShoppingBag className="w-4 h-4 sm:w-[18px] sm:h-[18px] group-hover:scale-105 transition-transform" />
+              {itemCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-[#5B0868] text-white text-[9px] font-bold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border border-white shadow-xs">
+                  {itemCount}
+                </span>
+              )}
+            </button>
           </div>
 
         </div>
       </div>
 
+      {/* Expandable Search Bar for Tablet / Mobile */}
+      {searchOpen && (
+        <div className="xl:hidden border-t border-gray-100 bg-white px-4 py-2.5">
+          <form onSubmit={(e) => { handleSearchSubmit(e); setSearchOpen(false); }} className="max-w-7xl mx-auto relative flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search soaps, essential oils, hydrosols..."
+                value={searchVal}
+                onChange={(e) => {
+                  setSearchVal(e.target.value);
+                  onSearch?.(e.target.value);
+                }}
+                className="w-full pl-9 pr-3 py-2 rounded-xl bg-gray-50 border border-gray-200 text-[16px] sm:text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#5B0868] focus:bg-white"
+              />
+            </div>
+            <button
+              type="submit"
+              className="px-3.5 py-2 rounded-xl bg-[#5B0868] text-white text-xs font-bold uppercase tracking-wider cursor-pointer"
+            >
+              Find
+            </button>
+          </form>
+        </div>
+      )}
+
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-200 px-6 py-6 space-y-4 text-gray-800 shadow-2xl animate-in slide-in-from-top-4">
+        <div className="lg:hidden bg-white border-b border-gray-200 px-6 py-5 space-y-2 text-gray-800 shadow-2xl animate-in slide-in-from-top-4">
           <button
             onClick={() => {
               setMobileMenuOpen(false);
-              onScrollTo('how-to-apply');
+              onScrollTo('bestsellers');
             }}
             className="w-full text-left text-sm font-semibold text-[#5B0868] py-2 border-b border-gray-100"
           >
-            How To Apply (Daily Regimen)
-          </button>
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              onScrollTo('formulations');
-            }}
-            className="block w-full text-left text-sm font-medium text-gray-700 py-2 border-b border-gray-100"
-          >
-            Categories & Formulations
+            Shop Bestsellers
           </button>
           <button
             onClick={() => {
@@ -324,16 +343,43 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
           <button
             onClick={() => {
               setMobileMenuOpen(false);
-              onScrollTo('scrolly-story');
+              onScrollTo('ingredients');
             }}
             className="block w-full text-left text-sm font-medium text-gray-700 py-2 border-b border-gray-100"
           >
-            The Pure Cycle (Scrollytelling)
+            Hero Botanicals
           </button>
           <button
             onClick={() => {
               setMobileMenuOpen(false);
-              onOpenPortal('CUSTOMER');
+              onScrollTo('formulations');
+            }}
+            className="block w-full text-left text-sm font-medium text-gray-700 py-2 border-b border-gray-100"
+          >
+            All Formulations
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onScrollTo('how-to-apply');
+            }}
+            className="w-full text-left text-sm font-medium text-gray-700 py-2 border-b border-gray-100"
+          >
+            Rituals & Skin Finder
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onScrollTo('scrolly-story');
+            }}
+            className="block w-full text-left text-sm font-medium text-gray-700 py-2 border-b border-gray-100"
+          >
+            The Pure Cycle (Our Craft)
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onOpenPortal(user?.role || 'CUSTOMER');
             }}
             className="block w-full text-left text-sm font-bold text-[#5B0868] py-2 border-b border-gray-100"
           >
@@ -358,6 +404,30 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
           >
             Claim Surprise Gift (15% OFF)
           </button>
+          {!user && (
+            <div className="pt-2 flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenAuth ? onOpenAuth('login') : onOpenPortal('CUSTOMER');
+                }}
+                className="flex-1 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-gray-800"
+              >
+                Log In
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenAuth ? onOpenAuth('register') : onOpenPortal('CUSTOMER');
+                }}
+                className="flex-1 py-2.5 rounded-xl bg-[#5B0868] text-white text-xs font-bold uppercase tracking-wider"
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
 
           {/* Mobile Socials */}
           <div className="pt-3 flex items-center justify-between text-xs text-gray-600">

@@ -1,117 +1,121 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Droplets, Shield, Award } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Leaf } from 'lucide-react';
 
-const ACTIVES = [
+const HERO_BOTANICALS = [
   {
-    name: 'Natural Bee Wax & Himalayan Deodar',
-    origin: 'Source-Identified Forest Apiaries & High Himalayas',
-    role: 'Antimicrobial Barrier Shield & Moisture Lock',
+    name: 'Forest Beeswax & Deodar',
+    origin: 'Source-Identified Apiaries & High Himalayas',
+    role: 'Breathable Moisture Barrier & Antimicrobial Shield',
     bioactive: 'Natural Wax Esters & Cedrene Terpenes',
-    offset: [-20, 40],
-    image: '/images_ref/Clear-skin-300x300.webp'
+    searchKeyword: 'Bee Wax',
+    image: '/images_ref/Levendor-300x300.webp'
   },
   {
-    name: 'Indigenous A2 Cow Milk & Shea Butter',
-    origin: 'Ethical Dairy & Cold-Milled Karité Fruit',
-    role: 'Biomimetic Lipid Replenishment & Baby-Soft Skin',
+    name: 'Donkey & Desi A2 Cow Milk',
+    origin: 'Ethical Dairy & Cold-Milled Shea Butter',
+    role: 'Biomimetic Ceramides & Gentle Acid-Mantle Care',
     bioactive: 'Natural Ceramides & Beta-Casein Proteins',
-    offset: [40, -30],
-    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.25-1-300x300.webp'
+    searchKeyword: 'Milk',
+    image: '/images_ref/Donkey-Milk-Soap-300x300.webp'
   },
   {
-    name: 'Steam-Distilled Frankincense Resin',
+    name: 'Wild Frankincense Resin',
     origin: 'Wild-Harvested Boswellia Carterii Gum',
-    role: 'Cellular Renewal & Deep Tissue Toning',
-    bioactive: 'Active Alpha-Thujene & Boswellic Terpenes',
-    offset: [-30, 30],
+    role: 'Cellular Renewal, Fine-Line Toning & Calm',
+    bioactive: 'Alpha-Thujene & Boswellic Terpenes',
+    searchKeyword: 'Frankincense',
     image: '/images_ref/Frankin-300x300.webp'
   },
   {
-    name: 'Pink Lotus Petals & Sweet Almond',
-    origin: 'Hand-Gathered Nelumbo Blossoms & Cold-Pressed Prunus',
-    role: 'Dewy Conditioning & Lip Moisture Barrier',
-    bioactive: 'Flavonoid Glycosides & Natural Vitamin E',
-    offset: [30, -40],
-    image: '/images_ref/Pink-Lotus-300x300.webp'
+    name: 'Nilgiri Rosemary & Brahmi',
+    origin: 'Slow-Infused Whole Herbs & Steam Leaves',
+    role: 'Follicle Micro-Circulation & Pore Clarifying',
+    bioactive: '1,8-Cineole & Rosmarinic Flavonoids',
+    searchKeyword: 'Rosemary',
+    image: '/images_ref/Rosmary-2-300x300.webp'
   }
 ];
 
-export default function ParallaxIngredientStory() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start']
-  });
-
+export default function ParallaxIngredientStory({ onSelectIngredient }) {
   return (
     <section
-      ref={containerRef}
       id="ingredients"
-      className="py-24 bg-brand-ivory relative overflow-hidden border-t border-brand-gold/20 scroll-mt-28"
+      className="py-14 sm:py-18 bg-white relative border-b border-brand-gold/20 scroll-mt-28"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
-            Cellular Botanical Actives
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10">
+          <div className="space-y-1.5 max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5B0868] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest">
+              <Leaf className="w-3.5 h-3.5 text-[#5B0868]" />
+              <span>Shop by Hero Botanical</span>
+            </div>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#1A1918] font-medium">
+              Active-Stabilized Raw Ingredients
+            </h2>
+            <p className="text-gray-600 text-xs sm:text-sm font-normal">
+              Tap any signature botanical below to filter formulations crafted around its active bio-compounds.
+            </p>
+          </div>
+          <span className="text-xs font-semibold text-[#5B0868] hidden md:inline">
+            Zero Mineral Oils • Zero Synthetic Fragrance
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-charcoal font-medium">
-            Active-Stabilized Botanical Potency
-          </h2>
-          <p className="text-brand-charcoal/70 text-sm sm:text-base font-normal">
-            Every botanical extract in Good Bee formulations is chosen for proven active density and standardized to ensure consistent cellular benefits.
-          </p>
         </div>
 
-        {/* 4 Multi-Speed Parallax Active Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {ACTIVES.map((active, idx) => {
-            const y = useTransform(scrollYProgress, [0, 1], active.offset);
-
-            return (
-              <motion.div
-                key={active.name}
-                style={{ y }}
-                className="bg-brand-cream/60 rounded-3xl border border-brand-gold/30 p-5 space-y-4 shadow-sm hover:shadow-luxury transition-all duration-300 flex flex-col justify-between"
-              >
-                <div className="space-y-3">
-                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-brand-sand/40 border border-brand-gold/20">
+        {/* Aligned 4-Column Interactive Ingredient Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {HERO_BOTANICALS.map((active) => (
+            <button
+              key={active.name}
+              type="button"
+              onClick={() => onSelectIngredient?.(active.searchKeyword)}
+              className="group text-left bg-[#FAF7F2] rounded-2xl border border-brand-gold/25 hover:border-[#5B0868]/45 hover:bg-white p-4 sm:p-5 space-y-3.5 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer"
+            >
+              <div className="space-y-3 w-full">
+                {/* Crisp Padded Square Frame so 300x300 Studio Assets Stay Sharp */}
+                <div className="bg-white rounded-2xl p-2.5 border border-brand-gold/20 shadow-2xs">
+                  <div className="relative aspect-square rounded-xl overflow-hidden bg-[#FAF7F2]">
                     <img
                       src={active.image}
                       alt={active.name}
-                      className="w-full h-full object-cover object-center"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/50 to-transparent" />
-                    <span className="absolute bottom-2 left-2 text-[10px] font-bold uppercase tracking-wider text-brand-gold-light bg-brand-charcoal/80 px-2 py-0.5 rounded">
-                      Standardized Active
+                    <span className="absolute bottom-2 left-2 text-[9px] font-bold uppercase tracking-wider text-white bg-[#1A1918]/85 px-2 py-0.5 rounded-md">
+                      Cold-Stabilized
                     </span>
-                  </div>
-
-                  <div>
-                    <h3 className="font-serif text-lg font-semibold text-brand-charcoal">
-                      {active.name}
-                    </h3>
-                    <p className="text-[11px] text-brand-gold-dark font-medium mt-0.5">
-                      {active.origin}
-                    </p>
-                  </div>
-
-                  <div className="p-3 bg-brand-ivory rounded-xl border border-brand-gold/20 space-y-1 text-xs">
-                    <span className="text-[10px] uppercase font-bold text-brand-muted block">
-                      Target Benefit:
-                    </span>
-                    <p className="text-brand-charcoal font-medium">{active.role}</p>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-brand-gold/15 text-[10px] text-brand-muted font-mono">
-                  Active Molecule: <span className="text-brand-charcoal font-semibold">{active.bioactive}</span>
+                <div>
+                  <h3 className="font-serif text-base sm:text-lg font-semibold text-[#1A1918] group-hover:text-[#5B0868] transition-colors">
+                    {active.name}
+                  </h3>
+                  <p className="text-[11px] text-brand-gold-dark font-medium mt-0.5">
+                    {active.origin}
+                  </p>
                 </div>
-              </motion.div>
-            );
-          })}
+
+                <div className="p-3 bg-white rounded-xl border border-brand-gold/20 space-y-1 text-xs">
+                  <span className="text-[9px] uppercase font-bold tracking-wider text-gray-500 block">
+                    Skin & Scalp Benefit
+                  </span>
+                  <p className="text-[#1A1918] font-medium leading-snug">{active.role}</p>
+                </div>
+              </div>
+
+              <div className="pt-2.5 border-t border-brand-gold/15 w-full flex items-center justify-between gap-2">
+                <span className="text-[10px] text-gray-500 font-mono truncate">
+                  {active.bioactive}
+                </span>
+                <span className="text-[11px] font-bold text-[#5B0868] inline-flex items-center gap-1 flex-shrink-0">
+                  <span>Shop</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </button>
+          ))}
         </div>
 
       </div>

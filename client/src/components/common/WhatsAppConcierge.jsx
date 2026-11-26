@@ -44,10 +44,10 @@ export default function WhatsAppConcierge() {
   if (!config.enabled) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+    <div className="fixed bottom-20 md:bottom-4 right-4 z-40 flex flex-col items-end">
       {/* Interactive Popup Bubble */}
       {isOpen && (
-        <div className="mb-3 w-80 bg-brand-ivory rounded-2xl border border-brand-gold/40 shadow-2xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+        <div className="mb-3 w-72 sm:w-80 bg-brand-ivory rounded-2xl border border-brand-gold/40 shadow-2xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="flex items-start justify-between pb-2 border-b border-brand-gold/15">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-white p-0.5 border border-brand-gold/40 flex items-center justify-center flex-shrink-0 shadow-sm">
@@ -88,15 +88,16 @@ export default function WhatsAppConcierge() {
         </div>
       )}
 
-      {/* Floating Action Button (Plum Style Purple Live Chat Bubble) */}
+      {/* Compact Floating Action Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#5B0868] text-white shadow-xl hover:bg-[#480653] transition-all duration-300 hover:scale-105 border border-purple-400/30 cursor-pointer"
+        className="group flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-[#5B0868] text-white shadow-lg hover:bg-[#480653] transition-all duration-300 hover:scale-105 border border-purple-300/30 cursor-pointer"
         title="Good Bee WhatsApp Concierge"
+        aria-label="Consult Skincare Concierge"
       >
-        <MessageCircle className="w-5 h-5 text-white" />
-        <span className="text-xs font-bold tracking-wider hidden sm:inline">
-          Consult Concierge
+        <MessageCircle className="w-4 h-4 text-white" />
+        <span className="text-[11px] font-bold tracking-wide hidden md:inline">
+          Concierge
         </span>
       </button>
     </div>

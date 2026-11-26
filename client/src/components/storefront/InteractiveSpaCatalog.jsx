@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ProductCard from './ProductCard';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, RotateCcw } from 'lucide-react';
 import { GoodBeeApi } from '../../services/api';
 
 const CATEGORIES = [
@@ -21,16 +21,26 @@ const CONCERNS = [
   'Youth & Radiance'
 ];
 
-export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickView, externalSearchQuery = '' }) {
+export default function InteractiveSpaCatalog({
+  activeConcern = 'All',
+  onQuickView,
+  externalSearchQuery = '',
+  onExploreRoutines
+}) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedConcern, setSelectedConcern] = useState(activeConcern);
   const [searchQuery, setSearchQuery] = useState(externalSearchQuery);
+  const [sortBy, setSortBy] = useState('featured');
 
   useEffect(() => {
     if (externalSearchQuery !== undefined) {
       setSearchQuery(externalSearchQuery);
+      if (externalSearchQuery) {
+        setSelectedCategory('All');
+        setSelectedConcern('All');
+      }
     }
   }, [externalSearchQuery]);
 
@@ -87,42 +97,70 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
     }
   };
 
+  const sortedProducts = useMemo(() => {
+    const copy = [...products];
+    if (sortBy === 'price-low') copy.sort((a, b) => a.price - b.price);
+    else if (sortBy === 'price-high') copy.sort((a, b) => b.price - a.price);
+    return copy;
+  }, [products, sortBy]);
+
+  const hasFilters = selectedCategory !== 'All' || selectedConcern !== 'All' || searchQuery.trim() !== '';
+
+  const resetAll = () => {
+    setSelectedCategory('All');
+    setSelectedConcern('All');
+    setSearchQuery('');
+    setSortBy('featured');
+  };
+
   return (
-    <section id="formulations" className="py-24 bg-white border-t border-purple-100 scroll-mt-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <section id="formulations" className="py-16 sm:py-20 bg-[#FAF7F2] border-b border-brand-gold/20 scroll-mt-28">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] text-xs font-bold uppercase tracking-widest shadow-sm">
-            <span>COMPLETE FORMULATION ARCHIVE</span>
+        {/* Section Header + Combo Routine Value Banner */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+          <div className="space-y-1.5 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5B0868] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest">
+              <span>Complete Formulation Archive</span>
+            </div>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#1A1918] font-medium">
+              Explore All Good Bee Formulations
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 max-w-xl">
+              Filter by category, target skin concern, or active botanical. Every SKU is small-batch traceable.
+            </p>
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-charcoal font-medium">
-            Formulations & Targeted Botanical Care
-          </h2>
-          <p className="text-sm text-brand-charcoal/70">
-            Filtered in real time. Every botanical active is cold-stabilized and batch traceable.
-          </p>
+
+          <button
+            type="button"
+            onClick={() => onExploreRoutines?.()}
+            className="self-start lg:self-end inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-colors cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300" />
+            <span>Shop 4-Step Routine Combos (Save 20%)</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        {/* Filter Toolbar */}
-        <div className="bg-[#FAF7F2] p-6 rounded-2xl border border-purple-100 shadow-sm space-y-4">
+        {/* Compact Filter & Sort Toolbar */}
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-brand-gold/25 shadow-xs space-y-3.5">
           
-          {/* Top Row: Search + Category Pills */}
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+          {/* Top Row: Category Pills + Search + Sort */}
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
             
-            {/* Category Pills */}
-            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-brand-muted mr-1">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mr-1">
                 Category:
               </span>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
+                  type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                     selectedCategory === cat
-                      ? 'bg-[#5B0868] text-white shadow-sm'
-                      : 'bg-white text-brand-charcoal hover:bg-purple-50 border border-gray-200'
+                      ? 'bg-[#5B0868] text-white shadow-2xs'
+                      : 'bg-[#FAF7F2] text-gray-800 hover:bg-purple-50 border border-gray-200'
                   }`}
                 >
                   {cat}
@@ -130,72 +168,98 @@ export default function InteractiveSpaCatalog({ activeConcern = 'All', onQuickVi
               ))}
             </div>
 
-            {/* Search Input */}
-            <div className="relative w-full lg:w-80">
-              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3.5 top-3" />
-              <input
-                type="text"
-                placeholder="Search actives or formulations..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-xl text-xs text-brand-charcoal focus:outline-none focus:border-[#5B0868]"
-              />
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1 lg:w-64">
+                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search actives or SKUs..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-8 pr-3 py-2 bg-[#FAF7F2] border border-gray-200 rounded-xl text-[16px] sm:text-xs text-[#1A1918] focus:outline-none focus:border-[#5B0868] focus:bg-white"
+                />
+              </div>
+
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sort formulations"
+                className="px-3 py-2 bg-[#FAF7F2] border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:outline-none focus:border-[#5B0868] cursor-pointer"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+              </select>
             </div>
 
           </div>
 
           {/* Bottom Row: Concern Pills */}
-          <div className="pt-3 border-t border-gray-200/60 flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-brand-muted mr-1">
-              Skin Concern:
+          <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mr-1">
+              Concern:
             </span>
             {CONCERNS.map((c) => (
               <button
                 key={c}
+                type="button"
                 onClick={() => setSelectedConcern(c)}
-                className={`px-3 py-1 rounded-lg text-xs transition-all cursor-pointer ${
+                className={`px-2.5 py-1 rounded-lg text-[11px] transition-all cursor-pointer ${
                   selectedConcern === c
-                    ? 'bg-[#5B0868] text-white font-semibold shadow-sm'
-                    : 'bg-white border border-gray-200 text-brand-charcoal hover:bg-purple-50'
+                    ? 'bg-[#5B0868] text-white font-semibold shadow-2xs'
+                    : 'bg-[#FAF7F2] border border-gray-200 text-gray-800 hover:bg-purple-50'
                 }`}
               >
                 {c}
               </button>
             ))}
+
+            {hasFilters && (
+              <button
+                type="button"
+                onClick={resetAll}
+                className="ml-auto inline-flex items-center gap-1 text-[11px] font-semibold text-rose-700 hover:text-rose-800 cursor-pointer"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Reset</span>
+              </button>
+            )}
           </div>
 
         </div>
 
         {/* Catalog Grid */}
         <div>
-          <div className="flex justify-between items-center text-xs text-brand-muted mb-6">
-            <span>Displaying {products.length} pure botanical formulation{products.length === 1 ? '' : 's'}</span>
-            <span className="text-[#5B0868] font-medium">Click any card to inspect active formulation specs</span>
+          <div className="flex justify-between items-center text-xs text-gray-600 mb-5">
+            <span>
+              Showing <strong className="text-[#1A1918]">{sortedProducts.length}</strong> pure botanical formulation{sortedProducts.length === 1 ? '' : 's'}
+              {searchQuery.trim() ? ` matching "${searchQuery.trim()}"` : ''}
+            </span>
+            <span className="text-[#5B0868] font-medium hidden sm:inline">
+              Tap any card for full ingredient breakdown & batch specs
+            </span>
           </div>
 
           {loading ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
               {[1, 2, 3, 4].map((n) => (
-                <div key={n} className="h-96 rounded-2xl bg-gray-100 animate-pulse" />
+                <div key={n} className="h-80 rounded-2xl bg-white/80 animate-pulse" />
               ))}
             </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-16 bg-[#FAF7F2] rounded-2xl border border-gray-200 p-8 space-y-3">
-              <p className="font-serif text-lg text-brand-charcoal">No formulations found for this combination</p>
+          ) : sortedProducts.length === 0 ? (
+            <div className="text-center py-14 bg-white rounded-2xl border border-brand-gold/25 p-8 space-y-3">
+              <p className="font-serif text-lg text-[#1A1918]">No formulations found for this filter combination</p>
               <button
-                onClick={() => {
-                  setSelectedCategory('All');
-                  setSelectedConcern('All');
-                  setSearchQuery('');
-                }}
-                className="px-5 py-2 bg-[#5B0868] hover:bg-[#480653] text-white text-xs rounded-xl uppercase tracking-wider transition-colors cursor-pointer"
+                type="button"
+                onClick={resetAll}
+                className="px-5 py-2.5 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold rounded-xl uppercase tracking-wider transition-colors cursor-pointer"
               >
-                Reset Filters
+                Reset All Filters
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {products.map((product, idx) => (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
+              {sortedProducts.map((product, idx) => (
                 <ProductCard
                   key={product.id}
                   product={product}

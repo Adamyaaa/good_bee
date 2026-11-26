@@ -71,15 +71,9 @@ export const CartProvider = ({ children }) => {
   };
 
   /**
-   * Add to Cart with Authentication Check
+   * Add to Cart (frictionless guest & signed-in shopping bag)
    */
   const addToCart = (product, quantity = 1) => {
-    if (!user) {
-      setPendingCartAction({ product, quantity });
-      setIsAuthModalOpen(true);
-      return false;
-    }
-
     executeAddToCart(product, quantity);
     return true;
   };

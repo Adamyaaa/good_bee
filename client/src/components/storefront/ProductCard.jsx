@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import { Star, ShoppingBag, Eye, Check } from 'lucide-react';
+import { Star, ShoppingBag, Eye, Check, ShieldCheck } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+
+const CRAFT_TAG_BY_CATEGORY = {
+  'Cold Processed Soaps': '6-Week Cold Cured • Beeswax',
+  'Pure Essential Oils': 'Steam-Distilled • Single Origin',
+  'Botanical Mists': 'Pure Hydro-Distillate • Zero Alcohol',
+  'Lip & Facial Care': 'Raw Beeswax • Cold-Pressed Oils',
+  'Hair & Wellness': 'Slow Botanical Infusion'
+};
 
 export default function ProductCard({ product, onViewDetails, idx = 0 }) {
   const { addToCart } = useCart();
@@ -13,28 +21,31 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
 
   const discountPercent = Math.round(((effectiveMrp - product.price) / effectiveMrp) * 100);
 
-  // Nat Habit Style Motivation Badges (Best Seller, Frequently Bought, Most Loved)
   const inspirationBadge =
     product.badge ||
     (idx % 3 === 0
-      ? 'BEST SELLER'
+      ? 'BESTSELLER'
       : idx % 3 === 1
-      ? 'FREQUENTLY BOUGHT'
-      : 'MOST LOVED');
+      ? 'SMALL BATCH'
+      : '100% NATURAL');
+
+  const craftLabel = CRAFT_TAG_BY_CATEGORY[product.category] || '100% Natural • Lab Stabilized';
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    addToCart(product);
-    setIsAdded(true);
-    setTimeout(() => setIsAdded(false), 1600);
+    const added = addToCart(product);
+    if (added !== false) {
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 1600);
+    }
   };
 
   return (
     <div
       onClick={() => onViewDetails && onViewDetails(product)}
-      className="group relative bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-purple-200 transition-all duration-300 flex flex-col justify-between cursor-pointer"
+      className="group relative bg-white rounded-2xl border border-brand-gold/25 overflow-hidden shadow-xs hover:shadow-xl hover:border-[#5B0868]/35 transition-all duration-300 flex flex-col justify-between cursor-pointer"
     >
-      {/* 1:1 Aspect Square Product Image Stage (Matches Nat Habit & Native 300x300 Resolution) */}
+      {/* 1:1 Studio Product Image Stage */}
       <div className="relative aspect-square overflow-hidden bg-[#FAF7F2]">
         <img
           src={product.image}
@@ -47,80 +58,76 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
           }}
         />
 
-        {/* Nat Habit Inspired Dark Pill Badges Top Left */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
-          <span className="px-2 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase bg-[#1e1e1e] text-white rounded shadow-sm">
+        {/* Top Left Craft & Savings Pills */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col items-start gap-1 z-10">
+          <span className="px-2 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase bg-[#1A1918]/90 text-white rounded-md shadow-sm">
             {inspirationBadge}
           </span>
           {discountPercent > 0 && (
-            <span className="px-1.5 py-0.2 text-[9px] font-bold tracking-wider uppercase bg-rose-600 text-white rounded shadow-sm">
-              {discountPercent}% OFF
+            <span className="px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-rose-600 text-white rounded-md shadow-sm">
+              SAVE {discountPercent}%
             </span>
           )}
         </div>
 
-        {/* Quick View Button on Hover */}
-        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+        {/* Quick View Overlay on Desktop Hover */}
+        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center justify-center">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               onViewDetails && onViewDetails(product);
             }}
-            className="px-3 py-1.5 rounded-lg bg-white/95 text-gray-800 text-xs font-semibold shadow-md hover:bg-purple-50 hover:text-[#5B0868] transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+            className="px-3.5 py-1.5 rounded-xl bg-white/95 text-gray-900 text-xs font-semibold shadow-md hover:bg-purple-50 hover:text-[#5B0868] transition-colors inline-flex items-center gap-1.5 cursor-pointer"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Quick View</span>
           </button>
         </div>
 
-        {/* Volume Stamp */}
+        {/* Volume Pill */}
         {product.volume && (
-          <span className="absolute bottom-2 right-2 text-[9px] font-medium bg-white/90 backdrop-blur-xs px-1.5 py-0.5 rounded text-gray-700 border border-gray-200">
-            {product.volume}
+          <span className="absolute bottom-2 right-2 text-[9px] font-semibold bg-white/95 backdrop-blur-xs px-2 py-0.5 rounded-md text-gray-800 border border-brand-gold/25 shadow-2xs">
+            {product.volume.split('/')[0].trim()}
           </span>
         )}
       </div>
 
-      {/* Card Content (Nat Habit Style Clean Editorial Layout) */}
-      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
-        <div className="space-y-1">
-          {/* Title */}
-          <h3 className="font-serif text-sm sm:text-base font-semibold text-[#1e1e1e] leading-snug group-hover:text-[#5B0868] transition-colors line-clamp-2">
+      {/* Card Content */}
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
+        <div className="space-y-1.5">
+          <h3 className="font-serif text-sm sm:text-[15px] font-semibold text-[#1A1918] leading-snug group-hover:text-[#5B0868] transition-colors line-clamp-2 min-h-[2.4rem]">
             {product.title}
           </h3>
 
-          {/* Subtitle / Key Actives */}
-          <p className="text-[11px] sm:text-xs text-gray-500 font-sans line-clamp-1 leading-normal">
+          <p className="text-[11px] sm:text-xs text-gray-600 font-sans line-clamp-1 leading-normal">
             {product.subtitle || product.shortDescription}
           </p>
 
-          {/* Rating or First Review Prompt */}
+          {/* Verified Rating when present, or Honest Craft Method Proof when unrated */}
           <div className="flex items-center gap-1.5 pt-0.5 text-xs">
             {product.reviewsCount && product.reviewsCount > 0 && product.rating ? (
               <>
-                <div className="flex items-center text-amber-500">
-                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                </div>
+                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 flex-shrink-0" />
                 <span className="font-bold text-[11px] text-gray-900">
                   {Number(product.rating).toFixed(1)}
                 </span>
                 <span className="text-[10px] text-gray-500">
-                  ({product.reviewsCount})
+                  ({product.reviewsCount} verified)
                 </span>
               </>
             ) : (
-              <span className="text-[10px] text-gray-400 font-medium flex items-center gap-1">
-                <Star className="w-3 h-3 text-gray-300" />
-                <span>No reviews yet • Be the first to review</span>
+              <span className="text-[10px] text-[#586959] font-semibold flex items-center gap-1 truncate">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#586959] flex-shrink-0" />
+                <span className="truncate">{craftLabel}</span>
               </span>
             )}
           </div>
 
-          {/* Primary Concern Pill & Stock */}
+          {/* Primary Concern Pill & Low Stock Indicator */}
           <div className="pt-0.5 flex items-center justify-between gap-1 flex-wrap">
             {product.concerns && product.concerns.length > 0 && (
-              <span className="inline-block text-[9px] uppercase tracking-wider px-2 py-0.5 bg-purple-50 text-[#5B0868] font-semibold rounded border border-purple-200">
+              <span className="inline-block text-[9px] uppercase tracking-wider px-2 py-0.5 bg-purple-50 text-[#5B0868] font-semibold rounded-md border border-purple-200/80">
                 {product.concerns[0]}
               </span>
             )}
@@ -133,10 +140,10 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
         </div>
 
         {/* Pricing & Add to Cart Action */}
-        <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
+        <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between gap-2">
           <div>
             <div className="flex items-baseline gap-1.5">
-              <span className="font-serif text-sm sm:text-base font-bold text-gray-900">
+              <span className="font-serif text-sm sm:text-base font-bold text-[#1A1918]">
                 ₹{product.price.toLocaleString('en-IN')}
               </span>
               {effectiveMrp > product.price && (
@@ -145,22 +152,22 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
                 </span>
               )}
             </div>
-            <span className="text-[9px] text-gray-400 block">Inclusive of taxes</span>
+            <span className="text-[9px] text-gray-400 block">Incl. of all taxes</span>
           </div>
 
           <button
             type="button"
             onClick={handleAddToCart}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 inline-flex items-center gap-1 cursor-pointer ${
+            className={`px-3 sm:px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-200 inline-flex items-center gap-1.5 cursor-pointer flex-shrink-0 ${
               isAdded
-                ? 'bg-emerald-600 text-white'
-                : 'bg-[#5B0868] hover:bg-[#480653] text-white shadow-xs hover:shadow-md'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-[#5B0868] hover:bg-[#480653] text-white shadow-xs hover:shadow-md active:scale-95'
             }`}
           >
             {isAdded ? (
               <>
                 <Check className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Added</span>
+                <span>Added</span>
               </>
             ) : (
               <>

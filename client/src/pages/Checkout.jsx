@@ -51,6 +51,12 @@ export default function Checkout({ onBack, onNavigateHome }) {
   const [selectedAddressPreset, setSelectedAddressPreset] = useState(null);
   const [pincodeLoading, setPincodeLoading] = useState(false);
   const [pincodeMessage, setPincodeMessage] = useState('');
+  const [placingOrder, setPlacingOrder] = useState(false);
+  const [activeOrder, setActiveOrder] = useState(null);
+  const [dynamicQrData, setDynamicQrData] = useState(null);
+  const [whatsappSupportUrl, setWhatsappSupportUrl] = useState('');
+  const [showQrModal, setShowQrModal] = useState(false);
+  const [confirmedOrder, setConfirmedOrder] = useState(null);
 
   // Record active checkout session for Abandoned Cart recovery
   useEffect(() => {
@@ -154,13 +160,6 @@ export default function Checkout({ onBack, onNavigateHome }) {
     }
   };
 
-  const [placingOrder, setPlacingOrder] = useState(false);
-  const [activeOrder, setActiveOrder] = useState(null);
-  const [dynamicQrData, setDynamicQrData] = useState(null);
-  const [whatsappSupportUrl, setWhatsappSupportUrl] = useState('');
-  const [showQrModal, setShowQrModal] = useState(false);
-  const [confirmedOrder, setConfirmedOrder] = useState(null);
-
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
     if (!items.length) return;
@@ -249,11 +248,11 @@ export default function Checkout({ onBack, onNavigateHome }) {
       courier: 'Blue Dart Express Priority',
       awbNumber: `BD-${Math.floor(100000000 + Math.random() * 900000000)}IN`,
       items: items.map((it) => ({
-        title: it.product.title,
-        price: it.product.price,
+        title: it.title || it.product?.title || 'Good Bee Formulation',
+        price: it.price || it.product?.price || 0,
         quantity: it.quantity,
-        volume: it.product.volume || 'Standard Pack',
-        image: it.product.image
+        volume: it.volume || it.product?.volume || 'Standard Pack',
+        image: it.image || it.product?.image || '/images_ref/Frankin-300x300.webp'
       }))
     };
 
@@ -387,13 +386,13 @@ Action: Please print lot batch certificate and initiate packaging.`;
             </div>
           </div>
 
-          {/* Client MoM WhatsApp Dual Receipt Action Block */}
-          <div className="p-6 rounded-3xl bg-brand-charcoal text-brand-ivory border border-brand-gold/40 text-left space-y-4 shadow-2xl">
+          {/* WhatsApp Dual Receipt Action Block */}
+          <div className="p-6 rounded-3xl bg-white text-[#1A1918] border border-brand-gold/30 text-left space-y-4 shadow-luxury">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold-light">
-                Automated WhatsApp Receipts (Client MoM Feature)
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868]">
+                Instant WhatsApp Order & Tax Invoice
               </span>
-              <h3 className="font-serif text-lg font-medium text-white mt-0.5">
+              <h3 className="font-serif text-lg font-medium text-[#1A1918] mt-0.5">
                 Dispatch & Order Confirmations on WhatsApp
               </h3>
             </div>
@@ -404,7 +403,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                 href={`https://wa.me/${cleanCustomerPhone || '919963075000'}?text=${encodeURIComponent(customerReceiptMsg)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3.5 rounded-2xl bg-emerald-700 hover:bg-emerald-600 text-white transition-all flex items-center justify-between gap-3 shadow-md group"
+                className="p-3.5 rounded-2xl bg-emerald-700 hover:bg-emerald-600 text-white transition-all flex items-center justify-between gap-3 shadow-sm group"
               >
                 <div className="flex items-center gap-2.5">
                   <MessageCircle className="w-5 h-5 text-emerald-200 flex-shrink-0 group-hover:scale-110 transition-transform" />
@@ -421,13 +420,13 @@ Action: Please print lot batch certificate and initiate packaging.`;
                 href={`https://wa.me/919963075000?text=${encodeURIComponent(operationsDispatchMsg)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3.5 rounded-2xl bg-brand-gold hover:bg-brand-gold-light text-brand-charcoal transition-all flex items-center justify-between gap-3 shadow-md group"
+                className="p-3.5 rounded-2xl bg-[#5B0868] hover:bg-[#480653] text-white transition-all flex items-center justify-between gap-3 shadow-sm group"
               >
                 <div className="flex items-center gap-2.5">
-                  <MessageCircle className="w-5 h-5 text-brand-charcoal flex-shrink-0 group-hover:scale-110 transition-transform" />
+                  <MessageCircle className="w-5 h-5 text-amber-200 flex-shrink-0 group-hover:scale-110 transition-transform" />
                   <div>
                     <span className="text-xs font-bold block">Notify GB Operations Team</span>
-                    <span className="text-[10px] text-brand-charcoal/80">+91-9963075000 Packing Slip</span>
+                    <span className="text-[10px] text-purple-200">+91-9963075000 Packing Slip</span>
                   </div>
                 </div>
                 <span className="text-xs font-mono">→</span>
@@ -438,7 +437,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
           <div className="flex justify-center pt-2">
             <button
               onClick={onNavigateHome}
-              className="px-8 py-3 bg-brand-charcoal text-brand-ivory rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-brand-gold-dark transition-colors shadow-luxury"
+              className="px-8 py-3 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-md cursor-pointer"
             >
               Return to Storefront
             </button>
@@ -448,32 +447,62 @@ Action: Please print lot batch certificate and initiate packaging.`;
     );
   }
 
-  return (
-    <div className="pt-28 sm:pt-36 pb-20 bg-brand-ivory min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        {/* Back navigation */}
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-xs text-brand-muted hover:text-brand-charcoal transition-colors font-medium"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Catalog</span>
-        </button>
+  if (items.length === 0) {
+    return (
+      <div className="pt-[100px] sm:pt-[116px] pb-20 bg-brand-ivory min-h-screen">
+        <div className="max-w-lg mx-auto px-4 text-center space-y-5 bg-white rounded-3xl border border-brand-gold/25 p-8 shadow-sm">
+          <h1 className="font-serif text-2xl sm:text-3xl text-[#1A1918] font-medium">
+            Your Shopping Bag is Empty
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-600">
+            Add cold-cured beeswax soaps, steam-distilled essential oils, or botanical mists to proceed to checkout.
+          </p>
+          <button
+            type="button"
+            onClick={onBack}
+            className="px-7 py-3 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-sm cursor-pointer"
+          >
+            Explore Formulations
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-        <h1 className="font-serif text-3xl sm:text-4xl text-brand-charcoal font-medium">
+  return (
+    <div className="pt-[96px] sm:pt-[110px] pb-20 bg-brand-ivory min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-xs text-gray-600 hover:text-[#5B0868] transition-colors font-semibold cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Catalog</span>
+          </button>
+
+          {!user && (
+            <span className="text-[11px] font-medium text-[#5B0868] bg-purple-50 border border-purple-200 px-3 py-1 rounded-full">
+              Express Guest Checkout Enabled
+            </span>
+          )}
+        </div>
+
+        <h1 className="font-serif text-3xl sm:text-4xl text-[#1A1918] font-medium">
           Secure Checkout
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
           {/* Form (Col 7) */}
-          <form onSubmit={handleSubmitOrder} className="lg:col-span-7 space-y-8">
+          <form onSubmit={handleSubmitOrder} className="lg:col-span-7 space-y-6">
             
             {/* Customer Details */}
-            <div className="bg-brand-cream/50 p-6 rounded-2xl border border-brand-gold/30 space-y-4">
-              <h3 className="font-serif text-xl font-semibold text-brand-charcoal">
-                1. Customer Information
+            <div className="bg-white p-5 sm:p-6 rounded-2xl border border-brand-gold/25 shadow-xs space-y-4">
+              <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#1A1918] flex items-center gap-2.5">
+                <span className="w-6 h-6 rounded-lg bg-[#5B0868] text-white text-xs font-sans font-bold flex items-center justify-center">1</span>
+                <span>Customer Information</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div>
@@ -483,7 +512,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
+                    className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] focus:bg-white text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="Enter full name"
                   />
                 </div>
@@ -494,7 +523,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
+                    className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] focus:bg-white text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="+91 9876543210"
                   />
                 </div>
@@ -505,29 +534,30 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
+                    className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] focus:bg-white text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="customer@example.com"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Delivery Address with Drop-Down Optimization */}
-            <div className="bg-brand-cream/50 p-6 rounded-2xl border border-brand-gold/30 space-y-4">
+            {/* Delivery Address */}
+            <div className="bg-white p-5 sm:p-6 rounded-2xl border border-brand-gold/25 shadow-xs space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <h3 className="font-serif text-xl font-semibold text-brand-charcoal flex items-center gap-2">
-                  <span>2. Delivery Destination</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    Dropdown Optimized
-                  </span>
+                <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#1A1918] flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-lg bg-[#5B0868] text-white text-xs font-sans font-bold flex items-center justify-center">2</span>
+                  <span>Delivery Destination</span>
                 </h3>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200 self-start sm:self-auto">
+                  PIN Auto-Fill Ready
+                </span>
               </div>
 
               {/* Quick Select Saved Address Pills */}
               <div className="space-y-1.5 pt-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-brand-muted flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 text-brand-gold-dark" />
-                  <span>1-Click Quick Select Saved Address:</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-[#5B0868]" />
+                  <span>Quick-Select Address Preset:</span>
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {SAVED_ADDRESS_PRESETS.map((addr) => (
@@ -548,7 +578,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                       className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
                         selectedAddressPreset === addr.id
                           ? 'bg-[#5B0868] text-white shadow-sm'
-                          : 'bg-white hover:bg-brand-cream border border-brand-gold/30 text-brand-charcoal'
+                          : 'bg-[#FAF7F2] hover:bg-purple-50 border border-brand-gold/30 text-brand-charcoal'
                       }`}
                     >
                       <MapPin className="w-3 h-3 text-brand-gold" />
@@ -568,14 +598,14 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     required
                     value={form.street}
                     onChange={(e) => setForm({ ...form, street: e.target.value })}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
+                    className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] focus:bg-white text-brand-charcoal text-[16px] sm:text-xs"
                     placeholder="Flat / Floor, Society, Street"
                   />
                 </div>
 
-                {/* State Dropdown */}
+                {/* State */}
                 <div>
-                  <label className="block mb-1 font-medium text-brand-charcoal">State / Region (Dropdown)</label>
+                  <label className="block mb-1 font-medium text-brand-charcoal">State / Region</label>
                   <select
                     required
                     value={form.state}
@@ -590,7 +620,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                       setIsCustomCity(citiesForState[0] === 'Other City...');
                       setSelectedAddressPreset(null);
                     }}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer text-[16px] sm:text-xs"
+                    className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] text-brand-charcoal font-medium cursor-pointer text-[16px] sm:text-xs"
                   >
                     {Object.keys(STATE_CITIES).map((st) => (
                       <option key={st} value={st}>
@@ -600,9 +630,9 @@ Action: Please print lot batch certificate and initiate packaging.`;
                   </select>
                 </div>
 
-                {/* City Cascading Dropdown */}
+                {/* City */}
                 <div>
-                  <label className="block mb-1 font-medium text-brand-charcoal">City / District (Dropdown)</label>
+                  <label className="block mb-1 font-medium text-brand-charcoal">City / District</label>
                   <select
                     required
                     value={isCustomCity ? 'Other City...' : form.city}
@@ -616,7 +646,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                       }
                       setSelectedAddressPreset(null);
                     }}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-medium cursor-pointer text-[16px] sm:text-xs"
+                    className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] text-brand-charcoal font-medium cursor-pointer text-[16px] sm:text-xs"
                   >
                     {(STATE_CITIES[form.state] || ['Other City...']).map((ct) => (
                       <option key={ct} value={ct}>
@@ -639,7 +669,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                         setCustomCity(e.target.value);
                       }}
                       placeholder="Enter city or district"
-                      className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal text-[16px] sm:text-xs"
+                      className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] focus:bg-white text-brand-charcoal text-[16px] sm:text-xs"
                     />
                   </div>
                 )}
@@ -647,7 +677,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                 {/* PIN Code with 6-digit Auto-fill */}
                 <div className="sm:col-span-2">
                   <div className="flex items-center justify-between mb-1">
-                    <label className="font-medium text-brand-charcoal">PIN Code (Enter 6 Digits to Auto-fill State & District)</label>
+                    <label className="font-medium text-brand-charcoal">PIN Code (6 Digits)</label>
                     {pincodeLoading && (
                       <span className="text-[11px] text-purple-700 font-medium flex items-center gap-1 animate-pulse">
                         <Loader2 className="w-3 h-3 animate-spin" /> Fetching location...
@@ -666,11 +696,11 @@ Action: Please print lot batch certificate and initiate packaging.`;
                     pattern="^[1-9][0-9]{5}$"
                     value={form.pincode}
                     onChange={(e) => handlePincodeChange(e.target.value)}
-                    className="w-full p-2.5 bg-brand-ivory border border-brand-gold/30 rounded-xl focus:outline-none focus:border-brand-gold text-brand-charcoal font-mono font-bold tracking-wider text-[16px] sm:text-xs"
+                    className="w-full p-2.5 bg-[#FAF7F2] border border-brand-gold/30 rounded-xl focus:outline-none focus:border-[#5B0868] focus:bg-white text-brand-charcoal font-mono font-bold tracking-wider text-[16px] sm:text-xs"
                     placeholder="e.g. 560001 (auto-fills Bengaluru, Karnataka)"
                   />
-                  <p className="text-[10px] text-brand-muted mt-1">
-                    Entering your 6-digit postal code instantly resolves your District and State.
+                  <p className="text-[10px] text-gray-500 mt-1">
+                    Entering your 6-digit postal code automatically detects your District and State.
                   </p>
                 </div>
 
@@ -678,50 +708,59 @@ Action: Please print lot batch certificate and initiate packaging.`;
             </div>
 
             {/* Payment Mode Selection */}
-            <div className="bg-brand-cream/50 p-6 rounded-2xl border border-brand-gold/30 space-y-4">
-              <h3 className="font-serif text-xl font-semibold text-brand-charcoal">
-                3. Payment Method
+            <div className="bg-white p-5 sm:p-6 rounded-2xl border border-brand-gold/25 shadow-xs space-y-4">
+              <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#1A1918] flex items-center gap-2.5">
+                <span className="w-6 h-6 rounded-lg bg-[#5B0868] text-white text-xs font-sans font-bold flex items-center justify-center">3</span>
+                <span>Payment Method</span>
               </h3>
               
               <div className="space-y-3">
-                <label className="flex items-start gap-3 p-4 rounded-xl border border-brand-gold bg-brand-ivory cursor-pointer shadow-sm">
+                <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
+                  form.paymentMethod === 'DYNAMIC_UPI_QR'
+                    ? 'border-[#5B0868] bg-purple-50/40 shadow-2xs'
+                    : 'border-brand-gold/30 bg-[#FAF7F2]'
+                }`}>
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="DYNAMIC_UPI_QR"
                     checked={form.paymentMethod === 'DYNAMIC_UPI_QR'}
                     onChange={() => setForm({ ...form, paymentMethod: 'DYNAMIC_UPI_QR' })}
-                    className="mt-1 text-brand-gold focus:ring-brand-gold"
+                    className="mt-1 accent-[#5B0868]"
                   />
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-xs text-brand-charcoal">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-semibold text-xs text-[#1A1918]">
                         Dynamic Payment QR (All UPI Apps)
                       </span>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-brand-gold text-brand-charcoal">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-[#5B0868] text-white">
                         Recommended
                       </span>
                     </div>
-                    <p className="text-[11px] text-brand-muted mt-0.5">
-                      Dynamically generated for the exact ₹{total} invoice amount. Zero fees via GPay, PhonePe, Paytm, or BHIM.
+                    <p className="text-[11px] text-gray-600 mt-0.5">
+                      Dynamically generated for the exact ₹{total.toLocaleString('en-IN')} invoice amount. Zero fees via GPay, PhonePe, Paytm, or BHIM.
                     </p>
                   </div>
                 </label>
 
-                <label className="flex items-start gap-3 p-4 rounded-xl border border-brand-gold/30 bg-brand-ivory/60 cursor-pointer">
+                <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
+                  form.paymentMethod === 'COD'
+                    ? 'border-[#5B0868] bg-purple-50/40 shadow-2xs'
+                    : 'border-brand-gold/30 bg-[#FAF7F2]'
+                }`}>
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="COD"
                     checked={form.paymentMethod === 'COD'}
                     onChange={() => setForm({ ...form, paymentMethod: 'COD' })}
-                    className="mt-1 text-brand-gold focus:ring-brand-gold"
+                    className="mt-1 accent-[#5B0868]"
                   />
                   <div>
-                    <span className="font-semibold text-xs text-brand-charcoal">
+                    <span className="font-semibold text-xs text-[#1A1918]">
                       Cash on Delivery / Courier Settlement
                     </span>
-                    <p className="text-[11px] text-brand-muted mt-0.5">
+                    <p className="text-[11px] text-gray-600 mt-0.5">
                       Pay upon delivery to the courier partner.
                     </p>
                   </div>
@@ -733,7 +772,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
               <button
                 type="submit"
                 disabled={placingOrder || items.length === 0}
-                className="w-full py-4 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-brand-gold-dark transition-all duration-300 shadow-luxury flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="w-full py-4 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all active:scale-[0.98] shadow-md flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 data-testid="place-order-submit-btn"
               >
                 {placingOrder ? (
@@ -754,7 +793,7 @@ Action: Please print lot batch certificate and initiate packaging.`;
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full transition-all duration-300 shadow-sm flex items-center justify-center gap-2 group cursor-pointer"
+                  className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 group cursor-pointer"
                   data-testid="checkout-whatsapp-btn"
                 >
                   <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -766,50 +805,52 @@ Action: Please print lot batch certificate and initiate packaging.`;
           </form>
 
           {/* Bag Summary (Col 5) */}
-          <div className="lg:col-span-5 bg-brand-cream/60 p-6 rounded-2xl border border-brand-gold/30 space-y-6">
-            <h3 className="font-serif text-xl font-semibold text-brand-charcoal">
-              Order Summary ({items.length} items)
+          <div className="lg:col-span-5 bg-white p-5 sm:p-6 rounded-2xl border border-brand-gold/25 shadow-xs space-y-5 lg:sticky lg:top-28">
+            <h3 className="font-serif text-xl font-semibold text-[#1A1918]">
+              Order Summary ({items.length} {items.length === 1 ? 'item' : 'items'})
             </h3>
 
             <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
               {items.map((it) => (
-                <div key={it.id} className="flex gap-3 items-center border-b border-brand-gold/15 pb-3">
-                  <img src={it.image} alt={it.title} className="w-12 h-12 rounded-lg object-cover bg-brand-sand/40" />
+                <div key={it.id} className="flex gap-3 items-center border-b border-gray-100 pb-3">
+                  <img src={it.image} alt={it.title} className="w-12 h-12 rounded-xl object-cover bg-[#FAF7F2] border border-brand-gold/20" />
                   <div className="flex-1 min-w-0">
-                    <h5 className="font-serif text-xs font-semibold text-brand-charcoal truncate">{it.title}</h5>
-                    <p className="text-[11px] text-brand-muted">Qty: {it.quantity} × ₹{it.price}</p>
+                    <h5 className="font-serif text-xs font-semibold text-[#1A1918] truncate">{it.title}</h5>
+                    <p className="text-[11px] text-gray-500">Qty: {it.quantity} × ₹{it.price}</p>
                   </div>
-                  <span className="text-xs font-bold text-brand-charcoal">
+                  <span className="text-xs font-bold text-[#1A1918]">
                     ₹{(it.quantity * it.price).toLocaleString('en-IN')}
                   </span>
                 </div>
               ))}
             </div>
 
-            <div className="space-y-2 text-xs border-t border-brand-gold/20 pt-4 text-brand-charcoal/80">
+            <div className="space-y-2 text-xs border-t border-gray-100 pt-4 text-gray-700">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-semibold text-brand-charcoal">₹{subtotal.toLocaleString('en-IN')}</span>
+                <span className="font-semibold text-[#1A1918]">₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
               {discount > 0 && (
-                <div className="flex justify-between text-emerald-800">
-                  <span>Promoter Benefit ({promoterCode})</span>
+                <div className="flex justify-between text-emerald-700 font-medium">
+                  <span>Promo Discount ({promoterCode})</span>
                   <span>-₹{discount.toLocaleString('en-IN')}</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{shipping === 0 ? 'COMPLIMENTARY' : `₹${shipping}`}</span>
+                <span className={shipping === 0 ? 'text-emerald-700 font-semibold' : ''}>
+                  {shipping === 0 ? 'COMPLIMENTARY' : `₹${shipping}`}
+                </span>
               </div>
-              <div className="flex justify-between text-base font-bold text-brand-charcoal pt-2 border-t border-brand-gold/20">
+              <div className="flex justify-between text-base font-bold text-[#1A1918] pt-2.5 border-t border-gray-100">
                 <span>Payable Total</span>
-                <span className="font-serif text-xl text-brand-charcoal">₹{total.toLocaleString('en-IN')}</span>
+                <span className="font-serif text-xl text-[#5B0868]">₹{total.toLocaleString('en-IN')}</span>
               </div>
             </div>
 
-            <div className="p-3 bg-brand-sand/50 rounded-xl border border-brand-gold/20 flex items-center gap-2 text-[11px] text-brand-charcoal">
-              <ShieldCheck className="w-4 h-4 text-brand-gold-dark flex-shrink-0" />
-              <span>100% Secure Transaction. Configured for Good Bee official accounts.</span>
+            <div className="p-3 bg-[#FAF7F2] rounded-xl border border-brand-gold/25 flex items-center gap-2.5 text-[11px] text-[#1A1918]">
+              <ShieldCheck className="w-4 h-4 text-[#5B0868] flex-shrink-0" />
+              <span>100% Secure Transaction • Batch-verified Good Bee dispatch.</span>
             </div>
           </div>
 

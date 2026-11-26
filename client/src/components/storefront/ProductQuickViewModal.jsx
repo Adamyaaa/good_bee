@@ -108,9 +108,9 @@ export default function ProductQuickViewModal({ product, onClose, onInstantBuy, 
                     <span className="text-[11px] text-brand-muted">({product.reviewsCount} {product.reviewsCount === 1 ? 'review' : 'reviews'})</span>
                   </>
                 ) : (
-                  <span className="text-[11px] text-brand-muted font-medium flex items-center gap-1.5">
-                    <Star className="w-3.5 h-3.5 text-gray-300" />
-                    <span>No reviews yet • Be the first to leave a rating</span>
+                  <span className="text-[11px] text-[#586959] font-semibold flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#586959]" />
+                    <span>100% Natural • Active-Stabilized Craft</span>
                   </span>
                 )}
               </div>

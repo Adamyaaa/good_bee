@@ -7,7 +7,7 @@ export const CONCERNS_DATA = [
     tagline: 'Up to 40% OFF on Clinically Proven Pure Formulations',
     badge: '40% OFF',
     isPromo: true,
-    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/Donkey-Milk-Soap-300x300.webp',
     editorialBanner: {
       whisperTopic: "Season's Whisper:",
       whisperSubtitle: "Dry Winter Skin, High Prices & Compromised Care",
@@ -47,7 +47,7 @@ export const CONCERNS_DATA = [
     label: 'Hair Care',
     title: 'Botanical Hair & Scalp Therapy',
     tagline: 'Targeted Follicle Stimulation, Root Strengthening & Pure Scalp Tonics',
-    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/Rosmary-2-300x300.webp',
     editorialBanner: {
       whisperTopic: "Hair's Whisper:",
       whisperSubtitle: "Excessive Hairfall, Weak Roots & Scalp Flaking",
@@ -82,7 +82,7 @@ export const CONCERNS_DATA = [
     label: 'Face Care',
     title: 'Pure Botanical Facial Care & Ubtan Bars',
     tagline: 'Steam Distillates, Micro-Exfoliating Herbal Bars & Botanical Serums',
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/Clear-skin-300x300.webp',
     editorialBanner: {
       whisperTopic: "Skin's Whisper:",
       whisperSubtitle: "Acne Breakouts, Red Flare-Ups & Clogged Pores",
@@ -121,7 +121,7 @@ export const CONCERNS_DATA = [
     label: 'Lip Care',
     title: 'Natural Beeswax Lip Care & Dewy Tints',
     tagline: 'Soothe AC Dehydration, Dry Chapped Skin & Uneven Lip Tone',
-    image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/Pink-Lotus-300x300.webp',
     editorialBanner: {
       whisperTopic: "Lip's Whisper:",
       whisperSubtitle: "Chapped, Peeling & Matte-Lipstick Dehydration",
@@ -158,7 +158,7 @@ export const CONCERNS_DATA = [
     label: 'Body Soaps',
     title: 'Cold Processed Artisanal Botanical Soaps',
     tagline: '45-Day Cured Without Harsh SLS or Synthetic Detergents',
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/Coffee-300x300.webp',
     editorialBanner: {
       whisperTopic: "Body's Whisper:",
       whisperSubtitle: "Chemical Stripping, Itchy Scaly Redness & Rough Barrier",
@@ -200,7 +200,7 @@ export const CONCERNS_DATA = [
     label: 'Winter Care',
     title: 'Winter Care & Deep Moisture Shield',
     tagline: 'Intense Lipid Reconstruction for Parched Winter Skin & Chapped Lips',
-    image: 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/Levendor-300x300.webp',
     editorialBanner: {
       whisperTopic: "Winter's Whisper:",
       whisperSubtitle: "Dryness, Hairfall & Flaky Skin",
@@ -239,7 +239,7 @@ export const CONCERNS_DATA = [
     label: 'Pure Oils',
     title: 'Steam-Distilled Pure Essential & Therapeutic Oils',
     tagline: 'Single-Origin Botanical Extractions with Batch Transparency',
-    image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/Frankin-300x300.webp',
     editorialBanner: {
       whisperTopic: "Aromatic Whisper:",
       whisperSubtitle: "Stress Fatigue, Dilated Pores & Unbalanced Sebum",
@@ -276,7 +276,7 @@ export const CONCERNS_DATA = [
     label: 'Baby Care',
     title: 'Soft Baby & Ultra-Sensitive Newborn Care',
     tagline: 'Crafted with Pure Desi A2 Cow Milk, Raw Shea Butter & Calming Lavender',
-    image: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=400&q=80',
+    image: '/images_ref/WhatsApp-Image-2025-09-19-at-16.46.25-1-300x300.webp',
     editorialBanner: {
       whisperTopic: "Baby's Whisper:",
       whisperSubtitle: "Delicate Newborn Skin, Diaper Rash & Harsh Detergents",

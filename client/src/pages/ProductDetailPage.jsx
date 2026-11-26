@@ -29,15 +29,26 @@ import {
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { SEED_REVIEWS, DEFAULT_PRODUCT_REVIEWS } from '../data/reviewsData';
+import { GoodBeeApi } from '../services/api';
+import ProductCard from '../components/storefront/ProductCard';
 
-export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
+const CRAFT_PROOF_BY_CATEGORY = {
+  'Cold Processed Soaps': '6-Week Cold Cured • Natural Glycerin & Beeswax',
+  'Pure Essential Oils': 'Steam-Distilled • Single-Origin Harvest',
+  'Botanical Mists': 'Pure Hydro-Distillate • Zero Alcohol',
+  'Lip & Facial Care': 'Unrefined Beeswax • Cold-Pressed Oils',
+  'Hair & Wellness': 'Slow Botanical Infusion • Zero Mineral Oil'
+};
+
+export default function ProductDetailPage({ product, onBack, onInstantBuy, onSelectProduct }) {
   const { addToCart } = useCart();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState('INGREDIENTS'); // 'INGREDIENTS', 'PROCESS', 'REVIEWS', 'HOW_TO_USE'
+  const [activeTab, setActiveTab] = useState('INGREDIENTS'); // 'INGREDIENTS', 'FIELDS_AND_FARM', 'PROCESS', 'REVIEWS', 'HOW_TO_USE'
   const [addedNotice, setAddedNotice] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   // Reviews state
   const [reviewsList, setReviewsList] = useState([]);
@@ -49,6 +60,8 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setSelectedImageIndex(0);
+    setQuantity(1);
     
     // Load reviews: look in localStorage custom reviews or seed data
     try {
@@ -58,7 +71,17 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
     } catch (e) {
       setReviewsList(SEED_REVIEWS[product?.id] || DEFAULT_PRODUCT_REVIEWS);
     }
-  }, [product?.id]);
+
+    // Load related formulations for cross-sell
+    if (product?.id) {
+      GoodBeeApi.fetchProducts().then((list) => {
+        const others = (list || []).filter((p) => p.id !== product.id);
+        const sameCategory = others.filter((p) => p.category === product.category);
+        const complementary = others.filter((p) => p.category !== product.category);
+        setRelatedProducts([...sameCategory, ...complementary].slice(0, 4));
+      }).catch(() => {});
+    }
+  }, [product?.id, product?.category]);
 
   if (!product) return null;
 
@@ -156,8 +179,8 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
   ];
 
   return (
-    <div className="pt-[74px] sm:pt-[78px] pb-16 bg-brand-ivory min-h-screen text-brand-charcoal">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3 sm:space-y-4">
+    <div className="pt-[82px] sm:pt-[90px] pb-24 md:pb-16 bg-brand-ivory min-h-screen text-brand-charcoal">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5">
         
         {/* Sleek Compact Navigation Bar */}
         <div className="flex items-center justify-between py-1.5 border-b border-gray-200/80 text-xs">
@@ -256,8 +279,8 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                 {product.subtitle || '100% Pure Botanical Formulation • Cold-Stabilized Actives'}
               </p>
 
-              {/* Star Rating & Verified Count */}
-              <div className="flex items-center gap-2 text-xs pt-0.5">
+              {/* Verified Rating or Honest Craft Proof */}
+              <div className="flex flex-wrap items-center gap-2 text-xs pt-0.5">
                 {currentReviewsCount > 0 ? (
                   <>
                     <div className="flex text-amber-500 gap-0.5">
@@ -274,37 +297,47 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                     </div>
                     <span className="font-bold text-brand-charcoal">{currentAvgRating}</span>
                     <span className="text-brand-muted font-medium">
-                      ({currentReviewsCount} {currentReviewsCount === 1 ? 'Customer Review' : 'Customer Reviews'})
+                      ({currentReviewsCount} {currentReviewsCount === 1 ? 'Verified Review' : 'Verified Reviews'})
                     </span>
                   </>
                 ) : (
-                  <span className="text-xs text-brand-muted italic">
-                    No reviews yet • Be the first to leave a rating
-                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#586959]/10 text-[#586959] border border-[#586959]/20 text-[11px] font-semibold">
+                      <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span>{CRAFT_PROOF_BY_CATEGORY[product.category] || '100% Natural • Lab Stabilized'}</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('REVIEWS')}
+                      className="text-[11px] font-semibold text-[#5B0868] hover:underline cursor-pointer"
+                    >
+                      Verified reviews →
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
 
             {/* Price & Savings Block */}
-            <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF7F2] border border-gray-200 flex items-baseline justify-between flex-wrap gap-2">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-brand-gold/25 shadow-2xs flex items-baseline justify-between flex-wrap gap-2">
               <div className="space-y-0.5">
                 <div className="flex items-baseline gap-2.5">
-                  <span className="font-sans text-2xl sm:text-3xl font-bold text-brand-charcoal">
+                  <span className="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal">
                     ₹{product.price.toLocaleString('en-IN')}
                   </span>
                   <span className="text-sm text-brand-muted line-through font-mono">
                     ₹{effectiveMrp.toLocaleString('en-IN')}
                   </span>
-                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                     Save {discountPercent}%
                   </span>
                 </div>
-                <p className="text-[10px] text-brand-muted">Inclusive of all taxes • Free express shipping above ₹999</p>
+                <p className="text-[11px] text-gray-500">Inclusive of all taxes • Free express shipping above ₹999</p>
               </div>
 
               {typeof product.stock === 'number' && product.stock > 0 && product.stock < 15 && (
-                <span className="text-[9px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
-                  Only {product.stock} units left in batch
+                <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+                  Only {product.stock} left in batch
                 </span>
               )}
             </div>
@@ -312,26 +345,29 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
             {/* Quantity Selector & Action Buttons (Above the Fold) */}
             <div className="space-y-2.5 pt-1">
               <div className="flex items-center gap-2.5">
-                <div className="flex items-center border border-gray-300 rounded-xl bg-white px-2.5 py-1.5 text-xs shadow-2xs">
-                  <span className="text-[10px] text-brand-muted mr-2">Qty:</span>
+                <div className="flex items-center border border-brand-gold/35 rounded-xl bg-white px-2.5 py-2 text-xs shadow-2xs">
+                  <span className="text-[10px] text-gray-500 mr-2">Qty:</span>
                   <button
+                    type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="font-bold px-1.5 py-0.5 hover:bg-gray-100 rounded text-brand-charcoal cursor-pointer"
+                    className="font-bold px-2 py-0.5 hover:bg-purple-50 hover:text-[#5B0868] rounded text-brand-charcoal cursor-pointer active:scale-95"
                   >
                     -
                   </button>
                   <span className="font-bold px-2.5 text-xs">{quantity}</span>
                   <button
+                    type="button"
                     onClick={() => setQuantity(quantity + 1)}
-                    className="font-bold px-1.5 py-0.5 hover:bg-gray-100 rounded text-brand-charcoal cursor-pointer"
+                    className="font-bold px-2 py-0.5 hover:bg-purple-50 hover:text-[#5B0868] rounded text-brand-charcoal cursor-pointer active:scale-95"
                   >
                     +
                   </button>
                 </div>
 
                 <button
+                  type="button"
                   onClick={handleAdd}
-                  className="flex-1 py-2.5 px-4 bg-white hover:bg-gray-50 text-brand-charcoal border border-gray-300 hover:border-[#5B0868] rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
+                  className="flex-1 py-3 px-4 bg-white hover:bg-purple-50 text-brand-charcoal border border-brand-gold/40 hover:border-[#5B0868] rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.97] shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <ShoppingBag className="w-4 h-4 text-[#5B0868]" />
                   <span>Add to Shopping Bag</span>
@@ -340,8 +376,9 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
               {/* Instant Buy with UPI */}
               <button
+                type="button"
                 onClick={() => onInstantBuy && onInstantBuy(product, quantity)}
-                className="w-full py-3 px-5 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 px-5 bg-[#5B0868] hover:bg-[#480653] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
                 <span>Instant Buy Now with Dynamic UPI (₹{((product.price || 0) * quantity).toLocaleString('en-IN')})</span>
@@ -354,6 +391,21 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                   <span>Added {quantity}x "{product.title}" to your shopping bag!</span>
                 </div>
               )}
+            </div>
+
+            {/* Compact 4-Pillar Purity & Dispatch Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              {[
+                { label: '100% Natural', sub: 'Zero synthetic fragrance' },
+                { label: 'Cold-Stabilized', sub: 'Potent active esters' },
+                { label: 'Batch Verified', sub: 'Ayush & ISO 22716' },
+                { label: 'Pan-India Dispatch', sub: 'Free above ₹999' }
+              ].map((pill) => (
+                <div key={pill.label} className="p-2.5 rounded-xl bg-white border border-brand-gold/20 text-left">
+                  <span className="text-[11px] font-serif font-semibold text-[#1A1918] block">{pill.label}</span>
+                  <span className="text-[10px] text-gray-500 block">{pill.sub}</span>
+                </div>
+              ))}
             </div>
 
             {/* Primary Concerns Tagged */}
@@ -523,24 +575,40 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {(product.fieldPhotos && product.fieldPhotos.length > 0 ? product.fieldPhotos : [
-                      'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=800&q=80',
-                      'https://images.unsplash.com/photo-1592417817098-8f3d69102353?auto=format&fit=crop&w=800&q=80'
+                      '/images_ref/Rosmary-2-300x300.webp',
+                      '/images_ref/Levendor-300x300.webp'
                     ]).map((img, idx) => (
-                      <div key={idx} className="relative rounded-2xl overflow-hidden aspect-video border border-gray-200 group">
-                        <img src={img} alt="Farm Field" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                      <div key={idx} className="relative rounded-2xl overflow-hidden aspect-square sm:aspect-video border border-brand-gold/25 bg-[#FAF7F2] group">
+                        <img
+                          src={img}
+                          alt="Botanical Harvest"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/images_ref/Rosmary-2-300x300.webp';
+                          }}
+                        />
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 p-1.5 text-white text-[9px] font-medium">
-                          Agricultural Field #{idx + 1}
+                          Harvest Batch #{idx + 1}
                         </div>
                       </div>
                     ))}
 
                     {(product.processingUnitPhotos && product.processingUnitPhotos.length > 0 ? product.processingUnitPhotos : [
-                      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80'
+                      '/images_ref/Frankin-300x300.webp'
                     ]).map((img, idx) => (
-                      <div key={`unit-${idx}`} className="relative rounded-2xl overflow-hidden aspect-video border border-gray-200 group">
-                        <img src={img} alt="Processing Unit" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                      <div key={`unit-${idx}`} className="relative rounded-2xl overflow-hidden aspect-square sm:aspect-video border border-brand-gold/25 bg-[#FAF7F2] group">
+                        <img
+                          src={img}
+                          alt="Extraction Studio"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/images_ref/Frankin-300x300.webp';
+                          }}
+                        />
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 p-1.5 text-white text-[9px] font-medium">
-                          Processing Unit #{idx + 1}
+                          Extraction Batch #{idx + 1}
                         </div>
                       </div>
                     ))}
@@ -823,7 +891,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                         value={newHeadline}
                         onChange={(e) => setNewHeadline(e.target.value)}
                         placeholder="e.g. Visible glow within 5 days..."
-                        className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                        className="w-full px-3 py-2 text-[16px] sm:text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                       />
                     </div>
 
@@ -835,7 +903,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         placeholder="Describe how the formulation felt on your skin, absorption, fragrance, and noticeable results..."
-                        className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
+                        className="w-full px-3 py-2 text-[16px] sm:text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#5B0868]"
                       />
                     </div>
 
@@ -912,6 +980,73 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy }) {
 
         </div>
 
+        {/* Pair With Your Ritual (Related Formulations Cross-Sell) */}
+        {relatedProducts.length > 0 && (
+          <div className="pt-10 border-t border-brand-gold/20 space-y-5">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868] block">
+                  Complete Your Ritual
+                </span>
+                <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#1A1918]">
+                  Frequently Paired Formulations
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={onBack}
+                className="text-xs font-bold text-[#5B0868] hover:underline cursor-pointer"
+              >
+                Explore All →
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
+              {relatedProducts.map((rel, idx) => (
+                <ProductCard
+                  key={rel.id}
+                  product={rel}
+                  idx={idx}
+                  onViewDetails={(prod) => {
+                    if (onSelectProduct) onSelectProduct(prod);
+                    else {
+                      window.location.hash = `#product=${prod.id}`;
+                    }
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      {/* Mobile Sticky Bottom Buy Bar */}
+      <div className="fixed bottom-0 inset-x-0 md:hidden z-30 apple-glass-chrome border-t border-brand-gold/25 px-4 py-2.5 shadow-2xl">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <span className="font-serif text-lg font-bold text-[#1A1918] block leading-none">
+              ₹{((product.price || 0) * quantity).toLocaleString('en-IN')}
+            </span>
+            <span className="text-[10px] text-gray-500">Qty {quantity} • Incl. taxes</span>
+          </div>
+          <div className="flex items-center gap-2 flex-1 justify-end">
+            <button
+              type="button"
+              onClick={handleAdd}
+              className="px-3.5 py-2.5 rounded-xl bg-white border border-brand-gold/40 text-[#1A1918] text-xs font-bold uppercase tracking-wider active:scale-95"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              onClick={() => onInstantBuy && onInstantBuy(product, quantity)}
+              className="px-4 py-2.5 rounded-xl bg-[#5B0868] text-white text-xs font-bold uppercase tracking-wider shadow-sm active:scale-95"
+            >
+              Buy Now
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

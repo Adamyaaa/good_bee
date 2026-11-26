@@ -62,61 +62,61 @@ Please confirm order formulation availability and delivery dispatch.`;
         <div className="w-screen max-w-md bg-brand-ivory border-l border-brand-gold/30 shadow-2xl flex flex-col justify-between">
           
           {/* Header */}
-          <div className="p-6 border-b border-brand-gold/20 flex items-center justify-between bg-brand-cream/60">
+          <div className="p-5 sm:p-6 border-b border-brand-gold/20 flex items-center justify-between bg-white">
             <div className="flex items-center gap-2">
-              <h2 className="font-serif text-2xl text-brand-charcoal font-semibold">Your Shopping Bag</h2>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-brand-gold text-brand-charcoal font-bold">
+              <h2 className="font-serif text-xl sm:text-2xl text-[#1A1918] font-semibold">Your Shopping Bag</h2>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[#5B0868] text-white font-bold">
                 {items.length}
               </span>
             </div>
             <button
               onClick={() => setIsDrawerOpen(false)}
-              className="p-1.5 text-brand-charcoal hover:text-brand-gold-dark transition-colors rounded-full"
+              className="p-1.5 text-brand-charcoal hover:text-[#5B0868] transition-colors rounded-full cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Free Delivery Meter */}
-          <div className="bg-brand-sand/40 px-6 py-3 border-b border-brand-gold/15">
-            <div className="flex items-center justify-between text-xs text-brand-charcoal font-medium mb-1.5">
+          <div className="bg-purple-50/60 px-6 py-3 border-b border-brand-gold/20">
+            <div className="flex items-center justify-between text-xs text-[#1A1918] font-medium mb-1.5">
               <span>
                 {remainingForFree === 0 ? (
                   <span className="text-emerald-800 font-semibold flex items-center gap-1">
-                    ✓ You have unlocked Complimentary Delivery
+                    ✓ You have unlocked Complimentary Pan-India Delivery
                   </span>
                 ) : (
                   <span>Add ₹{remainingForFree} more for Complimentary Shipping</span>
                 )}
               </span>
-              <span>₹999</span>
+              <span className="font-bold text-[#5B0868]">₹999</span>
             </div>
-            <div className="w-full h-1.5 bg-brand-cream rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-white rounded-full overflow-hidden border border-purple-200/70">
               <div
-                className="h-full bg-brand-gold transition-all duration-500 rounded-full"
+                className="h-full bg-[#5B0868] transition-all duration-500 rounded-full"
                 style={{ width: `${progressToFreeShipping}%` }}
               />
             </div>
           </div>
 
           {/* Cart Item List */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-3.5">
             {items.length === 0 ? (
               <div className="text-center py-16 space-y-4">
                 <div className="w-16 h-16 mx-auto rounded-full bg-white border border-brand-gold/30 flex items-center justify-center p-2 shadow-sm">
                   <img
-                    src="/assets/goodbee-white-logo.png"
+                    src="/assets/goodbee-bee-mark-gold.png"
                     alt="Good Bee Emblem"
-                    className="w-full h-full object-contain opacity-80"
+                    className="w-full h-full object-contain opacity-90"
                   />
                 </div>
                 <h3 className="font-serif text-xl text-brand-charcoal font-medium">Your bag is currently empty</h3>
                 <p className="text-xs text-brand-muted max-w-xs mx-auto">
-                  Explore our research-backed botanical serums, creams, and restorative nectars.
+                  Explore our cold-cured beeswax soaps, steam-distilled essential oils, and botanical mists.
                 </p>
                 <button
                   onClick={() => setIsDrawerOpen(false)}
-                  className="px-6 py-2.5 bg-brand-charcoal text-brand-ivory text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-brand-gold-dark transition-colors"
+                  className="px-6 py-2.5 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors cursor-pointer"
                 >
                   Start Exploring
                 </button>
@@ -125,7 +125,7 @@ Please confirm order formulation availability and delivery dispatch.`;
               items.map((item) => (
                 <div
                   key={item.id}
-                  className="p-3 rounded-xl border border-brand-gold/20 bg-brand-cream/30 flex gap-4 items-center"
+                  className="p-3 rounded-2xl border border-brand-gold/25 bg-white shadow-2xs flex gap-3.5 items-center"
                 >
                   <img
                     src={item.image}

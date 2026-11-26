@@ -106,7 +106,7 @@ export default function ShopByConcernCircleBar({
           onMouseLeave={handleMouseLeaveOrUp}
           onMouseUp={handleMouseLeaveOrUp}
           onMouseMove={handleMouseMove}
-          className={`flex items-start justify-start md:justify-center gap-2 sm:gap-3.5 md:gap-5 lg:gap-6 overflow-x-auto py-0.5 px-2 sm:px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing touch-pan-x ${
+          className={`flex items-start justify-start md:justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-7 overflow-x-auto py-1 px-2 sm:px-3 no-scrollbar select-none cursor-grab active:cursor-grabbing touch-pan-x ${
             isDragging ? 'scroll-auto' : 'scroll-smooth'
           }`}
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
@@ -118,22 +118,21 @@ export default function ShopByConcernCircleBar({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectConcern && onSelectConcern(item)}
-                className="group flex flex-col items-center flex-shrink-0 w-[54px] sm:w-[60px] md:w-[66px] cursor-pointer focus:outline-none transition-transform duration-200 active:scale-95 sm:hover:-translate-y-0.5"
+                className="group flex flex-col items-center flex-shrink-0 w-[62px] sm:w-[68px] md:w-[74px] cursor-pointer focus:outline-none transition-transform duration-200 active:scale-95 sm:hover:-translate-y-0.5"
               >
                 {/* Circular Photo Container */}
                 <div className="relative">
-                  {/* Outer Circular Ring: Exact Match to Nat Habit Aesthetic */}
                   <div
-                    className={`w-11 h-11 sm:w-12 sm:h-12 md:w-[52px] md:h-[52px] rounded-full p-[1.5px] transition-all duration-300 flex items-center justify-center flex-shrink-0 ${
+                    className={`w-[52px] h-[52px] sm:w-[56px] sm:h-[56px] md:w-[60px] md:h-[60px] rounded-full p-[2px] transition-all duration-300 flex items-center justify-center flex-shrink-0 ${
                       item.isPromo
-                        ? 'border-2 border-rose-600 ring-1 ring-rose-200 shadow-xs'
+                        ? 'border-2 border-rose-600 ring-2 ring-rose-100 shadow-xs'
                         : isSelected
-                        ? 'border-2 border-[#5B0868] ring-1 ring-purple-200 shadow-xs'
-                        : 'border-[1.5px] border-[#F5BEBE] hover:border-[#5B0868] hover:shadow-xs'
+                        ? 'border-2 border-[#5B0868] ring-2 ring-purple-100 shadow-sm'
+                        : 'border-[1.5px] border-brand-gold/50 group-hover:border-[#5B0868] group-hover:shadow-sm'
                     }`}
                   >
                     {/* Inner Photo Circle */}
-                    <div className="w-full h-full rounded-full overflow-hidden bg-amber-50/50 relative">
+                    <div className="w-full h-full rounded-full overflow-hidden bg-brand-cream relative">
                       <img
                         src={item.image}
                         alt={item.label}
@@ -156,9 +155,9 @@ export default function ShopByConcernCircleBar({
                   </div>
                 </div>
 
-                {/* Circle Label Underneath (Clean, Compact, 1 line) */}
+                {/* Circle Label Underneath */}
                 <span
-                  className={`mt-0.5 text-center text-[9px] sm:text-[10px] md:text-[11px] font-medium leading-tight transition-colors line-clamp-1 max-w-[54px] sm:max-w-[60px] md:max-w-[66px] ${
+                  className={`mt-1 text-center text-[10px] sm:text-[11px] font-medium leading-tight transition-colors line-clamp-1 max-w-[64px] sm:max-w-[70px] md:max-w-[76px] ${
                     isSelected
                       ? 'text-[#5B0868] font-bold'
                       : 'text-gray-800 group-hover:text-[#5B0868]'

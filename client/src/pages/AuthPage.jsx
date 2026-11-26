@@ -78,10 +78,10 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] flex flex-col justify-between selection:bg-purple-100 selection:text-purple-900">
+    <div className="min-h-screen pt-[88px] sm:pt-[96px] bg-[#FAF7F2] flex flex-col justify-between selection:bg-purple-100 selection:text-purple-900">
       
-      {/* Top Floating Return Navigation */}
-      <nav className="p-4 sm:p-6 max-w-7xl mx-auto w-full flex items-center justify-between">
+      {/* Top Return Navigation */}
+      <nav className="px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full flex items-center justify-between">
         <button
           type="button"
           onClick={onBack}
@@ -130,15 +130,15 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
             <div className="relative z-10 space-y-3 pt-6 border-t border-white/15 my-6">
               <div className="flex items-center gap-3 text-xs text-purple-100">
                 <div className="p-1.5 rounded-lg bg-white/15 text-amber-300"><Droplets className="w-4 h-4" /></div>
-                <span>100% Steam-Distilled Pure Botanicals</span>
+                <span>6-Week Cold-Cured Beeswax & Steam-Distilled Oils</span>
               </div>
               <div className="flex items-center gap-3 text-xs text-purple-100">
                 <div className="p-1.5 rounded-lg bg-white/15 text-emerald-300"><Leaf className="w-4 h-4" /></div>
-                <span>Zero Parabens, Artificial Sulphates, or Microplastics</span>
+                <span>Zero Parabens, SLS, Mineral Oils, or Artificial Perfumes</span>
               </div>
               <div className="flex items-center gap-3 text-xs text-purple-100">
                 <div className="p-1.5 rounded-lg bg-white/15 text-pink-300"><Heart className="w-4 h-4" /></div>
-                <span>Ethically Sourced from Sustainable Farm Cooperatives</span>
+                <span>India Organic (NPOP), Ayush GMP & ISO 22716 Verified</span>
               </div>
             </div>
 
@@ -151,9 +151,9 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
           <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-center">
             
             {/* Switch Tabs (Login vs Register) */}
-            <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4 mb-6">
               <div>
-                <h3 className="font-serif text-2xl font-bold text-gray-900">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-gray-900">
                   {mode === 'login' ? 'Customer Sign In' : 'Create an Account'}
                 </h3>
                 <p className="text-xs text-gray-500 mt-1">
@@ -163,7 +163,7 @@ export default function AuthPage({ initialMode = 'login', onBack, onAuthSuccess 
                 </p>
               </div>
 
-              <div className="flex bg-gray-100 p-1 rounded-xl">
+              <div className="flex self-start sm:self-auto shrink-0 bg-gray-100 p-1 rounded-xl">
                 <button
                   type="button"
                   onClick={() => {
