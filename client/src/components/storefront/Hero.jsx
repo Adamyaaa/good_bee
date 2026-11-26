@@ -21,90 +21,75 @@ import { useCart } from '../../context/CartContext';
 const HERO_SLIDES = [
   {
     id: 'slide-1',
-    categoryTag: 'SMALL-BATCH BEESWAX & BOTANICAL CRAFT',
     headline: 'Nature, Stabilized.',
-    italicLine: 'Pure craft for resilient, glowing skin.',
     description:
-      'Cold-cured beeswax soaps, steam-distilled single-origin essential oils, and floral hydrosols—formulated without SLS, parabens, or synthetic fragrance.',
+      'Small-batch cold-cured beeswax soaps, pure essential oils & botanical mists.',
     ctaPrimary: 'Shop Bestsellers',
     ctaPrimaryTarget: 'bestsellers',
-    ctaSecondary: 'Build Your Routine',
+    ctaSecondary: 'Build Routine',
     ctaSecondaryTarget: 'how-to-apply',
     image: '/assets/goodbee-skincare-hero.jpg',
     objectPosition: 'object-[right_center]',
     spotlightProduct: {
       id: 'gb_prod_donkey_milk_soap',
       title: 'Donkey Milk Cold Processed Soap',
-      subtitle: 'Almond Oil, Raw Donkey Milk & Pure Bee Wax',
-      badge: '6-Week Cold Cured',
       price: 380,
       mrp: 450,
       volume: '100 g',
       category: 'Cold Processed Soaps',
-      image: '/images_ref/Donkey-Milk-Soap-300x300.webp',
-      highlight: 'Restores lipid barrier without tight, stripped skin'
+      image: '/images_ref/Donkey-Milk-Soap-300x300.webp'
     }
   },
   {
     id: 'slide-2',
-    categoryTag: 'SINGLE-ORIGIN STEAM-DISTILLED ELIXIRS',
-    headline: 'Potent Botanical Drops.',
-    italicLine: 'Calm inflammation & restore bounce.',
+    headline: 'Pure Botanical Drops.',
     description:
-      'Low-temperature hydro-distillation preserves active boswellic acids, geraniol, and rosmarinic terpenes—batch verified from forest apiary to bottle.',
-    ctaPrimary: 'Explore Pure Oils',
+      'Steam-distilled single-origin oils for calm, resilient skin.',
+    ctaPrimary: 'Explore Oils',
     ctaPrimaryTarget: 'bestsellers',
-    ctaSecondary: 'Shop by Concern',
+    ctaSecondary: 'By Concern',
     ctaSecondaryTarget: 'shop-by-concern',
     image: '/assets/goodbee-skincare-hero-2.jpg',
     objectPosition: 'object-[center_20%]',
     spotlightProduct: {
       id: 'gb_prod_frankincense',
       title: 'Frankincense Pure Essential Oil',
-      subtitle: '100% Wild Boswellia Carterii Steam-Distilled Resin',
-      badge: '100% Pure Extract',
       price: 1450,
       mrp: 1750,
       volume: '15 ml',
       category: 'Pure Essential Oils',
-      image: '/images_ref/Frankin-300x300.webp',
-      highlight: 'GC-verified boswellic terpenes for cellular renewal'
+      image: '/images_ref/Frankin-300x300.webp'
     }
   },
   {
     id: 'slide-3',
-    categoryTag: 'SOURCE-IDENTIFIED RITUALS • ZERO FILLERS',
-    headline: 'Say No to Chemical Bathing.',
-    italicLine: 'Raw beeswax, lotus & cold-pressed oils.',
+    headline: 'Zero Synthetics.',
     description:
-      'Every bar retains 100% natural botanical glycerin while beeswax lip balms and steam-distilled mists seal breathable hydration all day.',
-    ctaPrimary: 'Browse All 19 Formulations',
+      '100% natural glycerin, forest beeswax & slow botanical infusions.',
+    ctaPrimary: 'Browse All',
     ctaPrimaryTarget: 'formulations',
-    ctaSecondary: 'View Hero Botanicals',
+    ctaSecondary: 'Key Botanicals',
     ctaSecondaryTarget: 'ingredients',
     image: '/assets/goodbee-hero-model.jpg',
     objectPosition: 'object-center',
     spotlightProduct: {
       id: 'gb_prod_pink_lip_balm',
       title: 'Tinted Pink Moisturizing Lip Balm',
-      subtitle: 'Pink Lotus, Sweet Almond & Unrefined Beeswax',
-      badge: 'Customer Favorite',
       price: 349,
       mrp: 425,
       volume: '5 g',
       category: 'Lip & Facial Care',
-      image: '/images_ref/Pink-Lotus-300x300.webp',
-      highlight: 'Effortless rosy flush with zero petroleum or synthetic dyes'
+      image: '/images_ref/Pink-Lotus-300x300.webp'
     }
   }
 ];
 
 const TRUST_PILLARS = [
-  { icon: ShieldCheck, label: '6-Week Cold Cured', sub: 'Retains natural glycerin' },
-  { icon: Leaf, label: '100% Natural Actives', sub: 'Zero SLS, parabens or mineral oil' },
-  { icon: Award, label: 'Ayush & ISO 22716', sub: 'Batch-verified quality standards' },
-  { icon: Droplets, label: 'Single-Origin Apiaries', sub: 'Cold-stabilized forest harvests' },
-  { icon: Truck, label: 'Free Shipping ₹999+', sub: 'Pan-India express dispatch' }
+  { icon: ShieldCheck, label: '6-Week Cold Cured' },
+  { icon: Leaf, label: '100% Natural Actives' },
+  { icon: Award, label: 'Ayush & ISO 22716' },
+  { icon: Droplets, label: 'Single-Origin Apiaries' },
+  { icon: Truck, label: 'Free Shipping ₹999+' }
 ];
 
 export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
@@ -194,7 +179,7 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
     <section ref={heroRef} id="hero" className="relative w-full max-w-full bg-[#FAF7F2] overflow-hidden select-none">
       {/* Main Split Editorial & Product-First Stage */}
       <div
-        className="relative w-full min-h-[540px] lg:min-h-[610px] flex items-center py-7 sm:py-10 lg:py-12 overflow-hidden"
+        className="relative w-full min-h-[440px] lg:min-h-[500px] flex items-center py-6 sm:py-8 lg:py-10 overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
@@ -238,36 +223,13 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
                   transition={{ type: 'spring', bounce: 0, duration: 0.36 }}
                   className="space-y-3 sm:space-y-4"
                 >
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/95 border border-[#5B0868]/25 text-[#5B0868] text-[10px] sm:text-[11px] font-bold tracking-widest uppercase shadow-2xs max-w-full">
-                    <Sparkles className="w-3 h-3 text-[#5B0868] flex-shrink-0" />
-                    <span className="truncate">{slide.categoryTag}</span>
-                  </div>
+                  <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-serif text-[#1A1918] font-medium tracking-[-0.02em] leading-[1.06]">
+                    {slide.headline}
+                  </h1>
 
-                  <div className="space-y-1">
-                    <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-serif text-[#1A1918] font-medium tracking-[-0.02em] leading-[1.05]">
-                      {slide.headline}
-                    </h1>
-                    <p className="text-lg sm:text-3xl font-serif italic text-[#5B0868] font-normal leading-snug">
-                      {slide.italicLine}
-                    </p>
-                  </div>
-
-                  <p className="text-xs sm:text-sm md:text-[15px] text-[#2D2B29] font-sans leading-relaxed max-w-xl">
+                  <p className="text-sm sm:text-base text-[#2D2B29] font-sans leading-relaxed max-w-lg">
                     {slide.description}
                   </p>
-
-                  {/* Micro Proof Badges */}
-                  <div className="flex flex-wrap items-center gap-2 pt-0.5 text-[11px] font-semibold text-[#1A1918]">
-                    <span className="px-2.5 py-1 rounded-lg bg-white/95 border border-brand-gold/30 shadow-2xs">
-                      100% Pure Botanicals
-                    </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-white/95 border border-brand-gold/30 shadow-2xs">
-                      Cold-Stabilized Actives
-                    </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-white/95 border border-brand-gold/30 shadow-2xs">
-                      Zero Synthetic Perfumes
-                    </span>
-                  </div>
 
                   {/* Dual Conversion CTAs */}
                   <div className="pt-2 flex flex-wrap items-center gap-3">
@@ -354,16 +316,7 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
                   onClick={() => onQuickViewProduct && onQuickViewProduct(spotlight)}
                   className="w-full max-w-md mx-auto lg:ml-auto bg-white/92 backdrop-blur-xl rounded-3xl border border-white/80 ring-1 ring-brand-gold/30 shadow-luxury p-4 sm:p-5 cursor-pointer group hover:ring-[#5B0868]/40 transition-shadow will-change-transform"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-gray-100">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868] bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-200/80">
-                      Featured Formulation
-                    </span>
-                    <span className="text-[10px] font-semibold text-gray-600">
-                      {spotlight.volume} • {spotlight.badge}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-12 gap-3 sm:gap-4 items-center py-3.5 sm:py-4">
+                  <div className="grid grid-cols-12 gap-3 sm:gap-4 items-center pb-3.5">
                     <div className="col-span-5 min-w-0">
                       <div className="aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2] border border-brand-gold/25 shadow-xs">
                         <img
@@ -376,14 +329,11 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
 
                     <div className="col-span-7 min-w-0 space-y-1.5 text-left">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-brand-gold-dark block truncate">
-                        {spotlight.category}
+                        {spotlight.category} • {spotlight.volume}
                       </span>
                       <h2 className="font-serif text-sm sm:text-lg font-semibold text-[#1A1918] leading-snug group-hover:text-[#5B0868] transition-colors">
                         {spotlight.title}
                       </h2>
-                      <p className="text-[11px] text-gray-600 leading-snug line-clamp-2">
-                        {spotlight.highlight}
-                      </p>
                       <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2 pt-1">
                         <span className="font-serif text-base sm:text-xl font-bold text-[#1A1918]">
                           ₹{spotlight.price.toLocaleString('en-IN')}
@@ -398,7 +348,7 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                  <div className="flex items-center gap-2 pt-2.5 border-t border-gray-100">
                     <button
                       type="button"
                       onClick={handleAddSpotlight}
@@ -433,30 +383,6 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
                       <span>Inspect</span>
                     </button>
                   </div>
-
-                  {/* Mini Flagship Switcher Pills */}
-                  <div className="mt-3 pt-2.5 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-[10px]">
-                    <span className="text-gray-500 font-medium">Switch Spotlight:</span>
-                    <div className="flex items-center gap-1">
-                      {['Soap Bar', 'Pure Oil', 'Lip Balm'].map((label, idx) => (
-                        <button
-                          key={label}
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCurrentSlide(idx);
-                          }}
-                          className={`px-2 py-0.5 rounded-md font-semibold transition-colors cursor-pointer ${
-                            currentSlide === idx
-                              ? 'bg-[#5B0868] text-white'
-                              : 'bg-gray-100 text-gray-700 hover:bg-purple-50 hover:text-[#5B0868]'
-                          }`}
-                        >
-                          {label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -465,29 +391,22 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
         </div>
       </div>
 
-      {/* Single-Row 5-Pillar Iconified Trust Strip Directly Below Hero */}
-      <div className="bg-white border-y border-brand-gold/20 py-3.5 px-4 shadow-2xs">
+      {/* Compact Single-Row Trust Strip Directly Below Hero */}
+      <div className="bg-white border-y border-brand-gold/20 py-3 px-4 shadow-2xs">
         <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {TRUST_PILLARS.map((pillar, idx) => {
             const IconComp = pillar.icon;
             return (
               <div
                 key={pillar.label}
-                className={`flex items-center gap-2.5 justify-start sm:justify-center ${
+                className={`flex items-center gap-2 justify-start sm:justify-center ${
                   idx === 4 ? 'col-span-2 sm:col-span-1 justify-center' : ''
                 }`}
               >
-                <div className="w-8 h-8 rounded-full bg-purple-50 border border-purple-200/70 flex items-center justify-center flex-shrink-0 text-[#5B0868]">
-                  <IconComp className="w-4 h-4" />
-                </div>
-                <div className="text-left leading-tight">
-                  <span className="text-xs font-serif font-semibold text-[#1A1918] block">
-                    {pillar.label}
-                  </span>
-                  <span className="text-[10px] text-gray-500 block">
-                    {pillar.sub}
-                  </span>
-                </div>
+                <IconComp className="w-4 h-4 text-[#5B0868] flex-shrink-0" />
+                <span className="text-xs font-serif font-semibold text-[#1A1918]">
+                  {pillar.label}
+                </span>
               </div>
             );
           })}

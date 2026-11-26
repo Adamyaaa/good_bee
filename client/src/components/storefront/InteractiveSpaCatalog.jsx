@@ -114,30 +114,22 @@ export default function InteractiveSpaCatalog({
   };
 
   return (
-    <section id="formulations" className="py-16 sm:py-20 bg-[#FAF7F2] border-b border-brand-gold/20 scroll-mt-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <section id="formulations" className="py-10 sm:py-14 bg-[#FAF7F2] border-b border-brand-gold/20 scroll-mt-28">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
-        {/* Section Header + Combo Routine Value Banner */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-          <div className="space-y-1.5 text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5B0868] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest">
-              <span>Complete Formulation Archive</span>
-            </div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#1A1918] font-medium">
-              Explore All Good Bee Formulations
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-600 max-w-xl">
-              Filter by category, target skin concern, or active botanical. Every SKU is small-batch traceable.
-            </p>
-          </div>
+        {/* Compact Section Header + Combo Routine CTA */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h2 className="font-serif text-2xl sm:text-3xl text-[#1A1918] font-medium">
+            All Formulations
+          </h2>
 
           <button
             type="button"
             onClick={() => onExploreRoutines?.()}
-            className="self-start lg:self-end inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-colors cursor-pointer"
+            className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-colors cursor-pointer"
           >
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span>Shop 4-Step Routine Combos (Save 20%)</span>
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>Routine Combos • Save 20%</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -230,13 +222,10 @@ export default function InteractiveSpaCatalog({
 
         {/* Catalog Grid */}
         <div>
-          <div className="flex justify-between items-center text-xs text-gray-600 mb-5">
+          <div className="flex justify-between items-center text-xs text-gray-600 mb-4">
             <span>
-              Showing <strong className="text-[#1A1918]">{sortedProducts.length}</strong> pure botanical formulation{sortedProducts.length === 1 ? '' : 's'}
+              <strong className="text-[#1A1918]">{sortedProducts.length}</strong> formulations
               {searchQuery.trim() ? ` matching "${searchQuery.trim()}"` : ''}
-            </span>
-            <span className="text-[#5B0868] font-medium hidden sm:inline">
-              Tap any card for full ingredient breakdown & batch specs
             </span>
           </div>
 

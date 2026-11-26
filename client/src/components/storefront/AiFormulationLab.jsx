@@ -160,233 +160,146 @@ export default function AiFormulationLab() {
   const totalBundlePrice = rec.stepProducts.reduce((sum, p) => sum + p.price, 0);
 
   return (
-    <section id="ai-formulation-lab" className="py-20 sm:py-28 bg-white relative border-t border-purple-100 scroll-mt-28">
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="ai-formulation-lab" className="py-10 sm:py-14 bg-[#FAF7F2] relative border-b border-brand-gold/20 scroll-mt-28">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
-        {/* Header: Tech-Forward Clinical Cosmetic Styling */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] text-xs font-bold uppercase tracking-widest shadow-sm">
-            <Cpu className="w-3.5 h-3.5 text-[#5B0868]" />
-            <span>AI FORMULATION INTELLIGENCE • SKIN DIAGNOSTIC</span>
+        {/* Clean Minimal Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+          <div>
+            <h2 className="font-serif text-2xl sm:text-3xl text-[#1A1918] font-medium">
+              Personal Skin Finder
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 mt-1">
+              Select your skin type and goal for a matched 3-step ritual.
+            </p>
           </div>
-
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-charcoal font-medium leading-tight">
-            Personalized Bio-Active Routine Diagnostic
-          </h2>
-
-          <p className="text-sm sm:text-base text-brand-charcoal/75 max-w-2xl mx-auto font-sans leading-relaxed">
-            Select your skin profile below. Our formulation algorithm cross-references your lipid barrier parameters with active botanical stability scores to build your custom regimen.
-          </p>
+          <span className="text-xs font-semibold text-[#5B0868] hidden sm:inline">
+            {rec.matchScore} Match
+          </span>
         </div>
 
-        {/* Main Diagnostic Panel */}
-        <div className="bg-[#FAF7F2] rounded-3xl border border-purple-100 shadow-md p-6 sm:p-10 relative overflow-hidden">
+        {/* Clean 2-Column Picker + Result Card */}
+        <div className="bg-white rounded-3xl border border-brand-gold/25 shadow-sm p-5 sm:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            
-            {/* Left 5 Cols: Input Diagnostic Controls */}
-            <div className="lg:col-span-5 space-y-7">
-              
-              {/* Question 1: Skin Type */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-brand-charcoal flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-md bg-purple-100 text-[#5B0868] flex items-center justify-center text-[11px] font-bold">1</span>
-                    <span>Your Current Skin Barrier Type</span>
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2.5">
-                  {SKIN_TYPES.map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => handleSelectSkin(t.id)}
-                      className={`p-3 rounded-xl text-left border transition-all duration-200 cursor-pointer ${
-                        selectedSkin === t.id
-                          ? 'bg-[#5B0868] text-white border-[#5B0868] shadow-sm'
-                          : 'bg-white hover:bg-purple-50 border-gray-200 text-brand-charcoal'
-                      }`}
-                    >
-                      <t.icon className={`w-5 h-5 mb-1.5 ${selectedSkin === t.id ? 'text-white' : 'text-[#5B0868]'}`} />
-                      <div className="text-xs font-bold leading-tight">{t.label}</div>
-                      <div className={`text-[10px] mt-0.5 leading-tight ${selectedSkin === t.id ? 'text-purple-200' : 'text-brand-muted'}`}>
-                        {t.desc}
-                      </div>
-                    </button>
-                  ))}
-                </div>
+          {/* Left 5 Cols: Minimal Selectors */}
+          <div className="lg:col-span-5 space-y-5">
+            <div className="space-y-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 block">
+                1. Skin Type
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                {SKIN_TYPES.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => handleSelectSkin(t.id)}
+                    className={`p-3 rounded-xl text-left border transition-all cursor-pointer flex items-center gap-2.5 ${
+                      selectedSkin === t.id
+                        ? 'bg-[#5B0868] text-white border-[#5B0868] shadow-xs'
+                        : 'bg-[#FAF7F2] hover:bg-purple-50 border-brand-gold/25 text-[#1A1918]'
+                    }`}
+                  >
+                    <t.icon className={`w-4 h-4 flex-shrink-0 ${selectedSkin === t.id ? 'text-white' : 'text-[#5B0868]'}`} />
+                    <span className="text-xs font-semibold leading-tight">{t.label}</span>
+                  </button>
+                ))}
               </div>
-
-              {/* Question 2: Primary Goal */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-brand-charcoal flex items-center gap-1.5">
-                    <span className="w-5 h-5 rounded-md bg-purple-100 text-[#5B0868] flex items-center justify-center text-[11px] font-bold">2</span>
-                    <span>Target Transformation Goal</span>
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2.5">
-                  {PRIMARY_GOALS.map((g) => (
-                    <button
-                      key={g.id}
-                      onClick={() => handleSelectGoal(g.id)}
-                      className={`p-3 rounded-xl text-left border transition-all duration-200 cursor-pointer ${
-                        selectedGoal === g.id
-                          ? 'bg-[#5B0868] text-white border-[#5B0868] shadow-sm'
-                          : 'bg-white hover:bg-purple-50 border-gray-200 text-brand-charcoal'
-                      }`}
-                    >
-                      <span className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-md inline-block mb-1.5 ${
-                        selectedGoal === g.id ? 'bg-white/20 text-white' : 'bg-purple-50 text-[#5B0868]'
-                      }`}>
-                        {g.badge}
-                      </span>
-                      <div className="text-xs font-bold leading-tight">{g.label}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* AI Trust Guarantee Strip */}
-              <div className="bg-white rounded-xl p-4 border border-purple-100 flex items-center gap-3">
-                <ShieldCheck className="w-6 h-6 text-emerald-600 flex-shrink-0" />
-                <div className="text-[11px] text-brand-charcoal/80 leading-snug">
-                  <span className="font-bold text-brand-charcoal">Clean Formulation AI Matrix:</span> Guaranteed 100% free of synthetic sulfates, artificial perfumes, silicones, and phthalates.
-                </div>
-              </div>
-
             </div>
 
-            {/* Right 7 Cols: AI Generated Output Card */}
-            <div className="lg:col-span-7">
-              <AnimatePresence mode="wait">
-                {isCalculating ? (
-                  <motion.div
-                    key="calculating"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="h-full min-h-[380px] flex flex-col items-center justify-center text-center p-8 bg-white rounded-2xl border border-dashed border-purple-200"
+            <div className="space-y-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 block">
+                2. Target Goal
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {PRIMARY_GOALS.map((g) => (
+                  <button
+                    key={g.id}
+                    type="button"
+                    onClick={() => handleSelectGoal(g.id)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                      selectedGoal === g.id
+                        ? 'bg-[#5B0868] text-white border-[#5B0868] shadow-xs'
+                        : 'bg-[#FAF7F2] hover:bg-purple-50 border-brand-gold/25 text-[#1A1918]'
+                    }`}
                   >
-                    <RefreshCw className="w-8 h-8 text-[#5B0868] animate-spin mb-3" />
-                    <p className="font-serif text-lg font-medium text-brand-charcoal">Analyzing Lipid Profile & Active Stability...</p>
-                    <p className="text-xs text-brand-muted mt-1">Cross-referencing 100% natural botanical synergies</p>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key={currentKey}
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full flex flex-col justify-between bg-white rounded-2xl p-6 sm:p-8 border border-purple-100 shadow-md relative"
-                  >
-                    {/* Top Row: AI Match Score & Title */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
-                          <span>AI Compatibility: {rec.matchScore} Match</span>
-                        </div>
-                        <span className="text-[11px] font-mono text-brand-muted uppercase tracking-wider">
-                          Matrix ID: #GB-AI-{selectedSkin.slice(0, 2).toUpperCase()}{selectedGoal.slice(0, 2).toUpperCase()}
-                        </span>
-                      </div>
-
-                      <div>
-                        <h3 className="font-serif text-xl sm:text-2xl font-semibold text-brand-charcoal">
-                          {rec.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-brand-charcoal/80 mt-1.5 leading-relaxed">
-                          {rec.prescription}
-                        </p>
-                      </div>
-
-                      {/* Active Botanical Synergies Pills */}
-                      <div className="space-y-1.5 pt-1">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868] block">
-                          AI-Verified Active Ingredients:
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                          {rec.activeSynergies.map((act, i) => (
-                            <span
-                              key={i}
-                              className="px-3 py-1 rounded-lg bg-[#FAF7F2] text-brand-charcoal text-xs font-medium border border-gray-200 shadow-sm flex items-center gap-1.5"
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#5B0868]" />
-                              <span>{act}</span>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Recommended 3-Step Product Stack */}
-                      <div className="space-y-2 pt-2">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868] block">
-                          Your Customized 3-Step Product Stack:
-                        </span>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                          {rec.stepProducts.map((p, i) => (
-                            <div key={p.id} className="bg-[#FAF7F2] p-3 rounded-xl border border-gray-100 shadow-sm flex items-center gap-2.5">
-                              <div className="w-10 h-10 rounded-lg overflow-hidden bg-white flex-shrink-0">
-                                <img src={p.image} alt={p.title} className="w-full h-full object-contain" />
-                              </div>
-                              <div className="min-w-0">
-                                <span className="text-[9px] font-bold text-[#5B0868] block">STEP 0{i + 1}</span>
-                                <p className="text-xs font-semibold text-brand-charcoal truncate">{p.title}</p>
-                                <span className="text-xs font-bold text-brand-charcoal">₹{p.price}</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Expected Transformation Timeline */}
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-xl border border-gray-200/60 space-y-2">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-brand-charcoal flex items-center gap-1.5">
-                          <Activity className="w-3.5 h-3.5 text-[#5B0868]" />
-                          <span>Expected Clinical Results Timeline:</span>
-                        </span>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                          {rec.timeline.map((t, i) => (
-                            <div key={i} className="text-[11px] leading-tight">
-                              <span className="font-bold text-brand-charcoal block">{t.day}:</span>
-                              <span className="text-brand-muted">{t.note}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                    </div>
-
-                    {/* Bottom CTA Button */}
-                    <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                      <div>
-                        <span className="text-[11px] text-brand-muted block">3-Product AI Bundle:</span>
-                        <span className="font-serif text-2xl font-bold text-[#5B0868]">₹{totalBundlePrice}</span>
-                      </div>
-
-                      <button
-                        onClick={handleAddAiRoutine}
-                        data-testid="add-ai-regimen-btn"
-                        className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <span>Add Complete Regimen to Bag</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
-
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    {g.label}
+                  </button>
+                ))}
+              </div>
             </div>
+          </div>
 
+          {/* Right 7 Cols: Clean Regimen Output Card */}
+          <div className="lg:col-span-7">
+            <AnimatePresence mode="wait">
+              {isCalculating ? (
+                <motion.div
+                  key="calculating"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="min-h-[240px] flex flex-col items-center justify-center text-center p-6 bg-[#FAF7F2] rounded-2xl border border-brand-gold/25"
+                >
+                  <RefreshCw className="w-6 h-6 text-[#5B0868] animate-spin mb-2" />
+                  <p className="font-serif text-base text-[#1A1918]">Matching your 3-step ritual...</p>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key={currentKey}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.25 }}
+                  className="bg-[#FAF7F2] rounded-2xl p-5 sm:p-6 border border-brand-gold/25 space-y-4"
+                >
+                  <div>
+                    <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#1A1918]">
+                      {rec.title}
+                    </h3>
+                    <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                      {rec.prescription}
+                    </p>
+                  </div>
+
+                  {/* 3-Step Product Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    {rec.stepProducts.map((p, i) => (
+                      <div key={p.id} className="bg-white p-2.5 rounded-xl border border-brand-gold/20 flex items-center gap-2.5">
+                        <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#FAF7F2] flex-shrink-0">
+                          <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="text-[9px] font-bold text-[#5B0868] block">Step {i + 1}</span>
+                          <p className="text-xs font-semibold text-[#1A1918] truncate">{p.title}</p>
+                          <span className="text-xs font-bold text-[#1A1918]">₹{p.price}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="pt-3 border-t border-brand-gold/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-xs text-gray-500">3-Step Bundle:</span>
+                      <span className="font-serif text-xl font-bold text-[#5B0868]">₹{totalBundlePrice}</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleAddAiRoutine}
+                      data-testid="add-ai-regimen-btn"
+                      className="px-6 py-3 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm inline-flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <span>Add Complete Regimen to Bag</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
         </div>
 
       </div>
-
     </section>
   );
 }

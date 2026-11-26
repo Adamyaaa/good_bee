@@ -359,203 +359,28 @@ function SpaLandingContent() {
 
           <AiFormulationLab />
 
-          {/* 7. Formulation Lifecycle Stage ("The Pure Cycle") */}
+          {/* 7. Craft Lifecycle */}
           <ScrollyBrandStory />
 
-          {/* 8. Research, Active Stabilization & Accredited Sourcing */}
-          <section id="research-story" className="py-16 sm:py-20 bg-[#FAF7F2] relative border-b border-brand-gold/20 scroll-mt-28">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                
-                <div className="lg:col-span-6 space-y-5">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[10px] font-bold uppercase tracking-widest text-[#5B0868]">
-                    {siteContent.philosophyBadge || 'Formulation Philosophy'}
-                  </span>
-                  <h2 className="font-serif text-2xl sm:text-4xl text-[#1A1918] font-medium leading-tight">
-                    {siteContent.philosophyTitle || 'Where 100% Natural Meets Active-Stabilized Craft.'}
-                  </h2>
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed font-sans">
-                    {siteContent.philosophyDescription || 'Many natural brands rely solely on raw mixing without verifying compound stability. At Good Bee, every natural ingredient undergoes cold-process curing or low-temperature steam extraction so active flavonoids and ceramides stay potent.'}
-                  </p>
-                  <div className="space-y-3.5 pt-1">
-                    <div className="flex gap-3.5 items-start bg-white p-4 rounded-2xl border border-brand-gold/25">
-                      <div className="p-2.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] flex-shrink-0">
-                        <FlaskConical className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-serif text-base font-semibold text-[#1A1918]">
-                          {siteContent.philosophyCard1Title || 'Active Stabilization Research'}
-                        </h4>
-                        <p className="text-xs text-gray-600 leading-relaxed mt-0.5">
-                          {siteContent.philosophyCard1Text || 'Ensures raw botanical enzymes, boswellic terpenes, and phytosterols retain potency without thermal loss.'}
-                        </p>
-                      </div>
+          {/* 8. Compact Accreditations Strip */}
+          <section id="research-story" className="py-10 sm:py-12 bg-[#FAF7F2] border-b border-brand-gold/20 scroll-mt-28">
+            <div id="producer-spotlight" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-28">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  { title: 'India Organic (NPOP)', sub: 'Certified botanical sourcing' },
+                  { title: 'Ayush GMP Certified', sub: 'Ministry of Ayush standards' },
+                  { title: 'ISO 22716 Cosmetics', sub: 'Batch-verified extraction' }
+                ].map((cert) => (
+                  <div key={cert.title} className="p-4 sm:p-5 rounded-2xl bg-white border border-brand-gold/25 flex items-center gap-3.5 shadow-2xs">
+                    <div className="w-10 h-10 rounded-xl bg-purple-50 text-[#5B0868] flex items-center justify-center flex-shrink-0">
+                      <Award className="w-5 h-5" />
                     </div>
-
-                    <div className="flex gap-3.5 items-start bg-white p-4 rounded-2xl border border-brand-gold/25">
-                      <div className="p-2.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] flex-shrink-0">
-                        <ShieldCheck className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-serif text-base font-semibold text-[#1A1918]">
-                          {siteContent.philosophyCard2Title || 'Zero Synthetic Compromises'}
-                        </h4>
-                        <p className="text-xs text-gray-600 leading-relaxed mt-0.5">
-                          {siteContent.philosophyCard2Text || 'No synthetic parabens, artificial perfumes, sulfates, silicones, or petroleum waxes.'}
-                        </p>
-                      </div>
+                    <div>
+                      <p className="text-sm font-serif font-semibold text-[#1A1918]">{cert.title}</p>
+                      <p className="text-xs text-gray-600 mt-0.5">{cert.sub}</p>
                     </div>
                   </div>
-                </div>
-
-                {/* Authentic Good Bee Studio Craft Visuals + Declarative Active Retention Profile */}
-                <div className="lg:col-span-6 space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white rounded-3xl p-2.5 border border-brand-gold/30 shadow-sm space-y-2.5">
-                      <div className="aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2]">
-                        <img
-                          src="/images_ref/Levendor-300x300.webp"
-                          alt="Raw Beeswax, Lavender & Cold-Pressed Botanicals"
-                          className="w-full h-full object-cover object-center"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="px-1 pb-1">
-                        <p className="font-serif text-sm font-semibold text-[#1A1918]">Unrefined Forest Beeswax</p>
-                        <p className="text-[11px] text-gray-600">Breathable moisture seal & natural esters</p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-3xl p-2.5 border border-brand-gold/30 shadow-sm space-y-2.5">
-                      <div className="aspect-square rounded-2xl overflow-hidden bg-[#FAF7F2]">
-                        <img
-                          src="/images_ref/Rosmary-2-300x300.webp"
-                          alt="Whole Herb Slow Infusion & Rosemary Actives"
-                          className="w-full h-full object-cover object-center"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="px-1 pb-1">
-                        <p className="font-serif text-sm font-semibold text-[#1A1918]">Slow Herbal Infusions</p>
-                        <p className="text-[11px] text-gray-600">Batch-verified from harvest to bottle</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Declarative SVG Active Stabilization vs Conventional Processing Chart */}
-                  <div className="bg-white rounded-2xl p-4 sm:p-5 border border-brand-gold/25 shadow-xs space-y-3">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868] block">
-                          Craft Benchmark
-                        </span>
-                        <h4 className="font-serif text-sm sm:text-base font-semibold text-[#1A1918]">
-                          Cold-Stabilized Retention vs. Commercial Processing
-                        </h4>
-                      </div>
-                      <div className="flex items-center gap-3 text-[10px] font-semibold">
-                        <span className="inline-flex items-center gap-1 text-[#5B0868]">
-                          <span className="w-2.5 h-2.5 rounded-sm bg-[#5B0868] inline-block" />
-                          Good Bee
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-gray-500">
-                          <span className="w-2.5 h-2.5 rounded-sm bg-[#E8DDCF] inline-block" />
-                          Conventional
-                        </span>
-                      </div>
-                    </div>
-
-                    <svg
-                      viewBox="0 0 460 128"
-                      className="w-full h-auto overflow-visible"
-                      role="img"
-                      aria-label="Comparison chart showing Good Bee cold-stabilized formulation retention versus conventional heat and SLS processing"
-                    >
-                      <title>Cold-Stabilized Formulation Retention vs Conventional Processing</title>
-                      {[
-                        { label: 'Natural Glycerin', gb: 100, conv: 15, y: 12 },
-                        { label: 'Volatile Terpenes', gb: 98, conv: 34, y: 50 },
-                        { label: 'Zero Synthetic Fillers', gb: 100, conv: 10, y: 88 }
-                      ].map((row) => (
-                        <g key={row.label} transform={`translate(0, ${row.y})`}>
-                          <text x="0" y="13" className="fill-[#1A1918] text-[11px] font-semibold">
-                            {row.label}
-                          </text>
-                          <line x1="145" y1="22" x2="430" y2="22" stroke="#E8DDCF" strokeDasharray="2,2" />
-                          <rect x="145" y="2" width="275" height="9" rx="4.5" fill="#FAF7F2" />
-                          <rect x="145" y="2" width={(275 * row.gb) / 100} height="9" rx="4.5" fill="#5B0868" />
-                          <text x="426" y="10" className="fill-[#5B0868] text-[10px] font-bold">
-                            {row.gb}%
-                          </text>
-                          <rect x="145" y="14" width="275" height="7" rx="3.5" fill="#FAF7F2" />
-                          <rect x="145" y="14" width={(275 * row.conv) / 100} height="7" rx="3.5" fill="#C5A880" opacity="0.65" />
-                          <text x="426" y="21" className="fill-[#635F59] text-[9px] font-medium">
-                            {row.conv}%
-                          </text>
-                        </g>
-                      ))}
-                    </svg>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Traceable Origin & Accreditations Strip */}
-              <div id="producer-spotlight" className="bg-white rounded-3xl border border-brand-gold/25 p-6 sm:p-8 shadow-xs scroll-mt-28">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="space-y-2 max-w-xl">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#5B0868]">
-                      {siteContent.sourcingBadge || 'Traceable Origin & Quality Accreditations'}
-                    </span>
-                    <h3 className="font-serif text-xl sm:text-2xl text-[#1A1918] font-medium">
-                      {siteContent.sourcingTitle || 'Ethical Apiaries & Artisanal Extraction Laboratories'}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                      {siteContent.sourcingDescription || 'Good Bee partners with certified beekeepers and cold-processing botanists across South India. Every harvest undergoes batch purity verification before stabilization.'}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
-                    {[
-                      { title: 'India Organic (NPOP)', sub: 'Certified Botanical Sourcing' },
-                      { title: 'Ayush GMP Certified', sub: 'Ministry of Ayush Standards' },
-                      { title: 'ISO 22716 Cosmetics', sub: 'Audited Quality Control' }
-                    ].map((cert) => (
-                      <div key={cert.title} className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-brand-gold/25 flex items-start gap-2.5">
-                        <Award className="w-4 h-4 text-[#5B0868] flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-xs font-serif font-semibold text-[#1A1918]">{cert.title}</p>
-                          <p className="text-[10px] text-gray-600 mt-0.5">{cert.sub}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-5 mt-5 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
-                    <Leaf className="w-4 h-4 text-[#586959]" />
-                    <span>Single-origin transparency across all 19 SKUs</span>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => handleScrollTo('formulations')}
-                      className="px-6 py-2.5 bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold tracking-wider uppercase rounded-xl transition-colors shadow-sm inline-flex items-center gap-2 cursor-pointer"
-                    >
-                      <span>{siteContent.sourcingCtaText || 'Explore Pure Formulations'}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                    <a
-                      href={`https://wa.me/${(siteContent.whatsappNumber || '+91-9963075000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(siteContent.whatsappGreeting || 'Hello Good Bee Team, I would like to learn more about your botanical sourcing and harvests.')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-2.5 bg-[#FAF7F2] border border-brand-gold/30 text-[#1A1918] text-xs font-semibold tracking-wider uppercase rounded-xl hover:bg-purple-50 hover:text-[#5B0868] transition-colors inline-flex items-center gap-2"
-                    >
-                      <span>Inquire with Concierge</span>
-                    </a>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </section>
@@ -563,94 +388,77 @@ function SpaLandingContent() {
           {/* 9. Ritual Stories Video Feed */}
           <ShopByReels onQuickViewProduct={(prod) => setQuickViewProduct(prod)} />
 
-          {/* 10. Customer Stories / UGC */}
-          <section id="stories" className="py-16 sm:py-20 bg-white border-t border-brand-gold/20 scroll-mt-28">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12 space-y-2">
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[10px] font-bold uppercase tracking-widest text-[#5B0868]">
-                  {siteContent.storiesBadge || 'Good Bee Stories'}
-                </span>
-                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#1A1918] font-medium">
-                  {siteContent.storiesTitle || 'Real Skin Transformations'}
+          {/* 10. Customer Stories */}
+          <section id="stories" className="py-10 sm:py-14 bg-white border-t border-brand-gold/20 scroll-mt-28">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+              <div className="flex items-end justify-between gap-4">
+                <h2 className="font-serif text-2xl sm:text-3xl text-[#1A1918] font-medium">
+                  Patron Reviews
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {siteContent.storiesSubtitle || 'Patrons sharing visible results from pure botanical research routines.'}
-                </p>
+                <span className="text-xs font-semibold text-[#5B0868] hidden sm:inline">
+                  Verified customers
+                </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                 {((siteContent.testimonials && siteContent.testimonials.length > 0) ? siteContent.testimonials : [
                   {
                     name: 'Kavita Menon',
                     city: 'Bengaluru',
-                    concern: 'Sensitized Barrier',
                     productId: 'gb_prod_frankincense',
-                    product: 'Good Bee Frankincense Pure Essential Oil',
-                    quote: 'My sensitized, flaking skin barrier calmed down in less than a week. It absorbs like silk without any oily heaviness.',
+                    product: 'Frankincense Pure Essential Oil',
+                    quote: 'My sensitized skin calmed down in under a week. Absorbs like silk.',
                     rating: 5
                   },
                   {
                     name: 'Dr. Radhika Iyer',
                     city: 'Mumbai',
-                    concern: 'Dryness & Sensitive Skin',
                     productId: 'gb_prod_donkey_milk_soap',
-                    product: 'Good Bee Donkey Milk Cold Processed Soap',
-                    quote: 'As someone meticulous about ingredient safety, Good Bee’s botanical purity and active stabilization is genuinely impressive. Highly recommended.',
+                    product: 'Donkey Milk Cold Processed Soap',
+                    quote: 'Rare botanical purity with natural glycerin intact. Gentle every single day.',
                     rating: 5
                   },
                   {
                     name: 'Siddharth Rao',
                     city: 'New Delhi',
-                    concern: 'Congested Pores & Tan',
                     productId: 'gb_prod_sunnipindi_soap',
-                    product: 'Good Bee Sunnipindi Cold Processed Soap',
-                    quote: 'Gentlest cleanser bar I have used. Cleans congested pores thoroughly without leaving the tight, parched feeling of regular commercial washes.',
+                    product: 'Sunnipindi Cold Processed Soap',
+                    quote: 'Cleans congested pores cleanly without leaving my skin tight or dry.',
                     rating: 5
                   }
                 ]).map((story, i) => (
                   <div
                     key={story.id || i}
-                    className="p-6 rounded-2xl bg-[#FAF7F2] border border-brand-gold/25 shadow-xs space-y-4 flex flex-col justify-between"
+                    className="p-5 rounded-2xl bg-[#FAF7F2] border border-brand-gold/25 space-y-3 flex flex-col justify-between"
                   >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex text-amber-500 gap-0.5">
-                          {[...Array(story.rating || 5)].map((_, idx) => (
-                            <Star key={idx} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                          ))}
-                        </div>
-                        {story.concern && (
-                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-purple-50 text-[#5B0868] border border-purple-200">
-                            {story.concern}
-                          </span>
-                        )}
+                    <div className="space-y-2.5">
+                      <div className="flex text-amber-500 gap-0.5">
+                        {[...Array(story.rating || 5)].map((_, idx) => (
+                          <Star key={idx} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        ))}
                       </div>
-                      <p className="font-serif text-base text-[#1A1918] italic leading-relaxed">
+                      <p className="font-serif text-sm sm:text-base text-[#1A1918] italic leading-relaxed">
                         "{story.quote}"
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-brand-gold/15 space-y-2">
-                      <div>
-                        <p className="font-serif text-sm font-semibold text-[#1A1918]">{story.name}</p>
-                        <p className="text-[11px] text-gray-500">{story.city} • Verified Patron</p>
-                      </div>
+                    <div className="pt-2.5 border-t border-brand-gold/15 flex items-center justify-between gap-2 text-xs">
+                      <span className="font-semibold text-[#1A1918]">{story.name}, {story.city}</span>
                       {story.product && (
                         <button
                           type="button"
                           onClick={() => {
                             GoodBeeApi.fetchProducts().then((list) => {
                               const found = list.find(
-                                (p) => p.id === story.productId || p.title === story.product
+                                (p) => p.id === story.productId || p.title === story.product || p.title === `Good Bee ${story.product}`
                               );
                               if (found) setQuickViewProduct(found);
                               else handleScrollTo('formulations');
                             });
                           }}
-                          className="w-full text-left px-3 py-2 rounded-xl bg-white border border-brand-gold/25 hover:border-[#5B0868]/40 text-[11px] text-[#5B0868] font-semibold flex items-center justify-between gap-2 transition-colors cursor-pointer"
+                          className="text-[11px] font-bold text-[#5B0868] hover:underline truncate max-w-[140px] cursor-pointer"
                         >
-                          <span className="truncate">Used: {story.product}</span>
-                          <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" />
+                          View →
                         </button>
                       )}
                     </div>
@@ -682,7 +490,7 @@ function SpaLandingContent() {
       <CartDrawer onCheckout={handleOpenCheckout} />
 
       {/* Floating WhatsApp Concierge */}
-      <WhatsAppConcierge />
+      <WhatsAppConcierge bottomOffset={Boolean(activePdpProduct && !isCheckoutOpen && !isAuthPageOpen.isOpen)} />
 
       {/* Docked Surprise Gift Edge Badge (Repositioned lower-left so it never overlaps Hero controls) */}
       <motion.div

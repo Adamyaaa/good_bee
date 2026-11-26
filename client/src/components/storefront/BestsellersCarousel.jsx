@@ -78,24 +78,15 @@ export default function BestsellersCarousel({ onQuickView, onExploreAll }) {
   return (
     <section
       id="bestsellers"
-      className="py-12 sm:py-16 bg-white border-b border-brand-gold/20 scroll-mt-28"
+      className="py-10 sm:py-12 bg-white border-b border-brand-gold/20 scroll-mt-28"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
         
         {/* Header + Carousel Arrows */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5B0868] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest">
-              <Sparkles className="w-3.5 h-3.5 text-[#5B0868]" />
-              <span>Fresh Small-Batch Favorites</span>
-            </div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#1A1918] font-medium">
-              Good Bee Bestsellers
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-600 max-w-xl">
-              Discover our most-loved cold-cured beeswax soaps, pure essential oils, and botanical mists.
-            </p>
-          </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h2 className="font-serif text-2xl sm:text-3xl text-[#1A1918] font-medium">
+            Bestsellers
+          </h2>
 
           <div className="flex items-center gap-2 self-start md:self-end">
             <button

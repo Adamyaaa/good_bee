@@ -94,18 +94,14 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
       </div>
 
       {/* Card Content */}
-      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
-        <div className="space-y-1.5">
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2">
+        <div className="space-y-1">
           <h3 className="font-serif text-sm sm:text-[15px] font-semibold text-[#1A1918] leading-snug group-hover:text-[#5B0868] transition-colors line-clamp-2 min-h-[2.4rem]">
             {product.title}
           </h3>
 
-          <p className="text-[11px] sm:text-xs text-gray-600 font-sans line-clamp-1 leading-normal">
-            {product.subtitle || product.shortDescription}
-          </p>
-
           {/* Verified Rating when present, or Honest Craft Method Proof when unrated */}
-          <div className="flex items-center gap-1.5 pt-0.5 text-xs">
+          <div className="flex items-center gap-1.5 text-xs">
             {product.reviewsCount && product.reviewsCount > 0 && product.rating ? (
               <>
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 flex-shrink-0" />
@@ -113,7 +109,7 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
                   {Number(product.rating).toFixed(1)}
                 </span>
                 <span className="text-[10px] text-gray-500">
-                  ({product.reviewsCount} verified)
+                  ({product.reviewsCount})
                 </span>
               </>
             ) : (
@@ -123,36 +119,19 @@ export default function ProductCard({ product, onViewDetails, idx = 0 }) {
               </span>
             )}
           </div>
-
-          {/* Primary Concern Pill & Low Stock Indicator */}
-          <div className="pt-0.5 flex items-center justify-between gap-1 flex-wrap">
-            {product.concerns && product.concerns.length > 0 && (
-              <span className="inline-block text-[9px] uppercase tracking-wider px-2 py-0.5 bg-purple-50 text-[#5B0868] font-semibold rounded-md border border-purple-200/80">
-                {product.concerns[0]}
-              </span>
-            )}
-            {typeof product.stock === 'number' && product.stock > 0 && product.stock < 10 && (
-              <span className="text-[9px] font-semibold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
-                Low batch stock
-              </span>
-            )}
-          </div>
         </div>
 
         {/* Pricing & Add to Cart Action */}
-        <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between gap-2">
-          <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-serif text-sm sm:text-base font-bold text-[#1A1918]">
-                ₹{product.price.toLocaleString('en-IN')}
+        <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-serif text-sm sm:text-base font-bold text-[#1A1918]">
+              ₹{product.price.toLocaleString('en-IN')}
+            </span>
+            {effectiveMrp > product.price && (
+              <span className="text-[10px] sm:text-[11px] text-gray-400 line-through">
+                ₹{effectiveMrp.toLocaleString('en-IN')}
               </span>
-              {effectiveMrp > product.price && (
-                <span className="text-[10px] sm:text-[11px] text-gray-400 line-through">
-                  ₹{effectiveMrp.toLocaleString('en-IN')}
-                </span>
-              )}
-            </div>
-            <span className="text-[9px] text-gray-400 block">Incl. of all taxes</span>
+            )}
           </div>
 
           <button

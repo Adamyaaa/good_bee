@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 
-export default function WhatsAppConcierge() {
+export default function WhatsAppConcierge({ bottomOffset = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [config, setConfig] = useState(() => {
     try {
@@ -44,7 +44,7 @@ export default function WhatsAppConcierge() {
   if (!config.enabled) return null;
 
   return (
-    <div className="fixed bottom-20 md:bottom-4 right-4 z-40 flex flex-col items-end">
+    <div className={`fixed ${bottomOffset ? 'bottom-20 md:bottom-4' : 'bottom-4'} right-4 z-40 flex flex-col items-end`}>
       {/* Interactive Popup Bubble */}
       {isOpen && (
         <div className="mb-3 w-72 sm:w-80 bg-brand-ivory rounded-2xl border border-brand-gold/40 shadow-2xl p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">

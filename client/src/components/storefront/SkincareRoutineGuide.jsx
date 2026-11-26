@@ -380,346 +380,146 @@ export default function SkincareRoutineGuide({ onSelectProduct }) {
   };
 
   return (
-    <section id="how-to-apply" className="py-20 sm:py-28 bg-[#FAF7F2] relative border-t border-purple-100 scroll-mt-28">
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="how-to-apply" className="py-10 sm:py-14 bg-white relative border-b border-brand-gold/20 scroll-mt-28">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
-        {/* Section Header: Clean Cosmetic Aesthetic */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-[#5B0868] text-xs font-bold uppercase tracking-widest shadow-sm">
-            <span>DAILY REGIMEN GUIDE • HOW TO APPLY</span>
+        {/* Clean Header & Routine Tabs */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h2 className="font-serif text-2xl sm:text-3xl text-[#1A1918] font-medium">
+              4-Step Daily Routines
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600">
+              {routine.tagline}
+            </p>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-brand-charcoal font-medium leading-tight">
-            How To Layer Your Good Bee Formulations
-          </h2>
-
-          <p className="text-sm sm:text-base text-brand-charcoal/75 max-w-2xl mx-auto font-sans leading-relaxed">
-            Just like leading cosmetic clinical regimes, the secret to radiant glass skin is correct layering order, gentle micro-gestures, and active absorption windows.
-          </p>
-
-          {/* Interactive Routine Tabs (AM / PM / Acne Reset) */}
-          <div className="pt-6 flex flex-wrap justify-center gap-2.5 sm:gap-4">
+          <div className="flex flex-wrap gap-2">
             {Object.values(ROUTINES).map((r) => {
               const IconComp = r.icon;
               const isSelected = activeTab === r.id;
               return (
                 <button
                   key={r.id}
+                  type="button"
                   onClick={() => {
                     setActiveTab(r.id);
                     setActiveStepIndex(0);
                   }}
-                  className={`flex items-center gap-2.5 px-5 sm:px-7 py-3 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     isSelected
-                      ? r.colorTheme.tabActive
-                      : 'bg-white text-brand-charcoal hover:bg-purple-50 border border-gray-200 shadow-sm'
+                      ? 'bg-[#5B0868] text-white shadow-sm'
+                      : 'bg-[#FAF7F2] text-gray-800 hover:bg-purple-50 border border-brand-gold/25'
                   }`}
                 >
-                  <IconComp className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-[#5B0868]'}`} />
+                  <IconComp className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-[#5B0868]'}`} />
                   <span>{r.name}</span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-md ml-1 ${
-                    isSelected ? 'bg-white/20 text-white' : 'bg-gray-100 text-brand-charcoal'
-                  }`}>
-                    {r.timeEst}
-                  </span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Dynamic Tagline Banner */}
-        <div className="mb-10 text-center">
-          <p className="text-xs sm:text-sm font-medium text-brand-charcoal/80 bg-white inline-block px-6 py-2 rounded-xl border border-purple-100 shadow-sm">
-            <span className="font-semibold text-brand-charcoal">{routine.badge}:</span> {routine.tagline}
-          </p>
-        </div>
+        {/* Clean 4-Column Step Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
+          {routine.steps.map((step) => (
+            <div
+              key={step.stepNumber}
+              onClick={() =>
+                onSelectProduct &&
+                onSelectProduct({
+                  id: step.productId,
+                  title: step.title,
+                  price: step.price,
+                  mrp: step.mrp,
+                  image: step.image,
+                  volume: step.volume,
+                  category: step.category
+                })
+              }
+              className="group bg-[#FAF7F2] rounded-2xl border border-brand-gold/25 hover:border-[#5B0868]/40 hover:bg-white p-3 sm:p-4 flex flex-col justify-between space-y-3 transition-all cursor-pointer"
+            >
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
+                  <span className="px-2 py-0.5 rounded-md bg-[#5B0868] text-white">
+                    Step {step.stepNumber}
+                  </span>
+                  <span className="text-gray-500">{step.volume}</span>
+                </div>
 
-        {/* Main 4-Step Interactive Display */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-14">
-          
-          {/* Left Column: Interactive Step Selector Cards (Desktop & Tablet) */}
-          <div className="lg:col-span-5 space-y-3.5">
-            <div className="flex items-center justify-between pb-2 px-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-gold-dark flex items-center gap-1.5">
-                <Layers className="w-4 h-4 text-brand-gold" />
-                <span>The 4-Step Application Sequence</span>
-              </span>
-              <span className="text-xs text-brand-muted font-medium">Click step to view guide</span>
-            </div>
+                <div className="aspect-square rounded-xl overflow-hidden bg-white border border-brand-gold/20">
+                  <img
+                    src={step.image}
+                    alt={step.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
 
-            {routine.steps.map((step, idx) => {
-              const isActive = activeStepIndex === idx;
-              return (
-                <motion.div
-                  key={step.stepNumber}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  onClick={() => setActiveStepIndex(idx)}
-                  className={`p-4 rounded-2xl cursor-pointer transition-all duration-300 border flex items-center gap-4 ${
-                    isActive
-                      ? `bg-white shadow-xl ${routine.colorTheme.cardBorder} ring-2 ring-amber-400/40`
-                      : 'bg-white/60 hover:bg-white border-brand-gold/20 hover:border-brand-gold/40 shadow-sm'
+                <div>
+                  <h3 className="font-serif text-sm font-semibold text-[#1A1918] group-hover:text-[#5B0868] line-clamp-2 leading-snug">
+                    {step.title}
+                  </h3>
+                  <p className="text-[11px] text-gray-600 mt-1 line-clamp-2 leading-snug">
+                    {step.howToApply.dose}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-brand-gold/15 flex items-center justify-between gap-2">
+                <span className="font-serif text-sm font-bold text-[#1A1918]">₹{step.price}</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddSingleStep(step);
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer ${
+                    addedItems[step.productId]
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-white border border-[#5B0868]/30 text-[#5B0868] hover:bg-[#5B0868] hover:text-white'
                   }`}
                 >
-                  {/* Step Number Circle */}
-                  <div className={`w-11 h-11 rounded-full flex flex-col items-center justify-center flex-shrink-0 font-bold transition-colors ${
-                    isActive
-                      ? routine.colorTheme.badgeBg
-                      : 'bg-brand-cream/80 text-brand-charcoal border border-brand-gold/30'
-                  }`}>
-                    <span className="text-[9px] font-sans uppercase tracking-tighter opacity-80">STEP</span>
-                    <span className="text-sm font-mono leading-none">{step.stepNumber}</span>
-                  </div>
-
-                  {/* Step Brief Info */}
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 block">
-                      {step.category}
-                    </span>
-                    <h4 className="font-serif text-sm sm:text-base font-semibold text-brand-charcoal truncate">
-                      {step.title}
-                    </h4>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-xs font-bold text-brand-charcoal">₹{step.price}</span>
-                      <span className="text-[11px] text-brand-muted line-through">₹{step.mrp}</span>
-                      <span className={`text-[10px] px-2 py-0.2 rounded-full border ${step.textureColor}`}>
-                        {step.texture.split('•')[0]}
-                      </span>
-                    </div>
-                  </div>
-
-                  <ChevronRight className={`w-5 h-5 flex-shrink-0 transition-transform ${
-                    isActive ? 'text-amber-600 translate-x-1' : 'text-gray-300'
-                  }`} />
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Right Column: Deep-Dive "How to Apply" Active Stage */}
-          <div className="lg:col-span-7">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`${activeTab}-${activeStep.stepNumber}`}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="bg-white rounded-3xl p-6 sm:p-8 border border-purple-200 shadow-xl relative overflow-hidden"
-              >
-                {/* Decorative Top Accent Stripe */}
-                <div className="absolute top-0 inset-x-0 h-1.5 bg-[#5B0868]" />
-
-                {/* Header of Active Step */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg ${routine.colorTheme.badgeBg}`}>
-                        STEP {activeStep.stepNumber} • {activeStep.category}
-                      </span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex items-center gap-1">
-                        {activeStep.aiActiveScore}
-                      </span>
-                    </div>
-                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-brand-charcoal pt-1">
-                      {activeStep.title}
-                    </h3>
-                  </div>
-
-                  <div className="text-right sm:text-right flex-shrink-0">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-serif font-bold text-brand-charcoal">₹{activeStep.price}</span>
-                      <span className="text-xs text-brand-muted line-through">₹{activeStep.mrp}</span>
-                    </div>
-                    <span className="text-[11px] text-emerald-600 font-semibold block">
-                      Save {Math.round(((activeStep.mrp - activeStep.price) / activeStep.mrp) * 100)}%
-                    </span>
-                  </div>
-                </div>
-
-                {/* Center Stage: Visual Thumbnail & How-To Instructions */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 py-6 items-center">
-                  
-                  {/* Product Visual Box */}
-                  <div className="md:col-span-5 relative group">
-                    <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#FBFBFA] border border-gray-200 shadow-sm flex items-center justify-center p-3">
-                      <img
-                        src={activeStep.image}
-                        alt={activeStep.title}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute bottom-3 left-3 right-3 text-center">
-                        <span className={`inline-block text-[10px] font-bold tracking-wider px-2.5 py-1 rounded-lg backdrop-blur-md shadow-sm border ${activeStep.textureColor}`}>
-                          Texture: {activeStep.texture}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* "How to Apply" Step Breakdown (Plum & Dot & Key Style) */}
-                  <div className="md:col-span-7 space-y-4">
-                    
-                    {/* Dose / Amount */}
-                    <div className="flex items-start gap-3 bg-purple-50/40 p-3 rounded-xl border border-purple-100">
-                      <div className="p-1.5 rounded-lg bg-purple-100 text-[#5B0868] flex-shrink-0 mt-0.5">
-                        <Droplets className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-wider text-purple-950">
-                          Recommended Amount
-                        </h5>
-                        <p className="text-xs text-brand-charcoal/85 mt-0.5 font-medium">
-                          {activeStep.howToApply.dose}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Application Motion / Gesture */}
-                    <div className="flex items-start gap-3 bg-rose-50/40 p-3 rounded-xl border border-rose-100">
-                      <div className="p-1.5 rounded-lg bg-rose-100 text-rose-800 flex-shrink-0 mt-0.5">
-                        <Sun className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-wider text-rose-950">
-                          Application Gesture & Technique
-                        </h5>
-                        <p className="text-xs text-brand-charcoal/85 mt-0.5 font-medium leading-relaxed">
-                          {activeStep.howToApply.gesture}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Pro Tip */}
-                    <div className="flex items-start gap-3 bg-emerald-50/40 p-3 rounded-xl border border-emerald-100">
-                      <div className="p-1.5 rounded-lg bg-emerald-100 text-emerald-800 flex-shrink-0 mt-0.5">
-                        <Award className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h5 className="text-[11px] font-bold uppercase tracking-wider text-emerald-950">
-                          Dermatologist Glow Tip
-                        </h5>
-                        <p className="text-xs text-brand-charcoal/85 mt-0.5 leading-relaxed">
-                          {activeStep.howToApply.proTip}
-                        </p>
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-
-                {/* Footer Actions of Active Step */}
-                <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 text-xs text-brand-muted">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Free of synthetic sulfates, artificial perfumes & mineral oils</span>
-                  </div>
-
-                  <div className="flex items-center gap-3 w-full sm:w-auto">
-                    <button
-                      onClick={() => handleAddSingleStep(activeStep)}
-                      className="flex-1 sm:flex-none px-6 py-3 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      {addedItems[activeStep.productId] ? (
-                        <>
-                          <Check className="w-4 h-4 text-emerald-300" />
-                          <span>Added to Bag!</span>
-                        </>
-                      ) : (
-                        <>
-                          <ShoppingBag className="w-4 h-4" />
-                          <span>Add Step {activeStep.stepNumber} to Bag (₹{activeStep.price})</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
+                  {addedItems[step.productId] ? 'Added' : 'Add'}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* 4-Step Regimen Bundle Offer Card (One-Click Routine Purchase like Dot & Key) */}
-        <div className="relative rounded-2xl bg-[#5B0868] text-white p-6 sm:p-10 shadow-xl border border-purple-900/30">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-            
-            {/* Left Column: Routine Summary & Micro Product Thumbnails */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-xl bg-white/15 border border-white/25 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                <Flame className="w-3.5 h-3.5 text-amber-300 animate-bounce" />
-                <span>SPECIAL REGIMEN BUNDLE OFFER • SAVE 20%</span>
-              </div>
-
-              <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium leading-tight text-white">
-                Get The Complete 4-Step {routine.name}
-              </h3>
-
-              <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed max-w-xl">
-                Formulated to work synergistically. Layering all 4 steps boosts botanical active-stabilization efficacy and delivers visible results in under 7 days.
-              </p>
-
-              {/* Mini Step Thumbnails Strip */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
-                {routine.steps.map((step) => (
-                  <div key={step.stepNumber} className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-xl border border-white/15">
-                    <div className="w-8 h-8 rounded-lg overflow-hidden bg-white/20 flex-shrink-0">
-                      <img src={step.image} alt={step.title} className="w-full h-full object-contain" />
-                    </div>
-                    <div className="text-left">
-                      <span className="text-[9px] text-amber-300 font-bold block">STEP {step.stepNumber}</span>
-                      <span className="text-[11px] text-white font-medium truncate max-w-[110px] block">{step.title}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Bundle Pricing & One-Click Buy Button */}
-            <div className="lg:col-span-5 bg-white/10 rounded-xl p-6 border border-white/20 text-center lg:text-right space-y-4">
-              <div>
-                <span className="text-xs uppercase tracking-widest text-purple-200 font-bold block">
-                  Routine Value: <span className="line-through text-purple-300/80">₹{totalRoutineMrp}</span>
-                </span>
-                <div className="flex items-baseline justify-center lg:justify-end gap-3 mt-1">
-                  <span className="font-serif text-3xl sm:text-4xl font-bold text-white">
-                    ₹{bundleDiscountedPrice}
-                  </span>
-                  <span className="text-xs uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 font-bold">
-                    SAVE ₹{totalSaved} (20% OFF)
-                  </span>
-                </div>
-                <p className="text-[11px] text-purple-200 mt-1">
-                  + Complimentary Pan-India Shipping & Botanical Sample Gift
-                </p>
-              </div>
-
-              <button
-                onClick={handleAddEntireRoutine}
-                className="w-full py-4 px-8 rounded-xl bg-white hover:bg-purple-50 text-[#5B0868] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
-              >
-                {bundleAdded ? (
-                  <>
-                    <Check className="w-5 h-5 text-[#5B0868]" />
-                    <span>All 4 Items Added to Cart!</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Buy Complete 4-Step Routine (Save 20%)</span>
-                    <ArrowRight className="w-4 h-4 text-[#5B0868]" />
-                  </>
-                )}
-              </button>
-            </div>
-
+        {/* Compact Single-Row Bundle Bar */}
+        <div className="rounded-2xl bg-[#5B0868] text-white px-5 py-4 sm:px-7 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300 block">
+              Bundle & Save 20%
+            </span>
+            <p className="font-serif text-lg sm:text-xl font-medium">
+              Complete 4-Step {routine.name} —{' '}
+              <span className="font-bold">₹{bundleDiscountedPrice}</span>{' '}
+              <span className="text-xs line-through text-purple-200/80 ml-1">₹{totalRoutineMrp}</span>
+            </p>
           </div>
+
+          <button
+            type="button"
+            onClick={handleAddEntireRoutine}
+            className="px-6 py-3 rounded-xl bg-white hover:bg-purple-50 text-[#5B0868] font-bold text-xs uppercase tracking-wider transition-colors shadow-sm inline-flex items-center justify-center gap-2 cursor-pointer flex-shrink-0"
+          >
+            {bundleAdded ? (
+              <>
+                <Check className="w-4 h-4" />
+                <span>Routine Added!</span>
+              </>
+            ) : (
+              <>
+                <span>Buy Complete 4-Step Routine</span>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
         </div>
 
       </div>
-
     </section>
   );
 }

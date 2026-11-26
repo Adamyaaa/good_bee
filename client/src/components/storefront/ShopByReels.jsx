@@ -136,26 +136,16 @@ export default function ShopByReels({ onQuickViewProduct }) {
   const currentReel = REELS_DATA[activeReelIndex];
 
   return (
-    <section id="shop-by-reels" className="py-16 sm:py-20 bg-[#FAF7F2] text-[#1A1918] relative overflow-hidden border-t border-brand-gold/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8">
+    <section id="shop-by-reels" className="py-10 sm:py-14 bg-[#FAF7F2] text-[#1A1918] relative overflow-hidden border-t border-brand-gold/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-brand-gold/20 pb-5">
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5B0868] text-[10px] sm:text-[11px] font-bold tracking-wider uppercase">
-              <Sparkles className="w-3.5 h-3.5 text-[#5B0868]" />
-              <span>Rituals In Motion</span>
-            </div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#1A1918] font-medium">
-              Shop by Ritual Stories
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-600 max-w-xl">
-              Explore authentic botanical textures, cold-cured bar lathers, and daily application moments. Tap any card to watch or add directly to your bag.
-            </p>
-          </div>
-
-          <span className="px-3 py-1 rounded-full bg-white text-[#5B0868] text-xs font-semibold border border-purple-200 self-start md:self-end shadow-2xs">
-            5 Interactive Ritual Reels
+        {/* Clean Header */}
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="font-serif text-2xl sm:text-3xl text-[#1A1918] font-medium">
+            Ritual Stories
+          </h2>
+          <span className="text-xs font-semibold text-[#5B0868] hidden sm:inline">
+            Tap to watch
           </span>
         </div>
 
@@ -190,7 +180,6 @@ export default function ShopByReels({ onQuickViewProduct }) {
                   </div>
 
                   <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">
-                    <span className="text-[9px] text-amber-200 font-semibold block">{reel.creator}</span>
                     <h3 className="font-serif text-xs sm:text-sm font-semibold leading-snug line-clamp-2">
                       {reel.title}
                     </h3>
