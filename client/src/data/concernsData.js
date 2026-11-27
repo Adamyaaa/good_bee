@@ -1,8 +1,8 @@
 export const CONCERNS_DATA = [
-  // 1. Flash Deals ⚡
+  // 1. Flash Deals
   {
     id: 'flash-deals',
-    label: 'Flash Deals ⚡',
+    label: 'Flash Deals',
     title: 'Flash Deals & Limited Botanical Editions',
     tagline: 'Up to 40% OFF on Clinically Proven Pure Formulations',
     badge: '40% OFF',

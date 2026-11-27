@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import {
-  ChevronLeft,
-  ChevronRight,
   ArrowRight,
-  Pause,
-  Play,
   ShieldCheck,
   Leaf,
   Award,
@@ -13,8 +9,7 @@ import {
   Truck,
   ShoppingBag,
   Eye,
-  Check,
-  Sparkles
+  Check
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
@@ -336,53 +331,6 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
                 </div>
               </motion.div>
             </AnimatePresence>
-
-            {/* Clean Slide Controls */}
-            <div className="flex items-center gap-2.5 pt-0.5">
-              <button
-                type="button"
-                onClick={handlePrev}
-                className="w-8 h-8 rounded-full bg-white/95 hover:bg-white text-gray-800 border border-brand-gold/30 flex items-center justify-center shadow-xs transition-transform active:scale-95 cursor-pointer"
-                aria-label="Previous Hero Slide"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-
-              <div className="flex items-center gap-1.5">
-                {HERO_SLIDES.map((s, index) => (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => setCurrentSlide(index)}
-                    className={`transition-all duration-300 rounded-full cursor-pointer ${
-                      index === currentSlide
-                        ? 'w-7 h-2 bg-[#5B0868]'
-                        : 'w-2 h-2 bg-gray-400/70 hover:bg-gray-600'
-                    }`}
-                    aria-label={`Slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                className="w-8 h-8 rounded-full bg-white/95 hover:bg-white text-gray-800 border border-brand-gold/30 flex items-center justify-center shadow-xs transition-transform active:scale-95 cursor-pointer"
-                aria-label="Next Hero Slide"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsPaused(!isPaused)}
-                className="w-8 h-8 rounded-full bg-white/95 hover:bg-white text-gray-700 border border-brand-gold/30 flex items-center justify-center shadow-xs transition-transform active:scale-95 cursor-pointer"
-                title={isPaused ? 'Resume Carousel' : 'Pause Carousel'}
-                aria-label={isPaused ? 'Resume Carousel' : 'Pause Carousel'}
-              >
-                {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
-              </button>
-            </div>
           </div>
         </div>
       </div>
