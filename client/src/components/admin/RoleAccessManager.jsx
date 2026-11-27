@@ -11,7 +11,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
   AlertCircle,
-  Sparkles,
+  Image as ImageIcon,
   Phone,
   Mail,
   Calendar,
@@ -138,7 +138,7 @@ export default function RoleAccessManager({ token }) {
         return {
           label: 'Media & Stock Lead',
           color: 'bg-violet-100 text-violet-900 border-violet-200',
-          icon: Sparkles
+          icon: ImageIcon
         };
       case 'DELIVERY_PARTNER':
         return {
@@ -312,7 +312,7 @@ export default function RoleAccessManager({ token }) {
       {selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-md w-full border border-gray-100 shadow-2xl overflow-hidden">
-            <div className="bg-gradient-to-r from-[#2A0845] via-[#5B0868] to-[#9B1B62] text-white p-5">
+            <div className="bg-[#5B0868] text-white p-5">
               <h3 className="font-serif font-bold text-lg">Elevate / Modify Access Role</h3>
               <p className="text-xs text-purple-100/80 mt-1">
                 Updating role permissions for: <strong>{selectedUser.name}</strong> ({selectedUser.email})
@@ -388,7 +388,7 @@ export default function RoleAccessManager({ token }) {
                 <button
                   type="submit"
                   disabled={updatingId !== null}
-                  className="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] rounded-xl shadow-xs cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-[#5B0868] hover:bg-[#480653] rounded-xl shadow-xs cursor-pointer disabled:opacity-50"
                 >
                   {updatingId ? 'Synchronizing with Neon DB...' : 'Save Role Elevation'}
                 </button>

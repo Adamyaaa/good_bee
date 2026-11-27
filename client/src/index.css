@@ -50,8 +50,7 @@ a:active {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .apple-glass-chrome,
-  .glass-gold {
+  .apple-glass-chrome {
     background: #FFFFFF !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -77,38 +76,8 @@ a:active {
   background: #9F8055;
 }
 
-/* Glassmorphism & Gold Subtle Accents */
-.glass-gold {
-  background: rgba(250, 247, 242, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(197, 168, 128, 0.2);
-}
-
-.gold-gradient-text {
-  background: linear-gradient(135deg, #1A1918 0%, #9F8055 50%, #1A1918 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 .champagne-border {
   border-color: rgba(197, 168, 128, 0.3);
-}
-
-/* Editorial Emphasis Accents */
-.font-haute {
-  font-family: "Outfit", "Plus Jakarta Sans", system-ui, sans-serif;
-  font-style: italic;
-}
-
-/* Scrollytelling visual transitions */
-.editorial-card {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-}
-
-.editorial-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 35px -10px rgba(197, 168, 128, 0.2);
 }
 
 /* Seamless Continuous Marquee Ticker (Moving towards the Right) */

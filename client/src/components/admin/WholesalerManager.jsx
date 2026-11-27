@@ -13,6 +13,7 @@ import {
   AlertCircle,
   Sliders,
   X,
+  Pencil,
   FileSpreadsheet,
   ArrowRight
 } from 'lucide-react';
@@ -372,7 +373,7 @@ export default function WholesalerManager({
                             {currentMargin}%
                           </span>
                           <span className="text-[10px] text-gray-400 group-hover:text-[#5B0868] transition-colors">
-                            ✏️
+                            <Pencil className="w-3 h-3" />
                           </span>
                         </div>
                       )}

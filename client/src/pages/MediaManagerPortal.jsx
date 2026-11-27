@@ -4,7 +4,6 @@ import {
   Package,
   Image as ImageIcon,
   Sliders,
-  Sparkles,
   RefreshCw,
   CheckCircle2,
   AlertTriangle,
@@ -24,8 +23,7 @@ import {
   Layers,
   Save,
   Tag,
-  Clock,
-  Sparkle
+  Clock
 } from 'lucide-react';
 
 const PRESET_IMAGES = [
@@ -350,13 +348,11 @@ export default function MediaManagerPortal({ onNavigateHome }) {
 
         {/* 1. Header & Welcome Banner */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-xs relative overflow-hidden">
-          <div className="absolute top-0 right-0 -mt-6 -mr-6 w-48 h-48 bg-gradient-to-br from-purple-100/50 to-pink-100/40 rounded-full blur-2xl pointer-events-none" />
-
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className="p-2 rounded-xl bg-purple-100 text-[#5B0868]">
-                  <Sparkles className="w-5 h-5" />
+                  <ImageIcon className="w-5 h-5" />
                 </span>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-[#5B0868] bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
                   Media & Stock Studio
@@ -458,7 +454,7 @@ export default function MediaManagerPortal({ onNavigateHome }) {
                 <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-500'}`} />
                 <span>{tab.label}</span>
                 {tab.alert && (
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                 )}
               </button>
             );
@@ -864,7 +860,7 @@ export default function MediaManagerPortal({ onNavigateHome }) {
       {editingMediaProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full border border-gray-100 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="bg-gradient-to-r from-[#2A0845] via-[#5B0868] to-[#9B1B62] text-white p-5 flex items-center justify-between shrink-0">
+            <div className="bg-[#5B0868] text-white p-5 flex items-center justify-between shrink-0">
               <div>
                 <h3 className="font-serif font-bold text-lg">Update Photos & Visual Assets</h3>
                 <p className="text-xs text-purple-100/80 mt-0.5">{editingMediaProduct.title}</p>
@@ -1003,7 +999,7 @@ export default function MediaManagerPortal({ onNavigateHome }) {
       {editingContentProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full border border-gray-100 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="bg-gradient-to-r from-[#2A0845] via-[#5B0868] to-[#9B1B62] text-white p-5 flex items-center justify-between shrink-0">
+            <div className="bg-[#5B0868] text-white p-5 flex items-center justify-between shrink-0">
               <div>
                 <h3 className="font-serif font-bold text-lg">Edit Editorial Copy & Rituals</h3>
                 <p className="text-xs text-purple-100/80 mt-0.5">{editingContentProduct.title}</p>

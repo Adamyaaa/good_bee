@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Pause, Volume2, VolumeX, ShoppingBag, Eye, Sparkles, ChevronLeft, ChevronRight, X, Check } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, ShoppingBag, Eye, ChevronLeft, ChevronRight, X, Check } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export const REELS_DATA = [
@@ -168,7 +168,7 @@ export default function ShopByReels({ onQuickViewProduct }) {
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A1918]/80 via-[#1A1918]/15 to-transparent" />
+                  <div className="absolute inset-0 bg-[#1A1918]/20" />
 
                   <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between">
                     <span className="px-2 py-0.5 rounded-md bg-[#1A1918]/80 backdrop-blur-xs text-white text-[9px] font-bold uppercase tracking-wider">
@@ -179,7 +179,7 @@ export default function ShopByReels({ onQuickViewProduct }) {
                     </div>
                   </div>
 
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white">
+                  <div className="absolute inset-x-0 bottom-0 p-2.5 bg-[#1A1918]/80 text-white">
                     <h3 className="font-serif text-xs sm:text-sm font-semibold leading-snug line-clamp-2">
                       {reel.title}
                     </h3>
@@ -259,11 +259,11 @@ export default function ShopByReels({ onQuickViewProduct }) {
               onClick={() => setIsPlaying(!isPlaying)}
               className="absolute inset-0 w-full h-full object-cover cursor-pointer"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/60 pointer-events-none" />
+            <div className="absolute inset-0 bg-black/35 pointer-events-none" />
 
             <div className="relative z-10 p-4 flex items-center justify-between text-white">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 <span className="text-xs font-bold tracking-wider uppercase text-amber-200">
                   {currentReel.creator}
                 </span>

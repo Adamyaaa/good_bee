@@ -40,13 +40,10 @@ const dealerPortalSrc = fs.readFileSync(path.join(__dirname, 'client/src/pages/D
 assert(dealerPortalSrc.includes('/api/v1/dealer/orders'), 'DealerPortal.jsx must fetch scoped dealer orders');
 console.log('✅ [PASS] BUG-RBAC-01 (SEL-12): DealerPortal.jsx and mockBackend enforce regional dealer data isolation');
 
-// 6. Verify AI-10 & AI-20 (BUG-AI-01, BUG-AI-02): AiFormulationLab mounted and active
-assert(!appSrc.includes('// Kept for future AI integration review: import AiFormulationLab'), 'AiFormulationLab must not be commented out');
-assert(appSrc.includes('<AiFormulationLab />'), 'App.jsx must render <AiFormulationLab />');
-const aiLabSrc = fs.readFileSync(path.join(__dirname, 'client/src/components/storefront/AiFormulationLab.jsx'), 'utf8');
-assert(aiLabSrc.includes('dry-aging'), 'AiFormulationLab must support dry-aging concern');
-assert(aiLabSrc.includes('Add Complete Regimen to Bag'), 'AiFormulationLab must have "Add Complete Regimen to Bag" button');
-console.log('✅ [PASS] BUG-AI-01 & BUG-AI-02 (AI-10, AI-20): AiFormulationLab mounted in App.jsx with concern quiz & complete regimen add-to-bag');
+// 6. Verify AI slop feature (AiFormulationLab) has been removed
+assert(!appSrc.includes('AiFormulationLab'), 'App.jsx must not import or render AiFormulationLab');
+assert(!fs.existsSync(path.join(__dirname, 'client/src/components/storefront/AiFormulationLab.jsx')), 'AiFormulationLab.jsx must be deleted');
+console.log('✅ [PASS] AI-SLOP-01: AiFormulationLab feature eliminated from App.jsx and storefront components');
 
 console.log('\n========================================================');
 console.log('🎉 ALL 6 BUG RESOLUTIONS VERIFIED SUCCESSFULLY');

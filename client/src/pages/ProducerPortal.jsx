@@ -14,7 +14,6 @@ import {
   Calendar,
   Layers,
   Search,
-  Sparkles,
   ExternalLink,
   Award,
   Activity,
@@ -651,7 +650,7 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                   >
                     <span>{chip.label}</span>
                     {chip.badge && (
-                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-amber-500" />
                     )}
                   </button>
                 ))}
@@ -889,7 +888,7 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                         alt="High Altitude Field"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                      <div className="absolute inset-x-0 bottom-0 bg-black/75 p-2 text-white">
                         <p className="text-[11px] font-bold leading-tight">Nilgiri Forest Reserve</p>
                         <p className="text-[9px] opacity-80">2,100m ASL • Wild Apis Apiary</p>
                       </div>
@@ -901,7 +900,7 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                         alt="Saffron Plateau"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                      <div className="absolute inset-x-0 bottom-0 bg-black/75 p-2 text-white">
                         <p className="text-[11px] font-bold leading-tight">Pampore Saffron Orchards</p>
                         <p className="text-[9px] opacity-80">1,600m ASL • Organic Crocus Beds</p>
                       </div>
@@ -942,7 +941,7 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                         alt="Stainless Steel Distiller"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                      <div className="absolute inset-x-0 bottom-0 bg-black/75 p-2 text-white">
                         <p className="text-[11px] font-bold leading-tight">Copper & SS Alembic Stills</p>
                         <p className="text-[9px] opacity-80">Low-temp hydro condensation</p>
                       </div>
@@ -954,7 +953,7 @@ Authorized Signatory: Good Bee Finance & Vendor Settlement Desk
                         alt="Cold Press Facility"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white">
+                      <div className="absolute inset-x-0 bottom-0 bg-black/75 p-2 text-white">
                         <p className="text-[11px] font-bold leading-tight">Hydraulic Seed Expellers</p>
                         <p className="text-[9px] opacity-80">Cold-pressed below 28°C</p>
                       </div>

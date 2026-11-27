@@ -13,8 +13,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Dry Winter Skin, High Prices & Compromised Care",
       replyTopic: "Fresh Botanical Replies:",
       replySubtitle: "Flat 40% OFF on 100% Pure Plant Formulations",
-      image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#EBF6F7] via-[#DEF0F3] to-[#C9E7EC]'
+      image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Flash Deals: Handpicked Bestsellers at Unbeatable Value',
     productIds: [
@@ -53,8 +52,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Excessive Hairfall, Weak Roots & Scalp Flaking",
       replyTopic: "Pure Plant Replies:",
       replySubtitle: "Nilgiri Rosemary, Slow-Cooked Brahmi & Follicle Strength",
-      image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#EAF5F0] via-[#DCEDE4] to-[#C7E3D3]'
+      image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Your 3-Step Routine for Strong Roots & Zero Hair Fall',
     productIds: [
@@ -88,8 +86,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Acne Breakouts, Red Flare-Ups & Clogged Pores",
       replyTopic: "Fresh Botanicals Reply:",
       replySubtitle: "Cold Neem Leaves, Damask Rose Water & Pure Herbal Clarity",
-      image: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#FFF8E7] via-[#FFF3D1] to-[#FCEABB]'
+      image: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Your Daily Botanical Facial Routine for Luminous Clarity',
     productIds: [
@@ -127,8 +124,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Chapped, Peeling & Matte-Lipstick Dehydration",
       replyTopic: "Pure Beeswax Replies:",
       replySubtitle: "Nilgiri Raw Waxes, Pink Lotus Petals & All-Day Moisture Seal",
-      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#FDF2F4] via-[#FCE4E8] to-[#F9CFD7]'
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Your 24-Hour Regimen for Soft, Naturally Rosy Lips',
     productIds: [
@@ -164,8 +160,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Chemical Stripping, Itchy Scaly Redness & Rough Barrier",
       replyTopic: "45-Day Cured Replies:",
       replySubtitle: "Raw Donkey Milk, Natural Glycerin & Kashmir Saffron",
-      image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#F5F2EB] via-[#EFE9DC] to-[#E3D9C3]'
+      image: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Heritage Bathing Bars for Restored Cellular Lipids',
     productIds: [
@@ -206,8 +201,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Dryness, Hairfall & Flaky Skin",
       replyTopic: "Fresh Botanicals Reply:",
       replySubtitle: "Moisture, Nourishment & Protection",
-      image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#D6ECEF] via-[#E4F3F5] to-[#BEE3E8]'
+      image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Your Morning Ritual for Soft, Winter-Proof Skin',
     productIds: [
@@ -245,8 +239,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Stress Fatigue, Dilated Pores & Unbalanced Sebum",
       replyTopic: "Pure Distillates Reply:",
       replySubtitle: "Hydro-Distilled Plant Terpenes & Cellular Vitality",
-      image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#FDF3E8] via-[#FAE7D0] to-[#F5D8B3]'
+      image: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Therapeutic Botanical Drops for Face, Hair & Mind',
     productIds: [
@@ -282,8 +275,7 @@ export const CONCERNS_DATA = [
       whisperSubtitle: "Delicate Newborn Skin, Diaper Rash & Harsh Detergents",
       replyTopic: "Desi A2 Milk Replies:",
       replySubtitle: "Ultra-Gentle Saponification, Raw Shea & Zero Toxins",
-      image: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=800&q=80',
-      bgGradient: 'from-[#F4F1FD] via-[#EDE7FC] to-[#DDD1F8]'
+      image: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=800&q=80'
     },
     ritualHeadline: 'Gentle, Tear-Free Bathing Regimen for Sensitive Skin',
     productIds: [

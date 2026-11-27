@@ -83,7 +83,8 @@ Please confirm order formulation availability and delivery dispatch.`;
               <span>
                 {remainingForFree === 0 ? (
                   <span className="text-emerald-800 font-semibold flex items-center gap-1">
-                    ✓ You have unlocked Complimentary Pan-India Delivery
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                    <span>You have unlocked Complimentary Pan-India Delivery</span>
                   </span>
                 ) : (
                   <span>Add ₹{remainingForFree} more for Complimentary Shipping</span>

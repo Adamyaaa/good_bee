@@ -25,7 +25,7 @@ const HERO_SLIDES = [
     ctaSecondaryTarget: 'how-to-apply',
     image: '/assets/goodbee-poster-hero-1.jpg',
     objectPosition: 'object-[75%_center] lg:object-right',
-    needsLeftScrim: false,
+    splitRight: false,
     spotlightProduct: {
       id: 'gb_prod_frankincense',
       title: 'Frankincense Pure Essential Oil',
@@ -47,7 +47,7 @@ const HERO_SLIDES = [
     ctaSecondaryTarget: 'shop-by-concern',
     image: '/assets/goodbee-poster-hero-2.jpg',
     objectPosition: 'object-[78%_center] lg:object-right',
-    needsLeftScrim: false,
+    splitRight: false,
     spotlightProduct: {
       id: 'gb_prod_donkey_milk_soap',
       title: 'Donkey Milk Cold Processed Soap',
@@ -68,8 +68,8 @@ const HERO_SLIDES = [
     ctaSecondary: 'Key Botanicals',
     ctaSecondaryTarget: 'ingredients',
     image: '/assets/goodbee-craft-lifestyle.jpg',
-    objectPosition: 'object-[25%_center] lg:object-center',
-    needsLeftScrim: true,
+    objectPosition: 'object-[30%_center] lg:object-center',
+    splitRight: true,
     spotlightProduct: {
       id: 'gb_prod_rose_mist',
       title: 'Damask Rose Hydrosol Mist',
@@ -198,10 +198,9 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
               className={`w-full h-full object-cover ${slide.objectPosition}`}
             />
           </AnimatePresence>
-          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#FAF7F2] to-transparent pointer-events-none" />
         </div>
 
-        {/* Desktop Full-Bleed Unwashed Editorial Poster Backdrop */}
+        {/* Desktop Editorial Poster Backdrop */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`desk-${slide.id}`}
@@ -210,18 +209,15 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ type: 'spring', bounce: 0, duration: 0.5 }}
-            className="hidden lg:block absolute inset-0 z-0 pointer-events-none will-change-transform"
+            className={`hidden lg:block absolute inset-y-0 right-0 z-0 pointer-events-none will-change-transform ${
+              slide.splitRight ? 'w-[53%] border-l border-brand-gold/20' : 'inset-x-0'
+            }`}
           >
             <img
               src={slide.image}
               alt={slide.headline}
               className={`w-full h-full object-cover ${slide.objectPosition}`}
             />
-            {slide.needsLeftScrim ? (
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FAF7F2]/92 via-[#FAF7F2]/65 to-transparent" />
-            ) : (
-              <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#FAF7F2]/35 to-transparent" />
-            )}
           </motion.div>
         </AnimatePresence>
 
@@ -279,7 +275,7 @@ export default function Hero({ onExplore, onRoutine, onQuickViewProduct }) {
                 onMouseLeave={resetTilt}
                 style={{ transformPerspective: 900 }}
                 onClick={() => onQuickViewProduct && onQuickViewProduct(spotlight)}
-                className="w-full max-w-md bg-white/92 backdrop-blur-md rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md hover:border-[#5B0868]/40 p-2.5 sm:p-3 flex items-center gap-3 cursor-pointer group transition-all will-change-transform"
+                className="w-full max-w-md bg-white/95 rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md hover:border-[#5B0868]/40 p-2.5 sm:p-3 flex items-center gap-3 cursor-pointer group transition-all will-change-transform"
               >
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-[#FAF7F2] border border-brand-gold/25 flex-shrink-0">
                   <img

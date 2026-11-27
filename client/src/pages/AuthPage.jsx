@@ -7,7 +7,6 @@ import {
   Phone,
   Eye,
   EyeOff,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
   ShieldCheck,

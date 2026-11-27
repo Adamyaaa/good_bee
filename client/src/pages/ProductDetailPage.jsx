@@ -10,7 +10,6 @@ import {
   MessageCircle,
   Share2,
   Clock,
-  Sparkles,
   ChevronRight,
   Play,
   RotateCcw,
@@ -445,7 +444,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy, onSel
               { id: 'INGREDIENTS', label: '100% Natural Ingredients', icon: Leaf },
               { id: 'FIELDS_AND_FARM', label: 'From Field & Processing Unit', icon: MapPin },
               { id: 'PROCESS', label: 'Artisanal Manufacturing Process', icon: FlaskConical },
-              { id: 'HOW_TO_USE', label: 'How to Apply & Ritual', icon: Sparkles },
+              { id: 'HOW_TO_USE', label: 'How to Apply & Ritual', icon: Droplets },
               { id: 'REVIEWS', label: `Customer Reviews (${reviewsList.length})`, icon: Star }
             ].map((tab) => {
               const Icon = tab.icon;
@@ -588,7 +587,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy, onSel
                             e.currentTarget.src = '/images_ref/Rosmary-2-300x300.webp';
                           }}
                         />
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 p-1.5 text-white text-[9px] font-medium">
+                        <div className="absolute inset-x-0 bottom-0 bg-black/75 p-1.5 text-white text-[9px] font-medium">
                           Harvest Batch #{idx + 1}
                         </div>
                       </div>
@@ -607,7 +606,7 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy, onSel
                             e.currentTarget.src = '/images_ref/Frankin-300x300.webp';
                           }}
                         />
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 p-1.5 text-white text-[9px] font-medium">
+                        <div className="absolute inset-x-0 bottom-0 bg-black/75 p-1.5 text-white text-[9px] font-medium">
                           Extraction Batch #{idx + 1}
                         </div>
                       </div>
@@ -909,11 +908,11 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy, onSel
 
                     <div className="flex items-center justify-between pt-1">
                       <span className="text-[10px] text-gray-500">
-                        Posting as: <strong className="text-gray-800">{user ? user.name : 'Verified Customer'}</strong> (✓ Verified Purchaser)
+                        Posting as: <strong className="text-gray-800">{user ? user.name : 'Verified Customer'}</strong> (Verified Purchaser)
                       </span>
                       <button
                         type="submit"
-                        className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 shadow-xs cursor-pointer"
+                        className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-[#5B0868] hover:bg-[#480653] shadow-xs cursor-pointer"
                       >
                         Publish Review
                       </button>
@@ -948,8 +947,9 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy, onSel
                               <span className="text-brand-muted text-[11px]">({rev.authorCity || rev.city})</span>
                             )}
                             {rev.verifiedPurchase !== false && (
-                              <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                                ✓ Verified Purchaser
+                              <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 inline-flex items-center gap-1">
+                                <Check className="w-2.5 h-2.5" />
+                                <span>Verified Purchaser</span>
                               </span>
                             )}
                           </div>

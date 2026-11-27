@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { CONCERNS_DATA } from '../../data/concernsData';
 
 export default function ShopByConcernCircleBar({
@@ -64,7 +64,6 @@ export default function ShopByConcernCircleBar({
       {variant === 'section' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6 text-center">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#5B0868] text-[11px] font-bold tracking-wider uppercase mb-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#5B0868]" />
             <span>Shop By Concern & Botanical Need</span>
           </div>
           <h2 className="font-serif text-2xl sm:text-3xl text-[#1e1e1e] font-medium tracking-tight">

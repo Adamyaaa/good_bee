@@ -18,7 +18,6 @@ import {
   FileText,
   Plus,
   Minus,
-  Sparkles,
   Percent
 } from 'lucide-react';
 
@@ -351,9 +350,9 @@ export default function DealerPortal({ onNavigateHome }) {
             </div>
 
             {/* Volume Rebate Tier Info Strip */}
-            <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-amber-50 border border-purple-200/80 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+            <div className="bg-[#FAF7F2] border border-brand-gold/30 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2 text-[#5B0868] font-bold">
-                <Sparkles className="w-4 h-4 flex-shrink-0" />
+                <Percent className="w-4 h-4 flex-shrink-0" />
                 <span>Automated Volume Discount Tiers Applied at Checkout:</span>
               </div>
               <div className="flex items-center gap-4 text-gray-700">

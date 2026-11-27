@@ -335,8 +335,6 @@ export default function DeliveryPartnerPortal({ onNavigateHome }) {
 
         {/* 1. Header Banner with Driver Duty Switch & Notification Indicator */}
         <div className="bg-white rounded-3xl p-5 sm:p-7 border border-gray-200/80 shadow-xs relative overflow-hidden">
-          <div className="absolute top-0 right-0 -mt-6 -mr-6 w-44 h-44 bg-gradient-to-br from-sky-100/50 to-indigo-100/30 rounded-full blur-2xl pointer-events-none" />
-
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
             <div>
               <div className="flex items-center gap-2 mb-2">
@@ -370,7 +368,7 @@ export default function DeliveryPartnerPortal({ onNavigateHome }) {
                     : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
                 }`}
               >
-                <span className={`w-2.5 h-2.5 rounded-full ${profile.dutyStatus === 'ON_DUTY' ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`} />
+                <span className={`w-2.5 h-2.5 rounded-full ${profile.dutyStatus === 'ON_DUTY' ? 'bg-emerald-500' : 'bg-gray-400'}`} />
                 <span>{profile.dutyStatus === 'ON_DUTY' ? 'On Duty (Active)' : 'Off Duty'}</span>
               </button>
 
@@ -383,7 +381,7 @@ export default function DeliveryPartnerPortal({ onNavigateHome }) {
               >
                 <Bell className="w-4 h-4" />
                 {stats.unreadNotifsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-white rounded-full text-[9px] font-bold flex items-center justify-center animate-pulse">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-white rounded-full text-[9px] font-bold flex items-center justify-center">
                     {stats.unreadNotifsCount}
                   </span>
                 )}
@@ -443,10 +441,10 @@ export default function DeliveryPartnerPortal({ onNavigateHome }) {
                 <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-500'}`} />
                 <span>{tab.label}</span>
                 {tab.badge && (
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                 )}
                 {tab.alert && (
-                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+                  <span className="w-2 h-2 rounded-full bg-rose-500" />
                 )}
               </button>
             );
@@ -1042,7 +1040,7 @@ export default function DeliveryPartnerPortal({ onNavigateHome }) {
       {selectedDelivery && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-xl w-full border border-gray-100 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
-            <div className="bg-gradient-to-r from-[#1A1918] via-[#2A1830] to-[#5B0868] text-white p-5 flex items-center justify-between shrink-0">
+            <div className="bg-[#1A1918] text-white p-5 flex items-center justify-between shrink-0">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-widest text-purple-200 block">
                   Delivery Manifest #{selectedDelivery.orderId}

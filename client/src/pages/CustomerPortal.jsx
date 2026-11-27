@@ -81,7 +81,7 @@ export default function CustomerPortal({ onNavigateHome }) {
         </div>
 
         {/* Loyalty Reward Card */}
-        <div className="bg-gradient-to-r from-brand-charcoal via-brand-charcoal-soft to-brand-charcoal text-brand-ivory p-6 sm:p-8 rounded-3xl border border-brand-gold/40 shadow-luxury flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-brand-charcoal text-brand-ivory p-6 sm:p-8 rounded-3xl border border-brand-gold/40 shadow-luxury flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-brand-gold-light text-xs font-bold uppercase tracking-wider">
               <Award className="w-4 h-4 text-brand-gold" />

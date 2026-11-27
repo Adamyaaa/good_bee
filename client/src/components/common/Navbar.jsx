@@ -211,14 +211,14 @@ export default function Navbar({ onScrollTo, onOpenPortal, onOpenAuth, onOpenTra
                 <button
                   type="button"
                   onClick={() => onOpenAuth ? onOpenAuth('login') : onOpenPortal('CUSTOMER')}
-                  className="px-2 sm:px-2.5 py-1.5 text-[11px] sm:text-xs font-bold text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                  className="px-2 sm:px-2.5 py-1.5 text-[11px] sm:text-xs font-bold text-gray-700 hover:text-[#5B0868] hover:bg-purple-50 rounded-lg transition-colors cursor-pointer whitespace-nowrap"
                 >
                   Log In
                 </button>
                 <button
                   type="button"
                   onClick={() => onOpenAuth ? onOpenAuth('register') : onOpenPortal('CUSTOMER')}
-                  className="hidden sm:inline-flex px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-[#5B0868] to-[#9B1B62] hover:opacity-95 rounded-xl shadow-xs transition-all cursor-pointer hover:scale-105 active:scale-95 whitespace-nowrap"
+                  className="hidden sm:inline-flex px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white bg-[#5B0868] hover:bg-[#480653] rounded-lg shadow-xs transition-colors cursor-pointer whitespace-nowrap"
                 >
                   Sign Up
                 </button>

@@ -13,7 +13,6 @@ import CartDrawer from './components/storefront/CartDrawer';
 import Hero from './components/storefront/Hero';
 import BestsellersCarousel from './components/storefront/BestsellersCarousel';
 import SkincareRoutineGuide from './components/storefront/SkincareRoutineGuide';
-import AiFormulationLab from './components/storefront/AiFormulationLab';
 import ShopByConcern from './components/storefront/ShopByConcern';
 import InteractiveSpaCatalog from './components/storefront/InteractiveSpaCatalog';
 import ScrollyBrandStory from './components/storefront/ScrollyBrandStory';
@@ -296,7 +295,7 @@ function SpaLandingContent() {
           />
         </main>
       ) : (
-        <main className="flex-grow space-y-0 pt-[78px] sm:pt-[86px]">
+        <main className="flex-grow space-y-0 pt-[80px] sm:pt-[88px]">
           
           {/* Top Panel: Photo-Shaped Circular Category & Concern Navigation */}
           <div className="bg-white border-b border-gray-100 shadow-2xs py-1 sm:py-1.5">
@@ -352,12 +351,10 @@ function SpaLandingContent() {
             onExploreRoutines={() => handleScrollTo('how-to-apply')}
           />
 
-          {/* 6. Interactive Daily Regimen & Personalized Skin Finder Zone */}
+          {/* 6. Interactive Daily Regimen Zone */}
           <SkincareRoutineGuide
             onSelectProduct={(prod) => setQuickViewProduct(prod)}
           />
-
-          <AiFormulationLab />
 
           {/* 7. Craft Lifecycle */}
           <ScrollyBrandStory />

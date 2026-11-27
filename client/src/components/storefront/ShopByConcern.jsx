@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { CONCERNS_DATA } from '../../data/concernsData';
 
 const STARTING_PRICES = {

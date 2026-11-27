@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, LogIn, UserPlus, Sparkles, CheckCircle2, AlertCircle, ShoppingBag, Eye, EyeOff } from 'lucide-react';
+import { X, LogIn, UserPlus, User, CheckCircle2, AlertCircle, ShoppingBag, Eye, EyeOff } from 'lucide-react';
 import { useAuth, DEMO_ACCOUNTS } from '../../context/AuthContext';
 import PasswordStrengthMeter from './PasswordStrengthMeter';
 import { validatePasswordForRegistration } from '../../utils/passwordStrength';
@@ -98,7 +98,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           {/* Quick Demo Customer Button for Convenience */}
           <div className="mb-4 p-2.5 rounded-xl bg-purple-50/70 border border-purple-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#5B0868]" />
+              <User className="w-4 h-4 text-[#5B0868]" />
               <div className="text-left">
                 <p className="text-xs font-semibold text-gray-900">Instant Test Account</p>
                 <p className="text-[10px] text-gray-500">customer@goodbee.com / customer</p>

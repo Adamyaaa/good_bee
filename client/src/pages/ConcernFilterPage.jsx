@@ -3,7 +3,6 @@ import {
   ArrowLeft,
   Search,
   SlidersHorizontal,
-  Sparkles,
   ShieldCheck,
   ArrowRight,
   RotateCcw
@@ -267,7 +266,7 @@ export default function ConcernFilterPage({
         ) : products.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-3xl border border-brand-gold/25 p-8 space-y-4 max-w-lg mx-auto shadow-sm">
             <div className="w-12 h-12 rounded-full bg-purple-50 text-[#5B0868] flex items-center justify-center mx-auto">
-              <Sparkles className="w-6 h-6" />
+              <Search className="w-6 h-6" />
             </div>
             <h3 className="font-serif text-lg font-medium text-gray-900">
               No matching formulations for this filter

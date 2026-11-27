@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Shield, FlaskConical, Package, User, LogOut, ArrowLeft, Lock, AlertTriangle, Sparkles, Truck } from 'lucide-react';
+import { X, Shield, FlaskConical, Package, User, LogOut, ArrowLeft, Lock, AlertTriangle, Image as ImageIcon, Megaphone, Truck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 // Portals
@@ -29,11 +29,11 @@ export default function PortalModal({ initialRole = null, isOpen, onClose }) {
   // Real Roles Configuration (All 7 Platform Roles)
   const ROLES = [
     { id: 'ADMIN', label: 'Admin Suite', badge: 'Control Tower', icon: Shield },
-    { id: 'MEDIA_MANAGER', label: 'Media & Stock', badge: 'Creative Studio', icon: Sparkles },
+    { id: 'MEDIA_MANAGER', label: 'Media & Stock', badge: 'Creative Studio', icon: ImageIcon },
     { id: 'DELIVERY_PARTNER', label: 'Delivery Partner', badge: 'Logistics Fleet', icon: Truck },
     { id: 'PRODUCER', label: 'Vendor & Labs', badge: 'Supplier', icon: FlaskConical },
     { id: 'DEALER', label: 'Wholesale Desk', badge: 'B2B Bulk', icon: Package },
-    { id: 'PROMOTER', label: 'Promoter Suite', badge: 'Affiliate Desk', icon: Sparkles },
+    { id: 'PROMOTER', label: 'Promoter Suite', badge: 'Affiliate Desk', icon: Megaphone },
     { id: 'CUSTOMER', label: 'My Account', badge: 'Customer Account', icon: User }
   ];
 

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useAuth, DEMO_ACCOUNTS } from '../context/AuthContext';
 import PasswordStrengthMeter from '../components/common/PasswordStrengthMeter';
 import { validatePasswordForRegistration } from '../utils/passwordStrength';
-import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key, Sparkles, Truck, Eye, EyeOff } from 'lucide-react';
+import { Shield, User, Package, FlaskConical, ArrowRight, AlertCircle, CheckCircle2, Building, Key, Image as ImageIcon, Megaphone, Truck, Eye, EyeOff } from 'lucide-react';
 
 const ROLE_TABS = [
   { id: 'CUSTOMER', label: 'Customer Account', sublabel: 'Orders & Tracking', icon: User, demoKey: 'CUSTOMER', color: 'text-amber-800' },
   { id: 'DEALER', label: 'Wholesaler / Stockist', sublabel: 'B2B Bulk Rates', icon: Package, demoKey: 'DEALER', color: 'text-blue-800' },
   { id: 'PRODUCER', label: 'Vendor / Supplier', sublabel: 'Botanical Apiaries', icon: FlaskConical, demoKey: 'PRODUCER', color: 'text-emerald-800' },
-  { id: 'PROMOTER', label: 'Promoter & Affiliate', sublabel: 'Referrals & Earnings', icon: Sparkles, demoKey: 'PROMOTER', color: 'text-purple-800' },
-  { id: 'MEDIA_MANAGER', label: 'Media Manager', sublabel: 'Stock, Photos & CMS', icon: Sparkles, demoKey: 'MEDIA_MANAGER', color: 'text-violet-800' },
+  { id: 'PROMOTER', label: 'Promoter & Affiliate', sublabel: 'Referrals & Earnings', icon: Megaphone, demoKey: 'PROMOTER', color: 'text-purple-800' },
+  { id: 'MEDIA_MANAGER', label: 'Media Manager', sublabel: 'Stock, Photos & CMS', icon: ImageIcon, demoKey: 'MEDIA_MANAGER', color: 'text-violet-800' },
   { id: 'DELIVERY_PARTNER', label: 'Delivery Partner', sublabel: 'Fleet & Dispatches', icon: Truck, demoKey: 'DELIVERY_PARTNER', color: 'text-sky-800' },
   { id: 'ADMIN', label: 'Store Admin', sublabel: 'Control Tower', icon: Shield, demoKey: 'ADMIN', color: 'text-slate-800' }
 ];
@@ -128,7 +128,7 @@ export default function Login({ defaultRole = 'CUSTOMER', onLoggedIn, onBack }) 
               >
                 <div className="flex items-center justify-between mb-1">
                   <Icon className={`w-4 h-4 ${isSelected ? 'text-brand-gold' : 'text-brand-muted'}`} />
-                  {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />}
+                  {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-brand-gold" />}
                 </div>
                 <div>
                   <p className="font-serif text-xs font-semibold truncate leading-tight">{tab.label}</p>

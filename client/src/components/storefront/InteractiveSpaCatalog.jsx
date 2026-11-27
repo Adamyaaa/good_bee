@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ProductCard from './ProductCard';
-import { Search, Sparkles, ArrowRight, RotateCcw } from 'lucide-react';
+import { Search, Layers, ArrowRight, RotateCcw } from 'lucide-react';
 import { GoodBeeApi } from '../../services/api';
 
 const CATEGORIES = [
@@ -128,7 +128,7 @@ export default function InteractiveSpaCatalog({
             onClick={() => onExploreRoutines?.()}
             className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#5B0868] hover:bg-[#480653] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-colors cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <Layers className="w-3.5 h-3.5 text-amber-300" />
             <span>Routine Combos • Save 20%</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>

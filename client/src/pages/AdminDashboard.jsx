@@ -24,7 +24,6 @@ import {
   Mail,
   MapPin,
   Clock,
-  Sparkles,
   Sliders,
   Image as ImageIcon,
   Copy,
@@ -774,7 +773,7 @@ export default function AdminDashboard({ onNavigateHome }) {
                 <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${isActive ? 'text-white' : 'text-gray-500'}`} />
                 <span>{tab.label}</span>
                 {tab.badge && (
-                  <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-amber-300' : 'bg-[#5B0868]'} animate-pulse`} />
+                  <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-amber-300' : 'bg-[#5B0868]'}`} />
                 )}
               </button>
             );
@@ -1612,7 +1611,7 @@ export default function AdminDashboard({ onNavigateHome }) {
             {/* Sub-Tab Navigation */}
             <div className="flex flex-wrap gap-2 pb-2">
               {[
-                { id: 'ANNOUNCE_HERO', label: 'Announcement & Hero', icon: Sparkles },
+                { id: 'ANNOUNCE_HERO', label: 'Announcement & Hero', icon: LayoutDashboard },
                 { id: 'PHILOSOPHY', label: 'Research Philosophy', icon: FlaskConical },
                 { id: 'SOURCING', label: 'Apiary Sourcing', icon: Compass },
                 { id: 'TESTIMONIALS', label: `Patron Reviews (${siteContent.testimonials?.length || 0})`, icon: Star },
@@ -2616,9 +2615,9 @@ export default function AdminDashboard({ onNavigateHome }) {
                   onChange={(e) => setActiveTestimonialForm({ ...activeTestimonialForm, rating: Number(e.target.value) })}
                   className="w-full p-2 bg-white border border-gray-200 rounded-xl text-gray-900"
                 >
-                  <option value={5}>5 Stars ★★★★★</option>
-                  <option value={4}>4 Stars ★★★★☆</option>
-                  <option value={3}>3 Stars ★★★☆☆</option>
+                  <option value={5}>5 Stars</option>
+                  <option value={4}>4 Stars</option>
+                  <option value={3}>3 Stars</option>
                 </select>
               </div>
 

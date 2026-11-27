@@ -54,8 +54,7 @@ export const ROUTINES = {
           gesture: 'Massage upward circular motions across face & neck for 60 seconds',
           waterTemp: 'Rinse with cool or lukewarm water (never hot)',
           proTip: 'Focus around your nose folds and jawline where overnight sebum collects.'
-        },
-        aiActiveScore: '99.2% Sebum Balancing'
+        }
       },
       {
         stepNumber: '02',
@@ -75,8 +74,7 @@ export const ROUTINES = {
           gesture: 'Gently press and tap into skin with clean palms — do not wipe off',
           waterTemp: 'Keep refrigerated in summer for an instant depuffing cryo-glow',
           proTip: 'Apply your serum while skin is still visibly damp to triple active absorption!'
-        },
-        aiActiveScore: '98.8% Cellular Hydration'
+        }
       },
       {
         stepNumber: '03',
@@ -96,8 +94,7 @@ export const ROUTINES = {
           gesture: 'Warm between fingertips, press gently into cheeks, forehead and chin',
           waterTemp: 'Never rub briskly; let skin drink in the bio-active terpenes',
           proTip: 'Pat downwards on neck and collarbone to promote natural lymphatic drainage.'
-        },
-        aiActiveScore: '99.5% Antioxidant Shield'
+        }
       },
       {
         stepNumber: '04',
@@ -117,8 +114,7 @@ export const ROUTINES = {
           gesture: 'Smooth upwards in lifting strokes to lock in all active moisture',
           waterTemp: 'Leaves a breathable, non-sticky glass-skin finish',
           proTip: 'Always follow with your favourite broad-spectrum SPF 50 as the final step!'
-        },
-        aiActiveScore: '99.9% 72H Barrier Seal'
+        }
       }
     ]
   },
@@ -156,8 +152,7 @@ export const ROUTINES = {
           gesture: 'Massage over congested T-zone and forehead to dissolve sunscreen & pollution',
           waterTemp: 'Rinse with warm water to release impurities trapped in pores',
           proTip: 'Let the lather sit for 30 seconds on oily zones before rinsing.'
-        },
-        aiActiveScore: '98.5% Micro-Pollutant Lift'
+        }
       },
       {
         stepNumber: '02',
@@ -177,8 +172,7 @@ export const ROUTINES = {
           gesture: 'Press gently into face with palms, taking deep breaths of natural lotus aroma',
           waterTemp: 'Natural aromatherapeutic compounds calm nighttime nervous system',
           proTip: 'Layer twice (the 2-skin method) if you sleep in air conditioning.'
-        },
-        aiActiveScore: '99.1% Transepidermal Hydration'
+        }
       },
       {
         stepNumber: '03',
@@ -198,8 +192,7 @@ export const ROUTINES = {
           gesture: 'Press firmly into smile lines, forehead, and under-eye orbital bone',
           waterTemp: 'Active boswellic acids stimulate overnight collagen regeneration',
           proTip: 'Perform 1 minute of gentle upward facial massage to release facial tension.'
-        },
-        aiActiveScore: '99.8% Overnight Cell Turnover'
+        }
       },
       {
         stepNumber: '04',
@@ -219,8 +212,7 @@ export const ROUTINES = {
           gesture: 'Pat smooth until comfortable cushion barrier forms',
           waterTemp: 'Acts as a natural sleeping mask preventing overnight hydration loss',
           proTip: 'Wake up to zero dry flakes and velvety baby-soft bounce.'
-        },
-        aiActiveScore: '100% Epidermal Lipid Replenishment'
+        }
       }
     ]
   },
@@ -258,8 +250,7 @@ export const ROUTINES = {
           gesture: 'Massage gently over active breakout zones without scrubbing or popping',
           waterTemp: 'Rinse with cool water to soothe inflamed capillaries',
           proTip: 'Leave the neem lather on active pimples for 30 seconds before rinsing.'
-        },
-        aiActiveScore: '99.4% P. Acnes Inhibition'
+        }
       },
       {
         stepNumber: '02',
@@ -279,8 +270,7 @@ export const ROUTINES = {
           gesture: 'Dab directly over congested pores, blackheads, and chin breakouts',
           waterTemp: 'Natural citral isomers dissolve stubborn follicular oil plugs',
           proTip: 'Use morning and evening for rapid pore tightening.'
-        },
-        aiActiveScore: '98.9% Follicular Oil Dissolution'
+        }
       },
       {
         stepNumber: '03',
@@ -300,8 +290,7 @@ export const ROUTINES = {
           gesture: 'Glide over hyperpigmented spots and post-inflammatory erythema marks',
           waterTemp: 'Curcuminoids break up localized melanin deposition',
           proTip: 'Consistent use visibly fades dark post-acne scars in 14 days.'
-        },
-        aiActiveScore: '99.1% Post-Acne Mark Clearance'
+        }
       },
       {
         stepNumber: '04',
@@ -321,8 +310,7 @@ export const ROUTINES = {
           gesture: 'Smooth gently over entire face to prevent acne treatments from drying out skin',
           waterTemp: 'Calms redness without clogging pores (100% non-comedogenic)',
           proTip: 'Never skip moisturizing oily skin — dehydration triggers more oil production!'
-        },
-        aiActiveScore: '100% Non-Comedogenic Hydration'
+        }
       }
     ]
   }

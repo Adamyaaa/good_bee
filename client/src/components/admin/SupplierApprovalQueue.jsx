@@ -9,7 +9,6 @@ import {
   AlertTriangle,
   Eye,
   MessageSquare,
-  Sparkles,
   ArrowRight,
   Layers,
   X,
@@ -111,7 +110,7 @@ export default function SupplierApprovalQueue({
               }`}
             >
               <span>{tab.label}</span>
-              {tab.badge && <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />}
+              {tab.badge && <span className="w-2 h-2 rounded-full bg-amber-500" />}
             </button>
           ))}
         </div>

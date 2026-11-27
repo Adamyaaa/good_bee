@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Hero from '../components/storefront/Hero';
 import SkincareRoutineGuide from '../components/storefront/SkincareRoutineGuide';
-// Kept for future AI review: import AiFormulationLab from '../components/storefront/AiFormulationLab';
 import ShopByConcern from '../components/storefront/ShopByConcern';
 import ScrollyBrandStory from '../components/storefront/ScrollyBrandStory';
 import ProductCard from '../components/storefront/ProductCard';
@@ -156,8 +155,7 @@ export default function Home({ onNavigate, onSelectProduct }) {
                   alt="Laboratory active extraction"
                   className="w-full h-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/70 via-transparent to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-brand-ivory">
+                <div className="absolute inset-x-0 bottom-0 bg-brand-charcoal/85 px-6 py-4 text-brand-ivory">
                   <p className="font-serif text-xl font-medium">Standardized Pure Botanical Chemistry</p>
                   <p className="text-xs text-brand-sand/80">Every batch tracked from origin to jar.</p>
                 </div>
