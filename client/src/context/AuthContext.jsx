@@ -132,95 +132,59 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
+  // Verify existing token against server on startup
+  useEffect(() => {
+    const storedToken = localStorage.getItem('goodbee_token');
+    if (!storedToken) return;
+    fetch('/api/v1/auth/me', {
+      headers: { Authorization: `Bearer ${storedToken}` }
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          const data = await res.json();
+          if (data.user) {
+            setUser(data.user);
+            localStorage.setItem('goodbee_user', JSON.stringify(data.user));
+          }
+        } else if (res.status === 401) {
+          setUser(null);
+          setToken('');
+          localStorage.removeItem('goodbee_user');
+          localStorage.removeItem('goodbee_token');
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const login = async (email, password) => {
     const cleanEmail = (email || '').trim().toLowerCase();
-    const cleanPass = (password || '').trim();
 
-    // 1. Try server endpoint first (or in-browser mock backend router)
-    try {
-      const res = await fetch('/api/v1/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail, password })
-      });
+    const res = await fetch('/api/v1/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: cleanEmail, password })
+    });
 
-      if (res.ok) {
-        const data = await res.json();
-        const safeUser = { ...data.user };
-        delete safeUser.password;
-        delete safeUser.passwordSecondary;
-        delete safeUser.passwordHash;
-
-        setUser(safeUser);
-        setToken(data.token);
-        localStorage.setItem('goodbee_user', JSON.stringify(safeUser));
-        localStorage.setItem('goodbee_token', data.token);
-        return safeUser;
-      } else {
-        const errData = await res.json().catch(() => ({}));
-        // AUTH-11: Uniform error without revealing account existence
-        throw new Error(errData.error || 'Incorrect credentials');
-      }
-    } catch (e) {
-      // Re-throw uniform error if server returned an explicit auth rejection
-      if (e.message && !e.message.includes('fetch') && !e.message.includes('Failed to fetch')) {
-        throw e;
-      }
-      // Server unreachable, fallback to client-side demo accounts
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || 'Incorrect credentials');
     }
 
-    // 2. Client-side fallback for static Vercel hosting
-    // Check pre-seeded demo accounts
-    const matchDemo = Object.values(DEMO_ACCOUNTS).find(
-      (acc) =>
-        acc.email.toLowerCase() === cleanEmail &&
-        (acc.password === cleanPass ||
-          acc.password === password ||
-          acc.passwordSecondary === cleanPass ||
-          cleanPass === acc.email.split('@')[0])
-    );
+    const data = await res.json();
+    const safeUser = { ...data.user };
+    delete safeUser.password;
+    delete safeUser.passwordSecondary;
+    delete safeUser.passwordHash;
 
-    if (matchDemo) {
-      const authUser = { ...matchDemo };
-      delete authUser.password;
-      delete authUser.passwordSecondary;
-      delete authUser.passwordHash;
-
-      setUser(authUser);
-      setToken(`demo_token_${authUser.role.toLowerCase()}`);
-      localStorage.setItem('goodbee_user', JSON.stringify(authUser));
-      localStorage.setItem('goodbee_token', `demo_token_${authUser.role.toLowerCase()}`);
-      return authUser;
-    }
-
-    // Check custom registered users from localStorage
-    try {
-      const registry = JSON.parse(localStorage.getItem('goodbee_users_registry') || '[]');
-      const matchCustom = registry.find(
-        (acc) =>
-          acc.email.toLowerCase() === cleanEmail &&
-          (acc.passwordHash === hashPassword(cleanPass) || acc.password === cleanPass || acc.password === password)
-      );
-      if (matchCustom) {
-        const authUser = { ...matchCustom };
-        delete authUser.password;
-        delete authUser.passwordSecondary;
-        delete authUser.passwordHash;
-
-        setUser(authUser);
-        setToken(`custom_token_${authUser.id}`);
-        localStorage.setItem('goodbee_user', JSON.stringify(authUser));
-        localStorage.setItem('goodbee_token', `custom_token_${authUser.id}`);
-        return authUser;
-      }
-    } catch (e) {}
-
-    // AUTH-11: Return uniform error message without revealing account existence
-    throw new Error('Incorrect credentials');
+    setUser(safeUser);
+    setToken(data.token);
+    localStorage.setItem('goodbee_user', JSON.stringify(safeUser));
+    localStorage.setItem('goodbee_token', data.token);
+    return safeUser;
   };
 
   const register = async (formData) => {
-    const { name, email, password, role = 'CUSTOMER', companyName, gstNumber, phone } = formData;
+    const { name, email, password } = formData;
     if (!name || !email || !password) {
       throw new Error('Name, email, and password are required.');
     }
@@ -230,76 +194,30 @@ export const AuthProvider = ({ children }) => {
       throw new Error(passwordValidation.message);
     }
 
-    // AUTH-02: Email matching is case-normalized and trimmed of spaces
     const cleanEmail = (email || '').trim().toLowerCase();
 
-    // 1. Try server endpoint first
-    try {
-      const res = await fetch('/api/v1/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, email: cleanEmail })
-      });
+    const res = await fetch('/api/v1/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...formData, email: cleanEmail })
+    });
 
-      if (res.ok) {
-        const data = await res.json();
-        const safeUser = { ...data.user };
-        delete safeUser.password;
-        delete safeUser.passwordSecondary;
-        delete safeUser.passwordHash;
-
-        setUser(safeUser);
-        setToken(data.token);
-        localStorage.setItem('goodbee_user', JSON.stringify(safeUser));
-        localStorage.setItem('goodbee_token', data.token);
-        return safeUser;
-      } else {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || 'User with this email already exists');
-      }
-    } catch (e) {
-      if (e.message && !e.message.includes('fetch') && !e.message.includes('Failed to fetch')) {
-        throw e;
-      }
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || 'Registration failed');
     }
 
-    // 2. Client-side fallback: verify uniqueness
-    const inDemo = Object.values(DEMO_ACCOUNTS).some(
-      (acc) => (acc.email || '').trim().toLowerCase() === cleanEmail
-    );
-    let inRegistry = false;
-    try {
-      const registry = JSON.parse(localStorage.getItem('goodbee_users_registry') || '[]');
-      inRegistry = registry.some((acc) => (acc.email || '').trim().toLowerCase() === cleanEmail);
-    } catch (e) {}
+    const data = await res.json();
+    const safeUser = { ...data.user };
+    delete safeUser.password;
+    delete safeUser.passwordSecondary;
+    delete safeUser.passwordHash;
 
-    if (inDemo || inRegistry) {
-      throw new Error('User with this email already exists');
-    }
-
-    const newUser = {
-      id: `usr_${Date.now()}`,
-      name: name.trim(),
-      email: cleanEmail,
-      role: 'CUSTOMER', // Strict default CUSTOMER role
-      phone: phone ? phone.trim() : '+91 99630 75000',
-      companyName: companyName || '',
-      gstNumber: gstNumber || '',
-      loyaltyPoints: 0
-    };
-
-    // AUTH-51: Store passwordHash only, NEVER plaintext password in browser storage
-    try {
-      const registry = JSON.parse(localStorage.getItem('goodbee_users_registry') || '[]');
-      registry.push({ ...newUser, passwordHash: hashPassword(password) });
-      localStorage.setItem('goodbee_users_registry', JSON.stringify(registry));
-    } catch (e) {}
-
-    setUser(newUser);
-    setToken(`token_${newUser.id}`);
-    localStorage.setItem('goodbee_user', JSON.stringify(newUser));
-    localStorage.setItem('goodbee_token', `token_${newUser.id}`);
-    return newUser;
+    setUser(safeUser);
+    setToken(data.token);
+    localStorage.setItem('goodbee_user', JSON.stringify(safeUser));
+    localStorage.setItem('goodbee_token', data.token);
+    return safeUser;
   };
 
   const logout = () => {

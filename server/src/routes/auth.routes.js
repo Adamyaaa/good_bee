@@ -1,174 +1,95 @@
 import { Router } from 'express';
-import { store } from '../db/store.js';
-import { query, isConnected } from '../db/pg.js';
+import bcrypt from 'bcryptjs';
+import { findUserByEmail, createUser, sanitizeUser } from '../db/repo.js';
 import { signToken, requireAuth } from '../middleware/auth.js';
 import { ROLES } from '../config/constants.js';
 import { validatePasswordForRegistration } from '../utils/passwordValidator.js';
 
 const router = Router();
 
+async function verifyPassword(user, rawPass, cleanPass) {
+  const storedHash = user.passwordHash || user.password || '';
+  if (storedHash.startsWith('$2a$') || storedHash.startsWith('$2b$') || storedHash.startsWith('$2y$')) {
+    if (await bcrypt.compare(rawPass, storedHash)) return true;
+    if (cleanPass !== rawPass && (await bcrypt.compare(cleanPass, storedHash))) return true;
+  } else if (storedHash && (storedHash === rawPass || storedHash === cleanPass)) {
+    return true;
+  }
+
+  if (user.passwordSecondary && (user.passwordSecondary === rawPass || user.passwordSecondary === cleanPass)) {
+    return true;
+  }
+  return false;
+}
+
 // POST /api/v1/auth/login
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
-  }
-
-  const cleanEmail = String(email).trim().toLowerCase();
-  const cleanPass = String(password).trim();
-  const rawPass = String(password);
-  let user = null;
-
-  // 1. Check live cloud PostgreSQL if connected (SQL-injection protected parameterized query)
-  if (isConnected()) {
-    try {
-      const dbRes = await query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [cleanEmail]);
-      if (dbRes.rows.length > 0) {
-        const row = dbRes.rows[0];
-        // Compare password (plain or hash)
-        if (row.password_hash === rawPass || row.password_hash === cleanPass) {
-          user = {
-            id: row.id,
-            name: row.name,
-            email: row.email,
-            role: row.role,
-            phone: row.phone,
-            companyName: row.company_name,
-            tier: row.tier,
-            loyaltyPoints: row.loyalty_points || 0,
-            referralCode: row.referral_code,
-            city: row.city,
-            state: row.state
-          };
-        }
-      }
-    } catch (err) {
-      console.warn('[Auth Login DB Error]', err.message);
+router.post('/login', async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required.' });
     }
-  }
 
-  // 2. Fallback to store.users
-  if (!user) {
-    const matched = store.users.find(
-      (u) => (u.email || '').trim().toLowerCase() === cleanEmail
-    );
-    if (matched) {
-      const passMatch =
-        matched.password === rawPass ||
-        matched.password === cleanPass ||
-        (matched.passwordSecondary && (matched.passwordSecondary === rawPass || matched.passwordSecondary === cleanPass)) ||
-        rawPass === 'goodbee123' ||
-        cleanPass === 'goodbee123' ||
-        rawPass === 'admin' ||
-        cleanPass === 'admin' ||
-        cleanPass === cleanEmail.split('@')[0];
+    const cleanEmail = String(email).trim().toLowerCase();
+    const cleanPass = String(password).trim();
+    const rawPass = String(password);
 
-      if (passMatch) {
-        user = {
-          id: matched.id,
-          name: matched.name,
-          email: matched.email,
-          role: matched.role,
-          phone: matched.phone,
-          companyName: matched.companyName,
-          tier: matched.tier,
-          loyaltyPoints: matched.loyaltyPoints || 0,
-          referralCode: matched.referralCode,
-          city: matched.city,
-          state: matched.state
-        };
-      }
+    const matched = await findUserByEmail(cleanEmail);
+    if (!matched || !(await verifyPassword(matched, rawPass, cleanPass))) {
+      return res.status(401).json({ error: 'Incorrect credentials' });
     }
-  }
 
-  // AUTH-11: Uniform error without revealing account existence
-  if (!user) {
-    return res.status(401).json({ error: 'Incorrect credentials' });
+    const safeUser = sanitizeUser(matched);
+    const token = signToken(safeUser);
+    res.json({ token, user: safeUser });
+  } catch (err) {
+    next(err);
   }
-
-  const token = signToken(user);
-  res.json({ token, user });
 });
 
 // POST /api/v1/auth/register
-// RULE: Every registration defaults to CUSTOMER role. Only ADMIN can promote to PRODUCER (Vendor) or DEALER (Wholesaler).
-router.post('/register', async (req, res) => {
-  const { name, email, password, phone } = req.body;
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email and password are required.' });
-  }
-
-  const passwordCheck = validatePasswordForRegistration(password);
-  if (!passwordCheck.isValid) {
-    return res.status(400).json({ error: passwordCheck.message });
-  }
-
-  // AUTH-02: Email matching is case-normalized and space-trimmed
-  const cleanEmail = String(email).trim().toLowerCase();
-
-  // 1. Check if email already exists in Postgres or store
-  if (isConnected()) {
-    try {
-      const checkRes = await query('SELECT id FROM users WHERE LOWER(TRIM(email)) = $1', [cleanEmail]);
-      if (checkRes.rows.length > 0) {
-        return res.status(409).json({ error: 'User with this email already exists' });
-      }
-    } catch (err) {
-      console.warn('[Auth Register DB Check Error]', err.message);
+router.post('/register', async (req, res, next) => {
+  try {
+    const { name, email, password, phone, companyName, gstNumber } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email and password are required.' });
     }
-  }
 
-  const existingInStore = store.users.find((u) => (u.email || '').trim().toLowerCase() === cleanEmail);
-  if (existingInStore) {
-    return res.status(409).json({ error: 'User with this email already exists' });
-  }
-
-  // 2. STRICT DEFAULT: Always CUSTOMER role
-  const assignedRole = ROLES.CUSTOMER;
-  const newId = `usr_${Date.now()}`;
-
-  const newUser = {
-    id: newId,
-    name: String(name).trim(),
-    email: cleanEmail,
-    password: String(password),
-    phone: phone ? String(phone).trim() : '',
-    role: assignedRole,
-    companyName: '',
-    gstNumber: '',
-    loyaltyPoints: 0, // Starts at 0, earned on purchases (1 point per ₹20 spent)
-    status: 'ACTIVE',
-    createdAt: new Date().toISOString()
-  };
-
-  // 3. Persist to Postgres if connected
-  if (isConnected()) {
-    try {
-      await query(
-        `INSERT INTO users (id, name, email, password_hash, role, phone, loyalty_points, status)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [newUser.id, newUser.name, newUser.email, newUser.password, newUser.role, newUser.phone, newUser.loyaltyPoints, newUser.status]
-      );
-    } catch (err) {
-      console.warn('[Auth Register DB Insert Error]', err.message);
+    const passwordCheck = validatePasswordForRegistration(password);
+    if (!passwordCheck.isValid) {
+      return res.status(400).json({ error: passwordCheck.message });
     }
-  }
 
-  // Also maintain in store
-  store.users.push(newUser);
-
-  const token = signToken(newUser);
-  res.status(201).json({
-    token,
-    user: {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
-      role: newUser.role,
-      phone: newUser.phone,
-      loyaltyPoints: newUser.loyaltyPoints
+    const cleanEmail = String(email).trim().toLowerCase();
+    const existing = await findUserByEmail(cleanEmail);
+    if (existing) {
+      return res.status(409).json({ error: 'User with this email already exists' });
     }
-  });
+
+    const passwordHash = await bcrypt.hash(String(password), 10);
+    const newUser = {
+      id: `usr_${Date.now()}`,
+      name: String(name).trim(),
+      email: cleanEmail,
+      passwordHash,
+      password: passwordHash,
+      phone: phone ? String(phone).trim() : '',
+      role: ROLES.CUSTOMER,
+      companyName: companyName ? String(companyName).trim() : '',
+      gstNumber: gstNumber ? String(gstNumber).trim() : '',
+      loyaltyPoints: 0,
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString()
+    };
+
+    const created = await createUser(newUser);
+    const safeUser = sanitizeUser(created);
+    const token = signToken(safeUser);
+
+    res.status(201).json({ token, user: safeUser });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // GET /api/v1/auth/me

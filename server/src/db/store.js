@@ -10,6 +10,84 @@ class DataStore {
     this.orders = [];
     this.commissions = [];
     this.config = { ...DEFAULT_CONFIG };
+    this.siteContent = {
+      announcement: 'Complimentary Delivery Across India on Orders Above ₹999',
+      announcementSub: '100% Natural Active Ingredients',
+      freeDeliveryThreshold: 999,
+      heroBadge: '100% Natural Skincare • Research-Driven Formulation',
+      heroHeadline: 'Nature, Refined Through Research.',
+      heroDescription: 'Good Bee develops 100% natural skincare formulations created after high-end botanical and active-stabilization research. We harmonize raw biological potency with clean laboratory precision to restore your skin barrier to luminous health.',
+      heroCtaPrimary: 'Explore Pure Formulations',
+      heroCtaSecondary: 'Daily Regimen Guide',
+      philosophyBadge: 'Formulation Philosophy',
+      philosophyTitle: 'Where 100% Natural Meets High-End Research.',
+      philosophyDescription: 'Many natural brands rely solely on raw botanical blending without verifying active compound preservation. At Good Bee, every natural ingredient undergoes rigorous active-stabilization research.',
+      philosophyCard1Title: 'Active Stabilization Research',
+      philosophyCard1Text: 'Ensures raw botanical enzymes, flavonoids, and phytosterols do not degrade under atmospheric exposure.',
+      philosophyCard2Title: 'Zero Synthetic Compromises',
+      philosophyCard2Text: 'No synthetic parabens, artificial fragrances, silicones, sulfates, or petroleum by-products.',
+      sourcingBadge: 'Traceable Origin & Sourcing',
+      sourcingTitle: 'Ethical Apiaries & Artisanal Extraction Laboratories',
+      sourcingDescription: 'Good Bee coordinates with certified natural beekeepers and cold-processing botanists across South India. Every harvest undergoes stringent batch purity verification before stabilization in our laboratory.',
+      sourcingCtaText: 'Explore Pure Formulations',
+      testimonials: [
+        {
+          id: 'test_1',
+          name: 'Kavita Menon',
+          city: 'Bengaluru',
+          product: 'Good Bee Frankincense Pure Essential Oil',
+          quote: 'My sensitized, flaking skin barrier calmed down in less than a week. It absorbs like silk without any oily heaviness.',
+          rating: 5
+        },
+        {
+          id: 'test_2',
+          name: 'Dr. Radhika Iyer',
+          city: 'Mumbai',
+          product: 'Good Bee Donkey Milk & Saffron Soap',
+          quote: 'As someone meticulous about ingredient safety, Good Bee’s botanical purity and active stabilization is genuinely impressive. Highly recommended.',
+          rating: 5
+        },
+        {
+          id: 'test_3',
+          name: 'Siddharth Rao',
+          city: 'New Delhi',
+          product: 'Good Bee Sunnipindi Cold Processed Soap',
+          quote: 'Gentlest cleanser bar I have used. Cleans congested pores thoroughly without leaving the tight, parched feeling of regular commercial washes.',
+          rating: 5
+        }
+      ],
+      coupons: [
+        { code: 'BOTANICAL10', discountPct: 10, minOrder: 500, active: true, description: '10% off on all natural formulations' },
+        { code: 'PUREBEE15', discountPct: 15, minOrder: 1500, active: true, description: '15% off on orders above ₹1500' }
+      ],
+      whatsappNumber: '+91-9963075000',
+      whatsappGreeting: 'Hello Good Bee Concierge, I would like guidance on natural skincare formulations.',
+      supportEmail: 'care@goodbee.in',
+      upiVpa: 'goodbee.official@okaxis',
+      payeeName: 'GOOD BEE Skincare Laboratory',
+      storeAddress: 'Good Bee Skincare Studio, Bengaluru, Karnataka, India',
+      operatingHours: 'Mon – Sat: 9:30 AM – 7:00 PM IST'
+    };
+    this.dealerOrders = [
+      {
+        id: 'GB-PO-2026-9402',
+        dealerCode: 'DLR-MUM-01',
+        date: '24 Oct 2026',
+        totalUnits: 75,
+        subtotal: 32450,
+        gst: 5841,
+        totalAmount: 38291,
+        status: 'DISPATCHED',
+        courier: 'BlueDart Express',
+        trackingNo: 'BD-98234120',
+        paymentTerms: 'Net-30 (Due 24 Nov 2026)',
+        items: [
+          { title: 'Good Bee Donkey Milk Cold Processed Soap', qty: 30, wholesalePrice: 380 },
+          { title: 'Good Bee Frankincense Pure Essential Oil', qty: 15, wholesalePrice: 1087 },
+          { title: 'Good Bee Damask Rose Hydrosol Mist', qty: 30, wholesalePrice: 629 }
+        ]
+      }
+    ];
     this.initialized = false;
     this.init();
   }

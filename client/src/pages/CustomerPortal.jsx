@@ -8,53 +8,39 @@ export default function CustomerPortal({ onNavigateHome }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Read live customer orders from localStorage and/or server
-    try {
-      const allOrders = JSON.parse(localStorage.getItem('goodbee_orders') || '[]');
-      const customerEmail = user?.email?.toLowerCase();
-      
-      // Filter orders placed by this specific logged in user
-      const userOrders = customerEmail
-        ? allOrders.filter(
-            (o) =>
-              (o.customerEmail && o.customerEmail.toLowerCase() === customerEmail) ||
-              (user.id === 'usr_customer_1' && !o.customerEmail)
-          )
-        : [];
-
-      // If user has placed real orders, show them. If brand new user with no orders, show empty state.
-      // If demo default customer account ('customer@goodbee.com'), fallback to seed order.
-      if (userOrders.length > 0) {
-        setOrders(userOrders);
-      } else if (user?.email === 'customer@goodbee.com') {
-        setOrders([
-          {
-            id: 'GB-ORD-90821',
-            total: 1890,
-            status: 'PROCESSING',
-            date: '2026-10-07',
-            paymentMethod: 'DYNAMIC_UPI_QR',
-            items: [
-              {
-                title: 'Golden Royal Propolis Restorative Nectar',
-                price: 1890,
-                quantity: 1
-              }
-            ]
-          }
-        ]);
-      } else {
+    let active = true;
+    async function loadMyOrders() {
+      if (!token) {
         setOrders([]);
+        setLoading(false);
+        return;
       }
-    } catch (e) {
-      setOrders([]);
+      setLoading(true);
+      try {
+        const res = await fetch('/api/v1/orders/my', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (active) setOrders(data.orders || []);
+        } else if (active) {
+          setOrders([]);
+        }
+      } catch (e) {
+        if (active) setOrders([]);
+      } finally {
+        if (active) setLoading(false);
+      }
     }
-    setLoading(false);
-  }, [user]);
+    loadMyOrders();
+    return () => {
+      active = false;
+    };
+  }, [user?.id, token]);
 
   // Real loyalty points earned: 1 point for every ₹20 spent on completed orders
   const earnedPoints = orders.reduce((sum, ord) => sum + Math.floor((Number(ord.total) || 0) / 20), 0);
-  const displayedCoins = orders.length > 0 ? earnedPoints : (user?.email === 'customer@goodbee.com' ? 340 : 0);
+  const displayedCoins = orders.length > 0 ? earnedPoints : (user?.loyaltyPoints || 0);
 
   return (
     <div className="py-10 bg-brand-ivory min-h-screen">

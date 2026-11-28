@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 
 export default function DealerPortal({ onNavigateHome }) {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,8 +39,11 @@ export default function DealerPortal({ onNavigateHome }) {
   const [pastOrders, setPastOrders] = useState([]);
 
   useEffect(() => {
-    const currentCode = user?.dealerCode || 'GB-DLR-MUM-892';
-    fetch(`/api/v1/dealer/orders?dealerCode=${encodeURIComponent(currentCode)}`)
+    if (!token) return;
+    const currentCode = user?.dealerCode || 'DLR-MUM-01';
+    fetch(`/api/v1/dealer/orders?dealerCode=${encodeURIComponent(currentCode)}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data && data.orders) {
@@ -48,7 +51,7 @@ export default function DealerPortal({ onNavigateHome }) {
         }
       })
       .catch((err) => console.error('Failed to load scoped dealer orders:', err));
-  }, [user?.dealerCode]);
+  }, [user?.dealerCode, token]);
 
   // Load all 19 products
   useEffect(() => {
@@ -165,7 +168,10 @@ export default function DealerPortal({ onNavigateHome }) {
 
     fetch('/api/v1/dealer/orders', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
       body: JSON.stringify(newOrder)
     }).catch(() => {});
 

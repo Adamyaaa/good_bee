@@ -1975,63 +1975,70 @@ function jsonResponse(data, status = 200) {
   });
 }
 
-// Global fetch installer
+// Global fetch installer: routes /api/v1/* to configured backend with cold-start retry.
+// Never silently falls back to fake localStorage data unless VITE_OFFLINE_DEMO === 'true'.
 export function installGlobalMockFetch() {
   if (typeof window === 'undefined') return;
 
-  const originalFetch = window.fetch;
+  const originalFetch = window.fetch.bind(window);
   const configuredApiBase =
-    (import.meta.env && import.meta.env.VITE_API_URL) ? import.meta.env.VITE_API_URL.replace(/\/+$/, '') : '';
+    import.meta.env && import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/+$/, '') : '';
+  const allowOfflineDemo = import.meta.env && import.meta.env.VITE_OFFLINE_DEMO === 'true';
+
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function fetchWithColdStartRetry(targetUrl, init) {
+    const retryDelays = [1500, 3000, 5000];
+    let lastError = null;
+
+    for (let attempt = 0; attempt <= retryDelays.length; attempt++) {
+      try {
+        const response = await originalFetch(targetUrl, init);
+        if (![502, 503, 504].includes(response.status) || attempt === retryDelays.length) {
+          return response;
+        }
+      } catch (err) {
+        lastError = err;
+        if (attempt === retryDelays.length) break;
+      }
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('goodbee_server_waking', { detail: { attempt: attempt + 1 } }));
+      }
+      await sleep(retryDelays[attempt]);
+    }
+
+    throw lastError || new Error('Unable to reach Good Bee server');
+  }
 
   window.fetch = async function (input, init = {}) {
-    const rawUrl = typeof input === 'string' ? input : (input && input.url ? input.url : '');
+    const rawUrl = typeof input === 'string' ? input : input && input.url ? input.url : '';
 
-    // Check if this is an API request to /api/v1/
     if (rawUrl && (rawUrl.startsWith('/api/v1') || rawUrl.includes('/api/v1'))) {
-      // 1. If remote API endpoint is configured (e.g. Render backend URL)
-      if (configuredApiBase) {
-        const fullRemoteUrl = rawUrl.startsWith('http')
-          ? rawUrl
-          : `${configuredApiBase}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
-
-        try {
-          const response = await originalFetch(fullRemoteUrl, init);
-          const contentType = response.headers.get('content-type') || '';
-          if (!contentType.includes('text/html') && response.status !== 404 && response.status !== 503) {
-            return response;
-          }
-        } catch (networkError) {
-          console.warn('[Good Bee Sync] Remote backend unreachable or cold starting. Falling back to in-browser engine.', networkError);
-        }
-        // Fallback to local mock store if remote backend failed or cold starting
+      if (allowOfflineDemo && !configuredApiBase) {
         return handleMockApiRequest(rawUrl, init);
       }
 
-      // 2. If running on static host (Netlify / Vercel) without remote API configured
-      const isStaticHost =
-        window.location.hostname.includes('netlify.app') ||
-        window.location.hostname.includes('vercel.app') ||
-        window.location.hostname.includes('github.io') ||
-        (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
+      const targetUrl =
+        configuredApiBase && !rawUrl.startsWith('http')
+          ? `${configuredApiBase}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`
+          : input;
 
-      if (isStaticHost) {
-        return handleMockApiRequest(rawUrl, init);
-      }
-
-      // 3. If local development, try local Express first
       try {
-        const response = await originalFetch(input, init);
+        const response = await fetchWithColdStartRetry(targetUrl, init);
         const contentType = response.headers.get('content-type') || '';
-        if (contentType.includes('text/html') || response.status === 404) {
+        if (contentType.includes('text/html') && allowOfflineDemo) {
           return handleMockApiRequest(rawUrl, init);
         }
         return response;
       } catch (networkError) {
-        return handleMockApiRequest(rawUrl, init);
+        if (allowOfflineDemo) {
+          console.warn('[Good Bee Offline Demo] Server unreachable, using demo store.', networkError);
+          return handleMockApiRequest(rawUrl, init);
+        }
+        throw networkError;
       }
     }
 
-    // Pass through non-API requests
     return originalFetch(input, init);
   };
 }

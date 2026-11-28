@@ -1,5 +1,5 @@
 import QRCode from 'qrcode';
-import { store } from '../db/store.js';
+import { getPlatformConfig, getSiteContent } from '../db/repo.js';
 
 export class DynamicQrService {
   /**
@@ -7,22 +7,24 @@ export class DynamicQrService {
    * Format: upi://pay?pa={vpa}&pn={payeeName}&am={amount}&cu=INR&tn={transactionNote}&tr={orderId}
    */
   static async generateUpiPaymentQr({ orderId, amount, customNote = '' }) {
-    const paymentConfig = store.config.payment;
-    const vpa = paymentConfig.upiVpa || 'goodbee.official@okaxis';
-    const payeeName = paymentConfig.payeeName || 'GOOD BEE Skincare Laboratory';
+    const [platformConfig, siteContent] = await Promise.all([
+      getPlatformConfig().catch(() => ({})),
+      getSiteContent().catch(() => ({}))
+    ]);
+    const paymentConfig = platformConfig.payment || {};
+    const vpa = siteContent.upiVpa || paymentConfig.upiVpa || 'goodbee.official@okaxis';
+    const payeeName = siteContent.payeeName || paymentConfig.payeeName || 'GOOD BEE Skincare Laboratory';
     const note = customNote || `Good Bee Order ${orderId}`;
-    
-    // Exact standard UPI deep link URL format
-    const upiIntentString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${amount.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}&tr=${encodeURIComponent(orderId)}`;
 
-    // Generate high-definition PNG / SVG QR Data URL with luxury styling
+    const upiIntentString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${Number(amount).toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}&tr=${encodeURIComponent(orderId)}`;
+
     const qrDataUrl = await QRCode.toDataURL(upiIntentString, {
       errorCorrectionLevel: 'H',
       margin: 2,
       width: 400,
       color: {
-        dark: '#1A1918', // Deep Charcoal
-        light: '#FAF7F2'  // Warm Ivory canvas background
+        dark: '#1A1918',
+        light: '#FAF7F2'
       }
     });
 

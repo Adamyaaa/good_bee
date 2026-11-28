@@ -6,43 +6,39 @@ export default function TrackOrderModal({ isOpen, onClose }) {
   const [trackedOrder, setTrackedOrder] = useState(null);
   const [error, setError] = useState('');
 
-  // Sample order fallback if customer has not yet ordered
-  const DEMO_ORDER = {
-    id: 'GB-89211',
-    customerName: 'Aaditya Sharma',
-    customerPhone: '+91 99630 75000',
-    placedAt: 'Yesterday, 4:15 PM',
-    status: 'DISPATCHED',
-    courier: 'Blue Dart Express Premium',
-    awbNumber: 'BD-883920184IN',
-    estimatedDelivery: 'Tomorrow, by 6:00 PM',
-    destination: 'Bengaluru, Karnataka - 560034',
-    items: [
-      {
-        title: 'Good Bee Frankincense Pure Essential Oil',
-        volume: '15 ml',
-        price: 1450,
-        quantity: 1,
-        image: '/images_ref/Frankin-300x300.webp'
-      },
-      {
-        title: 'Good Bee Donkey Milk & Saffron Soap',
-        volume: '125 g',
-        price: 499,
-        quantity: 2,
-        image: '/images_ref/Donkey-Milk-Soap-300x300.webp'
-      }
-    ],
-    total: 2448,
-    steps: [
-      { title: 'Order Verified & Harvest Allocated', date: 'Yesterday, 4:15 PM', done: true },
-      { title: 'Lab Batch Tested & Active-Stabilized', date: 'Yesterday, 7:30 PM', done: true },
-      { title: 'Dispatched via Blue Dart Air Hub', date: 'Today, 9:00 AM', done: true, active: true },
-      { title: 'Out for Delivery to Destination', date: 'Expected Tomorrow', done: false }
-    ]
+  const [trackingLoading, setTrackingLoading] = useState(false);
+
+  const buildOrderView = (o) => {
+    const status = o.orderStatus || o.status || 'PROCESSING';
+    const isPaid = o.paymentStatus === 'PAID' || o.paymentStatus === 'PAYMENT_VERIFIED';
+    const isDispatched = status === 'DISPATCHED' || status === 'SHIPPED' || status === 'OUT_FOR_DELIVERY' || status === 'DELIVERED';
+    const isDelivered = status === 'DELIVERED';
+    const addr = o.shippingAddress && typeof o.shippingAddress === 'object'
+      ? [o.shippingAddress.street, o.shippingAddress.city, o.shippingAddress.state, o.shippingAddress.pincode].filter(Boolean).join(', ')
+      : (o.shippingAddress || 'Address on file');
+
+    return {
+      id: o.id,
+      customerName: o.customerName || 'Valued Patron',
+      customerPhone: o.customerPhone || '',
+      placedAt: o.createdAt ? new Date(o.createdAt).toLocaleString('en-IN') : 'Recent',
+      status,
+      courier: 'Good Bee Priority Dispatch',
+      awbNumber: o.upiRef || o.id,
+      estimatedDelivery: isDelivered ? 'Delivered' : '2–4 Business Days',
+      destination: addr,
+      items: o.items || [],
+      total: o.total || 0,
+      steps: [
+        { title: 'Order Placed & Registered', date: o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-IN') : 'Confirmed', done: true },
+        { title: isPaid ? 'Payment Verified' : 'Payment Pending / COD', date: o.paidAt ? new Date(o.paidAt).toLocaleDateString('en-IN') : status, done: isPaid || o.paymentMethod === 'CASH_ON_DELIVERY' },
+        { title: 'Dispatched from Good Bee Lab', date: isDispatched ? 'In Transit' : 'Preparing', done: isDispatched, active: isDispatched && !isDelivered },
+        { title: 'Delivered to Destination', date: o.deliveredAt ? new Date(o.deliveredAt).toLocaleDateString('en-IN') : 'Pending', done: isDelivered }
+      ]
+    };
   };
 
-  const handleTrack = (queryToUse) => {
+  const handleTrack = async (queryToUse) => {
     const query = (queryToUse || searchQuery).trim();
     if (!query) {
       setError('Please enter an Order ID or Mobile Number.');
@@ -50,35 +46,22 @@ export default function TrackOrderModal({ isOpen, onClose }) {
     }
 
     setError('');
-
+    setTrackingLoading(true);
     try {
-      // Check localStorage orders first
-      const orders = JSON.parse(localStorage.getItem('goodbee_orders') || '[]');
-      const found = orders.find(
-        (o) =>
-          o.id?.toLowerCase().includes(query.toLowerCase()) ||
-          o.customerPhone?.replace(/[^0-9]/g, '').includes(query.replace(/[^0-9]/g, ''))
-      );
-
-      if (found) {
-        setTrackedOrder({
-          ...DEMO_ORDER,
-          id: found.id,
-          customerName: found.customerName || 'Customer',
-          customerPhone: found.customerPhone || query,
-          total: found.total || 1450,
-          items: found.items || DEMO_ORDER.items,
-          placedAt: found.createdAt ? new Date(found.createdAt).toLocaleDateString() : 'Recent'
-        });
+      const res = await fetch(`/api/v1/orders/track?q=${encodeURIComponent(query)}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.order) {
+        setTrackedOrder(null);
+        setError(data.error || 'No matching order found in Good Bee records.');
         return;
       }
-    } catch (e) {}
-
-    // Fallback to Demo Order
-    setTrackedOrder({
-      ...DEMO_ORDER,
-      id: query.startsWith('GB') ? query : `GB-${query.slice(-5) || '89211'}`
-    });
+      setTrackedOrder(buildOrderView(data.order));
+    } catch (e) {
+      setTrackedOrder(null);
+      setError('Unable to reach tracking server. Please try again.');
+    } finally {
+      setTrackingLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -150,16 +133,16 @@ export default function TrackOrderModal({ isOpen, onClose }) {
 
           {!trackedOrder && (
             <div className="mt-3 flex items-center gap-2 text-xs text-brand-muted">
-              <span>Quick test:</span>
+              <span>Example order ID:</span>
               <button
                 type="button"
                 onClick={() => {
-                  setSearchQuery('GB-89211');
-                  handleTrack('GB-89211');
+                  setSearchQuery('GB-ORD-90821');
+                  handleTrack('GB-ORD-90821');
                 }}
                 className="text-brand-gold-dark font-semibold underline hover:text-brand-charcoal transition-colors"
               >
-                Try sample order #GB-89211
+                {trackingLoading ? 'Checking...' : 'Check #GB-ORD-90821'}
               </button>
             </div>
           )}

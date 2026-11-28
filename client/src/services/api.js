@@ -685,56 +685,39 @@ export const INITIAL_PRODUCTS = [
 
 export class GoodBeeApi {
   static async fetchProducts(params = {}) {
-    try {
-      const query = new URLSearchParams(params).toString();
-      const res = await fetch(`/api/v1/products${query ? '?' + query : ''}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.products && data.products.length > 0) return data.products;
-      }
-    } catch (e) {
-      // Fallback to offline store
+    const query = new URLSearchParams(params).toString();
+    const res = await fetch(`/api/v1/products${query ? '?' + query : ''}`);
+    if (res.ok) {
+      const data = await res.json();
+      return data.products || [];
     }
 
-    // Client-side filtering fallback for Netlify static preview
-    let list;
-    try {
-      const stored = typeof window !== 'undefined' ? localStorage.getItem('goodbee_products') : null;
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        list = INITIAL_PRODUCTS.map((initProd) => {
-          const found = parsed.find((p) => p.id === initProd.id);
-          return found ? { ...initProd, ...found, concerns: initProd.concerns, category: initProd.category } : initProd;
-        });
-        parsed.forEach((p) => {
-          if (!list.some((m) => m.id === p.id)) list.push(p);
-        });
-      } else {
-        list = [...INITIAL_PRODUCTS];
+    if (import.meta.env && import.meta.env.VITE_OFFLINE_DEMO === 'true') {
+      let list = [...INITIAL_PRODUCTS];
+      if (params.category && params.category !== 'All') {
+        list = list.filter((p) => p.category.toLowerCase() === params.category.toLowerCase());
       }
-    } catch (e) {
-      list = [...INITIAL_PRODUCTS];
+      if (params.concern && params.concern !== 'All') {
+        const q = params.concern.toLowerCase();
+        list = list.filter(
+          (p) =>
+            p.concerns?.some((c) => c.toLowerCase() === q || c.toLowerCase().includes(q) || q.includes(c.toLowerCase())) ||
+            p.category?.toLowerCase() === q
+        );
+      }
+      if (params.search) {
+        const q = params.search.toLowerCase();
+        list = list.filter(
+          (p) =>
+            p.title.toLowerCase().includes(q) ||
+            p.subtitle.toLowerCase().includes(q) ||
+            p.ingredients.some((ing) => ing.toLowerCase().includes(q))
+        );
+      }
+      return list;
     }
-    if (params.category && params.category !== 'All') {
-      list = list.filter((p) => p.category.toLowerCase() === params.category.toLowerCase());
-    }
-    if (params.concern && params.concern !== 'All') {
-      const q = params.concern.toLowerCase();
-      list = list.filter((p) =>
-        p.concerns?.some((c) => c.toLowerCase() === q || c.toLowerCase().includes(q) || q.includes(c.toLowerCase())) ||
-        p.category?.toLowerCase() === q
-      );
-    }
-    if (params.search) {
-      const q = params.search.toLowerCase();
-      list = list.filter(
-        (p) =>
-          p.title.toLowerCase().includes(q) ||
-          p.subtitle.toLowerCase().includes(q) ||
-          p.ingredients.some((ing) => ing.toLowerCase().includes(q))
-      );
-    }
-    return list;
+
+    throw new Error('Failed to load products from Good Bee API');
   }
 
   static async generateClientDynamicQr(orderId, amount) {
@@ -766,18 +749,12 @@ export class GoodBeeApi {
   }
 
   static async fetchProductReviews(productId) {
-    try {
-      const res = await fetch(`/api/v1/products/${productId}/reviews`);
-      if (res.ok) {
-        const data = await res.json();
-        return data.reviews || [];
-      }
-    } catch (e) {}
-    try {
-      return JSON.parse(localStorage.getItem(`goodbee_reviews_${productId}`) || '[]');
-    } catch (e) {
-      return [];
+    const res = await fetch(`/api/v1/products/${productId}/reviews`);
+    if (res.ok) {
+      const data = await res.json();
+      return data.reviews || [];
     }
+    return [];
   }
 
   static async submitProductReview(productId, reviewData, token) {

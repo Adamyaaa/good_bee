@@ -33,7 +33,7 @@ const SAVED_ADDRESS_PRESETS = [
 
 export default function Checkout({ onBack, onNavigateHome }) {
   const { items, subtotal, discount, shipping, total, promoterCode, clearCart } = useCart();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   const [form, setForm] = useState({
     name: user ? user.name : '',
@@ -165,59 +165,34 @@ export default function Checkout({ onBack, onNavigateHome }) {
     if (!items.length) return;
 
     setPlacingOrder(true);
-    const orderId = `GB-ORD-${Date.now().toString().slice(-6)}`;
 
     try {
-      let data = null;
-      try {
-        const res = await fetch('/api/v1/orders', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            items,
-            customerName: form.name,
-            customerEmail: form.email,
-            customerPhone: form.phone,
-            shippingAddress: {
-              street: form.street,
-              city: form.city,
-              state: form.state,
-              pincode: form.pincode
-            },
-            promoterCode,
-            paymentMethod: form.paymentMethod
-          })
-        });
-        if (res.ok) {
-          data = await res.json();
-        }
-      } catch (err) {
-        // Fallback for static Netlify host
-      }
-
-      // If backend was not reached or Netlify static host
-      if (!data || !data.order) {
-        const qr = await GoodBeeApi.generateClientDynamicQr(orderId, total);
-        data = {
-          order: {
-            id: orderId,
-            total,
-            items,
-            customerName: form.name,
-            shippingAddress: {
-              street: form.street,
-              city: form.city,
-              state: form.state,
-              pincode: form.pincode
-            },
-            paymentMethod: form.paymentMethod,
-            paymentStatus: 'PENDING_PAYMENT'
+      const res = await fetch('/api/v1/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+          items,
+          discount,
+          customerName: form.name,
+          customerEmail: form.email,
+          customerPhone: form.phone,
+          shippingAddress: {
+            street: form.street,
+            city: form.city,
+            state: form.state,
+            pincode: form.pincode
           },
-          dynamicQr: qr,
-          whatsappSupportUrl: `https://wa.me/919963075000?text=${encodeURIComponent(
-            `Hello Good Bee Support, I have placed order #${orderId} (₹${total}).`
-          )}`
-        };
+          promoterCode,
+          paymentMethod: form.paymentMethod
+        })
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.order) {
+        throw new Error(data.error || 'Unable to place order. Please check your connection and try again.');
       }
 
       setActiveOrder(data.order);

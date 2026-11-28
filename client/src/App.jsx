@@ -139,11 +139,27 @@ function SpaLandingContent() {
   });
 
   React.useEffect(() => {
+    const loadRemoteContent = () => {
+      fetch('/api/v1/config/public')
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data?.site) {
+            setSiteContent(data.site);
+            try {
+              localStorage.setItem('goodbee_site_content', JSON.stringify(data.site));
+            } catch (e) {}
+          }
+        })
+        .catch(() => {});
+    };
+    loadRemoteContent();
+
     const handleUpdate = () => {
       try {
         const stored = localStorage.getItem('goodbee_site_content');
         if (stored) setSiteContent(JSON.parse(stored));
       } catch (e) {}
+      loadRemoteContent();
     };
     window.addEventListener('goodbee_site_content_updated', handleUpdate);
     return () => window.removeEventListener('goodbee_site_content_updated', handleUpdate);

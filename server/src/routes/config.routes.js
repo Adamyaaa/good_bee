@@ -1,54 +1,59 @@
 import { Router } from 'express';
-import { store } from '../db/store.js';
+import { getPlatformConfig, savePlatformConfig, getSiteContent } from '../db/repo.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { ROLES } from '../config/constants.js';
 import { WhatsAppService } from '../services/whatsappService.js';
 
 const router = Router();
 
-// GET /api/v1/config/public - Public settings (WhatsApp phone, concierge enabled, currency)
-router.get('/public', (req, res) => {
-  res.json({
-    whatsapp: {
-      phoneNumber: store.config.whatsapp.phoneNumber,
-      conciergeUrl: WhatsAppService.createConciergeUrl(),
-      enabled: store.config.whatsapp.enableConcierge
-    },
-    payment: {
-      currency: store.config.payment.currency,
-      allowDynamicQr: store.config.payment.allowDynamicQr,
-      payeeName: store.config.payment.payeeName
-    }
-  });
+// GET /api/v1/config/public - Public settings + storefront CMS
+router.get('/public', async (req, res, next) => {
+  try {
+    const [config, siteContent] = await Promise.all([getPlatformConfig(), getSiteContent()]);
+    const phone = siteContent.whatsappNumber || config.whatsapp.phoneNumber || '+91-9963075000';
+    const greeting = siteContent.whatsappGreeting || config.whatsapp.welcomeMessage;
+
+    res.json({
+      whatsapp: {
+        phoneNumber: phone,
+        conciergeUrl: WhatsAppService.createConciergeUrl('', phone, greeting),
+        enabled: config.whatsapp.enableConcierge !== false
+      },
+      payment: {
+        currency: config.payment.currency || 'INR',
+        allowDynamicQr: config.payment.allowDynamicQr !== false,
+        upiVpa: siteContent.upiVpa || config.payment.upiVpa,
+        payeeName: siteContent.payeeName || config.payment.payeeName
+      },
+      site: siteContent
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // GET /api/v1/config/admin - Admin view of all settings
-router.get('/admin', requireAuth, requireRole([ROLES.ADMIN]), (req, res) => {
-  res.json({ config: store.config });
+router.get('/admin', requireAuth, requireRole([ROLES.ADMIN]), async (req, res, next) => {
+  try {
+    const config = await getPlatformConfig();
+    res.json({ config });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // PUT /api/v1/config/admin - Admin update payment and WhatsApp settings
-router.put('/admin', requireAuth, requireRole([ROLES.ADMIN]), (req, res) => {
-  const { payment, whatsapp } = req.body;
-
-  if (payment) {
-    store.config.payment = {
-      ...store.config.payment,
-      ...payment
-    };
+router.put('/admin', requireAuth, requireRole([ROLES.ADMIN]), async (req, res, next) => {
+  try {
+    const { payment, whatsapp, rules } = req.body;
+    const config = await savePlatformConfig({ payment, whatsapp, rules });
+    res.json({
+      message: 'Configuration updated successfully.',
+      config
+    });
+  } catch (err) {
+    next(err);
   }
-
-  if (whatsapp) {
-    store.config.whatsapp = {
-      ...store.config.whatsapp,
-      ...whatsapp
-    };
-  }
-
-  res.json({
-    message: 'Configuration updated successfully.',
-    config: store.config
-  });
 });
 
 export default router;

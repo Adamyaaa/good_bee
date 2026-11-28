@@ -57,57 +57,66 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy, onSel
   const [newComment, setNewComment] = useState('');
   const [reviewSubmitSuccess, setReviewSubmitSuccess] = useState(false);
 
+  const [isVerifiedPurchaser, setIsVerifiedPurchaser] = useState(false);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setSelectedImageIndex(0);
     setQuantity(1);
-    
-    // Load reviews: look in localStorage custom reviews or seed data
-    try {
-      const stored = JSON.parse(localStorage.getItem(`goodbee_reviews_${product?.id}`) || '[]');
-      const seeds = SEED_REVIEWS[product?.id] || DEFAULT_PRODUCT_REVIEWS;
-      setReviewsList([...stored, ...seeds]);
-    } catch (e) {
-      setReviewsList(SEED_REVIEWS[product?.id] || DEFAULT_PRODUCT_REVIEWS);
-    }
 
-    // Load related formulations for cross-sell
+    // Load reviews from live backend
     if (product?.id) {
-      GoodBeeApi.fetchProducts().then((list) => {
-        const others = (list || []).filter((p) => p.id !== product.id);
-        const sameCategory = others.filter((p) => p.category === product.category);
-        const complementary = others.filter((p) => p.category !== product.category);
-        setRelatedProducts([...sameCategory, ...complementary].slice(0, 4));
-      }).catch(() => {});
+      GoodBeeApi.fetchProductReviews(product.id)
+        .then((serverReviews) => {
+          if (serverReviews && serverReviews.length > 0) {
+            setReviewsList(serverReviews);
+          } else {
+            setReviewsList(SEED_REVIEWS[product.id] || DEFAULT_PRODUCT_REVIEWS);
+          }
+        })
+        .catch(() => {
+          setReviewsList(SEED_REVIEWS[product?.id] || DEFAULT_PRODUCT_REVIEWS);
+        });
+
+      // Load related formulations for cross-sell
+      GoodBeeApi.fetchProducts()
+        .then((list) => {
+          const others = (list || []).filter((p) => p.id !== product.id);
+          const sameCategory = others.filter((p) => p.category === product.category);
+          const complementary = others.filter((p) => p.category !== product.category);
+          setRelatedProducts([...sameCategory, ...complementary].slice(0, 4));
+        })
+        .catch(() => {});
     }
   }, [product?.id, product?.category]);
 
-  if (!product) return null;
-
-  // Check if current user is a verified purchaser of this formulation
-  const isVerifiedPurchaser = React.useMemo(() => {
-    if (!user?.email) return false;
-    try {
-      const orders = JSON.parse(localStorage.getItem('goodbee_orders') || '[]');
-      const customerEmail = user.email.toLowerCase();
-      const userOrders = orders.filter(
-        (o) =>
-          (o.customerEmail && o.customerEmail.toLowerCase() === customerEmail) ||
-          (user.id === 'usr_customer_1' && !o.customerEmail)
-      );
-      return userOrders.some((order) =>
-        Array.isArray(order.items) &&
-        order.items.some(
-          (it) =>
-            it.id === product.id ||
-            it.productId === product.id ||
-            it.title?.toLowerCase() === product.title?.toLowerCase()
-        )
-      );
-    } catch (e) {
-      return false;
+  useEffect(() => {
+    if (!token || !product?.id) {
+      setIsVerifiedPurchaser(false);
+      return;
     }
-  }, [user, product?.id, product?.title]);
+    fetch('/api/v1/orders/my', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then((res) => (res.ok ? res.json() : { orders: [] }))
+      .then((data) => {
+        const orders = data.orders || [];
+        const bought = orders.some(
+          (order) =>
+            Array.isArray(order.items) &&
+            order.items.some(
+              (it) =>
+                it.id === product.id ||
+                it.productId === product.id ||
+                it.title?.toLowerCase() === product.title?.toLowerCase()
+            )
+        );
+        setIsVerifiedPurchaser(bought);
+      })
+      .catch(() => setIsVerifiedPurchaser(false));
+  }, [token, product?.id, product?.title]);
+
+  if (!product) return null;
 
   // Calculate live average rating from authentic reviews
   const currentAvgRating = reviewsList.length > 0
@@ -816,42 +825,28 @@ export default function ProductDetailPage({ product, onBack, onInstantBuy, onSel
                   <form
                     onSubmit={async (e) => {
                       e.preventDefault();
-                      const newRev = {
-                        id: `rev_${Date.now()}`,
-                        productId: product.id,
-                        authorName: user ? user.name : 'Verified Customer',
-                        authorCity: user?.city || 'Verified Buyer',
-                        rating: Number(newRating),
-                        headline: newHeadline,
-                        comment: newComment,
-                        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-                        verifiedPurchase: true
-                      };
-                      const updated = [newRev, ...reviewsList];
-                      setReviewsList(updated);
                       try {
-                        const existingStored = JSON.parse(localStorage.getItem(`goodbee_reviews_${product.id}`) || '[]');
-                        localStorage.setItem(`goodbee_reviews_${product.id}`, JSON.stringify([newRev, ...existingStored]));
-                        // Also sync to backend API if available
-                        await fetch(`/api/v1/products/${product.id}/reviews`, {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            ...(token ? { Authorization: `Bearer ${token}` } : {})
-                          },
-                          body: JSON.stringify({
+                        const data = await GoodBeeApi.submitProductReview(
+                          product.id,
+                          {
                             rating: Number(newRating),
                             headline: newHeadline,
                             comment: newComment,
                             authorCity: user?.city || 'Verified Buyer'
-                          })
-                        }).catch(() => {});
-                      } catch (err) {}
-                      setNewHeadline('');
-                      setNewComment('');
-                      setShowReviewForm(false);
-                      setReviewSubmitSuccess(true);
-                      setTimeout(() => setReviewSubmitSuccess(false), 3500);
+                          },
+                          token
+                        );
+                        if (data.review) {
+                          setReviewsList((prev) => [data.review, ...prev]);
+                        }
+                        setNewHeadline('');
+                        setNewComment('');
+                        setShowReviewForm(false);
+                        setReviewSubmitSuccess(true);
+                        setTimeout(() => setReviewSubmitSuccess(false), 3500);
+                      } catch (err) {
+                        alert(err.message || 'Unable to submit review.');
+                      }
                     }}
                     className="p-4 rounded-2xl bg-brand-cream/40 border border-brand-gold/30 space-y-3"
                   >
